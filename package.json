@@ -1,0 +1,27 @@
+{
+  "name": "a2",
+  "scripts": {
+    "test": "docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm web node_modules/.bin/jest --forceExit -c jest.config.json"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "core-js": "^2.5.6",
+    "graphql-yoga": "^1.13.1",
+    "pg": "^7.4.3",
+    "type-graphql": "^0.11.3",
+    "typedi": "^0.7.3",
+    "typeorm": "^0.2.5",
+    "winston": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^22.2.3",
+    "@types/winston": "^2.3.9",
+    "husky": "^0.14.3",
+    "jest": "^22.4.3",
+    "lint-staged": "^7.1.0",
+    "nodemon": "^1.17.4",
+    "prettier": "^1.12.1",
+    "ts-node": "^6.0.3",
+    "typescript": "^2.8.3"
+  }
+}

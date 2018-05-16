@@ -1,0 +1,7 @@
+version: "3"
+
+services:
+  web:
+    command: node_modules/.bin/jest --config
+    depends_on:
+      - db
