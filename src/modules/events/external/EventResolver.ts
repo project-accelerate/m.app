@@ -12,7 +12,7 @@ class CreateEventRequest implements EventProps {
   name!: string
 }
 
-@Resolver(() => Event)
+@Resolver(Event)
 export class EventResolver {
   get eventRepository() {
     return getCustomRepository(EventRepository)

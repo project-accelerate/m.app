@@ -1,7 +1,20 @@
 {
-  "moduleFileExtensions": ["ts", "tsx", "js"],
   "transform": {
-    "^.+\\.(ts|tsx)$": "<rootDir>/src/test/preprocessor.js"
+    "^.+\\.tsx?$": "ts-jest"
   },
-  "testMatch": ["**/__tests__/*.+(ts|tsx|js)"]
+  "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+  "moduleFileExtensions": [
+    "ts",
+    "tsx",
+    "js",
+    "jsx",
+    "json",
+    "node"
+  ],
+  "collectCoverage": true,
+  "collectCoverageFrom": [
+    "<rootDir>/src/modules/*/external/*",
+    "<rootDir>/src/modules/*/db/*"
+  ],
+  "coverageDirectory": ".coverage"
 }
