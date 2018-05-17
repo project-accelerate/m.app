@@ -3,14 +3,15 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "jsx": "preserve",
+    "jsx": "react",
     "allowJs": true,
     "moduleResolution": "node",
     "strict": true,
     "sourceMap": true,
     "skipLibCheck": true,
     "typeRoots": [
-      "./node_modules/@types"
+      "./node_modules/@types",
+      "./typings",
     ],
     "lib": [
       "dom",

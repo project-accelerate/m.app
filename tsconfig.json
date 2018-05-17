@@ -12,6 +12,10 @@
       "esnext.array",
       "esnext.asynciterable"
     ],
+    "typeRoots": [
+      "node_modules",
+      "typings"
+    ],
     "jsx": "preserve",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true

@@ -3,16 +3,23 @@
   "scripts": {
     "start:backend": "docker-compose up --force-recreate --abort-on-container-exit --build",
     "start:frontend": "react-static start",
+    "start:storybook": "start-storybook -p 6006",
+    "update-graphql-schema": "ts-node scripts/generate-types",
     "test": "docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm web node_modules/.bin/jest --forceExit -c jest.config.json"
   },
   "dependencies": {
+    "@material-ui/core": "^1.0.0-rc.1",
+    "apollo-client-preset": "^1.0.8",
     "axios": "^0.18.0",
     "core-js": "^2.5.6",
+    "graphql": "^0.13.2",
     "graphql-yoga": "^1.13.1",
-    "material-ui": "^1.0.0-beta.47",
     "pg": "^7.4.3",
     "react": "^16.3.2",
+    "react-apollo": "^2.1.4",
     "react-dom": "^16.3.2",
+    "react-jss": "^8.4.0",
+    "react-no-ssr": "^1.1.0",
     "react-router": "^4.2.0",
     "react-static": "^5.9.3",
     "type-graphql": "^0.11.3",
@@ -21,13 +28,21 @@
     "winston": "^2.4.2"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^3.4.4",
+    "@storybook/addon-links": "^3.4.4",
+    "@storybook/react": "^3.4.4",
+    "@types/faker": "^4.1.2",
     "@types/graphql": "^0.13.1",
     "@types/jest": "^22.2.3",
     "@types/react": "^16.3.14",
     "@types/react-dom": "^16.0.5",
     "@types/react-hot-loader": "^4.1.0",
     "@types/react-router": "^4.0.25",
+    "@types/storybook__react": "^3.0.7",
     "@types/winston": "^2.3.9",
+    "apollo-codegen": "^0.19.1",
+    "faker": "^4.1.0",
+    "graphql-tag": "^2.9.2",
     "husky": "^0.14.3",
     "jest": "^22.4.3",
     "lint-staged": "^7.1.0",
@@ -37,6 +52,6 @@
     "ts-jest": "^22.4.6",
     "ts-loader": "3",
     "ts-node": "^6.0.3",
-    "typescript": "^2.8.3"
+    "typescript": "^2.9.0-rc"
   }
 }

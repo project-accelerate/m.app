@@ -1,0 +1,4 @@
+fragment EventDetail on Event {
+  id
+  name
+}
