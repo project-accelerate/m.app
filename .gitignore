@@ -59,6 +59,9 @@ jspm_packages/
 # next.js build output
 .next
 
+# react-static build output
+tmp
+
 
 ## macOS
 

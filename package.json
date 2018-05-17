@@ -1,13 +1,20 @@
 {
   "name": "a2",
   "scripts": {
+    "start:backend": "docker-compose up --force-recreate --abort-on-container-exit --build",
+    "start:frontend": "react-static start",
     "test": "docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm web node_modules/.bin/jest --forceExit -c jest.config.json"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "core-js": "^2.5.6",
     "graphql-yoga": "^1.13.1",
+    "material-ui": "^1.0.0-beta.47",
     "pg": "^7.4.3",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-router": "^4.2.0",
+    "react-static": "^5.9.3",
     "type-graphql": "^0.11.3",
     "typedi": "^0.7.3",
     "typeorm": "^0.2.5",
@@ -16,13 +23,19 @@
   "devDependencies": {
     "@types/graphql": "^0.13.1",
     "@types/jest": "^22.2.3",
+    "@types/react": "^16.3.14",
+    "@types/react-dom": "^16.0.5",
+    "@types/react-hot-loader": "^4.1.0",
+    "@types/react-router": "^4.0.25",
     "@types/winston": "^2.3.9",
     "husky": "^0.14.3",
     "jest": "^22.4.3",
     "lint-staged": "^7.1.0",
     "nodemon": "^1.17.4",
     "prettier": "^1.12.1",
+    "react-hot-loader": "^4.2.0",
     "ts-jest": "^22.4.6",
+    "ts-loader": "3",
     "ts-node": "^6.0.3",
     "typescript": "^2.8.3"
   }
