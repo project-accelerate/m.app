@@ -22,6 +22,7 @@ const styles: StyleRules = {
   }
 }
 
+/** View enclosing the app with toolbar, etc */
 export const AppWrapper = withStyles(styles)(({ children, classes }) =>
   <>
     <AppBar position="static" color="default">
