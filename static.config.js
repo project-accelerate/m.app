@@ -90,7 +90,7 @@ export default {
                 loader: require.resolve('ts-loader'),
                 options: {
                   transpileOnly: true,
-                  configFile: require.resolve('./src/frontend/tsconfig.json'),
+                  configFile: require.resolve('./tsconfig.frontend.json'),
                 },
               },
             ],
