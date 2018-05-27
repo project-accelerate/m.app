@@ -1,4 +1,15 @@
+import * as uuid from 'uuid'
+import { Point } from 'geojson';
+
 export const someString = () => "Foo"
+export const someUuid = uuid
+export const someDate = () => new Date('2010-01-01')
+export const somePostcode = () => 'OX49 5NU'
+export const someInt = () => 1
+export const someGeoPoint = (): Point => ({
+  type: 'Point',
+  coordinates: [someInt(), someInt()]
+})
 
 export const someEvent = (props: any = {}) => ({
   ...props,

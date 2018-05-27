@@ -1,14 +1,9 @@
-import { Repository, AbstractRepository, EntityRepository } from "typeorm";
 import { Event, EventProps } from "../domain/Event";
+import { CrudRepository, CrudRepositoryConfig } from "../../../common/CrudRepository";
 
-@EntityRepository(Event)
-export class EventRepository extends AbstractRepository<Event> {
-  findOne(id: string): Promise<Event | undefined> {
-    return this.manager.findOne(Event, { id })
-  }
+const config: CrudRepositoryConfig<Event> = {
+  tableName: 'event'
+}
 
-  async insert(data: EventProps): Promise<string> {
-    const { identifiers } = await this.manager.insert(Event, data)
-    return identifiers[0].id as string
-  }
+export class EventRepository extends CrudRepository<Event, EventProps>(config) {
 }

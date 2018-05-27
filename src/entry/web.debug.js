@@ -6,6 +6,7 @@ process.on('unhandledRejection', err => {
 
 require('ts-node').register({ transpileOnly: true })
 require('winston').level = 'debug'
-require('../config/web')
-  .configureWeb()
+
+require('../config.di')
+  .then(require('../config/web').configureWeb)
   .then(require('../config/testData').configureTestData)

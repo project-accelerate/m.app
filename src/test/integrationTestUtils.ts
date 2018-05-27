@@ -1,10 +1,11 @@
-import { getConnectionManager, createConnection, ConnectionOptions, getConnection } from "typeorm";
 import { execute, parse } from 'graphql'
-import { configureDb } from "../config/db";
 import { configureGraphql } from "../config/graphql";
+import { db } from '../db';
 
-let dbConfigured = false
-
+/** 
+ * Execute a graphql query against the api, returning the response payload
+ * or any errors
+ */
 export async function execQuery(query: string, variables?: {}) {
   const schema = await configureGraphql()
 
@@ -15,6 +16,10 @@ export async function execQuery(query: string, variables?: {}) {
   })
 }
 
+/** 
+ * Execute a graphql query against the api, returning the response payload
+ * or failing the test if the query fails
+ */
 export async function execSuccessfulQuery(query: string, variables?: {}) {
   const result = await execQuery(query, variables)
   if (result && result.data) {
@@ -24,28 +29,28 @@ export async function execSuccessfulQuery(query: string, variables?: {}) {
   throw result && result.errors && result.errors[0] || new Error('Unknow query failure')
 }
 
+/** 
+ * Wrap a test block in a database transaction, then roll back when completed
+ */
 export function withDb(block: () => Promise<void>) {
   return async () => {
-    if (!dbConfigured) {
-      dbConfigured = true
-
-      await configureDb({
-        synchronize: true
-      })
-    }
-
-    const connection = getConnection()
-
+    // Knex treats transaction rollback as an error. But we don't want to fail
+    // tests on rollback, so check this flag to determine if the test finished
+    // successfuly
+    let success = false
+    
     try {
-      await block()
+      await db.transaction(async (transaction) => {
+        await block()
 
-    } finally {
-      const repositories = connection.entityMetadatas
-        .map(entity => connection.getRepository(entity.name))
-
-      repositories.forEach((rep) => {
-        rep.delete({})
+        success = true
+        await transaction.rollback()
       })
+
+    } catch (err) {
+      if (!success) {
+        throw err
+      }
     }
   }
 }

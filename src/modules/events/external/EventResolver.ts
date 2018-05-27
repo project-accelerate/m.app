@@ -1,8 +1,8 @@
-import { ObjectType, Field, Query, Resolver, Mutation, InputType, Arg }  from 'type-graphql'
+import { ObjectType, Field, Query, Resolver, Mutation, InputType, Arg, GraphQLISODateTime }  from 'type-graphql'
 import { Event, EventProps } from '../domain/Event';
-import { getCustomRepository } from 'typeorm';
 import { EventRepository } from '../db/EventRepository';
 import { MutationRequest } from '../../../common/resolverUtils';
+import { Inject } from 'typedi';
 
 @InputType({
   description: "Request properties to submit a new event"
@@ -10,13 +10,27 @@ import { MutationRequest } from '../../../common/resolverUtils';
 class CreateEventRequest implements EventProps {
   @Field()
   name!: string
+
+  @Field()
+  organiser!: string
+
+  @Field()
+  venue!: string
+
+  @Field(() => GraphQLISODateTime)
+  startTime!: Date
+
+  @Field(() => GraphQLISODateTime)
+  endTime!: Date
+
+  @Field()
+  introduction!: string
 }
 
 @Resolver(Event)
 export class EventResolver {
-  get eventRepository() {
-    return getCustomRepository(EventRepository)
-  }
+  @Inject()
+  eventRepository!: EventRepository
 
   @Query(() => Event, {
     nullable: true,
