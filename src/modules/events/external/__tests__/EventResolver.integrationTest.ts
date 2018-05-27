@@ -11,6 +11,12 @@ describe('EventResolver', () => {
         mutation($request: CreateEventRequest) {
           createEvent(request: $request) {
             name
+            venue {
+              id
+            }
+            organiser {
+              id
+            }
           }
         }
       `, {
@@ -23,17 +29,32 @@ describe('EventResolver', () => {
     }))
 
     it('looks up events by id', withDb(async () => {
-      const eventId = await givenThatAnEventExists({ name: "foo" })
+      const venue = await givenThatAVenueExists()
+      const organiser = await givenThatAnOrganiserExists()
+      const eventId = await givenThatAnEventExists({ name: "foo", venue, organiser })
+
       const result = await execSuccessfulQuery(`
         {
           event(id: "${eventId}") {
             name
+            venue {
+              id
+            }
+            organiser {
+              id
+            }
           }
         }
       `)
 
       expect(result.event).toMatchObject({
-        name: "foo"
+        name: "foo",
+        venue: {
+          id: venue
+        },
+        organiser: {
+          id: organiser
+        }
       })
     }))
   })

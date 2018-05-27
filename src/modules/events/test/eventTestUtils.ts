@@ -34,25 +34,26 @@ export function someVenueProps(props: Partial<VenueProps> = {}): VenueProps {
 export function someOrganiserProps(props: Partial<OrganiserProps> = {}): OrganiserProps {
   return {
     name: someString(),
+    ...props
   }
 }
 
-export function givenThatAVenueExists(venueProps = someVenueProps()) {
-  return venueRepository.insert(venueProps)
+export function givenThatAVenueExists(props: Partial<VenueProps> = {}) {
+  return venueRepository.insert(someVenueProps(props))
 }
 
-export function givenThatAnOrganiserExists(organiserProps = someOrganiserProps()) {
-  return organiserRepository.insert(organiserProps)
+export function givenThatAnOrganiserExists(props: Partial<OrganiserProps> = {}) {
+  return organiserRepository.insert(someOrganiserProps(props))
 }
 
-export async function givenThatAnEventExists(eventProps: Partial<EventProps> = {}) {
+export async function givenThatAnEventExists(props: Partial<EventProps> = {}) {
   const [organiser, venue] = await Promise.all([
-    givenThatAnOrganiserExists(),
-    givenThatAVenueExists()
+    Promise.resolve(props.organiser || givenThatAnOrganiserExists()),
+    Promise.resolve(props.venue || givenThatAVenueExists())
   ])
 
   return eventRepository.insert({
-    ...someEventProps(eventProps),
+    ...someEventProps(props),
     organiser,
     venue
   })

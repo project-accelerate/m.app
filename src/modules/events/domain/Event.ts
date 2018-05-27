@@ -1,4 +1,6 @@
 import { ObjectType, Field, GraphQLISODateTime } from "type-graphql";
+import { Organiser } from "./Organiser";
+import { Venue } from "./Venue";
 
 export interface EventProps {
   name: string
@@ -17,10 +19,10 @@ export class Event implements EventProps {
   @Field()
   name!: string
 
-  @Field()
+  @Field(() => Organiser)
   organiser!: string
 
-  @Field()
+  @Field(() => Venue)
   venue!: string
 
   @Field(() => GraphQLISODateTime)
