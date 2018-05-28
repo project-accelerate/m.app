@@ -3,7 +3,7 @@
     "^.+\\.tsx?$": "ts-jest"
   },
   "setupTestFrameworkScriptFile": "<rootDir>/src/test/setup.js",
-  "testRegex": "src/backend/.*/__tests__/.*\\.(test|spec)\\.tsx?$",
+  "testRegex": "src/modules/.*/__tests__/.*\\.(test|spec)\\.tsx?$",
   "moduleFileExtensions": [
     "ts",
     "tsx",
@@ -14,8 +14,7 @@
   ],
   "collectCoverage": true,
   "collectCoverageFrom": [
-    "<rootDir>/src/modules/*/external/*",
-    "<rootDir>/src/modules/*/db/*"
+    "<rootDir>/src/modules/*/domain/*"
   ],
   "coverageDirectory": ".coverage"
 }

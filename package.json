@@ -10,6 +10,7 @@
     "migrations:run": "knex migrate:latest",
     "update-graphql-schema": "ts-node scripts/generate-types",
     "test:frontend:unit": "jest -c jest.frontendUnitTests.config.json",
+    "test:backend:unit": "jest -c jest.backendUnitTests.config.json",
     "test:integration": "yarn stop && docker-compose run --rm web node_modules/.bin/jest --forceExit -c jest.backendIntegrationTests.config.json --runInBand"
   },
   "dependencies": {
