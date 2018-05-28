@@ -18,6 +18,7 @@ export function someEventProps(props: Partial<EventProps> = {}): EventProps {
     venue: someUuid(),
     startTime: someDate(),
     endTime: someDate(),
+    location: someGeoPoint(),
     ...props
   }
 }
@@ -26,7 +27,6 @@ export function someVenueProps(props: Partial<VenueProps> = {}): VenueProps {
   return {
     name: someString(),
     postcode: somePostcode(),
-    location: someGeoPoint(),
     ...props
   }
 }

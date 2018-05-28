@@ -11,7 +11,7 @@ import { VenueRepository } from '../db/VenueRepository';
 @InputType({
   description: "Request properties to submit a new event"
 })
-class CreateEventRequest implements EventProps {
+class CreateEventRequest {
   @Field()
   name!: string
 

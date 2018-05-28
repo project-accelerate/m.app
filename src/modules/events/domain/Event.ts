@@ -1,4 +1,5 @@
 import { ObjectType, Field, GraphQLISODateTime } from "type-graphql";
+import { Point } from "geojson";
 import { Organiser } from "./Organiser";
 import { Venue } from "./Venue";
 
@@ -9,6 +10,7 @@ export interface EventProps {
   startTime: Date
   endTime: Date
   introduction: string
+  location: Point
 }
 
 @ObjectType()
@@ -33,4 +35,6 @@ export class Event implements EventProps {
 
   @Field()
   introduction!: string
+
+  location!: Point
 }

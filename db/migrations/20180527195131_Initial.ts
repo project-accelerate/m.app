@@ -15,7 +15,6 @@ export async function up(knex: Knex) {
 
     table.text('name')
     table.text('postcode').notNullable()
-    table.specificType('location', 'geography').notNullable()
   })
 
   await knex.schema.createTable('event', table => {
@@ -27,6 +26,7 @@ export async function up(knex: Knex) {
     table.dateTime('startTime').notNullable()
     table.dateTime('endTime').notNullable()
     table.text('introduction').notNullable()
+    table.specificType('location', 'geography').notNullable()
   })
 };
 

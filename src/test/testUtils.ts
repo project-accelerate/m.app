@@ -6,9 +6,9 @@ export const someUuid = uuid
 export const someDate = () => new Date('2010-01-01')
 export const somePostcode = () => 'OX49 5NU'
 export const someInt = () => 1
-export const someGeoPoint = (): Point => ({
+export const someGeoPoint = (lat = someInt(), long = someInt()): Point => ({
   type: 'Point',
-  coordinates: [someInt(), someInt()]
+  coordinates: [lat, long]
 })
 
 export const someEvent = (props: any = {}) => ({

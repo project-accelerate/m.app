@@ -1,10 +1,10 @@
 import { ObjectType, Field } from "type-graphql";
 import { Point } from 'geojson'
+import { String } from "aws-sdk/clients/transcribeservice";
 
 export interface VenueProps {
   name: string
   postcode: string
-  location: Point
 }
 
 @ObjectType()
@@ -17,6 +17,4 @@ export class Venue implements VenueProps {
 
   @Field()
   postcode!: string
-
-  location!: Point
 }
