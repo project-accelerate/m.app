@@ -2,7 +2,7 @@ import * as React from 'react'
 import { shallow, ShallowWrapper } from 'enzyme';
 import { createUnderlinedDropdown } from '../UnderlinedDropdown';
 import { Popover } from '@material-ui/core';
-import { someEvent } from '../../../../test/testUtils';
+import { someSyntheticEvent } from '../../../../test/testUtils';
 
 describe('UnderlinedDropdown', () => {
   it('renders value', () => {
@@ -95,12 +95,12 @@ class Fixture {
   }
 
   click() {
-    this.valueText.simulate('click', someEvent())
+    this.valueText.simulate('click', someSyntheticEvent())
     this.tree.update()
   }
 
   dismiss() {
-    this.popover.props().onClose(someEvent())
+    this.popover.props().onClose(someSyntheticEvent())
     this.tree.update()
   }
 }

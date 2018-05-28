@@ -2,7 +2,7 @@ import * as React from 'react'
 import { shallow, ShallowWrapper } from 'enzyme';
 import { LocationPicker } from '../LocationPicker';
 import { LocationPickerContent } from '../LocationPickerContent';
-import { someEventWithValue, someEvent } from '../../../../test/testUtils';
+import { someSyntheticEventWithValue, someSyntheticEvent } from '../../../../test/testUtils';
 
 jest.mock('../geolocation')
 
@@ -107,7 +107,7 @@ class Fixture {
   enterPostcode(value: string) {
     this.content
       .props()
-      .onChange(someEventWithValue(value))
+      .onChange(someSyntheticEventWithValue(value))
 
     this.tree.update()
   }
@@ -115,7 +115,7 @@ class Fixture {
   search() {
     this.content
       .props()
-      .onSubmit(someEvent())
+      .onSubmit(someSyntheticEvent())
 
     this.tree.update()
   }
