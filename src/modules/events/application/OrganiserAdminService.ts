@@ -1,4 +1,4 @@
-import { OrganiserRepository } from "../db/OrganiserRepository";
+import { OrganiserRepository } from "../external/OrganiserRepository";
 import { OrganiserProps } from "../domain/Organiser";
 
 export class OrganiserAdminService {

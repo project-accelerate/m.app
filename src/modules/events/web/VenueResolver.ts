@@ -1,6 +1,6 @@
 import { ObjectType, Field, Query, Resolver, Mutation, InputType, Arg, GraphQLISODateTime }  from 'type-graphql'
 import { MutationRequest } from '../../../common/resolverUtils';
-import { VenueRepository } from '../db/VenueRepository';
+import { VenueRepository } from '../external/VenueRepository';
 import { VenueProps, Venue } from '../domain/Venue';
 
 @Resolver(Venue)

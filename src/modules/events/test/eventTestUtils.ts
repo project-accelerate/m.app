@@ -1,10 +1,10 @@
-import { EventRepository } from "../db/EventRepository";
+import { EventRepository } from "../external/EventRepository";
 import { EventProps, Event } from "../domain/Event";
 import { someString, someDate, someUuid, someGeoPoint, somePostcode, someInt } from "../../../test/testUtils";
-import { OrganiserRepository } from "../db/OrganiserRepository";
-import { VenueRepository } from "../db/VenueRepository";
-import { VenueProps } from "../domain/Venue";
-import { OrganiserProps } from "../domain/Organiser";
+import { OrganiserRepository } from "../external/OrganiserRepository";
+import { VenueRepository } from "../external/VenueRepository";
+import { VenueProps, Venue } from "../domain/Venue";
+import { OrganiserProps, Organiser, Organiser } from "../domain/Organiser";
 import { PostcodesIOPostcode, PostcodesIOOutcode } from "../external/PostcodesIOClient";
 import { Distance, DistanceUnit } from "../domain/Distance";
 
@@ -95,11 +95,27 @@ export function someVenueProps(props: Partial<VenueProps> = {}): VenueProps {
   }
 }
 
+export function someVenue(props: Partial<VenueProps> = {}) {
+  return Object.assign(
+    new Venue(),
+    { id: someUuid() },
+    someVenueProps(props)
+  )
+}
+
 export function someOrganiserProps(props: Partial<OrganiserProps> = {}): OrganiserProps {
   return {
     name: someString(),
     ...props
   }
+}
+
+export function someOrganiser(props: Partial<OrganiserProps> = {}) {
+  return Object.assign(
+    new Organiser(),
+    { id: someUuid() },
+    someOrganiserProps(props)
+  )
 }
 
 export function someDistance() {

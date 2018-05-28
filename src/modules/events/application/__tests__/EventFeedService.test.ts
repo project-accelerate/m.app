@@ -1,6 +1,6 @@
 import { mock, instance, when, deepEqual } from "ts-mockito";
 import { Point } from "geojson";
-import { EventRepository } from "../../db/EventRepository";
+import { EventRepository } from "../../external/EventRepository";
 import { PostcodesIOClient } from "../../external/PostcodesIOClient";
 import { EventFeedService } from "../EventFeedService";
 import { DateProvider } from "../../../../common/DateProvider";

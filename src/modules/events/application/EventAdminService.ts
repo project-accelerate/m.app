@@ -1,5 +1,5 @@
 import { PostcodesIOClient } from "../external/PostcodesIOClient";
-import { EventRepository } from "../db/EventRepository";
+import { EventRepository } from "../external/EventRepository";
 import { OrganiserAdminService } from './OrganiserAdminService';
 import { VenueAdminService } from './VenueAdminService';
 

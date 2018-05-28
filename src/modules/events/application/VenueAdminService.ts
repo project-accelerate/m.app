@@ -1,4 +1,4 @@
-import { VenueRepository } from "../db/VenueRepository";
+import { VenueRepository } from "../external/VenueRepository";
 import { VenueProps } from "../domain/Venue";
 
 export class VenueAdminService {

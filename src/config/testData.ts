@@ -1,6 +1,6 @@
 import * as faker from 'faker'
 import { Event, EventProps } from "../modules/events/domain/Event";
-import { EventRepository } from "../modules/events/db/EventRepository";
+import { EventRepository } from "../modules/events/external/EventRepository";
 
 const event = new EventRepository()
 

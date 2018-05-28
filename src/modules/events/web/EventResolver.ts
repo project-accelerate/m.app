@@ -3,10 +3,11 @@ import { Inject } from 'typedi';
 import { MutationRequest } from '../../../common/resolverUtils';
 import { Event, EventProps } from '../domain/Event';
 import { Venue } from '../domain/Venue';
-import { EventRepository } from '../db/EventRepository';
+import { EventRepository } from '../external/EventRepository';
 import { Organiser } from '../domain/Organiser';
-import { OrganiserRepository } from '../db/OrganiserRepository';
-import { VenueRepository } from '../db/VenueRepository';
+import { OrganiserRepository } from '../external/OrganiserRepository';
+import { VenueRepository } from '../external/VenueRepository';
+import { EventAdminService } from '../application/EventAdminService';
 
 @InputType({
   description: "Request properties to submit a new event"
@@ -16,10 +17,10 @@ class CreateEventRequest {
   name!: string
 
   @Field()
-  organiser!: string
+  organiserName!: string
 
   @Field()
-  venue!: string
+  venueName!: string
 
   @Field(() => GraphQLISODateTime)
   startTime!: Date
@@ -29,11 +30,15 @@ class CreateEventRequest {
 
   @Field()
   introduction!: string
+
+  @Field()
+  postcode!: string
 }
 
 @Resolver(() => Event)
 export class EventResolver {
   constructor(
+    public eventAdminService: EventAdminService,
     public eventRepository: EventRepository,
     public organiserRepository: OrganiserRepository,
     public venueRepository: VenueRepository,
@@ -51,7 +56,7 @@ export class EventResolver {
     description: "Submit a new event"
   })
   async createEvent(@MutationRequest(() => CreateEventRequest) request: CreateEventRequest) {
-    const id = await this.eventRepository.insert(request)
+    const id = await this.eventAdminService.submitEvent(request)
     return this.eventRepository.findOne(id)
   }
 

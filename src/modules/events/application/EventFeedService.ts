@@ -2,7 +2,7 @@ import Postcode = require('postcode')
 import { addMonths } from "date-fns";
 import { Point } from 'geojson';
 import { DateProvider } from "../../../common/DateProvider";
-import { EventRepository } from "../db/EventRepository";
+import { EventRepository } from "../external/EventRepository";
 import { PostcodesIOClient } from "../external/PostcodesIOClient";
 import { DistanceUnit, Distance } from "../domain/Distance";
 

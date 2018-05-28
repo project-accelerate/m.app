@@ -1,6 +1,6 @@
 import { ObjectType, Field, Query, Resolver, Mutation, InputType, Arg, GraphQLISODateTime }  from 'type-graphql'
 import { MutationRequest } from '../../../common/resolverUtils';
-import { OrganiserRepository } from '../db/OrganiserRepository';
+import { OrganiserRepository } from '../external/OrganiserRepository';
 import { OrganiserProps, Organiser } from '../domain/Organiser';
 
 @Resolver(Organiser)
