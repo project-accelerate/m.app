@@ -2,7 +2,7 @@
   "transform": {
     "^.+\\.tsx?$": "ts-jest"
   },
-  "setupTestFrameworkScriptFile": "<rootDir>/src/test/setup.js",
+  "setupTestFrameworkScriptFile": "<rootDir>/src/test/backendUnitSetup.js",
   "testRegex": "src/modules/.*/__tests__/.*\\.(test|spec)\\.tsx?$",
   "moduleFileExtensions": [
     "ts",
@@ -14,7 +14,8 @@
   ],
   "collectCoverage": true,
   "collectCoverageFrom": [
-    "<rootDir>/src/modules/*/domain/*"
+    "<rootDir>/src/modules/*/domain/*",
+    "<rootDir>/src/modules/*/application/*"
   ],
   "coverageDirectory": ".coverage"
 }

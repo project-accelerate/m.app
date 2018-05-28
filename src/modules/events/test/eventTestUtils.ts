@@ -1,11 +1,12 @@
 import { EventRepository } from "../db/EventRepository";
-import { EventProps } from "../domain/Event";
+import { EventProps, Event } from "../domain/Event";
 import { someString, someDate, someUuid, someGeoPoint, somePostcode, someInt } from "../../../test/testUtils";
 import { OrganiserRepository } from "../db/OrganiserRepository";
 import { VenueRepository } from "../db/VenueRepository";
 import { VenueProps } from "../domain/Venue";
 import { OrganiserProps } from "../domain/Organiser";
-import { PostcodesIOPostcode } from "../external/PostcodesIOClient";
+import { PostcodesIOPostcode, PostcodesIOOutcode } from "../external/PostcodesIOClient";
+import { Distance, DistanceUnit } from "../domain/Distance";
 
 const eventRepository = new EventRepository()
 const venueRepository = new VenueRepository()
@@ -43,7 +44,25 @@ export function somePostcodesIoPostcode(props: Partial<PostcodesIOPostcode>): Po
       parliamentary_constituency: someString(),
       ccg: someString(),
       nuts: someString(),
-    }
+      ...props.codes,
+    },
+    ...props
+  }
+}
+
+export function somePostcodesIoOutcode(props: Partial<PostcodesIOOutcode> = {}) {
+  return {
+    outcode: someString(),
+    longitude: someInt(),
+    latitude: someInt(),
+    northings: someInt(),
+    eastings: someInt(),
+    admin_district: [someString()],
+    parish: [someString()],
+    admin_county: [someString()],
+    admin_ward: [someString()],
+    country: [someString()],
+    ...props,
   }
 }
 
@@ -60,6 +79,14 @@ export function someEventProps(props: Partial<EventProps> = {}): EventProps {
   }
 }
 
+export function someEvent(props: Partial<EventProps> = {}) {
+  return Object.assign(
+    new Event(),
+    { id: someUuid() },
+    someEventProps(props)
+  )
+}
+
 export function someVenueProps(props: Partial<VenueProps> = {}): VenueProps {
   return {
     name: someString(),
@@ -73,6 +100,10 @@ export function someOrganiserProps(props: Partial<OrganiserProps> = {}): Organis
     name: someString(),
     ...props
   }
+}
+
+export function someDistance() {
+  return new Distance(someInt(), DistanceUnit.m)
 }
 
 export function givenThatAVenueExists(props: Partial<VenueProps> = {}) {

@@ -59,11 +59,8 @@ describe('EventAdminService', () => {
 
 class Fixture {
   postcodesClient = mock(PostcodesIOClient)
-
   eventRepository = mock(EventRepository)
-
   organiserAdmin = mock(OrganiserAdminService)
-
   venueAdmin = mock(VenueAdminService)
 
   eventAdmin = new EventAdminService(

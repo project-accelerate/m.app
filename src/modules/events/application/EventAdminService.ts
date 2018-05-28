@@ -1,4 +1,3 @@
-import Postcode = require('postcode')
 import { PostcodesIOClient } from "../external/PostcodesIOClient";
 import { EventRepository } from "../db/EventRepository";
 import { OrganiserAdminService } from './OrganiserAdminService';
@@ -49,17 +48,5 @@ export class EventAdminService {
         coordinates: [longitude, latitude]
       }
     })
-  }
-
-  private resolvePostcode(postcode: string) {
-    if (new Postcode(postcode).valid()) {
-      return this.postcodesClient.getOutcode(postcode)
-    }
-
-    if (Postcode.validOutcode(postcode)) {
-      return this.postcodesClient.getPostcode(postcode)
-    }
-
-    throw Error(`Invalid postcode: ${postcode}`)
   }
 }
