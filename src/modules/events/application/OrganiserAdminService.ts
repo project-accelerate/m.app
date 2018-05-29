@@ -1,6 +1,8 @@
+import { Service } from "typedi";
 import { OrganiserRepository } from "../external/OrganiserRepository";
 import { OrganiserProps } from "../domain/Organiser";
 
+@Service()
 export class OrganiserAdminService {
   constructor(
     private readonly organiserRepository: OrganiserRepository

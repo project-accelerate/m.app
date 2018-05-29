@@ -1,3 +1,4 @@
+import { Service } from 'typedi';
 import Postcode = require('postcode')
 import { addMonths } from "date-fns";
 import { Point } from 'geojson';
@@ -12,6 +13,7 @@ interface EventFeedQuery {
   months: number
 }
 
+@Service()
 export class EventFeedService {
   constructor(
     private readonly eventRepository: EventRepository,

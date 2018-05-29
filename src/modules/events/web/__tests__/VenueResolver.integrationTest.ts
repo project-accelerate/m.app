@@ -1,11 +1,11 @@
 import { givenThatAVenueExists, someEventProps } from "../../test/eventTestUtils";
-import { withDb, execQuery, execSuccessfulQuery } from "../../../../test/integrationTestUtils";
+import { withDb, execQuery } from "../../../../test/integrationTestUtils";
 
 describe('VenueResolver', () => {
   describe('.createVenue', () => {
     it('looks up venues by id', withDb(async () => {
       const venueId = await givenThatAVenueExists({ name: "foo" })
-      const result = await execSuccessfulQuery(`
+      const result = await execQuery(`
         {
           venue(id: "${venueId}") {
             name

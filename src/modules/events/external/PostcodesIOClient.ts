@@ -1,3 +1,4 @@
+import { Service } from "typedi";
 import axios from "axios";
 
 interface Response<T> {
@@ -53,6 +54,7 @@ export interface PostcodesIOOutcode {
 
 const POSTCODES_CLIENT = 'http://api.postcodes.io'
 
+@Service()
 export class PostcodesIOClient {
   getPostcode(postcode: string) {
     return axios.get<Response<PostcodesIOPostcode>>(`${POSTCODES_CLIENT}/postcodes/${postcode}`)

@@ -1,3 +1,4 @@
+import { Service } from "typedi";
 import { PostcodesIOClient } from "../external/PostcodesIOClient";
 import { EventRepository } from "../external/EventRepository";
 import { OrganiserAdminService } from './OrganiserAdminService';
@@ -13,6 +14,7 @@ interface EventSubmissionProps {
   postcode: string
 }
 
+@Service()
 export class EventAdminService {
   constructor(
     private readonly postcodesClient: PostcodesIOClient,

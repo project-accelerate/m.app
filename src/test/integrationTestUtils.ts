@@ -2,26 +2,30 @@ import { execute, parse } from 'graphql'
 import { configureGraphql } from "../config/graphql";
 import { db } from '../db';
 
-/** 
- * Execute a graphql query against the api, returning the response payload
- * or any errors
- */
-export async function execQuery(query: string, variables?: {}) {
-  const schema = await configureGraphql()
-
-  return execute({
-    schema,
-    document: parse(query),
-    variableValues: variables
-  })
+interface ExecQueryProps<T> {
+  body: string
+  variables?: T
 }
 
 /** 
  * Execute a graphql query against the api, returning the response payload
  * or failing the test if the query fails
  */
-export async function execSuccessfulQuery(query: string, variables?: {}) {
-  const result = await execQuery(query, variables)
+export async function execQuery<T>(q: string | ExecQueryProps<T>): Promise<any> {
+  if (typeof q === 'string') {
+    return execQuery({ body: q })
+  }
+
+  const { body, variables } = q
+  
+  const schema = await configureGraphql()
+
+  const result = await execute({
+    schema,
+    document: parse(body),
+    variableValues: variables
+  })
+  
   if (result && result.data) {
     return result.data
   }

@@ -1,3 +1,4 @@
+import { Service } from "typedi";
 import { Point } from "geojson";
 import { CrudRepository, CrudRepositoryConfig } from "../../../common/CrudRepository";
 import { gis, pointFieldConverter } from "../../../common/gis";
@@ -11,6 +12,7 @@ const config: CrudRepositoryConfig<Event> = {
   }
 }
 
+@Service()
 export class EventRepository extends CrudRepository<Event, EventProps>(config) {
   async findByTimeAndLocation(q: { location: Point, distance: Distance, fromTime: Date, toTime: Date }): Promise<Event[]> {
     return this.db

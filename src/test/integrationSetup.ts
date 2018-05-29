@@ -5,7 +5,7 @@ import { db } from "../db";
 beforeAll(async () => {
   while (true) {
     try {
-      log.info('Waiting for database to come online...')
+      log.debug('Waiting for database to come online...')
       await db.raw('select 1')
       break
 

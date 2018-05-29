@@ -7,41 +7,13 @@ import { EventRepository } from '../external/EventRepository';
 import { Organiser } from '../domain/Organiser';
 import { OrganiserRepository } from '../external/OrganiserRepository';
 import { VenueRepository } from '../external/VenueRepository';
-import { EventAdminService } from '../application/EventAdminService';
-
-@InputType({
-  description: "Request properties to submit a new event"
-})
-class CreateEventRequest {
-  @Field()
-  name!: string
-
-  @Field()
-  organiserName!: string
-
-  @Field()
-  venueName!: string
-
-  @Field(() => GraphQLISODateTime)
-  startTime!: Date
-
-  @Field(() => GraphQLISODateTime)
-  endTime!: Date
-
-  @Field()
-  introduction!: string
-
-  @Field()
-  postcode!: string
-}
 
 @Resolver(() => Event)
 export class EventResolver {
   constructor(
-    public eventAdminService: EventAdminService,
-    public eventRepository: EventRepository,
-    public organiserRepository: OrganiserRepository,
-    public venueRepository: VenueRepository,
+    private eventRepository: EventRepository,
+    private organiserRepository: OrganiserRepository,
+    private venueRepository: VenueRepository,
   ) { }
 
   @Query(() => Event, {
@@ -52,20 +24,16 @@ export class EventResolver {
     return this.eventRepository.findOne(id)
   }
 
-  @Mutation(() => Event, {
-    description: "Submit a new event"
+  @FieldResolver(() => Organiser, {
+    description: "Return the event organiser"
   })
-  async createEvent(@MutationRequest(() => CreateEventRequest) request: CreateEventRequest) {
-    const id = await this.eventAdminService.submitEvent(request)
-    return this.eventRepository.findOne(id)
-  }
-
-  @FieldResolver(() => Organiser)
   organiser(@Root() event: Event) {
     return this.organiserRepository.findOne(event.organiser)
   }
 
-  @FieldResolver(() => Venue)
+  @FieldResolver(() => Venue, {
+    description: "Return the event venue"
+  })
   venue(@Root() event: Event) {
     return this.venueRepository.findOne(event.venue)
   }

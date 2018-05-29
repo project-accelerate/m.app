@@ -1,42 +1,22 @@
 import { givenThatAnEventExists, givenThatAVenueExists, givenThatAnOrganiserExists, someEventProps } from "../../test/eventTestUtils";
-import { withDb, execQuery, execSuccessfulQuery } from "../../../../test/integrationTestUtils";
+import { withDb, execQuery } from "../../../../test/integrationTestUtils";
+import { someString, somePostcode, someDate } from "../../../../test/testUtils";
 
 describe('EventResolver', () => {
   describe('.createEvent', () => {
-    it('creates the event and returns it', withDb(async () => {
+
+    it('looks up events by id and tranverses relationships', withDb(async () => {
       const venue = await givenThatAVenueExists()
       const organiser = await givenThatAnOrganiserExists()
-
-      const result = await execSuccessfulQuery(`
-        mutation($request: CreateEventRequest) {
-          createEvent(request: $request) {
-            name
-            venue {
-              id
-            }
-            organiser {
-              id
-            }
-          }
-        }
-      `, {
-        request: someEventProps({ venue, organiser, name: 'myevent' })
+      const eventId = await givenThatAnEventExists({
+        venue,
+        organiser
       })
 
-      expect(result.createEvent).toMatchObject({
-        name: "myevent"
-      })
-    }))
-
-    it('looks up events by id', withDb(async () => {
-      const venue = await givenThatAVenueExists()
-      const organiser = await givenThatAnOrganiserExists()
-      const eventId = await givenThatAnEventExists({ name: "foo", venue, organiser })
-
-      const result = await execSuccessfulQuery(`
+      const result = await execQuery(`
         {
           event(id: "${eventId}") {
-            name
+            id
             venue {
               id
             }
@@ -48,7 +28,7 @@ describe('EventResolver', () => {
       `)
 
       expect(result.event).toMatchObject({
-        name: "foo",
+        id: eventId,
         venue: {
           id: venue
         },
