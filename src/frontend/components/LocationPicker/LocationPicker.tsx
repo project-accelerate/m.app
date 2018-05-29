@@ -1,7 +1,7 @@
 import * as React from 'react'
-import Postcode = require('postcode')
 import { LocationPickerContent } from './LocationPickerContent';
 import { getUserPosition, getPositionInfo } from './geolocation';
+import { isFullPostcode, isOutcode } from '../../../common/postcodeValidator';
 
 interface LocationPickerProps {
   /** Current selected postcode/outcode */
@@ -50,10 +50,9 @@ export class LocationPicker extends React.Component<LocationPickerProps, Locatio
           event.preventDefault()
           event.stopPropagation()
 
-          const outcode = extractOutcode(this.renderedValue || '')
-
-          if (outcode) {
-            this.props.onChange(outcode)
+          const postcode = this.renderedValue
+          if (isOutcode(postcode) || isFullPostcode(postcode)) {
+            this.props.onChange(postcode)
             this.setState({ error: false })
 
           } else {
@@ -63,18 +62,4 @@ export class LocationPicker extends React.Component<LocationPickerProps, Locatio
       />
     )
   }
-}
-
-function extractOutcode(postcode: string) {
-  const validator = new Postcode(postcode)
-
-  if (validator.valid()) {
-    return validator.outcode()
-  }
-
-  if (Postcode.validOutcode(postcode)) {
-    return postcode
-  }
-
-  return undefined
 }

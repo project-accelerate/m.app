@@ -1,0 +1,7 @@
+#import "./EventFeedCard.graphql"
+
+query EventFeedPage($radiusInMiles: Float!, $postcode: String!) {
+  eventFeed(radiusInMiles: $radiusInMiles, postcode: $postcode) {
+    ...EventFeedCard
+  }
+}

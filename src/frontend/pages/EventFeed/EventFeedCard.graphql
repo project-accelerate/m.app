@@ -1,0 +1,16 @@
+fragment EventFeedCard on Event {
+  id
+  name
+  organiser {
+    id
+    name
+  }
+  venue {
+    id
+    name
+    postcode
+  }
+  startTime
+  endTime
+  introduction
+}

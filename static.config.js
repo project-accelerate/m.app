@@ -14,8 +14,8 @@ export default {
 
   getRoutes: () => [
     {
-      path: '/',
-      component: 'src/frontend/pages/EventPage/EventPage',
+      path: '/events/explore',
+      component: 'src/frontend/pages/EventFeed/EventFeedPage',
     },
     {
       is404: true,
@@ -56,10 +56,7 @@ export default {
           <Head>
             <meta charSet="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1" />
-            <link
-              href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
-              rel="stylesheet"
-            />
+            <style>{'html,body,#root{height:100%}'}</style>
           </Head>
           <Body>
             {children}

@@ -1,19 +1,44 @@
 /* tslint:disable */
 //  This file was automatically generated and should not be edited.
 
-export interface EventPageQueryVariables {
-  eventId: string,
+export interface EventFeedPageQueryVariables {
+  radiusInMiles: number,
+  postcode: string,
 };
 
-export interface EventPageQuery {
-  // Get an event by id
-  event:  {
+export interface EventFeedPageQuery {
+  // Get feed of upcoming events for a given locaton
+  eventFeed:  Array< {
     id: string,
     name: string,
-  } | null,
+    organiser:  {
+      id: string,
+      name: string,
+    },
+    venue:  {
+      id: string,
+      name: string,
+      postcode: string,
+    },
+    startTime: string,
+    endTime: string,
+    introduction: string,
+  } >,
 };
 
-export interface EventDetailFragment {
+export interface EventFeedCardFragment {
   id: string,
   name: string,
+  organiser:  {
+    id: string,
+    name: string,
+  },
+  venue:  {
+    id: string,
+    name: string,
+    postcode: string,
+  },
+  startTime: string,
+  endTime: string,
+  introduction: string,
 };

@@ -19,12 +19,17 @@ interface ValueMenuListProps<T> {
  * Render a selectable list of options, hilighting the selected value
  */
 export function ValueMenuList<T>({ options, value, onChange, format = (x: Object) => x.toString() }: ValueMenuListProps<T>) {
+  const getKey = (x: T) => {
+    const formatted = format(x)
+    return x && x.toString()
+  }
+
   return (
     <MenuList>
     {
       options.map(x =>
         <MenuItem
-          key={format(x).toString()}
+          key={getKey(x)}
           selected={x === value}
           onClick={() => onChange(x)}
         >
