@@ -3,7 +3,7 @@ import { withDb, execQuery } from "../../../../test/integrationTestUtils";
 import { someString, somePostcode, someDate } from "../../../../test/testUtils";
 import { CreateEventRequest } from "../CreateEventResolver";
 
-describe('EventResolver', () => {
+describe('CreateEventResolver', () => {
   describe('.createEvent', () => {
     it('creates the event and returns it', withDb(async () => {
       const result = await execQuery<{ request: CreateEventRequest }>({

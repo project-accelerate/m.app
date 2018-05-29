@@ -1,4 +1,4 @@
-import { ObjectType, Field, Query, Resolver, Mutation, InputType, Arg, GraphQLISODateTime, FieldResolver, Root }  from 'type-graphql'
+import { ObjectType, Field, Query, Resolver, Mutation, InputType, Arg, GraphQLISODateTime, FieldResolver, Root, Args, ArgsType }  from 'type-graphql'
 import { Inject } from 'typedi';
 import { MutationRequest } from '../../../common/resolverUtils';
 import { Event, EventProps } from '../domain/Event';
@@ -7,10 +7,21 @@ import { EventRepository } from '../external/EventRepository';
 import { Organiser } from '../domain/Organiser';
 import { OrganiserRepository } from '../external/OrganiserRepository';
 import { VenueRepository } from '../external/VenueRepository';
+import { EventFeedService } from '../application/EventFeedService';
+
+@ArgsType()
+export class EventFeedArgs {
+  @Field()
+  radiusInMiles!: number
+
+  @Field()
+  postcode!: string
+}
 
 @Resolver(() => Event)
 export class EventResolver {
   constructor(
+    private eventFeedService: EventFeedService,
     private eventRepository: EventRepository,
     private organiserRepository: OrganiserRepository,
     private venueRepository: VenueRepository,
@@ -22,6 +33,16 @@ export class EventResolver {
   })
   event(@Arg("id") id: string) {
     return this.eventRepository.findOne(id)
+  }
+
+  @Query(() => [Event], {
+    description: "Get feed of upcoming events for a given locaton"
+  })
+  eventFeed(@Args() args: EventFeedArgs) {
+    return this.eventFeedService.eventFeed({
+      ...args,
+      months: 3
+    })
   }
 
   @FieldResolver(() => Organiser, {

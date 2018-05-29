@@ -7,7 +7,7 @@ export const someDate = () => new Date('2010-01-01')
 export const somePostcode = () => 'OX49 5NU'
 export const someOutcode = () => 'OX49'
 export const someInt = () => 1
-export const someGeoPoint = (lat = someInt(), long = someInt()): Point => ({
+export const someGeoPoint = (lat = 5, long = 13): Point => ({
   type: 'Point',
   coordinates: [lat, long]
 })
