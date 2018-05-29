@@ -5,6 +5,7 @@ import { withStyles, AppBar, Toolbar, Typography, Button, IconButton } from '@ma
 import { StyleRules } from '@material-ui/core/styles';
 import { AccountCircle } from '@material-ui/icons';
 import { IntlProvider } from 'react-intl';
+import { contentWidth } from '../Layouts';
 
 const styles: StyleRules = {
   logo: {
@@ -19,29 +20,33 @@ const styles: StyleRules = {
     flex: 1
   },
   toolbar: {
-    minHeight: 0
+    minHeight: 0,
+    maxWidth: contentWidth,
+    flex: 1
+  },
+  appBar: {
+    flexDirection: 'row',
+    justifyContent: 'center'
   }
 }
 
 /** View enclosing the app with toolbar, etc */
 export const AppWrapper = withStyles(styles)(({ children, classes }) =>
-  <IntlProvider>
-    <>
-      <AppBar position="static" color="default">
-        <Toolbar className={classes.toolbar}>
-          <i className={classes.logo} />
-          <PageTabs scrollable className={classes.flex} value={0}>
-            <PageTab path="/events/explore" label="Explore" />
-            <PageTab path="/events/calendar" label="Calendar" />
-            <PageTab path="/events/organise" label="Organise" />
-          </PageTabs>
-          
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-            <AccountCircle />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      {children}
-    </>
-  </IntlProvider>
+  <>
+    <AppBar className={classes.appBar} position="sticky" color="default">
+      <Toolbar className={classes.toolbar}>
+        <i className={classes.logo} />
+        <PageTabs scrollable className={classes.flex} value={0}>
+          <PageTab path="/events/explore" label="Explore" />
+          <PageTab path="/events/calendar" label="Calendar" />
+          <PageTab path="/events/organise" label="Organise" />
+        </PageTabs>
+        
+        <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+          <AccountCircle />
+        </IconButton>
+      </Toolbar>
+    </AppBar>
+    {children}
+  </>
 )

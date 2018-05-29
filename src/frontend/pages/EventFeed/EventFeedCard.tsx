@@ -10,7 +10,8 @@ interface EventFeedCardProps extends EventFeedCardFragment {
 
 const style = withStyles(({ spacing }) => ({
   card: {
-    marginBottom: spacing.unit * 2
+    marginBottom: spacing.unit * 2,
+    opacity: 0.95
   },
   icon: {
     marginRight: spacing.unit

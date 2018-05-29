@@ -16,6 +16,7 @@
   "dependencies": {
     "apollo-client-preset": "^1.0.8",
     "axios": "^0.18.0",
+    "classnames": "^2.2.5",
     "core-js": "^2.5.6",
     "date-fns": "^1.29.0",
     "glob": "^7.1.2",
@@ -46,6 +47,7 @@
     "@storybook/addon-actions": "^3.4.4",
     "@storybook/addon-links": "^3.4.4",
     "@storybook/react": "^3.4.4",
+    "@types/classnames": "^2.2.3",
     "@types/enzyme": "^3.1.10",
     "@types/faker": "^4.1.2",
     "@types/glob": "^5.0.35",

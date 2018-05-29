@@ -15,17 +15,30 @@ import { ValueMenuList } from '../../components/MenuList/ValueMenuList';
 import { createUnderlinedDropdown } from '../../components/UnderlineDropdown/UnderlinedDropdown';
 import { EventFeedCardFragment } from '../../queries';
 import { EventFeedCard } from './EventFeedCard';
+import { contentWidth } from '../../components/Layouts';
 
 const style = withStyles(({ palette, spacing }) => ({
   root: {
     minHeight: '100%',
-    backgroundImage: `url(${require('./emptyState.jpg')})`,
+    background: `url(${require('./feedBackground.jpg')}) no-repeat center center fixed`,
     backgroundSize: 'cover',
     backgroundPositionX: 'left',
     backgroundPositionY: 'bottom',
   },
   toolbar: {
+    display: 'flex',
     backgroundColor: 'rgba(255,255,255,0.7)',
+    padding: spacing.unit * 2,
+    flexDirection: 'row' as any,
+    justifyContent: 'center',
+  },
+  toolbarContent: {
+    flex: 1,
+    maxWidth: contentWidth
+  },
+  feed: {
+    alignSelf: 'center',
+    maxWidth: contentWidth
   },
   emptyWrapper: {
     flex: 1,
@@ -41,19 +54,21 @@ interface EventFeedProps  {
   events: EventFeedCardFragment[]
 }
 
-export function EventFeed({ events }: EventFeedProps) {
-  return (
-    <Grid xs={12}>
-    {
-      events.map(event =>
-        <EventFeedCard
-          {...event}
-        />
-      )
-    }
-    </Grid>
-  )
-}
+export const EventFeed = style<EventFeedProps>(
+  function EventFeed({ events, classes }) {
+    return (
+      <Grid className={classes.feed} xs={12}>
+      {
+        events.map(event =>
+          <EventFeedCard
+            {...event}
+          />
+        )
+      }
+      </Grid>
+    )
+  }
+)
 
 export const EventFeedContainer = style(
   function EventFeedContainer({ children, classes }) {
@@ -75,16 +90,14 @@ interface EventFeedSearchbarProps {
 export const EventFeedSearchbar = style<EventFeedSearchbarProps>(
   function EventFeedSearchbar({ classes, postcode, radiusInMiles, onPostcodeChange, onRadiusChange }) {
     return (
-      <Grid xs={12}>
-        <Toolbar className={classes.toolbar}>
-          <Typography variant="subheading">
-            {'Happening within '}
-            <Distance value={radiusInMiles} onChange={onRadiusChange} />
-            {' of '}
-            <Location value={postcode} onChange={onPostcodeChange} />
-          </Typography>
-        </Toolbar>
-      </Grid>
+      <Toolbar className={classes.toolbar}>
+        <Typography className={classes.toolbarContent} variant="subheading">
+          {'Happening within '}
+          <Distance value={radiusInMiles} onChange={onRadiusChange} />
+          {' of '}
+          <Location value={postcode} onChange={onPostcodeChange} />
+        </Typography>
+      </Toolbar>
     )
   }
 )
