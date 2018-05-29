@@ -16,7 +16,7 @@ interface CrudRepositoryTestProps<T extends Props, Props> {
   relationshipExamples?: { [P in keyof Partial<Props>]: () => Promise<string> }
 }
 
-export function shouldSupportStandardCrudFunctions<T, Props>(opts: CrudRepositoryTestProps<T, Props>) {
+export function shouldSupportStandardCrudFunctions<T extends Props, Props>(opts: CrudRepositoryTestProps<T, Props>) {
   const Repository = opts.repository
   const type = Repository.tableName
   const createExample = opts.example

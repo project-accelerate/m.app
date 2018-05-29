@@ -1,11 +1,11 @@
 import { Service } from 'typedi';
-import Postcode = require('postcode')
 import { addMonths } from "date-fns";
 import { Point } from 'geojson';
 import { DateProvider } from "../../../common/DateProvider";
 import { EventRepository } from "../external/EventRepository";
 import { PostcodesIOClient } from "../external/PostcodesIOClient";
 import { DistanceUnit, Distance } from "../domain/Distance";
+import { isFullPostcode, isOutcode } from '../../../common/postcodeValidator';
 
 interface EventFeedQuery {
   radiusInMiles: number
@@ -40,11 +40,11 @@ export class EventFeedService {
   }
 
   private resolvePostcode(postcodeSegment: string) {
-    if (new Postcode(postcodeSegment).valid()) {
+    if (isFullPostcode(postcodeSegment)) {
       return this.postcodeClient.getPostcode(postcodeSegment)
     }
 
-    if (Postcode.validOutcode(postcodeSegment)) {
+    if (isOutcode(postcodeSegment)) {
       return this.postcodeClient.getOutcode(postcodeSegment)
     }
 

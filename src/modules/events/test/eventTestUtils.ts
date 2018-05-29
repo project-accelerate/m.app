@@ -4,7 +4,7 @@ import { someString, someDate, someUuid, someGeoPoint, somePostcode, someInt } f
 import { OrganiserRepository } from "../external/OrganiserRepository";
 import { VenueRepository } from "../external/VenueRepository";
 import { VenueProps, Venue } from "../domain/Venue";
-import { OrganiserProps, Organiser, Organiser } from "../domain/Organiser";
+import { OrganiserProps, Organiser } from "../domain/Organiser";
 import { PostcodesIOPostcode, PostcodesIOOutcode } from "../external/PostcodesIOClient";
 import { Distance, DistanceUnit } from "../domain/Distance";
 
