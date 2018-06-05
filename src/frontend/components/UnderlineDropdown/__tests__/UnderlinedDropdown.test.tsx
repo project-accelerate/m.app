@@ -1,7 +1,8 @@
 import * as React from 'react'
-import { shallow, ShallowWrapper } from 'enzyme';
+import { ShallowWrapper } from 'enzyme';
 import { createUnderlinedDropdown } from '../UnderlinedDropdown';
 import { Popover } from '@material-ui/core';
+import { createShallow } from '@material-ui/core/test-utils';
 import { someSyntheticEvent } from '../../../../test/testUtils';
 
 describe('UnderlinedDropdown', () => {
@@ -74,6 +75,7 @@ class Fixture {
   tree: ShallowWrapper
 
   constructor(el: React.ReactElement<{}>) {
+    const shallow = createShallow({ dive: true })
     this.tree = shallow(el)
   }
 

@@ -6,6 +6,7 @@ import { StyleRules } from '@material-ui/core/styles';
 import { AccountCircle } from '@material-ui/icons';
 import { IntlProvider } from 'react-intl';
 import { contentWidth } from '../Layouts';
+import { LoggedInGuard } from '../../services/Auth/AuthGuard';
 
 const styles: StyleRules = {
   logo: {
@@ -36,15 +37,24 @@ export const AppWrapper = withStyles(styles)(({ children, classes }) =>
     <AppBar className={classes.appBar} position="sticky" color="default">
       <Toolbar className={classes.toolbar}>
         <i className={classes.logo} />
+        
         <PageTabs scrollable className={classes.flex} value={0}>
           <PageTab path="/events/explore" label="Explore" />
           <PageTab path="/events/calendar" label="Calendar" />
           <PageTab path="/events/organise" label="Organise" />
         </PageTabs>
         
-        <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-          <AccountCircle />
-        </IconButton>
+        <LoggedInGuard
+          render={
+            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+              <AccountCircle />
+            </IconButton>
+          }
+          elseRender={
+            <Button>Login</Button>
+          }
+        />
+        
       </Toolbar>
     </AppBar>
     {children}

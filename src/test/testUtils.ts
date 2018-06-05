@@ -1,5 +1,6 @@
 import * as uuid from 'uuid'
 import { Point } from 'geojson';
+import { AuthToken } from '../common/AuthToken';
 
 export const someString = () => "Foo"
 export const someUuid = uuid
@@ -10,6 +11,11 @@ export const someInt = () => 1
 export const someGeoPoint = (lat = 5, long = 13): Point => ({
   type: 'Point',
   coordinates: [lat, long]
+})
+export const someAuthTokenPayload = (token: Partial<AuthToken> = {}): AuthToken => ({
+  sub: someUuid(),
+  exp: someInt(),
+  roles: [],
 })
 
 export const someSyntheticEvent = (props: any = {}) => ({

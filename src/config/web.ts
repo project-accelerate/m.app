@@ -10,7 +10,10 @@ export async function configureWeb() {
 
   const schema = await configureGraphql()
 
-  const server = new GraphQLServer({ schema })
+  const server = new GraphQLServer({
+    schema
+  })
+
   await server.start({
     port: PORT
   })
