@@ -5,6 +5,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 
 import { backendUrl } from './properties';
 import { tokenManager } from './auth';
+import { ApolloLink } from 'apollo-link';
 
 const authLink = setContext((_, { headers }) => {
   const { authToken } = tokenManager.current
@@ -17,7 +18,13 @@ const authLink = setContext((_, { headers }) => {
   }
 })
 
+class ErrorLink extends ApolloLink {
+  request(): never {
+    throw new Error('Cannot fetch data at build time!')
+  }
+}
+
 export const graphQlClient = new ApolloClient({
-  link: new HttpLink({ uri: backendUrl }).concat(authLink),
+  link: (typeof window === "undefined") ? new ErrorLink() : new HttpLink({ uri: backendUrl }).concat(authLink),
   cache: new InMemoryCache(),
 });

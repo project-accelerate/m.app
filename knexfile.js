@@ -1,12 +1,10 @@
 const { snakeCase, camelCase } = require('lodash')
+const { join } = require('path')
 
 module.exports = {
   client: 'pg',
   connection: process.env.DATABASE_URL,
-  seeds: {
-    directory: 'db/seeds',
-  },
   migrations: {
-    directory: 'db/migrations',
+    directory: join(__dirname, 'db/migrations'),
   },
 }

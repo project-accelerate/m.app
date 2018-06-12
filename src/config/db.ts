@@ -13,12 +13,7 @@ export async function configureDb() {
       await new Promise(resolve => setTimeout(resolve, 1000))
     }
   }
-  
-  try {
-    await db.migrate.latest()
 
-  } catch (error) {
-    log.error(error.message)
-    process.exit(1)
-  }
+  log.debug("Database is online. Performing migrations...")
+  await db.migrate.latest()
 }

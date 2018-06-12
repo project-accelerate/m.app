@@ -1,20 +1,29 @@
 {
   "name": "a2",
+  "engines": {
+    "node": "^10.0.0",
+    "yarn": "^1.0.0"
+  },
   "scripts": {
-    "start:backend": "yarn stop && docker-compose up --force-recreate --abort-on-container-exit --build",
+    "build:backend": "rm -rf build && tsc --outDir build",
+    "build:frontend": "rm -rf dist && react-static build",
+    "start": "yarn stop && docker-compose up --force-recreate --abort-on-container-exit --build",
+    "start:backend": "yarn stop && docker-compose -f docker-compose.yml -f docker-compose.development.yml up --force-recreate --abort-on-container-exit --build",
     "start:frontend": "react-static start",
     "start:storybook": "start-storybook -p 6006",
+    "clean": "rm -rf dist build",
     "stop": "docker-compose stop && docker-compose rm -f",
+    "heroku-postbuild": "yarn build:backend && yarn build:frontend",
     "typecheck": "tsc --noemit",
     "migrations:add": "knex migrate:make -x ts",
-    "migrations:run": "knex migrate:latest",
     "update-graphql-schema": "ts-node scripts/generate-types",
     "test:frontend:unit": "jest --no-watchman -c jest.frontendUnitTests.config.json",
     "test:backend:unit": "jest --no-watchman -c jest.backendUnitTests.config.json",
-    "test:integration": "yarn stop && docker-compose run --rm web node_modules/.bin/jest --forceExit -c jest.backendIntegrationTests.config.json --runInBand"
+    "test:integration": "yarn stop && docker-compose build && docker-compose run --rm web node_modules/.bin/jest --forceExit -c jest.backendIntegrationTests.config.json --runInBand"
   },
   "dependencies": {
     "@types/event-emitter": "^0.3.2",
+    "apollo-client": "2",
     "apollo-client-preset": "^1.0.8",
     "apollo-link-context": "^1.0.8",
     "axios": "^0.18.0",
@@ -22,6 +31,7 @@
     "core-js": "^2.5.6",
     "date-fns": "^1.29.0",
     "event-emitter": "^0.3.5",
+    "faker": "^4.1.0",
     "glob": "^7.1.2",
     "graphql": "^0.13.2",
     "graphql-yoga": "^1.13.1",
@@ -30,7 +40,6 @@
     "knex": "^0.14.6",
     "knex-postgis": "^0.6.0",
     "lodash": "^4.17.10",
-    "lodash-decorators": "^5.0.1",
     "pg": "^7.4.3",
     "postcode": "^0.2.5",
     "prop-types": "^15.6.1",
@@ -39,9 +48,8 @@
     "react-dom": "^16.3.2",
     "react-intl": "^2.4.0",
     "react-jss": "^8.4.0",
-    "react-no-ssr": "^1.1.0",
     "react-router": "^4.2.0",
-    "react-static": "^5.9.3",
+    "react-static": "^5.9.7",
     "reflect-metadata": "^0.1.12",
     "type-graphql": "^0.11.3",
     "typedi": "^0.7.3",
@@ -53,6 +61,7 @@
     "@material-ui/icons": "^1.0.0",
     "@storybook/addon-actions": "^3.4.4",
     "@storybook/addon-links": "^3.4.4",
+    "@storybook/addons": "3",
     "@storybook/react": "^3.4.4",
     "@types/classnames": "^2.2.3",
     "@types/enzyme": "^3.1.10",
@@ -76,9 +85,10 @@
     "@types/uuid": "^3.4.3",
     "@types/winston": "^2.3.9",
     "apollo-codegen": "^0.19.1",
+    "babel-core": "6",
+    "babel-runtime": "6",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
-    "faker": "^4.1.0",
     "graphql-tag": "^2.9.2",
     "husky": "^0.14.3",
     "jest": "^22.4.3",
@@ -92,6 +102,6 @@
     "ts-loader": "3",
     "ts-mockito": "^2.3.0",
     "ts-node": "^6.0.3",
-    "typescript": "^2.9.0-rc"
+    "typescript": "^2.9.2"
   }
 }

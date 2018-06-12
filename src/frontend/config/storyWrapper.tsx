@@ -27,7 +27,7 @@ export function storyWrapper(props: StoryWrapperConfig = {}, children?: React.Re
     <AuthGuardProvider tokenManager={tokenManager}>
       <IntlProvider>
         <MemoryRouter>
-          <MuiThemeProvider theme={createMuiTheme(theme)} sheetsManager={new Map()}>
+          <MuiThemeProvider theme={createMuiTheme(theme as any)} sheetsManager={new Map()}>
             <CssBaseline />
             <div style={{ width: '100vw', height: '100vh' }}>
               {children()}

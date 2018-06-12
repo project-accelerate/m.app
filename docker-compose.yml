@@ -7,14 +7,13 @@ services:
   web:
     tty: true
     stdin_open: true
+    command: /bin/bash -c "node build/src/entry/release && node build/src/entry/web.production"
     build: .
     environment:
       - PORT=8000
       - DATABASE_URL=postgres://postgres@db/postgres
-    volumes:
-      - .:/app
+      - LOG_LEVEL=debug
     ports:
       - 8000:8000
-    command: node_modules/.bin/nodemon --watch src src/entry/web.debug
     depends_on:
       - db

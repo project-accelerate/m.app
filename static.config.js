@@ -1,9 +1,4 @@
 import React from 'react'
-import { SheetsRegistry } from 'react-jss/lib/jss'
-import JssProvider from 'react-jss/lib/JssProvider'
-import { MuiThemeProvider, createMuiTheme, createGenerateClassName } from '@material-ui/core/styles'
-
-import theme from './src/frontend/theme'
 
 export default {
   entry: require.resolve('./src/frontend/main'),
@@ -23,32 +18,10 @@ export default {
     },
   ],
 
-  renderToHtml: (render, Comp, meta) => {
-    // Create a sheetsRegistry instance.
-    const sheetsRegistry = new SheetsRegistry()
-
-    // Create a MUI theme instance.
-    const muiTheme = createMuiTheme(theme)
-
-    const generateClassName = createGenerateClassName()
-
-    const html = render(
-      <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
-        <MuiThemeProvider theme={muiTheme} sheetsManager={new Map()}>
-          <Comp />
-        </MuiThemeProvider>
-      </JssProvider>
-    )
-
-    meta.jssStyles = sheetsRegistry.toString()
-
-    return html
-  },
-
   Document: class CustomHtml extends React.Component {
     render () {
       const {
-        Html, Head, Body, children, renderMeta,
+        Html, Head, Body,
       } = this.props
 
       return (
@@ -59,8 +32,7 @@ export default {
             <style>{'html,body,#root{height:100%}'}</style>
           </Head>
           <Body>
-            {children}
-            <style id="jss-server-side">{renderMeta.jssStyles}</style>
+            <div id="root" />
           </Body>
         </Html>
       )

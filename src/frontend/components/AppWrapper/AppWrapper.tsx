@@ -7,6 +7,7 @@ import { AccountCircle } from '@material-ui/icons';
 import { IntlProvider } from 'react-intl';
 import { contentWidth } from '../Layouts';
 import { LoggedInGuard } from '../../services/Auth/AuthGuard';
+import { DynamicContent } from '../DynamicContent/DynamicContent';
 
 const styles: StyleRules = {
   logo: {
@@ -44,16 +45,18 @@ export const AppWrapper = withStyles(styles)(({ children, classes }) =>
           <PageTab path="/events/organise" label="Organise" />
         </PageTabs>
         
-        <LoggedInGuard
-          render={
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-              <AccountCircle />
-            </IconButton>
-          }
-          elseRender={
-            <Button>Login</Button>
-          }
-        />
+        <DynamicContent>
+          <LoggedInGuard
+            render={
+              <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+                <AccountCircle />
+              </IconButton>
+            }
+            elseRender={
+              <Button>Login</Button>
+            }
+          />
+        </DynamicContent>
         
       </Toolbar>
     </AppBar>

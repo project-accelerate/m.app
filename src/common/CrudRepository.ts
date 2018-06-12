@@ -1,4 +1,4 @@
-import * as uuid from 'uuid';
+import uuid from 'uuid';
 import { flatMap, mapValues } from 'lodash'
 import * as Knex from 'knex';
 import { db } from "../db";

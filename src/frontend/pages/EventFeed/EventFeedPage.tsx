@@ -1,7 +1,18 @@
 import * as React from 'react'
 import { createDataLoader } from '../../components/LoadData/LoadData';
+import { DynamicContent } from '../../components/DynamicContent/DynamicContent';
 import { EventFeedPageQuery, EventFeedPageQueryVariables } from '../../queries';
 import { EventFeedContainer, EventFeedSearchbar, EventFeedInitialContent, EventFeed } from './EventFeed';
+
+export default function EventFeedPage() {
+  return (
+    <EventFeedContainer>
+      <DynamicContent>
+        <EventFeedPageContent />
+      </DynamicContent>
+    </EventFeedContainer>
+  )
+}
 
 interface EventFeedPageState {
   searchRadiusInMiles: number
@@ -12,7 +23,7 @@ const FetchData = createDataLoader<EventFeedPageQuery, EventFeedPageQueryVariabl
   require('./EventFeedPage.graphql')
 )
 
-export default class EventFeedPage extends React.Component<{}, EventFeedPageState> {
+class EventFeedPageContent extends React.Component<{}, EventFeedPageState> {
   state: EventFeedPageState = {
     searchRadiusInMiles: Number(localStorage.getItem('searchRadiusInMiles')) || 5,
     postcode: localStorage.getItem('postcode') || undefined
@@ -32,7 +43,7 @@ export default class EventFeedPage extends React.Component<{}, EventFeedPageStat
     const { postcode, searchRadiusInMiles } = this.state
 
     return (
-      <EventFeedContainer>
+      <>
         {
           postcode && (
             <EventFeedSearchbar
@@ -44,7 +55,7 @@ export default class EventFeedPage extends React.Component<{}, EventFeedPageStat
           )
         }
         {this.renderMain()}
-      </EventFeedContainer>
+      </>
     )
   }
 

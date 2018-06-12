@@ -1,4 +1,4 @@
-import * as eventEmitter from "event-emitter";
+import eventEmitter from "event-emitter";
 import { TokenState } from "./TokenState";
 
 export interface TokenManagerConfig {

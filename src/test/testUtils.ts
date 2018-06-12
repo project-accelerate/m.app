@@ -1,4 +1,4 @@
-import * as uuid from 'uuid'
+import uuid from 'uuid'
 import { Point } from 'geojson';
 import { AuthToken } from '../common/AuthToken';
 

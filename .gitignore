@@ -61,6 +61,10 @@ jspm_packages/
 
 # react-static build output
 tmp
+dist
+
+# typescript build output
+build
 
 
 ## macOS

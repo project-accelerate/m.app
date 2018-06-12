@@ -1,5 +1,4 @@
-import { Memoize } from 'lodash-decorators'
-import * as decode from 'jwt-decode'
+import decode from 'jwt-decode'
 import { AuthToken } from "../../../common/AuthToken";
 
 /**
@@ -19,7 +18,6 @@ export class TokenState {
   )
 
   /** Return true if the user is logged in and has the requested role */
-  @Memoize()
   hasRole(role: string) {
     if (this.authProps) {
       return this.authProps.roles.includes(role)

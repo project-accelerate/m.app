@@ -7,7 +7,8 @@ export async function configureGraphql() {
 
   return buildSchema({
     resolvers: [
-      `${__dirname}/../modules/*/web/*.ts`
+      `${__dirname}/../modules/*/web/*.ts`,
+      `${__dirname}/../modules/*/web/*.js`,
     ],
   })
 }

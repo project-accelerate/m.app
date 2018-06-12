@@ -2,6 +2,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "target": "es2015",
     "allowJs": true,
     "strict": true,
@@ -22,5 +23,10 @@
     "jsx": "react",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
-  }
+  },
+  "exclude": [
+    "build/**",
+    "tmp/**",
+    "dist/**"
+  ]
 }

@@ -1,5 +1,5 @@
 import { Point } from 'geojson'
-import * as knexGis from 'knex-postgis'
+import knexGis from 'knex-postgis'
 import { db } from '../db';
 import { FieldConverter } from './CrudRepository';
 
