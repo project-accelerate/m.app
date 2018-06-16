@@ -3,3 +3,4 @@ tmp
 dist
 build
 docker-compose.*
+.coverage

@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  db:
+    image: mdillon/postgis
+
+  web:
+    tty: true
+    stdin_open: true
+    command: /bin/bash -c "yarn start backend release && yarn start backend web.production"
+    build:
+      context: ../..
+      dockerfile: backend/docker/backend.dockerfile
+    environment:
+      - PORT=8000
+      - DATABASE_URL=postgres://postgres@db/postgres
+      - LOG_LEVEL=debug
+    ports:
+      - 8000:8000
+    depends_on:
+      - db

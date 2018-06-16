@@ -1,2 +1,2 @@
-web: node build/src/entry/web.production.js
-release: node build/src/entry/release.js
+web: yarn start backend web.production
+release: yarn start backend release
