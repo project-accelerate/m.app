@@ -6,5 +6,6 @@ export const db = knex({
   connection: process.env.DATABASE_URL,
   migrations: {
     directory: join(__dirname, 'migrations'),
+    extension: 'ts',
   },
 })
