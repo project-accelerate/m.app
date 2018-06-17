@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as PropTypes from 'prop-types'
-import { TokenManager } from './TokenManager';
-import { TokenState } from './TokenState';
+import { TokenManager } from './TokenManager'
+import { TokenState } from './TokenState'
 
 interface AuthGuardProps {
   /** The TokenManager instance for the application */
@@ -25,15 +25,18 @@ interface AuthGuardReactContext {
 }
 
 /** Provides auth details to React components */
-export class AuthGuardProvider extends React.Component<AuthGuardProps, AuthGuardState> {
+export class AuthGuardProvider extends React.Component<
+  AuthGuardProps,
+  AuthGuardState
+> {
   manager = this.props.tokenManager
 
   static childContextTypes = {
-    authGuardContext: PropTypes.any
+    authGuardContext: PropTypes.any,
   }
 
   state = {
-    token: this.props.tokenManager.current
+    token: this.props.tokenManager.current,
   }
 
   handleTokenChange = (token: TokenState) => {
@@ -52,8 +55,8 @@ export class AuthGuardProvider extends React.Component<AuthGuardProps, AuthGuard
     return {
       authGuardContext: {
         manager: this.manager,
-        token: this.state.token
-      }
+        token: this.state.token,
+      },
     }
   }
 
@@ -73,8 +76,8 @@ interface GuardProps {
   children?: GuardRender
 }
 
-type GuardRender
-  = ((context: AuthGuardContext) => React.ReactNode)
+type GuardRender =
+  | ((context: AuthGuardContext) => React.ReactNode)
   | React.ReactNode
 
 interface GuardConfig {
@@ -89,19 +92,20 @@ interface GuardConfig {
 export function createGuard({ test }: GuardConfig) {
   const Guard = function Guard(
     { render, elseRender, children }: GuardProps,
-    { authGuardContext }: AuthGuardReactContext
+    { authGuardContext }: AuthGuardReactContext,
   ): React.ReactNode {
     if (!authGuardContext) {
-      throw Error([
-        'Auth context is not set up.',
-        'Did you forget to add <AuthGuardProvider /> to your app?'
-      ].join(' '))
+      throw Error(
+        [
+          'Auth context is not set up.',
+          'Did you forget to add <AuthGuardProvider /> to your app?',
+        ].join(' '),
+      )
     }
 
     const applyRenderer = (renderer?: GuardRender) => {
       if (typeof renderer === 'function') {
         return renderer(authGuardContext) || null
-
       } else {
         return renderer || null
       }
@@ -109,7 +113,6 @@ export function createGuard({ test }: GuardConfig) {
 
     if (test(authGuardContext.token)) {
       return applyRenderer(render || children)
-
     } else {
       return applyRenderer(elseRender)
     }
@@ -121,12 +124,12 @@ export function createGuard({ test }: GuardConfig) {
 
 /** Conditionally render content if user is logged in */
 export const LoggedInGuard = createGuard({
-  test: token => typeof token.authProps !== 'undefined'
+  test: token => typeof token.authProps !== 'undefined',
 })
 
 /** Create a custom guard for conditionally rendering based on user's roles */
 export function createRoleAuthorizationGuard(roles: string[]) {
   return createGuard({
-    test: token => roles.every(role => token.hasRole(role))
+    test: token => roles.every(role => token.hasRole(role)),
   })
 }

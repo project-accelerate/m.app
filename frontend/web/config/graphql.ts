@@ -1,11 +1,11 @@
-import { ApolloClient } from 'apollo-client';
-import { HttpLink } from 'apollo-link-http';
-import { setContext } from 'apollo-link-context';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloClient } from 'apollo-client'
+import { HttpLink } from 'apollo-link-http'
+import { setContext } from 'apollo-link-context'
+import { InMemoryCache } from 'apollo-cache-inmemory'
 
-import { backendUrl } from './properties';
-import { tokenManager } from './auth';
-import { ApolloLink } from 'apollo-link';
+import { backendUrl } from './properties'
+import { tokenManager } from './auth'
+import { ApolloLink } from 'apollo-link'
 
 const authLink = setContext((_, { headers }) => {
   const { authToken } = tokenManager.current
@@ -13,8 +13,8 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      Authorization: authToken && `Bearer ${authToken}`
-    }
+      Authorization: authToken && `Bearer ${authToken}`,
+    },
   }
 })
 
@@ -25,6 +25,9 @@ class ErrorLink extends ApolloLink {
 }
 
 export const graphQlClient = new ApolloClient({
-  link: (typeof window === "undefined") ? new ErrorLink() : new HttpLink({ uri: backendUrl }).concat(authLink),
+  link:
+    typeof window === 'undefined'
+      ? new ErrorLink()
+      : new HttpLink({ uri: backendUrl }).concat(authLink),
   cache: new InMemoryCache(),
-});
+})

@@ -1,18 +1,30 @@
-import { EventRepository } from "../external/EventRepository";
-import { EventProps, Event } from "../domain/Event";
-import { someString, someDate, someUuid, someGeoPoint, somePostcode, someInt } from "common/test/testUtils";
-import { OrganiserRepository } from "../external/OrganiserRepository";
-import { VenueRepository } from "../external/VenueRepository";
-import { VenueProps, Venue } from "../domain/Venue";
-import { OrganiserProps, Organiser } from "../domain/Organiser";
-import { PostcodesIOPostcode, PostcodesIOOutcode } from "../external/PostcodesIOClient";
-import { Distance, DistanceUnit } from "../domain/Distance";
+import { EventRepository } from '../external/EventRepository'
+import { EventProps, Event } from '../domain/Event'
+import {
+  someString,
+  someDate,
+  someUuid,
+  someGeoPoint,
+  somePostcode,
+  someInt,
+} from 'common/test/testUtils'
+import { OrganiserRepository } from '../external/OrganiserRepository'
+import { VenueRepository } from '../external/VenueRepository'
+import { VenueProps, Venue } from '../domain/Venue'
+import { OrganiserProps, Organiser } from '../domain/Organiser'
+import {
+  PostcodesIOPostcode,
+  PostcodesIOOutcode,
+} from '../external/PostcodesIOClient'
+import { Distance, DistanceUnit } from '../domain/Distance'
 
 const eventRepository = new EventRepository()
 const venueRepository = new VenueRepository()
 const organiserRepository = new OrganiserRepository()
 
-export function somePostcodesIoPostcode(props: Partial<PostcodesIOPostcode>): PostcodesIOPostcode {
+export function somePostcodesIoPostcode(
+  props: Partial<PostcodesIOPostcode>,
+): PostcodesIOPostcode {
   return {
     postcode: someString(),
     quality: someInt(),
@@ -46,11 +58,13 @@ export function somePostcodesIoPostcode(props: Partial<PostcodesIOPostcode>): Po
       nuts: someString(),
       ...props.codes,
     },
-    ...props
+    ...props,
   }
 }
 
-export function somePostcodesIoOutcode(props: Partial<PostcodesIOOutcode> = {}) {
+export function somePostcodesIoOutcode(
+  props: Partial<PostcodesIOOutcode> = {},
+) {
   return {
     outcode: someString(),
     longitude: someInt(),
@@ -75,38 +89,32 @@ export function someEventProps(props: Partial<EventProps> = {}): EventProps {
     startTime: someDate(),
     endTime: someDate(),
     location: someGeoPoint(),
-    ...props
+    ...props,
   }
 }
 
 export function someEvent(props: Partial<EventProps> = {}) {
-  return Object.assign(
-    new Event(),
-    { id: someUuid() },
-    someEventProps(props)
-  )
+  return Object.assign(new Event(), { id: someUuid() }, someEventProps(props))
 }
 
 export function someVenueProps(props: Partial<VenueProps> = {}): VenueProps {
   return {
     name: someString(),
     postcode: somePostcode(),
-    ...props
+    ...props,
   }
 }
 
 export function someVenue(props: Partial<VenueProps> = {}) {
-  return Object.assign(
-    new Venue(),
-    { id: someUuid() },
-    someVenueProps(props)
-  )
+  return Object.assign(new Venue(), { id: someUuid() }, someVenueProps(props))
 }
 
-export function someOrganiserProps(props: Partial<OrganiserProps> = {}): OrganiserProps {
+export function someOrganiserProps(
+  props: Partial<OrganiserProps> = {},
+): OrganiserProps {
   return {
     name: someString(),
-    ...props
+    ...props,
   }
 }
 
@@ -114,7 +122,7 @@ export function someOrganiser(props: Partial<OrganiserProps> = {}) {
   return Object.assign(
     new Organiser(),
     { id: someUuid() },
-    someOrganiserProps(props)
+    someOrganiserProps(props),
   )
 }
 
@@ -126,19 +134,21 @@ export function givenThatAVenueExists(props: Partial<VenueProps> = {}) {
   return venueRepository.insert(someVenueProps(props))
 }
 
-export function givenThatAnOrganiserExists(props: Partial<OrganiserProps> = {}) {
+export function givenThatAnOrganiserExists(
+  props: Partial<OrganiserProps> = {},
+) {
   return organiserRepository.insert(someOrganiserProps(props))
 }
 
 export async function givenThatAnEventExists(props: Partial<EventProps> = {}) {
   const [organiser, venue] = await Promise.all([
     Promise.resolve(props.organiser || givenThatAnOrganiserExists()),
-    Promise.resolve(props.venue || givenThatAVenueExists())
+    Promise.resolve(props.venue || givenThatAVenueExists()),
   ])
 
   return eventRepository.insert({
     ...someEventProps(props),
     organiser,
-    venue
+    venue,
   })
 }

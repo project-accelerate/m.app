@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { Query } from 'react-apollo';
-import { DocumentNode } from 'graphql';
-import { LoadingIndicator } from './LoadingIndicator';
+import { Query } from 'react-apollo'
+import { DocumentNode } from 'graphql'
+import { LoadingIndicator } from './LoadingIndicator'
 
 interface LoadDataProps<T, Vars> {
   message?: React.ReactNode
@@ -14,26 +14,28 @@ interface LoadDataChildProps<T> {
 }
 
 export function createDataLoader<T, Vars>(query: DocumentNode) {
-  return function LoadData({ variables, message, children }: LoadDataProps<T, Vars>) {
+  return function LoadData({
+    variables,
+    message,
+    children,
+  }: LoadDataProps<T, Vars>) {
     return (
       <Query query={query} variables={variables}>
-      {
-        ({ data, error, loading }) => {
+        {({ data, error, loading }) => {
           if (loading) {
             return <LoadingIndicator message={message} />
           }
-  
+
           if (data) {
             return children({ data })
           }
-  
+
           if (error) {
             throw error
           }
-  
+
           throw Error(`Query returned empty response`)
-        }
-      }
+        }}
       </Query>
     )
   }

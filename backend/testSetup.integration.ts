@@ -1,4 +1,4 @@
 import 'reflect-metadata'
-import { configureDb } from './config/db';
+import { configureDb } from './config/db'
 
 beforeAll(configureDb)

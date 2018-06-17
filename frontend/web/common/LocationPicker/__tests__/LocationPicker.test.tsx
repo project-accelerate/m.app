@@ -1,48 +1,40 @@
 import * as React from 'react'
-import { shallow, ShallowWrapper } from 'enzyme';
-import { LocationPicker } from '../LocationPicker';
-import { LocationPickerContent } from '../LocationPickerContent';
-import { someSyntheticEventWithValue, someSyntheticEvent } from 'common/test/testUtils';
+import { shallow, ShallowWrapper } from 'enzyme'
+import { LocationPicker } from '../LocationPicker'
+import { LocationPickerContent } from '../LocationPickerContent'
+import {
+  someSyntheticEventWithValue,
+  someSyntheticEvent,
+} from 'common/test/testUtils'
 
 jest.mock('../geolocation')
 
 describe('LocationPicker', () => {
   it('should start with existing value', () => {
     const fixture = new Fixture(
-      <LocationPicker
-        value="BN2"
-        onChange={jest.fn()}
-      />
+      <LocationPicker value="BN2" onChange={jest.fn()} />,
     )
 
-    expect(fixture.tree.find(LocationPickerContent))
-      .toHaveProp('value', 'BN2')
+    expect(fixture.tree.find(LocationPickerContent)).toHaveProp('value', 'BN2')
   })
 
   it('should render search changes', () => {
     const fixture = new Fixture(
-      <LocationPicker
-        value="BN2"
-        onChange={jest.fn()}
-      />
+      <LocationPicker value="BN2" onChange={jest.fn()} />,
     )
 
-    fixture.enterPostcode("BN1")
+    fixture.enterPostcode('BN1')
 
-    expect(fixture.tree.find(LocationPickerContent))
-      .toHaveProp('value', 'BN1')
+    expect(fixture.tree.find(LocationPickerContent)).toHaveProp('value', 'BN1')
   })
 
   it('should reject invalid code', () => {
     const onChange = jest.fn()
     const fixture = new Fixture(
-      <LocationPicker
-        value="BN2"
-        onChange={onChange}
-      />
+      <LocationPicker value="BN2" onChange={onChange} />,
     )
 
-    fixture.enterPostcode("BN")
+    fixture.enterPostcode('BN')
     fixture.search()
 
     expect(onChange).not.toHaveBeenCalled()
@@ -52,39 +44,33 @@ describe('LocationPicker', () => {
   it('should accept valid outcode', () => {
     const onChange = jest.fn()
     const fixture = new Fixture(
-      <LocationPicker
-        value="BN2"
-        onChange={onChange}
-      />
+      <LocationPicker value="BN2" onChange={onChange} />,
     )
 
-    fixture.enterPostcode("BN1")
+    fixture.enterPostcode('BN1')
     fixture.search()
 
-    expect(onChange).toHaveBeenCalledWith("BN1")
+    expect(onChange).toHaveBeenCalledWith('BN1')
     expect(fixture.content).toHaveProp('error', false)
   })
 
   it('should use geolocation', async () => {
     const onChange = jest.fn()
     const fixture = new Fixture(
-      <LocationPicker
-        value="BN2"
-        onChange={onChange}
-      />
+      <LocationPicker value="BN2" onChange={onChange} />,
     )
-    
+
     const coordinates = {
       latitude: 12,
-      longitude: 6
+      longitude: 6,
     }
-  
+
     givenResolvedGeolocationCoordinates(coordinates)
-    givenPositionInfoForCoords(coordinates, { outcode: "BN1" })
+    givenPositionInfoForCoords(coordinates, { outcode: 'BN1' })
 
     await fixture.useMyLocation()
 
-    expect(onChange).toHaveBeenCalledWith("BN1")
+    expect(onChange).toHaveBeenCalledWith('BN1')
     expect(fixture.content).toHaveProp('error', false)
   })
 })
@@ -97,25 +83,19 @@ class Fixture {
   }
 
   async useMyLocation() {
-    await this.content
-      .props()
-      .onRequestGeolocation()
+    await this.content.props().onRequestGeolocation()
 
     this.tree.update()
   }
 
   enterPostcode(value: string) {
-    this.content
-      .props()
-      .onChange(someSyntheticEventWithValue(value))
+    this.content.props().onChange(someSyntheticEventWithValue(value))
 
     this.tree.update()
   }
 
   search() {
-    this.content
-      .props()
-      .onSubmit(someSyntheticEvent())
+    this.content.props().onSubmit(someSyntheticEvent())
 
     this.tree.update()
   }
@@ -126,20 +106,19 @@ class Fixture {
 }
 
 function givenPositionInfoForCoords(coords: any, result: any) {
-  require('../geolocation')
-    .getPositionInfo
-    .mockImplementation(async (position: any) => {
+  require('../geolocation').getPositionInfo.mockImplementation(
+    async (position: any) => {
       if (position.coords === coords) {
         return result
-
       } else {
         return {}
       }
-    })
+    },
+  )
 }
 
 function givenResolvedGeolocationCoordinates(coords: any) {
-  require('../geolocation')
-    .getUserPosition
-    .mockResolvedValue(Promise.resolve({ coords }))
+  require('../geolocation').getUserPosition.mockResolvedValue(
+    Promise.resolve({ coords }),
+  )
 }

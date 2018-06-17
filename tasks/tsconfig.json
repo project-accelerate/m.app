@@ -16,10 +16,7 @@
       "esnext.array",
       "esnext.asynciterable"
     ],
-    "typeRoots": [
-      "node_modules/@types",
-      "typings"
-    ],
+    "typeRoots": ["node_modules/@types", "typings"],
     "jsx": "react",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true

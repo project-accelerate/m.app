@@ -1,16 +1,22 @@
 import * as React from 'react'
-import { storiesOf } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
+import { storiesOf } from '@storybook/react'
+import { action } from '@storybook/addon-actions'
 import * as faker from 'faker'
-import { storyWrapper } from '../storybook/storyWrapper';
-import { AppWrapper } from '../common/AppWrapper/AppWrapper';
-import { EventFeedCardFragment } from '../queries';
-import { EventFeedContainer, EventFeedSearchbar, EventFeedInitialContent, EventFeedEmptyContent, EventFeed } from './EventFeed';
-import { LoadingIndicator } from '../common/LoadData/LoadingIndicator';
+import { storyWrapper } from '../storybook/storyWrapper'
+import { AppWrapper } from '../common/AppWrapper/AppWrapper'
+import { EventFeedCardFragment } from '../queries'
+import {
+  EventFeedContainer,
+  EventFeedSearchbar,
+  EventFeedInitialContent,
+  EventFeedEmptyContent,
+  EventFeed,
+} from './EventFeed'
+import { LoadingIndicator } from '../common/LoadData/LoadingIndicator'
 
 storiesOf('EventFeed', module)
   .addDecorator(storyWrapper())
-  .add('With events', () =>
+  .add('With events', () => (
     <AppWrapper>
       <EventFeedContainer>
         <ExampleSearchBar />
@@ -20,35 +26,35 @@ storiesOf('EventFeed', module)
             someEvent(),
             someEvent(),
             someEvent(),
-            someEvent()
+            someEvent(),
           ]}
         />
       </EventFeedContainer>
     </AppWrapper>
-  )
-  .add('Loading', () =>
+  ))
+  .add('Loading', () => (
     <AppWrapper>
       <EventFeedContainer>
         <ExampleSearchBar />
         <LoadingIndicator />
       </EventFeedContainer>
     </AppWrapper>
-  )
-  .add('Initial state', () =>
+  ))
+  .add('Initial state', () => (
     <AppWrapper>
       <EventFeedContainer>
         <EventFeedInitialContent onSearch={action('search')} />
       </EventFeedContainer>
     </AppWrapper>
-  )
-  .add('Empty state', () =>
+  ))
+  .add('Empty state', () => (
     <AppWrapper>
       <EventFeedContainer>
         <ExampleSearchBar />
         <EventFeedEmptyContent />
       </EventFeedContainer>
     </AppWrapper>
-  )
+  ))
 
 const ExampleSearchBar = () => (
   <EventFeedSearchbar
@@ -70,10 +76,10 @@ function someEvent(): EventFeedCardFragment {
     venue: {
       id: faker.random.uuid(),
       name: faker.lorem.words(2),
-      postcode: 'BN2'
+      postcode: 'BN2',
     },
     startTime: faker.date.future().toJSON(),
     endTime: faker.date.future().toJSON(),
-    introduction: faker.lorem.paragraphs(2)
+    introduction: faker.lorem.paragraphs(2),
   }
 }

@@ -1,5 +1,5 @@
-import * as Knex from "knex";
-import { uuidPrimaryKey, uuidForeignKey } from "../migrationUtils";
+import * as Knex from 'knex'
+import { uuidPrimaryKey, uuidForeignKey } from '../migrationUtils'
 
 export async function up(knex: Knex) {
   await knex.raw('CREATE EXTENSION IF NOT EXISTS postgis')
@@ -28,7 +28,7 @@ export async function up(knex: Knex) {
     table.text('introduction').notNullable()
     table.specificType('location', 'geography').notNullable()
   })
-};
+}
 
 export async function down(knex: Knex) {
   await knex.schema.dropTable('event')

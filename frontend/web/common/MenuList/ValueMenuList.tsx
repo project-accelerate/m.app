@@ -1,5 +1,5 @@
-import * as React from "react";
-import { MenuList, MenuItem } from "@material-ui/core";
+import * as React from 'react'
+import { MenuList, MenuItem } from '@material-ui/core'
 
 interface ValueMenuListProps<T> {
   /** Options to render in the menu */
@@ -18,7 +18,12 @@ interface ValueMenuListProps<T> {
 /**
  * Render a selectable list of options, hilighting the selected value
  */
-export function ValueMenuList<T>({ options, value, onChange, format = (x: Object) => x.toString() }: ValueMenuListProps<T>) {
+export function ValueMenuList<T>({
+  options,
+  value,
+  onChange,
+  format = (x: Object) => x.toString(),
+}: ValueMenuListProps<T>) {
   const getKey = (x: T) => {
     const formatted = format(x)
     return x && x.toString()
@@ -26,8 +31,7 @@ export function ValueMenuList<T>({ options, value, onChange, format = (x: Object
 
   return (
     <MenuList>
-    {
-      options.map(x =>
+      {options.map(x => (
         <MenuItem
           key={getKey(x)}
           selected={x === value}
@@ -35,8 +39,7 @@ export function ValueMenuList<T>({ options, value, onChange, format = (x: Object
         >
           {format(x)}
         </MenuItem>
-      )
-    }
+      ))}
     </MenuList>
   )
 }

@@ -1,20 +1,28 @@
-import { Service } from "typedi";
-import { Point } from "geojson";
-import { CrudRepository, CrudRepositoryConfig } from "../../common/CrudRepository";
-import { gis, pointFieldConverter } from "../../common/gis";
-import { Event, EventProps } from "../domain/Event";
-import { Distance } from "../domain/Distance";
+import { Service } from 'typedi'
+import { Point } from 'geojson'
+import {
+  CrudRepository,
+  CrudRepositoryConfig,
+} from '../../common/CrudRepository'
+import { gis, pointFieldConverter } from '../../common/gis'
+import { Event, EventProps } from '../domain/Event'
+import { Distance } from '../domain/Distance'
 
 const config: CrudRepositoryConfig<Event> = {
   tableName: 'event',
   fieldConverters: {
-    location: pointFieldConverter
-  }
+    location: pointFieldConverter,
+  },
 }
 
 @Service()
 export class EventRepository extends CrudRepository<Event, EventProps>(config) {
-  async findByTimeAndLocation(q: { location: Point, distance: Distance, fromTime: Date, toTime: Date }): Promise<Event[]> {
+  async findByTimeAndLocation(q: {
+    location: Point
+    distance: Distance
+    fromTime: Date
+    toTime: Date
+  }): Promise<Event[]> {
     return this.db
       .select('*', ...this.customQueryFields)
       .from(this.tableName)
@@ -23,8 +31,8 @@ export class EventRepository extends CrudRepository<Event, EventProps>(config) {
           'location',
           gis.geomFromGeoJSON(q.location),
           q.distance.inMeters,
-          true
-        )
+          true,
+        ),
       )
       .andWhere('startTime', '>=', q.fromTime)
       .andWhere('endTime', '<=', q.toTime)

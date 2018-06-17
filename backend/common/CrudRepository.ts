@@ -1,7 +1,7 @@
-import uuid from 'uuid';
+import uuid from 'uuid'
 import { flatMap, mapValues } from 'lodash'
-import * as Knex from 'knex';
-import { db } from "../db/db";
+import * as Knex from 'knex'
+import { db } from '../db/db'
 
 export interface CrudRepository<T, Props> {
   /** Database object exposed for custom queries */
@@ -10,12 +10,12 @@ export interface CrudRepository<T, Props> {
   /** Database table name */
   tableName: string
 
-/**
- * Custom select clauses defined in the fieldConfig. These should be used in
- * custom queries
- */
+  /**
+   * Custom select clauses defined in the fieldConfig. These should be used in
+   * custom queries
+   */
   customQueryFields: string[]
-  
+
   /**
    * Encode an object for insertion into the database, using the fieldConverters
    * in the repository config
@@ -26,13 +26,13 @@ export interface CrudRepository<T, Props> {
    * Decode an object returned from the database, using the fieldConverters
    * in the repository config
    */
-  decode<K extends keyof T>(value: any): T 
+  decode<K extends keyof T>(value: any): T
 
   /**
    * Decode objects returned from the database, using the fieldConverters
    * in the repository config
    */
-  decodeAll<K extends keyof T>(value: any[]): T[] 
+  decodeAll<K extends keyof T>(value: any[]): T[]
 
   /**
    * Find an object by id
@@ -42,7 +42,9 @@ export interface CrudRepository<T, Props> {
   /**
    * Insert an object into the database
    */
-  insert(data: { [P in keyof Props]: Props[P] | Knex.QueryBuilder }): Promise<string>
+  insert(
+    data: { [P in keyof Props]: Props[P] | Knex.QueryBuilder },
+  ): Promise<string>
 }
 
 export interface CrudRepositoryConfig<T> {
@@ -61,7 +63,9 @@ export interface FieldConverter<T> {
   query?: (column: string) => Knex.QueryBuilder
 }
 
-export function CrudRepository<T, Props>(opts: CrudRepositoryConfig<T>): CrudRepositoryConstructor<T, Props> {
+export function CrudRepository<T, Props>(
+  opts: CrudRepositoryConfig<T>,
+): CrudRepositoryConstructor<T, Props> {
   const { fieldConverters = {} as any, tableName } = opts
 
   return class CrudRepositoryBase implements CrudRepository<T, Props> {
@@ -71,8 +75,10 @@ export function CrudRepository<T, Props>(opts: CrudRepositoryConfig<T>): CrudRep
 
     tableName = tableName
 
-    customQueryFields = flatMap(fieldConverters, (field: FieldConverter<any>, key: string) =>
-      field.query ? [field.query(key)] : []
+    customQueryFields = flatMap(
+      fieldConverters,
+      (field: FieldConverter<any>, key: string) =>
+        field.query ? [field.query(key)] : [],
     ) as any
 
     encode(value: Props): any {
@@ -94,7 +100,8 @@ export function CrudRepository<T, Props>(opts: CrudRepositoryConfig<T>): CrudRep
     }
 
     async findOne(id: string): Promise<T | undefined> {
-      return await db.select('*', ...this.customQueryFields)
+      return await db
+        .select('*', ...this.customQueryFields)
         .first()
         .from(opts.tableName)
         .where('id', id)
@@ -102,7 +109,8 @@ export function CrudRepository<T, Props>(opts: CrudRepositoryConfig<T>): CrudRep
     }
 
     async insert(data: Props): Promise<string> {
-      return await db.insert({ ...this.encode(data), id: uuid() })
+      return await db
+        .insert({ ...this.encode(data), id: uuid() })
         .into(opts.tableName)
         .returning('id')
         .then(x => x[0])

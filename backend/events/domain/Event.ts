@@ -1,7 +1,7 @@
-import { ObjectType, Field, GraphQLISODateTime } from "type-graphql";
-import { Point } from "geojson";
-import { Organiser } from "./Organiser";
-import { Venue } from "./Venue";
+import { ObjectType, Field, GraphQLISODateTime } from 'type-graphql'
+import { Point } from 'geojson'
+import { Organiser } from './Organiser'
+import { Venue } from './Venue'
 
 export interface EventProps {
   name: string
@@ -15,11 +15,9 @@ export interface EventProps {
 
 @ObjectType()
 export class Event implements EventProps {
-  @Field()
-  id!: string
+  @Field() id!: string
 
-  @Field()
-  name!: string
+  @Field() name!: string
 
   @Field(() => Organiser)
   organiser!: string
@@ -33,8 +31,7 @@ export class Event implements EventProps {
   @Field(() => GraphQLISODateTime)
   endTime!: Date
 
-  @Field()
-  introduction!: string
+  @Field() introduction!: string
 
   location!: Point
 }

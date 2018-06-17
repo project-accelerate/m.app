@@ -1,31 +1,25 @@
 import * as React from 'react'
-import { ShallowWrapper } from 'enzyme';
-import { Popover } from '@material-ui/core';
-import { createShallow } from '@material-ui/core/test-utils';
-import { someSyntheticEvent } from 'common/test/testUtils';
-import { createUnderlinedDropdown } from '../UnderlinedDropdown';
+import { ShallowWrapper } from 'enzyme'
+import { Popover } from '@material-ui/core'
+import { createShallow } from '@material-ui/core/test-utils'
+import { someSyntheticEvent } from 'common/test/testUtils'
+import { createUnderlinedDropdown } from '../UnderlinedDropdown'
 
 describe('UnderlinedDropdown', () => {
   it('renders value', () => {
-    const fixture = new Fixture(
-      <ExampleMenu value={{ content: 'Foo' }} />
-    )
+    const fixture = new Fixture(<ExampleMenu value={{ content: 'Foo' }} />)
 
-    expect(fixture.valueText).toHaveText("Foo")
+    expect(fixture.valueText).toHaveText('Foo')
   })
 
   it('starts undisclosed', () => {
-    const fixture = new Fixture(
-      <ExampleMenu value={{ content: 'Foo' }} />
-    )
+    const fixture = new Fixture(<ExampleMenu value={{ content: 'Foo' }} />)
 
     expect(fixture.popover).toHaveProp('open', false)
   })
 
   it('discloses on click and renders item with value', () => {
-    const fixture = new Fixture(
-      <ExampleMenu value={{ content: 'Foo' }} />
-    )
+    const fixture = new Fixture(<ExampleMenu value={{ content: 'Foo' }} />)
 
     fixture.click()
 
@@ -36,7 +30,7 @@ describe('UnderlinedDropdown', () => {
   it('hides on change and fires event listener', () => {
     const onChange = jest.fn()
     const fixture = new Fixture(
-      <ExampleMenu value={{ content: 'Foo' }} onChange={onChange} />
+      <ExampleMenu value={{ content: 'Foo' }} onChange={onChange} />,
     )
 
     fixture.click()
@@ -49,7 +43,7 @@ describe('UnderlinedDropdown', () => {
   it('hides on dismiss and does not fire event listener', () => {
     const onChange = jest.fn()
     const fixture = new Fixture(
-      <ExampleMenu value={{ content: 'Foo' }} onChange={onChange} />
+      <ExampleMenu value={{ content: 'Foo' }} onChange={onChange} />,
     )
 
     fixture.click()
@@ -62,14 +56,15 @@ describe('UnderlinedDropdown', () => {
 
 const ExampleMenu = createUnderlinedDropdown<ExampleValue>({
   render: props => <ExampleContent {...props} />,
-  format: value => value.content
+  format: value => value.content,
 })
 
 interface ExampleValue {
   content: string
 }
 
-const ExampleContent = (props: { value: ExampleValue, onChange: Function }) => null
+const ExampleContent = (props: { value: ExampleValue; onChange: Function }) =>
+  null
 
 class Fixture {
   tree: ShallowWrapper
@@ -80,7 +75,7 @@ class Fixture {
   }
 
   get valueText() {
-    return this.tree.find("a")
+    return this.tree.find('a')
   }
 
   get content() {

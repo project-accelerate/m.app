@@ -9,16 +9,36 @@
     "frontend/common"
   ],
   "scripts": {
+    "typecheck": "ts-node -T tasks typecheckAll",
     "test": "ts-node -T tasks runAllTests",
     "test:unit": "ts-node -T tasks unitTest",
     "test:integration": "ts-node -T tasks integrationTest",
     "start": "ts-node -T tasks start",
     "develop:backend": "ts-node -T tasks developBackend",
     "develop:frontend:web": "ts-node -T tasks developFrontend",
-    "heroku-postbuild": "ts-node -T tasks buildAll"
+    "heroku-postbuild": "ts-node -T tasks buildAll",
+    "pretty": "prettier --write",
+    "precommit": "lint-staged"
   },
   "engines": {
     "node": "^10.0.0",
     "yarn": "^1.0.0"
+  },
+  "devDependencies": {
+    "husky": "^0.14.3",
+    "lint-staged": "^7.2.0",
+    "prettier": "^1.13.5"
+  },
+  "lint-staged": {
+    "*.(js|ts|tsx|jsx|graphql|json)": [
+      "yarn pretty",
+      "yarn typecheck",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "all"
   }
 }

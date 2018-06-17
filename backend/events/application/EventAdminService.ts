@@ -1,8 +1,8 @@
-import { Service } from "typedi";
-import { PostcodesIOClient } from "../external/PostcodesIOClient";
-import { EventRepository } from "../external/EventRepository";
-import { OrganiserAdminService } from './OrganiserAdminService';
-import { VenueAdminService } from './VenueAdminService';
+import { Service } from 'typedi'
+import { PostcodesIOClient } from '../external/PostcodesIOClient'
+import { EventRepository } from '../external/EventRepository'
+import { OrganiserAdminService } from './OrganiserAdminService'
+import { VenueAdminService } from './VenueAdminService'
 
 interface EventSubmissionProps {
   name: string
@@ -21,24 +21,20 @@ export class EventAdminService {
     private readonly eventRepository: EventRepository,
     private readonly organiserAdmin: OrganiserAdminService,
     private readonly venueAdmin: VenueAdminService,
-  ) { }
+  ) {}
 
   async submitEvent(props: EventSubmissionProps) {
     const { organiserName, venueName, postcode, ...eventProps } = props
 
-    const [
-      { longitude, latitude },
-      organiser,
-      venue
-    ] = await Promise.all([
+    const [{ longitude, latitude }, organiser, venue] = await Promise.all([
       this.postcodesClient.getPostcode(postcode),
       this.organiserAdmin.addOrganiser({
-        name: organiserName
+        name: organiserName,
       }),
       this.venueAdmin.addVenue({
         name: venueName,
-        postcode
-      })
+        postcode,
+      }),
     ])
 
     return this.eventRepository.insert({
@@ -47,8 +43,8 @@ export class EventAdminService {
       venue,
       location: {
         type: 'Point',
-        coordinates: [longitude, latitude]
-      }
+        coordinates: [longitude, latitude],
+      },
     })
   }
 }

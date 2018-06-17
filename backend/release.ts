@@ -1,6 +1,6 @@
-import "./config/environment"
+import './config/environment'
 import { configureDb } from './config/db'
-import { configureTestData } from './config/testData';
+import { configureTestData } from './config/testData'
 
 configureDb()
   .then(configureTestData)

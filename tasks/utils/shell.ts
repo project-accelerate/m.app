@@ -1,4 +1,4 @@
-import { ExecSyncOptions, execSync } from "child_process";
+import { ExecSyncOptions, execSync } from 'child_process'
 
 export function createShellCmd(cmd: string, opts: ExecSyncOptions = {}) {
   return (...args: Args[]) => {
@@ -6,7 +6,7 @@ export function createShellCmd(cmd: string, opts: ExecSyncOptions = {}) {
 
     execSync(encodeShellCmd(cmd, args), {
       stdio: 'inherit',
-      ...opts
+      ...opts,
     })
   }
 }
@@ -27,18 +27,18 @@ function handleArg(args: Args): ArgValue[] {
 
   if (typeof args === 'object') {
     return Object.keys(args).flatMap(key => {
-        const value = args[key]
+      const value = args[key]
 
-        if (value === true) {
-          return [`--${key}`]
-        } 
-        
-        if (value === false) {
-          return [`--no-${key}`]
-        }
+      if (value === true) {
+        return [`--${key}`]
+      }
 
-        return handleArg(value).flatMap(x => [`--${key}`, x])
-      })
+      if (value === false) {
+        return [`--no-${key}`]
+      }
+
+      return handleArg(value).flatMap(x => [`--${key}`, x])
+    })
   }
 
   return [args]

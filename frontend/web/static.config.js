@@ -1,5 +1,5 @@
 import React from 'react'
-import { resolve } from 'path';
+import { resolve } from 'path'
 
 export default {
   entry: require.resolve('./main.tsx'),
@@ -20,16 +20,17 @@ export default {
   ],
 
   Document: class CustomHtml extends React.Component {
-    render () {
-      const {
-        Html, Head, Body,
-      } = this.props
+    render() {
+      const { Html, Head, Body } = this.props
 
       return (
         <Html>
           <Head>
             <meta charSet="UTF-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1"
+            />
             <style>{'html,body,#root{height:100%}'}</style>
           </Head>
           <Body>
@@ -53,7 +54,7 @@ export default {
             test: /\.(js|jsx|ts|tsx)$/,
             exclude: [
               defaultLoaders.jsLoader.exclude,
-              resolve('../../node_modules')
+              resolve('../../node_modules'),
             ],
             use: [
               {

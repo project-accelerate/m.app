@@ -1,4 +1,4 @@
-import { CreateTableBuilder } from "knex"
+import { CreateTableBuilder } from 'knex'
 
 export function uuidPrimaryKey(table: CreateTableBuilder) {
   table
@@ -13,7 +13,14 @@ interface UUIDForeignKeyRefOpts {
   references: string
 }
 
-export function uuidForeignKey(table: CreateTableBuilder, { references, name = references, referencedColumn = 'id' }: UUIDForeignKeyRefOpts) {
+export function uuidForeignKey(
+  table: CreateTableBuilder,
+  {
+    references,
+    name = references,
+    referencedColumn = 'id',
+  }: UUIDForeignKeyRefOpts,
+) {
   return table
     .uuid(name)
     .references(referencedColumn)

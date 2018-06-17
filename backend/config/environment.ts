@@ -1,6 +1,6 @@
 import 'core-js'
 import 'reflect-metadata'
-import log from "winston"
+import log from 'winston'
 
 process.on('unhandledRejection', err => {
   process.stderr.write(`${err.message}\n`)

@@ -1,9 +1,14 @@
-import { execSync } from "child_process";
-import { createShellCmd, Args, encodeShellCmd } from "./shell";
+import { execSync } from 'child_process'
+import { createShellCmd, Args, encodeShellCmd } from './shell'
 
 const dockerCompose = createShellCmd('docker-compose')
 
-export function createDockerRun(files: string[], service: string, cmd?: string, ...runArgs: Args[]) {
+export function createDockerRun(
+  files: string[],
+  service: string,
+  cmd?: string,
+  ...runArgs: Args[]
+) {
   return (...args: Args[]) => {
     dockerCompose({ file: files }, 'rm -sf')
     dockerCompose({ file: files }, 'build')
@@ -14,12 +19,16 @@ export function createDockerRun(files: string[], service: string, cmd?: string, 
       ...runArgs,
       { rm: true },
       service,
-      encodeShellCmd(cmd, args)
+      encodeShellCmd(cmd, args),
     )
   }
 }
 
-export function createDockerUp(files: string[], cmd?: string, ...upArgs: Args[]) {
+export function createDockerUp(
+  files: string[],
+  cmd?: string,
+  ...upArgs: Args[]
+) {
   return (...args: Args[]) => {
     dockerCompose({ file: files }, 'rm -sf')
     dockerCompose({ file: files }, 'build')
@@ -29,7 +38,7 @@ export function createDockerUp(files: string[], cmd?: string, ...upArgs: Args[])
       'up',
       ...upArgs,
       { 'force-recreate': true },
-      encodeShellCmd(cmd, args)
+      encodeShellCmd(cmd, args),
     )
   }
 }

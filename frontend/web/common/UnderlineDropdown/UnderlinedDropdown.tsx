@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { Popover, withStyles, WithStyles } from '@material-ui/core';
-import { isThisTypeNode } from 'typescript';
+import { Popover, withStyles, WithStyles } from '@material-ui/core'
+import { isThisTypeNode } from 'typescript'
 
 interface UnderlinedDropdownProps<T> {
   value: T
@@ -20,17 +20,23 @@ interface UnderlinedDropdownConfig<T> {
 const style = withStyles({
   link: {
     color: 'inherit',
-    outline: 0
-  }
+    outline: 0,
+  },
 })
 
-export function createUnderlinedDropdown<T>({ render, format }: UnderlinedDropdownConfig<T>) {
+export function createUnderlinedDropdown<T>({
+  render,
+  format,
+}: UnderlinedDropdownConfig<T>) {
   return style<UnderlinedDropdownProps<T>>(
-    class UnderlinedDropdown extends React.Component<UnderlinedDropdownProps<T> & WithStyles<'link'>, { visible: boolean }> {
+    class UnderlinedDropdown extends React.Component<
+      UnderlinedDropdownProps<T> & WithStyles<'link'>,
+      { visible: boolean }
+    > {
       state = { visible: false }
       anchor?: HTMLAnchorElement
 
-      handleClick: React.MouseEventHandler<HTMLAnchorElement> = (event) => {
+      handleClick: React.MouseEventHandler<HTMLAnchorElement> = event => {
         this.anchor = event.currentTarget
         event.preventDefault()
 
@@ -72,16 +78,14 @@ export function createUnderlinedDropdown<T>({ render, format }: UnderlinedDropdo
                 horizontal: 'center',
               }}
             >
-            {
-              render({
+              {render({
                 value: this.props.value,
-                onChange: this.handleChange
-              })
-            }
+                onChange: this.handleChange,
+              })}
             </Popover>
           </>
         )
       }
-    }
+    },
   )
 }

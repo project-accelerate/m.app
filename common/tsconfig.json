@@ -16,17 +16,10 @@
       "esnext.array",
       "esnext.asynciterable"
     ],
-    "typeRoots": [
-      "../node_modules/@types",
-      "node_modules/@types"
-    ],
+    "typeRoots": ["../node_modules/@types", "node_modules/@types"],
     "jsx": "preserve",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "exclude": [
-    "build/**",
-    "tmp/**",
-    "dist/**"
-  ]
+  "exclude": ["build/**", "tmp/**", "dist/**"]
 }

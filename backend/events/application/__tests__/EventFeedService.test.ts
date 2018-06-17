@@ -1,39 +1,48 @@
-import { mock, instance, when, deepEqual } from "ts-mockito";
-import { Point } from "geojson";
-import { someInt, somePostcode, someGeoPoint, someOutcode } from "common/test/testUtils";
-import { EventRepository } from "../../external/EventRepository";
-import { PostcodesIOClient } from "../../external/PostcodesIOClient";
-import { EventFeedService } from "../EventFeedService";
-import { DateProvider } from "../../../common/DateProvider";
-import { somePostcodesIoPostcode, someEventProps, someDistance, someEvent, somePostcodesIoOutcode } from "../../test/eventTestUtils";
-import { Distance, DistanceUnit } from "../../domain/Distance";
-import { Event } from "../../domain/Event";
-import { startOfDay } from "date-fns";
+import { mock, instance, when, deepEqual } from 'ts-mockito'
+import { Point } from 'geojson'
+import {
+  someInt,
+  somePostcode,
+  someGeoPoint,
+  someOutcode,
+} from 'common/test/testUtils'
+import { EventRepository } from '../../external/EventRepository'
+import { PostcodesIOClient } from '../../external/PostcodesIOClient'
+import { EventFeedService } from '../EventFeedService'
+import { DateProvider } from '../../../common/DateProvider'
+import {
+  somePostcodesIoPostcode,
+  someEventProps,
+  someDistance,
+  someEvent,
+  somePostcodesIoOutcode,
+} from '../../test/eventTestUtils'
+import { Distance, DistanceUnit } from '../../domain/Distance'
+import { Event } from '../../domain/Event'
+import { startOfDay } from 'date-fns'
 
 describe('EventFeedService', () => {
   it('should search by postcode', async () => {
     const fixture = new Fixture()
     const location = someGeoPoint()
     const postcode = somePostcode()
-    const events = [
-      someEvent()
-    ]
+    const events = [someEvent()]
 
     fixture.givenSomeSavedEventsForExactQuery({
       distance: new Distance(10, DistanceUnit.miles),
-      fromTime: startOfDay("2010-01-01"),
-      toTime: startOfDay("2010-04-01"),
+      fromTime: startOfDay('2010-01-01'),
+      toTime: startOfDay('2010-04-01'),
       location,
-      events
+      events,
     })
 
     fixture.givenLocationForPostcode(postcode, location)
-    fixture.givenCurrentDate(startOfDay("2010-01-01"))
+    fixture.givenCurrentDate(startOfDay('2010-01-01'))
 
     const returnedEvents = await fixture.feedService.eventFeed({
       months: 3,
       postcode,
-      radiusInMiles: 10
+      radiusInMiles: 10,
     })
 
     expect(returnedEvents).toEqual(events)
@@ -43,25 +52,23 @@ describe('EventFeedService', () => {
     const fixture = new Fixture()
     const location = someGeoPoint()
     const outcode = someOutcode()
-    const events = [
-      someEvent()
-    ]
+    const events = [someEvent()]
 
     fixture.givenSomeSavedEventsForExactQuery({
       distance: new Distance(10, DistanceUnit.miles),
-      fromTime: startOfDay("2010-01-01"),
-      toTime: startOfDay("2010-04-01"),
+      fromTime: startOfDay('2010-01-01'),
+      toTime: startOfDay('2010-04-01'),
       location,
-      events
+      events,
     })
 
     fixture.givenLocationForOutcode(outcode, location)
-    fixture.givenCurrentDate(startOfDay("2010-01-01"))
+    fixture.givenCurrentDate(startOfDay('2010-01-01'))
 
     const returnedEvents = await fixture.feedService.eventFeed({
       months: 3,
       postcode: outcode,
-      radiusInMiles: 10
+      radiusInMiles: 10,
     })
 
     expect(returnedEvents).toEqual(events)
@@ -73,12 +80,13 @@ describe('EventFeedService', () => {
     const fetchEvents = fixture.feedService.eventFeed({
       months: 3,
       postcode: '',
-      radiusInMiles: 10
+      radiusInMiles: 10,
     })
 
-    expect(fetchEvents)
-      .rejects
-      .toHaveProperty('message', expect.stringMatching('Invalid postcode'))
+    expect(fetchEvents).rejects.toHaveProperty(
+      'message',
+      expect.stringMatching('Invalid postcode'),
+    )
   })
 })
 
@@ -94,35 +102,41 @@ class Fixture {
   )
 
   givenCurrentDate(date: Date) {
-    when(this.dateProvider.now())
-      .thenReturn(date)
+    when(this.dateProvider.now()).thenReturn(date)
   }
 
   givenLocationForPostcode(postcode: string, location: Point) {
     const [longitude, latitude] = location.coordinates
 
-    when(this.postcodeClient.getPostcode(postcode))
-      .thenResolve(somePostcodesIoPostcode({ postcode, latitude, longitude }))
+    when(this.postcodeClient.getPostcode(postcode)).thenResolve(
+      somePostcodesIoPostcode({ postcode, latitude, longitude }),
+    )
   }
 
   givenLocationForOutcode(outcode: string, location: Point) {
     const [longitude, latitude] = location.coordinates
 
-    when(this.postcodeClient.getOutcode(outcode))
-      .thenResolve(somePostcodesIoOutcode({ outcode, latitude, longitude }))
+    when(this.postcodeClient.getOutcode(outcode)).thenResolve(
+      somePostcodesIoOutcode({ outcode, latitude, longitude }),
+    )
   }
 
-  givenSomeSavedEventsForExactQuery(opts: { fromTime: Date, toTime: Date, distance: Distance, location: Point, events: Event[] }) {
+  givenSomeSavedEventsForExactQuery(opts: {
+    fromTime: Date
+    toTime: Date
+    distance: Distance
+    location: Point
+    events: Event[]
+  }) {
     when(
       this.eventRepository.findByTimeAndLocation(
         deepEqual({
           fromTime: opts.fromTime,
           toTime: opts.toTime,
           distance: opts.distance,
-          location: opts.location
-        })
-      )
-    )
-    .thenResolve(opts.events)
+          location: opts.location,
+        }),
+      ),
+    ).thenResolve(opts.events)
   }
 }

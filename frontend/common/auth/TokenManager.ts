@@ -1,5 +1,5 @@
-import eventEmitter from "event-emitter";
-import { TokenState } from "./TokenState";
+import eventEmitter from 'event-emitter'
+import { TokenState } from './TokenState'
 
 export interface TokenManagerConfig {
   /** Interface for loading and saving user authentication details */
@@ -7,7 +7,10 @@ export interface TokenManagerConfig {
 }
 
 /** Interface for loading and saving user authentication details */
-export type StorageProvider = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>
+export type StorageProvider = Pick<
+  Storage,
+  'getItem' | 'setItem' | 'removeItem'
+>
 
 /**
  * Service class for managing token state changes.
@@ -16,9 +19,7 @@ export class TokenManager {
   private state?: TokenState
   private ee = eventEmitter({})
 
-  constructor(
-    private storage: StorageProvider
-  ) { }
+  constructor(private storage: StorageProvider) {}
 
   /** Replace, and save, the current user credentials */
   setToken(token: string | undefined) {
@@ -27,7 +28,6 @@ export class TokenManager {
 
     if (token) {
       this.storage.setItem('auth_token', token)
-
     } else {
       this.storage.removeItem('auth_token')
     }
@@ -39,7 +39,7 @@ export class TokenManager {
   }
 
   /** Unsubscribe from credentials change events */
-  off(event: 'change', fn: (token: TokenState) => void)  {
+  off(event: 'change', fn: (token: TokenState) => void) {
     this.ee.off(event, fn)
   }
 

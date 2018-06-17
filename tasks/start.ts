@@ -1,6 +1,6 @@
-import { createShellCmd } from "./utils/shell";
+import { createShellCmd } from './utils/shell'
 
 export function start(project: string, entry: string) {
-  const tsNode = createShellCmd("ts-node", { cwd: project })
+  const tsNode = createShellCmd('ts-node', { cwd: project })
   tsNode({ 'transpile-only': true }, entry)
 }

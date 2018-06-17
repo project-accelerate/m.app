@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from 'react'
 
 /**
  * Enclose dynamic content in this to prevent it from being rendered

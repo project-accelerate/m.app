@@ -1,6 +1,6 @@
-import { ObjectType, Field } from "type-graphql";
+import { ObjectType, Field } from 'type-graphql'
 import { Point } from 'geojson'
-import { String } from "aws-sdk/clients/transcribeservice";
+import { String } from 'aws-sdk/clients/transcribeservice'
 
 export interface VenueProps {
   name: string
@@ -9,12 +9,9 @@ export interface VenueProps {
 
 @ObjectType()
 export class Venue implements VenueProps {
-  @Field()
-  id!: string
+  @Field() id!: string
 
-  @Field()
-  name!: string
+  @Field() name!: string
 
-  @Field()
-  postcode!: string
+  @Field() postcode!: string
 }

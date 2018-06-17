@@ -4,18 +4,8 @@
   },
   "setupTestFrameworkScriptFile": "<rootDir>/testSetup.integration.ts",
   "testRegex": "__tests__/.*\\.integrationTest\\.ts?$",
-  "moduleFileExtensions": [
-    "ts",
-    "tsx",
-    "js",
-    "jsx",
-    "json",
-    "node"
-  ],
+  "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
   "collectCoverage": true,
-  "collectCoverageFrom": [
-    "<rootDir>/*/external/*",
-    "<rootDir>/*/web/*"
-  ],
+  "collectCoverageFrom": ["<rootDir>/*/external/*", "<rootDir>/*/web/*"],
   "coverageDirectory": ".coverage"
 }

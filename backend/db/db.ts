@@ -1,5 +1,5 @@
-import knex from "knex"
-import { join } from "path";
+import knex from 'knex'
+import { join } from 'path'
 
 export const db = knex({
   client: 'pg',

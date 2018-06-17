@@ -1,8 +1,13 @@
 import * as React from 'react'
-import { createDataLoader } from '../common/LoadData/LoadData';
-import { DynamicContent } from '../common/DynamicContent/DynamicContent';
-import { EventFeedPageQuery, EventFeedPageQueryVariables } from '../queries';
-import { EventFeedContainer, EventFeedSearchbar, EventFeedInitialContent, EventFeed } from './EventFeed';
+import { createDataLoader } from '../common/LoadData/LoadData'
+import { DynamicContent } from '../common/DynamicContent/DynamicContent'
+import { EventFeedPageQuery, EventFeedPageQueryVariables } from '../queries'
+import {
+  EventFeedContainer,
+  EventFeedSearchbar,
+  EventFeedInitialContent,
+  EventFeed,
+} from './EventFeed'
 
 export default function EventFeedPage() {
   return (
@@ -19,14 +24,16 @@ interface EventFeedPageState {
   postcode?: string
 }
 
-const FetchData = createDataLoader<EventFeedPageQuery, EventFeedPageQueryVariables>(
-  require('./EventFeedPage.graphql')
-)
+const FetchData = createDataLoader<
+  EventFeedPageQuery,
+  EventFeedPageQueryVariables
+>(require('./EventFeedPage.graphql'))
 
 class EventFeedPageContent extends React.Component<{}, EventFeedPageState> {
   state: EventFeedPageState = {
-    searchRadiusInMiles: Number(localStorage.getItem('searchRadiusInMiles')) || 5,
-    postcode: localStorage.getItem('postcode') || undefined
+    searchRadiusInMiles:
+      Number(localStorage.getItem('searchRadiusInMiles')) || 5,
+    postcode: localStorage.getItem('postcode') || undefined,
   }
 
   handlePostcodeChange = (postcode: string) => {
@@ -44,16 +51,14 @@ class EventFeedPageContent extends React.Component<{}, EventFeedPageState> {
 
     return (
       <>
-        {
-          postcode && (
-            <EventFeedSearchbar
-              radiusInMiles={searchRadiusInMiles}
-              postcode={postcode}
-              onPostcodeChange={this.handlePostcodeChange}
-              onRadiusChange={this.handleRadiusChange}
-            />
-          )
-        }
+        {postcode && (
+          <EventFeedSearchbar
+            radiusInMiles={searchRadiusInMiles}
+            postcode={postcode}
+            onPostcodeChange={this.handlePostcodeChange}
+            onRadiusChange={this.handleRadiusChange}
+          />
+        )}
         {this.renderMain()}
       </>
     )
@@ -67,14 +72,11 @@ class EventFeedPageContent extends React.Component<{}, EventFeedPageState> {
     }
 
     return (
-      <FetchData message="Searching…" variables={{ postcode, radiusInMiles: searchRadiusInMiles }}>
-      {
-        ({ data }) => (
-          <EventFeed
-            events={data.eventFeed}
-          />
-        )
-      }
+      <FetchData
+        message="Searching…"
+        variables={{ postcode, radiusInMiles: searchRadiusInMiles }}
+      >
+        {({ data }) => <EventFeed events={data.eventFeed} />}
       </FetchData>
     )
   }

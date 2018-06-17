@@ -2,10 +2,10 @@ import 'core-js'
 import 'reflect-metadata'
 import { GraphQLServer } from 'graphql-yoga'
 import * as log from 'winston'
-import { memoize } from 'async';
-import { readFileSync } from 'fs';
+import { memoize } from 'async'
+import { readFileSync } from 'fs'
 
-import { configureGraphql } from "./graphql";
+import { configureGraphql } from './graphql'
 
 export async function configureWeb(opts: { serveUI: boolean }) {
   const { PORT } = process.env
@@ -13,15 +13,14 @@ export async function configureWeb(opts: { serveUI: boolean }) {
   const schema = await configureGraphql()
 
   const server = new GraphQLServer({
-    schema
+    schema,
   })
 
   await server.start({
     endpoint: '/graphql',
     playground: opts.serveUI ? false : '/graphql',
-    port: PORT
+    port: PORT,
   })
 
   log.info(`Application started on ${PORT}`)
 }
-

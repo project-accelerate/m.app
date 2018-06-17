@@ -1,12 +1,18 @@
-import { mock, when, anything, verify, instance, deepEqual } from "ts-mockito";
-import { Point } from "geojson";
-import { PostcodesIOClient } from "../../external/PostcodesIOClient";
-import { EventRepository } from "../../external/EventRepository";
-import { OrganiserAdminService } from "../OrganiserAdminService";
-import { VenueAdminService } from "../VenueAdminService";
-import { EventAdminService } from "../EventAdminService";
-import { somePostcodesIoPostcode } from "../../test/eventTestUtils";
-import { somePostcode, someGeoPoint, someDate, someString, someUuid } from "common/test/testUtils";
+import { mock, when, anything, verify, instance, deepEqual } from 'ts-mockito'
+import { Point } from 'geojson'
+import { PostcodesIOClient } from '../../external/PostcodesIOClient'
+import { EventRepository } from '../../external/EventRepository'
+import { OrganiserAdminService } from '../OrganiserAdminService'
+import { VenueAdminService } from '../VenueAdminService'
+import { EventAdminService } from '../EventAdminService'
+import { somePostcodesIoPostcode } from '../../test/eventTestUtils'
+import {
+  somePostcode,
+  someGeoPoint,
+  someDate,
+  someString,
+  someUuid,
+} from 'common/test/testUtils'
 
 describe('EventAdminService', () => {
   it('creates event, venue and organiser', async () => {
@@ -28,17 +34,17 @@ describe('EventAdminService', () => {
       introduction: 'this is great',
       organiserName: 'Organiser',
       venueName: 'Venue',
-      name: 'Event'
+      name: 'Event',
     })
 
     expect(eventId).toEqual('event-id')
 
     verify(
-      fixture.organiserAdmin.addOrganiser(deepEqual({ name: 'Organiser' }))
+      fixture.organiserAdmin.addOrganiser(deepEqual({ name: 'Organiser' })),
     ).called()
 
     verify(
-      fixture.venueAdmin.addVenue(deepEqual({ name: 'Venue', postcode }))
+      fixture.venueAdmin.addVenue(deepEqual({ name: 'Venue', postcode })),
     ).called()
 
     verify(
@@ -50,9 +56,9 @@ describe('EventAdminService', () => {
           venue: 'venue-id',
           introduction: 'this is great',
           name: 'Event',
-          location
-        })
-      )
+          location,
+        }),
+      ),
     ).called()
   })
 })
@@ -67,28 +73,26 @@ class Fixture {
     instance(this.postcodesClient),
     instance(this.eventRepository),
     instance(this.organiserAdmin),
-    instance(this.venueAdmin)
+    instance(this.venueAdmin),
   )
 
   givenLocationForPostcode(postcode: string, location: Point) {
     const [longitude, latitude] = location.coordinates
 
-    when(this.postcodesClient.getPostcode(postcode))
-      .thenResolve(somePostcodesIoPostcode({ postcode, latitude, longitude }))
+    when(this.postcodesClient.getPostcode(postcode)).thenResolve(
+      somePostcodesIoPostcode({ postcode, latitude, longitude }),
+    )
   }
 
   givenCreatedEventId(id: string) {
-    when(this.eventRepository.insert(anything()))
-      .thenResolve(id)
+    when(this.eventRepository.insert(anything())).thenResolve(id)
   }
 
   givenCreatedVenueId(id: string) {
-    when(this.venueAdmin.addVenue(anything()))
-      .thenResolve(id)
+    when(this.venueAdmin.addVenue(anything())).thenResolve(id)
   }
 
   givenCreatedOrganiserId(id: string) {
-    when(this.organiserAdmin.addOrganiser(anything()))
-      .thenResolve(id)
+    when(this.organiserAdmin.addOrganiser(anything())).thenResolve(id)
   }
 }
