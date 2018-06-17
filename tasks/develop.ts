@@ -11,8 +11,8 @@ export function developBackend() {
 }
 
 export function developFrontend() {
-  const reactStatic = createShellCmd('react-static', { cwd: 'frontend/web' })
-  reactStatic('start')
+  const runFrontendScript = createShellCmd('node', { cwd: 'frontend/web' })
+  runFrontendScript('scripts/start')
 }
 
 export function preview() {

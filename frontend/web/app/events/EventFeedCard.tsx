@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core'
 import { FormattedRelative } from 'react-intl'
 import { More, Event } from '@material-ui/icons'
-import { EventFeedCardFragment } from '../queries'
+import { EventFeedCardFragment } from '../../queries'
 
 interface EventFeedCardProps extends EventFeedCardFragment {}
 

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
-import { storyWrapper } from '../../storybook/storyWrapper'
+import { storyWrapper } from '../../../storybook/storyWrapper'
 import { ValueMenuList } from './ValueMenuList'
 
 storiesOf('ValueMenuList', module)

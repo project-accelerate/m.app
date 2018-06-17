@@ -1,8 +1,6 @@
+import 'core-js'
 import * as React from 'react'
 import { render } from 'react-dom'
-import { Router, Switch, Link } from 'react-static'
-import { hot } from 'react-hot-loader'
-import Routes from 'react-static-routes'
 import { ApolloProvider } from 'react-apollo'
 import {
   MuiThemeProvider,
@@ -13,9 +11,13 @@ import { IntlProvider } from 'react-intl'
 import { AuthGuardProvider } from 'frontend.common/auth'
 
 import theme from './theme'
-import { AppWrapper } from './common/AppWrapper/AppWrapper'
 import { graphQlClient } from './config/graphql'
 import { tokenManager } from './config/auth'
+import { Router, Switch, Route } from 'react-router'
+import { createBrowserHistory } from 'history'
+import { AppWrapper } from './app/common/AppWrapper/AppWrapper'
+import EventFeedPage from './app/events/EventFeedPage'
+import { configureServiceWorker } from './config/serviceWorker'
 
 const App = () => (
   <AuthGuardProvider tokenManager={tokenManager}>
@@ -23,10 +25,10 @@ const App = () => (
       <MuiThemeProvider theme={createMuiTheme(theme as any)}>
         <ApolloProvider client={graphQlClient}>
           <CssBaseline />
-          <Router>
+          <Router history={createBrowserHistory()}>
             <AppWrapper>
               <Switch>
-                <Routes />
+                <Route path="/events" component={EventFeedPage} />
               </Switch>
             </AppWrapper>
           </Router>
@@ -36,8 +38,7 @@ const App = () => (
   </AuthGuardProvider>
 )
 
-if (typeof document !== 'undefined') {
-  render(<App />, document.getElementById('root'))
-}
+render(<App />, document.getElementById('root'))
+configureServiceWorker()
 
-export default hot(module)(App)
+export default App

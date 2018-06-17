@@ -1,4 +1,4 @@
-import { postcodesUrl } from '../../config/properties'
+import { postcodesUrl } from '../../../config/properties'
 
 /** Return the user's current geolocation */
 export function getUserPosition() {

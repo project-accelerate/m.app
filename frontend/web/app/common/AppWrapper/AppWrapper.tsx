@@ -1,5 +1,4 @@
 import * as React from 'react'
-import App from '../../main'
 import { PageTabs, PageTab } from './PageTabs'
 import {
   withStyles,
@@ -11,7 +10,6 @@ import {
 } from '@material-ui/core'
 import { StyleRules } from '@material-ui/core/styles'
 import { AccountCircle } from '@material-ui/icons'
-import { IntlProvider } from 'react-intl'
 import { LoggedInGuard } from 'frontend.common/auth'
 import { contentWidth } from '../Layouts'
 import { DynamicContent } from '../DynamicContent/DynamicContent'
@@ -47,7 +45,7 @@ export const AppWrapper = withStyles(styles)(({ children, classes }) => (
         <i className={classes.logo} />
 
         <PageTabs scrollable className={classes.flex} value={0}>
-          <PageTab path="/events/explore" label="Explore" />
+          <PageTab path="/events" label="Explore" />
           <PageTab path="/events/calendar" label="Calendar" />
           <PageTab path="/events/organise" label="Organise" />
         </PageTabs>

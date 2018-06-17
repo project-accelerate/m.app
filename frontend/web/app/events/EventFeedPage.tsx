@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { createDataLoader } from '../common/LoadData/LoadData'
 import { DynamicContent } from '../common/DynamicContent/DynamicContent'
-import { EventFeedPageQuery, EventFeedPageQueryVariables } from '../queries'
+import { EventFeedPageQuery, EventFeedPageQueryVariables } from '../../queries'
 import {
   EventFeedContainer,
   EventFeedSearchbar,

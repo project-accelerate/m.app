@@ -17,6 +17,7 @@
     "develop:backend": "ts-node -T tasks developBackend",
     "develop:frontend:web": "ts-node -T tasks developFrontend",
     "develop:frontend:native": "ts-node -T tasks developFrontendNative",
+    "preview:web": "ts-node -T tasks preview",
     "heroku-postbuild": "ts-node -T tasks buildAll",
     "pretty": "prettier --write",
     "precommit": "lint-staged"

@@ -2,9 +2,9 @@ import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import * as faker from 'faker'
-import { storyWrapper } from '../storybook/storyWrapper'
+import { storyWrapper } from '../../storybook/storyWrapper'
 import { AppWrapper } from '../common/AppWrapper/AppWrapper'
-import { EventFeedCardFragment } from '../queries'
+import { EventFeedCardFragment } from '../../queries'
 import {
   EventFeedContainer,
   EventFeedSearchbar,
