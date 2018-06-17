@@ -1,0 +1,38 @@
+{
+  "expo": {
+    "name": "Momentum",
+    "description": "This project is really great.",
+    "slug": "momentum-app",
+    "primaryColor": "#ec0000",
+    "privacy": "unlisted",
+    "sdkVersion": "28.0.0",
+    "ignoreNodeModulesValidation": true,
+    "platforms": ["ios", "android"],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.peoplesmomentum.app"
+    },
+    "android": {
+      "package": "com.peoplesmomentum.app"
+    },
+    "packagerOpts": {
+      "sourceExts": ["ts", "tsx"],
+      "config": "rn.config.js",
+      "projectRoots": "",
+      "transformer":
+        "../../node_modules/react-native-typescript-transformer/index.js"
+    }
+  }
+}

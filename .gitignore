@@ -66,6 +66,9 @@ dist
 # typescript build output
 build
 
+# expo build output
+.expo
+
 
 ## macOS
 

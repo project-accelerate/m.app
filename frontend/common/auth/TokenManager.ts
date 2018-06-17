@@ -7,10 +7,11 @@ export interface TokenManagerConfig {
 }
 
 /** Interface for loading and saving user authentication details */
-export type StorageProvider = Pick<
-  Storage,
-  'getItem' | 'setItem' | 'removeItem'
->
+export interface StorageProvider {
+  getItem: (key: string) => string | null
+  setItem: (key: string, value: string) => void
+  removeItem: (key: string) => void
+}
 
 /**
  * Service class for managing token state changes.

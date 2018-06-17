@@ -1,0 +1,17 @@
+{
+  "transform": {
+    "^.+\\.jsx?$": "babel-jest",
+    "^.+\\.tsx?$": "ts-jest"
+  },
+  "setupTestFrameworkScriptFile": "<rootDir>/testSetup.js",
+  "testRegex": "__tests__/.*\\.(test|spec)\\.tsx?$",
+  "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
+  "collectCoverage": true,
+  "collectCoverageFrom": ["<rootDir>/**/*.ts?(x)"],
+  "coverageDirectory": ".coverage",
+  "globals": {
+    "ts-jest": {
+      "useBabelrc": true
+    }
+  }
+}

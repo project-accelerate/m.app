@@ -16,6 +16,7 @@
     "start": "ts-node -T tasks start",
     "develop:backend": "ts-node -T tasks developBackend",
     "develop:frontend:web": "ts-node -T tasks developFrontend",
+    "develop:frontend:native": "ts-node -T tasks developFrontendNative",
     "heroku-postbuild": "ts-node -T tasks buildAll",
     "pretty": "prettier --write",
     "precommit": "lint-staged"
@@ -43,6 +44,7 @@
   },
   "dependencies": {
     "ts-node": "^6.1.1",
-    "typescript": "^2.9.2"
+    "typescript": "^2.9.2",
+    "crna-make-symlinks-for-yarn-workspaces": "^1.0.1"
   }
 }
