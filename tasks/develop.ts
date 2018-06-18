@@ -1,6 +1,6 @@
 import { createDockerUp } from './utils/docker'
 import { createShellCmd } from './utils/shell'
-import { resolve } from 'path'
+import { resolve, join } from 'path'
 
 const baseDockerfile = 'backend/docker/docker-compose.yml'
 const devDockerfile = 'backend/docker/docker-compose.development.yml'
@@ -27,4 +27,12 @@ export function developFrontendNative() {
   )
 
   expo('start', { minify: false, lan: true, dev: true })
+}
+
+export function storybook(target: string, port: string) {
+  const storybook = createShellCmd('node_modules/.bin/start-storybook', {
+    cwd: join('frontend', target),
+  })
+
+  storybook({ port })
 }
