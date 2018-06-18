@@ -11,11 +11,13 @@
     "common": "*",
     "core-js": "^2.5.6",
     "date-fns": "^1.29.0",
+    "express-jwt": "^5.3.1",
     "faker": "^4.1.0",
     "glob": "^7.1.2",
     "graphql": "^0.13.2",
     "graphql-yoga": "^1.13.1",
     "jsonwebtoken": "^8.2.1",
+    "jwks-rsa": "^1.2.1",
     "knex": "^0.14.6",
     "knex-postgis": "^0.6.0",
     "lodash": "^4.17.10",
@@ -27,6 +29,7 @@
     "winston": "^2.4.2"
   },
   "devDependencies": {
+    "@types/express-jwt": "^0.0.40",
     "@types/faker": "^4.1.2",
     "@types/glob": "^5.0.35",
     "@types/graphql": "^0.13.1",

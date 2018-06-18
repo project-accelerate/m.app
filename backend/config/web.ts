@@ -8,6 +8,7 @@ import { resolve } from 'path'
 import * as express from 'express'
 
 import { configureGraphql } from './graphql'
+import { userContext } from 'backend/config/auth0'
 
 export async function configureWeb(opts: { serveUI: boolean }) {
   const { PORT } = process.env
@@ -16,6 +17,7 @@ export async function configureWeb(opts: { serveUI: boolean }) {
 
   const server = new GraphQLServer({
     schema,
+    context: userContext,
   })
 
   if (opts.serveUI) {
