@@ -28,6 +28,6 @@ export const graphQlClient = new ApolloClient({
   link:
     typeof window === 'undefined'
       ? new ErrorLink()
-      : new HttpLink({ uri: backendUrl }).concat(authLink),
+      : authLink.concat(new HttpLink({ uri: backendUrl })),
   cache: new InMemoryCache(),
 })

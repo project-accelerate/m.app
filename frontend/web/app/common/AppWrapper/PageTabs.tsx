@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Route } from 'react-static'
+import { Route } from 'react-router'
 import { Tab } from '@material-ui/core'
 import { Tabs } from '@material-ui/core'
 import { TabsProps } from '@material-ui/core/Tabs'

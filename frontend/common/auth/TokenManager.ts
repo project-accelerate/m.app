@@ -13,19 +13,22 @@ export interface StorageProvider {
   removeItem: (key: string) => void
 }
 
+type ChangeHandler = (token: TokenState) => void
+
 /**
  * Service class for managing token state changes.
  */
 export class TokenManager {
   private state?: TokenState
-  private ee = eventEmitter({})
+  private subscribers = new Set<ChangeHandler>()
 
   constructor(private storage: StorageProvider) {}
 
   /** Replace, and save, the current user credentials */
   setToken(token: string | undefined) {
-    this.state = new TokenState(token)
-    this.ee.emit('change', this.current)
+    const newState = (this.state = new TokenState(token))
+
+    this.subscribers.forEach(s => s(newState))
 
     if (token) {
       this.storage.setItem('auth_token', token)
@@ -35,13 +38,13 @@ export class TokenManager {
   }
 
   /** Subscribe to credentials change events */
-  on(event: 'change', fn: (token: TokenState) => void) {
-    this.ee.on(event, fn)
+  on(event: 'change', fn: ChangeHandler) {
+    this.subscribers.add(fn)
   }
 
   /** Unsubscribe from credentials change events */
-  off(event: 'change', fn: (token: TokenState) => void) {
-    this.ee.off(event, fn)
+  off(event: 'change', fn: ChangeHandler) {
+    this.subscribers.delete(fn)
   }
 
   /** Return the current authentication state */

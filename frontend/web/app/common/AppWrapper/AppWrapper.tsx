@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { PageTabs, PageTab } from './PageTabs'
 import {
   withStyles,
   AppBar,
@@ -12,6 +11,7 @@ import { StyleRules } from '@material-ui/core/styles'
 import { AccountCircle } from '@material-ui/icons'
 import { LoggedInGuard } from 'frontend.common/auth'
 import { contentWidth } from '../Layouts'
+import { PageTabs, PageTab } from './PageTabs'
 import { DynamicContent } from '../DynamicContent/DynamicContent'
 
 const styles: StyleRules = {
@@ -50,20 +50,17 @@ export const AppWrapper = withStyles(styles)(({ children, classes }) => (
           <PageTab path="/events/organise" label="Organise" />
         </PageTabs>
 
-        <DynamicContent>
-          <LoggedInGuard
-            render={
-              <IconButton
-                className={classes.menuButton}
-                color="inherit"
-                aria-label="Menu"
-              >
-                <AccountCircle />
-              </IconButton>
-            }
-            elseRender={<Button>Login</Button>}
-          />
-        </DynamicContent>
+        <LoggedInGuard
+          render={
+            <IconButton
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="Menu"
+            >
+              <AccountCircle />
+            </IconButton>
+          }
+        />
       </Toolbar>
     </AppBar>
     {children}

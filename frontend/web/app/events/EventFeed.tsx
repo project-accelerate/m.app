@@ -111,7 +111,7 @@ interface EventFeedInitialContentProps {
 export const EventFeedInitialContent = style<EventFeedInitialContentProps>(
   function EventFeedInitialContent({ classes, onSearch }) {
     return (
-      <Grid className={classes.emptyWrapper} container xs={12}>
+      <Grid className={classes.emptyWrapper} container>
         <Paper className={classes.empty}>
           <Typography gutterBottom variant="title" align="center">
             Find People

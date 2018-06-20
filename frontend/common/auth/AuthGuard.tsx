@@ -39,18 +39,6 @@ export class AuthGuardProvider extends React.Component<
     token: this.props.tokenManager.current,
   }
 
-  handleTokenChange = (token: TokenState) => {
-    this.setState({ token })
-  }
-
-  componentDidMount() {
-    this.props.tokenManager.on('change', this.handleTokenChange)
-  }
-
-  componentWillUnmount() {
-    this.props.tokenManager.off('change', this.handleTokenChange)
-  }
-
   getChildContext(): AuthGuardReactContext {
     return {
       authGuardContext: {
@@ -90,41 +78,74 @@ interface GuardConfig {
  * user credentials
  **/
 export function createGuard({ test }: GuardConfig) {
-  const Guard = function Guard(
-    { render, elseRender, children }: GuardProps,
-    { authGuardContext }: AuthGuardReactContext,
-  ): React.ReactNode {
-    if (!authGuardContext) {
-      throw Error(
-        [
-          'Auth context is not set up.',
-          'Did you forget to add <AuthGuardProvider /> to your app?',
-        ].join(' '),
+  class Guard extends React.Component<GuardProps> {
+    static contextTypes = AuthGuardProvider.childContextTypes
+    context!: AuthGuardReactContext
+
+    state = {
+      tokenState: this.context.authGuardContext.token,
+    }
+
+    componentDidMount() {
+      this.context.authGuardContext.manager.on(
+        'change',
+        this.handleTokenChanged,
       )
     }
 
-    const applyRenderer = (renderer?: GuardRender) => {
-      if (typeof renderer === 'function') {
-        return renderer(authGuardContext) || null
+    componentWillUnmount() {
+      this.context.authGuardContext.manager.off(
+        'change',
+        this.handleTokenChanged,
+      )
+    }
+
+    handleTokenChanged = (tokenState: TokenState) => {
+      this.setState({ tokenState })
+    }
+
+    render() {
+      const { render, elseRender, children } = this.props
+      const { tokenState } = this.state
+
+      if (!this.context.authGuardContext) {
+        throw Error(
+          [
+            'Auth context is not set up.',
+            'Did you forget to add <AuthGuardProvider /> to your app?',
+          ].join(' '),
+        )
+      }
+
+      const { manager } = this.context.authGuardContext
+
+      const applyRenderer = (renderer?: GuardRender) => {
+        if (typeof renderer === 'function') {
+          return renderer({ token: tokenState, manager }) || null
+        } else {
+          return renderer || null
+        }
+      }
+
+      if (test(tokenState)) {
+        return applyRenderer(render || children)
       } else {
-        return renderer || null
+        return applyRenderer(elseRender)
       }
     }
+  }
 
-    if (test(authGuardContext.token)) {
-      return applyRenderer(render || children)
-    } else {
-      return applyRenderer(elseRender)
-    }
-  } as React.ComponentType<GuardProps>
-
-  Guard.contextTypes = AuthGuardProvider.childContextTypes
   return Guard
 }
 
 /** Conditionally render content if user is logged in */
 export const LoggedInGuard = createGuard({
   test: token => typeof token.authProps !== 'undefined',
+})
+
+/** Auth guard that always renders and provides auth state to children */
+export const WithAuth = createGuard({
+  test: () => true,
 })
 
 /** Create a custom guard for conditionally rendering based on user's roles */
