@@ -2,6 +2,7 @@ import uuid from 'uuid'
 import { Point } from 'geojson'
 import { AuthToken } from 'common/AuthToken'
 
+export const someBuffer = () => new Buffer('1234')
 export const someString = () => 'Foo'
 export const someUuid = uuid
 export const someDate = () => new Date('2010-01-01')
