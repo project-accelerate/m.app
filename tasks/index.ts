@@ -12,9 +12,10 @@ import 'core-js'
 import 'reflect-metadata'
 import log from 'winston'
 import * as dotenv from 'dotenv'
+import { join } from 'path'
 
-dotenv.config({ path: 'config/public.env ' })
-dotenv.config({ path: 'config/.env ' })
+dotenv.config({ path: join(__dirname, '..', 'config', 'public.env') })
+dotenv.config({ path: join(__dirname, '..', 'config', '.env') })
 
 process.on('unhandledRejection', err => {
   process.stderr.write(`${err.message}\n`)

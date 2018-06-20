@@ -3,10 +3,13 @@ import { ExecSyncOptions, execSync } from 'child_process'
 export function createShellCmd(cmd: string, opts: ExecSyncOptions = {}) {
   return (...args: Args[]) => {
     console.log(encodeShellCmd(cmd, args))
-
     execSync(encodeShellCmd(cmd, args), {
-      stdio: 'inherit',
       ...opts,
+      stdio: 'inherit',
+      env: {
+        ...process.env,
+        ...opts.env,
+      },
     })
   }
 }

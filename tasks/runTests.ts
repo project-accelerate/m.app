@@ -2,7 +2,10 @@ import { execSync } from 'child_process'
 import { createShellCmd, encodeShellCmd } from './utils/shell'
 import { createDockerRun } from './utils/docker'
 
-const jestDockerConfigs = ['backend/docker/docker-compose.yml']
+const jestDockerConfigs = [
+  'backend/docker/docker-compose.yml',
+  'backend/docker/docker-compose.test.yml',
+]
 
 export async function runAllTests() {
   typecheckAll()

@@ -12,7 +12,7 @@
     "typecheck": "ts-node -T tasks typecheckAll",
     "test": "ts-node -T tasks runAllTests",
     "test:unit": "ts-node -T tasks unitTest",
-    "test:integration": "ts-node -T tasks integrationTest",
+    "test:integration:backend": "ts-node -T tasks integrationTest backend",
     "start": "ts-node -T tasks start",
     "develop:backend": "ts-node -T tasks developBackend",
     "develop:frontend:web": "ts-node -T tasks developFrontend",
