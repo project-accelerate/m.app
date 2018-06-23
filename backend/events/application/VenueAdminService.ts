@@ -1,12 +1,16 @@
 import { Service } from 'typedi'
 import { VenueRepository } from '../external/VenueRepository'
-import { VenueProps } from '../domain/Venue'
+
+interface AddVenueProps {
+  name: string
+  postcode: string
+}
 
 @Service()
 export class VenueAdminService {
   constructor(private readonly venueRepository: VenueRepository) {}
 
-  addVenue(props: VenueProps) {
+  addVenue(props: AddVenueProps) {
     return this.venueRepository.insert(props)
   }
 }

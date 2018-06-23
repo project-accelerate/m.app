@@ -10,7 +10,7 @@ import {
 } from 'type-graphql'
 import { MutationRequest } from '../../common/resolverUtils'
 import { VenueRepository } from '../external/VenueRepository'
-import { VenueProps, Venue } from '../domain/Venue'
+import { Venue } from '../domain/Venue'
 
 @Resolver(Venue)
 export class VenueResolver {

@@ -8,28 +8,7 @@ import {
 import { MutationRequest } from '../../common/resolverUtils'
 import { EventAdminService } from '../application/EventAdminService'
 import { EventRepository } from '../external/EventRepository'
-import { Event } from '../domain/Event'
-
-@InputType({
-  description: 'Request properties to submit a new event',
-})
-export class CreateEventRequest {
-  @Field() name!: string
-
-  @Field() organiserName!: string
-
-  @Field() venueName!: string
-
-  @Field(() => GraphQLISODateTime)
-  startTime!: Date
-
-  @Field(() => GraphQLISODateTime)
-  endTime!: Date
-
-  @Field() introduction!: string
-
-  @Field() postcode!: string
-}
+import { Event, CreateEventRequest } from '../domain/Event'
 
 @Resolver()
 class CreateEventResolver {

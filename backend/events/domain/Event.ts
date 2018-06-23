@@ -1,28 +1,37 @@
-import { ObjectType, Field, GraphQLISODateTime } from 'type-graphql'
+import { ObjectType, Field, GraphQLISODateTime, InputType } from 'type-graphql'
 import { Point } from 'geojson'
 import { Organiser } from './Organiser'
 import { Venue } from './Venue'
 
-export interface EventProps {
-  name: string
-  organiser: string
-  venue: string
-  startTime: Date
-  endTime: Date
-  introduction: string
-  location: Point
+@InputType({
+  description: 'Request properties to submit a new event',
+})
+export class CreateEventRequest {
+  @Field() name!: string
+
+  @Field() organiserName!: string
+
+  @Field() venueName!: string
+
+  @Field(() => GraphQLISODateTime)
+  startTime!: Date
+
+  @Field(() => GraphQLISODateTime)
+  endTime!: Date
+
+  @Field() introduction!: string
+
+  @Field() postcode!: string
 }
 
 @ObjectType()
-export class Event implements EventProps {
+export class Event {
   @Field() id!: string
 
   @Field() name!: string
 
-  @Field(() => Organiser)
   organiser!: string
 
-  @Field(() => Venue)
   venue!: string
 
   @Field(() => GraphQLISODateTime)

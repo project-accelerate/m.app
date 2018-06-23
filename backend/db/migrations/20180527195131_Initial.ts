@@ -7,7 +7,9 @@ export async function up(knex: Knex) {
   await knex.schema.createTable('organiser', table => {
     uuidPrimaryKey(table)
 
-    table.text('name')
+    table.text('name').notNullable()
+    table.text('photo')
+    table.text('bio')
   })
 
   await knex.schema.createTable('venue', table => {

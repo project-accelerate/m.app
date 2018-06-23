@@ -1,5 +1,5 @@
 import { EventRepository } from '../external/EventRepository'
-import { EventProps, Event } from '../domain/Event'
+import { Event } from '../domain/Event'
 import {
   someString,
   someDate,
@@ -10,17 +10,22 @@ import {
 } from 'common/test/testUtils'
 import { OrganiserRepository } from '../external/OrganiserRepository'
 import { VenueRepository } from '../external/VenueRepository'
-import { VenueProps, Venue } from '../domain/Venue'
-import { OrganiserProps, Organiser } from '../domain/Organiser'
+import { Venue } from '../domain/Venue'
+import { Organiser } from '../domain/Organiser'
 import {
   PostcodesIOPostcode,
   PostcodesIOOutcode,
 } from '../external/PostcodesIOClient'
 import { Distance, DistanceUnit } from '../domain/Distance'
+import { WithoutId } from 'backend/common/WithoutId'
 
 const eventRepository = new EventRepository()
 const venueRepository = new VenueRepository()
 const organiserRepository = new OrganiserRepository()
+
+type EventProps = WithoutId<Event>
+type OrganiserProps = WithoutId<Organiser>
+type VenueProps = WithoutId<Venue>
 
 export function somePostcodesIoPostcode(
   props: Partial<PostcodesIOPostcode>,
@@ -114,6 +119,17 @@ export function someOrganiserProps(
 ): OrganiserProps {
   return {
     name: someString(),
+    ...props,
+  }
+}
+
+export function fullOrganiserProps(
+  props: Partial<OrganiserProps> = {},
+): OrganiserProps {
+  return {
+    name: someString(),
+    bio: someString(),
+    photo: someString(),
     ...props,
   }
 }

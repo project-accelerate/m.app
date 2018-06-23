@@ -1,12 +1,25 @@
-import { ObjectType, Field } from 'type-graphql'
+import { ObjectType, Field, InputType } from 'type-graphql'
+import { Photo } from './Photo'
 
-export interface OrganiserProps {
-  name: string
+@InputType()
+export class CreateOrganiserRequest {
+  @Field() name!: string
+
+  @Field({ nullable: true })
+  bio?: string
+
+  @Field({ nullable: true })
+  photoData?: string
 }
 
 @ObjectType()
-export class Organiser implements OrganiserProps {
+export class Organiser {
   @Field() id!: string
 
   @Field() name!: string
+
+  @Field() bio?: string
+
+  @Field(() => Photo)
+  photo?: string
 }

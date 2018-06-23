@@ -1,12 +1,12 @@
 import { someString, somePostcode, someDate } from 'common/test/testUtils'
-import { withDb, execQuery } from '../../../test/integrationTestUtils'
+import { withDb, execQuery } from 'backend/test/integrationTestUtils'
 import {
   givenThatAnEventExists,
   givenThatAVenueExists,
   givenThatAnOrganiserExists,
   someEventProps,
-} from '../../test/eventTestUtils'
-import { CreateEventRequest } from '../CreateEventResolver'
+} from 'backend/events/test/eventTestUtils'
+import { CreateEventRequest } from 'backend/events/domain/Event'
 
 describe('CreateEventResolver', () => {
   describe('.createEvent', () => {

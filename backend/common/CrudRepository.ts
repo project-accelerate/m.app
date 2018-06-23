@@ -2,6 +2,7 @@ import uuid from 'uuid'
 import { flatMap, mapValues } from 'lodash'
 import * as Knex from 'knex'
 import { db } from '../db/db'
+import { WithoutId } from 'backend/common/WithoutId'
 
 export interface CrudRepository<T, Props> {
   /** Database object exposed for custom queries */
@@ -63,7 +64,7 @@ export interface FieldConverter<T> {
   query?: (column: string) => Knex.QueryBuilder
 }
 
-export function CrudRepository<T, Props>(
+export function CrudRepository<T extends { id: string }, Props = WithoutId<T>>(
   opts: CrudRepositoryConfig<T>,
 ): CrudRepositoryConstructor<T, Props> {
   const { fieldConverters = {} as any, tableName } = opts

@@ -5,7 +5,7 @@ import {
   CrudRepositoryConfig,
 } from '../../common/CrudRepository'
 import { gis, pointFieldConverter } from '../../common/gis'
-import { Event, EventProps } from '../domain/Event'
+import { Event } from '../domain/Event'
 import { Distance } from '../domain/Distance'
 
 const config: CrudRepositoryConfig<Event> = {
@@ -16,7 +16,7 @@ const config: CrudRepositoryConfig<Event> = {
 }
 
 @Service()
-export class EventRepository extends CrudRepository<Event, EventProps>(config) {
+export class EventRepository extends CrudRepository<Event>(config) {
   async findByTimeAndLocation(q: {
     location: Point
     distance: Distance

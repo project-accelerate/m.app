@@ -3,16 +3,7 @@ import { PostcodesIOClient } from '../external/PostcodesIOClient'
 import { EventRepository } from '../external/EventRepository'
 import { OrganiserAdminService } from './OrganiserAdminService'
 import { VenueAdminService } from './VenueAdminService'
-
-interface EventSubmissionProps {
-  name: string
-  organiserName: string
-  venueName: string
-  startTime: Date
-  endTime: Date
-  introduction: string
-  postcode: string
-}
+import { CreateEventRequest } from 'backend/events/domain/Event'
 
 @Service()
 export class EventAdminService {
@@ -23,8 +14,8 @@ export class EventAdminService {
     private readonly venueAdmin: VenueAdminService,
   ) {}
 
-  async submitEvent(props: EventSubmissionProps) {
-    const { organiserName, venueName, postcode, ...eventProps } = props
+  async submitEvent(request: CreateEventRequest) {
+    const { organiserName, venueName, postcode, ...eventProps } = request
 
     const [{ longitude, latitude }, organiser, venue] = await Promise.all([
       this.postcodesClient.getPostcode(postcode),

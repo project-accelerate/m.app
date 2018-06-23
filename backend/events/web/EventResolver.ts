@@ -14,7 +14,7 @@ import {
 } from 'type-graphql'
 import { Inject } from 'typedi'
 import { MutationRequest } from '../../common/resolverUtils'
-import { Event, EventProps } from '../domain/Event'
+import { Event } from '../domain/Event'
 import { Venue } from '../domain/Venue'
 import { EventRepository } from '../external/EventRepository'
 import { Organiser } from '../domain/Organiser'
