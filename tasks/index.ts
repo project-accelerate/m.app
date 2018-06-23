@@ -33,6 +33,7 @@ const commands = {
   ...require('./start'),
   ...require('./develop'),
   ...require('./build'),
+  ...require('./migrations'),
 }
 
 const [_, __, cmd, ...args] = process.argv
