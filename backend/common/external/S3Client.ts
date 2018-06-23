@@ -1,17 +1,29 @@
 import { Service } from 'typedi'
 import { S3 } from 'aws-sdk'
 import { PutObjectOutput } from 'aws-sdk/clients/s3'
-import { getEnv, getDevelopmentEnv } from 'backend/common/env'
+import { ConfigService } from 'backend/common/ConfigService'
+import { URL } from 'url'
 
 @Service()
 export class S3Client {
-  private bucketName = getEnv('BUCKETEER_BUCKET_NAME')
-  private s3 = new S3({
-    endpoint: getDevelopmentEnv('TEST_AWS_S3_ENDPOINT'),
-    accessKeyId: getEnv('BUCKETEER_AWS_ACCESS_KEY_ID'),
-    secretAccessKey: getEnv('BUCKETEER_AWS_SECRET_ACCESS_KEY'),
-    region: getEnv('BUCKETEER_AWS_REGION'),
-  })
+  constructor(
+    config: ConfigService,
+    private bucketName = config.get('BUCKETEER_BUCKET_NAME'),
+    private s3 = new S3({
+      endpoint: config.getOptional('AWS_ENDPOINT'),
+      accessKeyId: config.get('BUCKETEER_AWS_ACCESS_KEY_ID'),
+      secretAccessKey: config.get('BUCKETEER_AWS_SECRET_ACCESS_KEY'),
+      region: config.get('BUCKETEER_AWS_REGION'),
+    }),
+  ) {}
+
+  objectUrl(key: string) {
+    const url = new URL(this.s3.endpoint.href)
+    url.hostname = `${this.bucketName}.${url.hostname}`
+    url.pathname = `/${key}`
+
+    return url
+  }
 
   getObject(key: string) {
     return new Promise<Buffer>((resolve, reject) => {

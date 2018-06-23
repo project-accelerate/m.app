@@ -22,7 +22,7 @@ services:
       - BUCKETEER_AWS_REGION=test
       - BUCKETEER_AWS_SECRET_ACCESS_KEY=BUCKETEER_AWS_SECRET_ACCESS_KEY
       - BUCKETEER_BUCKET_NAME=BUCKETEER_BUCKET_NAME
-      - TEST_AWS_S3_ENDPOINT=http://{service}-{region}:4569
+      - AWS_ENDPOINT=http://{service}-{region}:4569
     ports:
       - 8000:8000
     depends_on:

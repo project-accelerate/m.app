@@ -1,13 +1,15 @@
 import jwt from 'express-jwt'
 import { expressJwtSecret } from 'jwks-rsa'
 import { ContextCallback } from 'graphql-yoga/dist/src/types'
-import { getEnv } from '../common/env'
+import { ConfigService } from 'backend/common/ConfigService'
+
+const config = new ConfigService()
 
 // See:
 // https://auth0.com/docs/api-auth/tutorials/verify-access-token#verify-the-signature
 // https://19majkel94.github.io/type-graphql/docs/authorization.html
 
-const auth0Domain = getEnv('AUTH0_DOMAIN')
+const auth0Domain = config.get('AUTH0_DOMAIN')
 const jwksUrl = `https://${auth0Domain}/.well-known/jwks.json`
 
 /** Parse and validate the user's request token */
