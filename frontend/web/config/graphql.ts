@@ -3,7 +3,7 @@ import { HttpLink } from 'apollo-link-http'
 import { setContext } from 'apollo-link-context'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 
-import { backendUrl } from './properties'
+import { BACKEND_URL } from './properties'
 import { tokenManager } from './auth'
 import { ApolloLink } from 'apollo-link'
 
@@ -28,6 +28,6 @@ export const graphQlClient = new ApolloClient({
   link:
     typeof window === 'undefined'
       ? new ErrorLink()
-      : authLink.concat(new HttpLink({ uri: backendUrl })),
+      : authLink.concat(new HttpLink({ uri: `${BACKEND_URL}/graphql` })),
   cache: new InMemoryCache(),
 })

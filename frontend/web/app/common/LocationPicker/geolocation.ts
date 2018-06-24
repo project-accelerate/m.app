@@ -1,4 +1,4 @@
-import { postcodesUrl } from '../../../config/properties'
+import { POSTCODES_URL } from '../../../config/properties'
 
 /** Return the user's current geolocation */
 export function getUserPosition() {
@@ -19,7 +19,7 @@ export interface PositionInfo {
 export function getPositionInfo({
   coords: { latitude, longitude },
 }: Position): Promise<PositionInfo | undefined> {
-  const url = `${postcodesUrl}/postcodes?lon=${longitude}&lat=${latitude}`
+  const url = `${POSTCODES_URL}/postcodes?lon=${longitude}&lat=${latitude}`
 
   return fetch(url)
     .then(response => response.json())

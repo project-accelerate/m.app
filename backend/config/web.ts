@@ -8,7 +8,8 @@ import { resolve } from 'path'
 import * as express from 'express'
 
 import { configureGraphql } from './graphql'
-import { userContext, jwtMiddleware } from 'backend/config/auth0'
+import { userContext, jwtMiddleware } from './auth0'
+import { frontendConfig } from './frontendConfig'
 
 export async function configureWeb(opts: { serveUI: boolean }) {
   const { PORT } = process.env
@@ -21,6 +22,7 @@ export async function configureWeb(opts: { serveUI: boolean }) {
   })
 
   server.express.use(jwtMiddleware)
+  server.express.get('/config.js', frontendConfig())
 
   if (opts.serveUI) {
     server.express.use(express.static(frontendPath('build')))
