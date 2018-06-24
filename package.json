@@ -12,24 +12,18 @@
     "typecheck": "ts-node --project tasks/tsconfig.json -T tasks typecheckAll",
     "test": "ts-node --project tasks/tsconfig.json -T tasks runAllTests",
     "test:unit": "ts-node --project tasks/tsconfig.json -T tasks unitTest",
-    "test:integration:backend":
-      "ts-node --project tasks/tsconfig.json -T tasks integrationTest backend",
+    "test:integration:backend": "ts-node --project tasks/tsconfig.json -T tasks integrationTest backend",
     "start": "ts-node --project tasks/tsconfig.json -T tasks start",
-    "develop:backend":
-      "ts-node --project tasks/tsconfig.json -T tasks developBackend",
-    "develop:frontend:web":
-      "ts-node --project tasks/tsconfig.json -T tasks developFrontend",
-    "develop:frontend:native":
-      "ts-node --project tasks/tsconfig.json -T tasks developFrontendNative",
-    "storybook:web":
-      "ts-node --project tasks/tsconfig.json -T tasks storybook web 6001",
+    "develop:backend": "ts-node --project tasks/tsconfig.json -T tasks developBackend",
+    "develop:frontend:web": "ts-node --project tasks/tsconfig.json -T tasks developFrontend",
+    "develop:frontend:native": "ts-node --project tasks/tsconfig.json -T tasks developFrontendNative",
+    "storybook:web": "ts-node --project tasks/tsconfig.json -T tasks storybook web 6001",
     "preview:web": "ts-node --project tasks/tsconfig.json -T tasks preview",
-    "heroku-postbuild":
-      "ts-node --project tasks/tsconfig.json -T tasks buildAll",
+    "heroku-postbuild": "ts-node --project tasks/tsconfig.json -T tasks buildAll",
     "pretty": "prettier --write",
     "precommit": "lint-staged",
-    "migration:make":
-      "ts-node --project tasks/tsconfig.json -T tasks makeMigration"
+    "migration:make": "ts-node --project tasks/tsconfig.json -T tasks makeMigration",
+    "graphql:schema": "ts-node --project tasks/tsconfig.json -T tasks graphqlSchema"
   },
   "engines": {
     "node": "^10.0.0",

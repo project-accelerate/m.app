@@ -15,6 +15,12 @@ import { OrganiserRepository } from '../external/OrganiserRepository'
 import { Organiser } from '../domain/Organiser'
 import { Photo } from 'backend/events/domain/Photo'
 import { PhotoStorageService } from 'backend/events/application/PhotoStorageService'
+import { createSimpleConnection } from 'backend/common/Connection'
+
+const AllOrganisersConnection = createSimpleConnection({
+  type: Organiser,
+  name: 'AllOrganisers',
+})
 
 @Resolver(Organiser)
 export class OrganiserResolver {
@@ -29,6 +35,11 @@ export class OrganiserResolver {
   })
   organiser(@Arg('id') id: string) {
     return this.organiserRepository.findOne(id)
+  }
+
+  @Query(() => AllOrganisersConnection)
+  async allOrganisers() {
+    return new AllOrganisersConnection(await this.organiserRepository.findAll())
   }
 
   @FieldResolver(() => Photo, {

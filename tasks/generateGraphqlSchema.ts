@@ -3,8 +3,12 @@ import { printSchema } from 'graphql'
 import { writeFileSync } from 'fs'
 
 import { configureGraphql } from '../backend/config/graphql'
+import { ConfigService } from 'backend/common/ConfigService'
+import { Container } from 'typedi'
 
 export async function graphqlSchema() {
+  Container.get<ConfigService>(ConfigService).makeOptional()
+
   console.log('Loading schema...')
   const schema = await configureGraphql()
   execSync('mkdir -p tmp')
