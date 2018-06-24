@@ -1,6 +1,7 @@
 import { CrudRepositoryConstructor } from '../common/CrudRepository'
 import { map, fromPairs } from 'lodash'
 import { withDb } from './integrationTestUtils'
+import Container from 'typedi'
 
 interface CrudRepositoryTestProps<T extends Props, Props> {
   /** Function returning some props required to insert into the repository */
@@ -26,7 +27,7 @@ export function shouldSupportStandardCrudFunctions<T extends Props, Props>(
   it(
     `should get inserted ${opts.repository.tableName}s`,
     withDb(async () => {
-      const repository = new Repository()
+      const repository = Container.get(Repository)
       const relationships = fromPairs(
         await Promise.all(
           map(relationshipExamples, async (createExample: any, key) => [

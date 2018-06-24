@@ -1,7 +1,11 @@
-import { db } from '../backend/db/db'
+import Knex from 'knex'
+import { Container } from 'typedi'
+import { DatabaseConnection } from 'backend/common/DatabaseConnection'
 
 export async function makeMigration(name: string = 'New-Migration') {
-  await db.migrate.make(name, {
+  const db = Container.get(DatabaseConnection)
+
+  await db.knex.migrate.make(name, {
     extension: 'ts',
   })
 }

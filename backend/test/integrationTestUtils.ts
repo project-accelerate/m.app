@@ -1,7 +1,9 @@
 import { execute, parse } from 'graphql'
+import Container from 'typedi'
+import Knex from 'knex'
 import { AuthToken } from 'common/AuthToken'
 import { configureGraphql } from '../config/graphql'
-import { db } from '../db/db'
+import { DatabaseConnection } from 'backend/common/DatabaseConnection'
 
 interface ExecQueryProps<T> {
   body: string
@@ -46,22 +48,26 @@ export async function execQuery<T>(
  */
 export function withDb(block: () => Promise<void>) {
   return async () => {
-    // Knex treats transaction rollback as an error. But we don't want to fail
-    // tests on rollback, so check this flag to determine if the test finished
-    // successfuly
-    let success = false
+    const db = Container.get(DatabaseConnection)
+    const knex = db.knex
+
+    let succeeded = false
 
     try {
-      await db.transaction(async transaction => {
+      await knex.transaction(async transaction => {
+        db.knex = transaction
+
         await block()
 
-        success = true
+        succeeded = true
         await transaction.rollback()
       })
     } catch (err) {
-      if (!success) {
+      if (!succeeded) {
         throw err
       }
+    } finally {
+      db.knex = knex
     }
   }
 }

@@ -18,10 +18,7 @@ import {
 } from '../external/PostcodesIOClient'
 import { Distance, DistanceUnit } from '../domain/Distance'
 import { WithoutId } from 'backend/common/WithoutId'
-
-const eventRepository = new EventRepository()
-const venueRepository = new VenueRepository()
-const organiserRepository = new OrganiserRepository()
+import { Container } from 'typedi'
 
 type EventProps = WithoutId<Event>
 type OrganiserProps = WithoutId<Organiser>
@@ -147,13 +144,13 @@ export function someDistance() {
 }
 
 export function givenThatAVenueExists(props: Partial<VenueProps> = {}) {
-  return venueRepository.insert(someVenueProps(props))
+  return Container.get(VenueRepository).insert(someVenueProps(props))
 }
 
 export function givenThatAnOrganiserExists(
   props: Partial<OrganiserProps> = {},
 ) {
-  return organiserRepository.insert(someOrganiserProps(props))
+  return Container.get(OrganiserRepository).insert(someOrganiserProps(props))
 }
 
 export async function givenThatAnEventExists(props: Partial<EventProps> = {}) {
@@ -162,7 +159,7 @@ export async function givenThatAnEventExists(props: Partial<EventProps> = {}) {
     Promise.resolve(props.venue || givenThatAVenueExists()),
   ])
 
-  return eventRepository.insert({
+  return Container.get(EventRepository).insert({
     ...someEventProps(props),
     organiser,
     venue,

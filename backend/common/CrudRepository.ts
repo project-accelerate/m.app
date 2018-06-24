@@ -1,12 +1,13 @@
 import uuid from 'uuid'
 import { flatMap, mapValues } from 'lodash'
-import * as Knex from 'knex'
-import { db } from '../db/db'
+import Knex from 'knex'
 import { WithoutId } from 'backend/common/WithoutId'
+import { Inject, Service, Container } from 'typedi'
+import { DatabaseConnection } from 'backend/common/DatabaseConnection'
 
 export interface CrudRepository<T, Props> {
   /** Database object exposed for custom queries */
-  db: Knex
+  db: DatabaseConnection
 
   /** Database table name */
   tableName: string
@@ -41,6 +42,11 @@ export interface CrudRepository<T, Props> {
   findOne(id: string): Promise<T | undefined>
 
   /**
+   * Return all instances
+   */
+  findAll(): Promise<T[]>
+
+  /**
    * Insert an object into the database
    */
   insert(
@@ -69,10 +75,10 @@ export function CrudRepository<T extends { id: string }, Props = WithoutId<T>>(
 ): CrudRepositoryConstructor<T, Props> {
   const { fieldConverters = {} as any, tableName } = opts
 
-  return class CrudRepositoryBase implements CrudRepository<T, Props> {
+  class CrudRepositoryBase implements CrudRepository<T, Props> {
     static tableName = opts.tableName
 
-    db = db
+    db = Container.get(DatabaseConnection)
 
     tableName = tableName
 
@@ -101,7 +107,7 @@ export function CrudRepository<T extends { id: string }, Props = WithoutId<T>>(
     }
 
     async findOne(id: string): Promise<T | undefined> {
-      return await db
+      return await this.db.knex
         .select('*', ...this.customQueryFields)
         .first()
         .from(opts.tableName)
@@ -109,12 +115,21 @@ export function CrudRepository<T extends { id: string }, Props = WithoutId<T>>(
         .then(x => this.decode(x))
     }
 
+    async findAll() {
+      return await this.db.knex
+        .select('*', ...this.customQueryFields)
+        .from(opts.tableName)
+        .then(xs => this.decodeAll(xs))
+    }
+
     async insert(data: Props): Promise<string> {
-      return await db
+      return await this.db.knex
         .insert({ ...this.encode(data), id: uuid() })
         .into(opts.tableName)
         .returning('id')
         .then(x => x[0])
     }
   }
+
+  return CrudRepositoryBase
 }

@@ -4,14 +4,14 @@ import {
   CrudRepository,
   CrudRepositoryConfig,
 } from '../../common/CrudRepository'
-import { gis, pointFieldConverter } from '../../common/gis'
 import { Event } from '../domain/Event'
 import { Distance } from '../domain/Distance'
+import { PointField } from 'backend/common/PointField'
 
 const config: CrudRepositoryConfig<Event> = {
   tableName: 'event',
   fieldConverters: {
-    location: pointFieldConverter,
+    location: PointField,
   },
 }
 
@@ -23,13 +23,13 @@ export class EventRepository extends CrudRepository<Event>(config) {
     fromTime: Date
     toTime: Date
   }): Promise<Event[]> {
-    return this.db
+    return this.db.knex
       .select('*', ...this.customQueryFields)
       .from(this.tableName)
       .where(
-        gis.dwithin(
+        this.db.gis.dwithin(
           'location',
-          gis.geomFromGeoJSON(q.location),
+          this.db.gis.geomFromGeoJSON(q.location),
           q.distance.inMeters,
           true,
         ),
