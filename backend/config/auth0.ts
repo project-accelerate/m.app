@@ -2,6 +2,9 @@ import jwt from 'express-jwt'
 import { expressJwtSecret } from 'jwks-rsa'
 import { ContextCallback } from 'graphql-yoga/dist/src/types'
 import { ConfigService } from 'backend/common/ConfigService'
+import { Role } from 'common/domain/Role'
+import { AuthChecker } from 'type-graphql'
+import { GraphQLContext } from 'backend/config/graphql'
 
 const config = new ConfigService()
 
@@ -10,7 +13,6 @@ const config = new ConfigService()
 // https://19majkel94.github.io/type-graphql/docs/authorization.html
 
 const auth0Domain = config.get('AUTH0_DOMAIN')
-const jwksUrl = `https://${auth0Domain}/.well-known/jwks.json`
 
 /** Parse and validate the user's request token */
 export const jwtMiddleware = jwt({
@@ -19,7 +21,7 @@ export const jwtMiddleware = jwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: `https://my-authz-server/.well-known/jwks.json`,
+    jwksUri: `https://${auth0Domain}/.well-known/jwks.json`,
   }),
 
   algorithms: ['RS256'],
@@ -32,3 +34,21 @@ export const userContext: ContextCallback = context => ({
   ...context,
   user: context.request.user,
 })
+
+export const authValidator: AuthChecker<GraphQLContext> = (
+  { context },
+  requiredRoles: string[],
+) => {
+  const { user } = context
+
+  if (!user) {
+    return false
+  }
+
+  const userRoles = user['http://peoplesmomentum.com/roles']
+  if (!userRoles) {
+    return false
+  }
+
+  return requiredRoles.every(role => userRoles.includes(role))
+}

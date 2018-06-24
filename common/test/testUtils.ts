@@ -18,7 +18,7 @@ export const someAuthTokenPayload = (
 ): AuthToken => ({
   sub: someUuid(),
   exp: someInt(),
-  roles: [],
+  'http://peoplesmomentum.com/roles': [],
 })
 
 export const someSyntheticEvent = (props: any = {}) => ({
