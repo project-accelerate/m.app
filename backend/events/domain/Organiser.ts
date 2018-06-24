@@ -20,6 +20,5 @@ export class Organiser {
 
   @Field() bio?: string
 
-  @Field(() => Photo)
   photo?: string
 }

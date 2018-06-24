@@ -1,6 +1,7 @@
 import uuid from 'uuid'
 import { Point } from 'geojson'
 import { AuthToken } from 'common/AuthToken'
+import { Role } from 'common/domain/Role'
 
 export const someBuffer = () => new Buffer('1234')
 export const someString = () => 'Foo'
@@ -13,13 +14,23 @@ export const someGeoPoint = (lat = 5, long = 13): Point => ({
   type: 'Point',
   coordinates: [lat, long],
 })
+
 export const someAuthTokenPayload = (
   token: Partial<AuthToken> = {},
 ): AuthToken => ({
   sub: someUuid(),
   exp: someInt(),
   'http://peoplesmomentum.com/roles': [],
+  ...token,
 })
+
+export const someAuthTokenWithRoles = (...roles: Role[]) =>
+  someAuthTokenPayload({
+    'http://peoplesmomentum.com/roles': roles,
+  })
+
+export const someAdminUser = someAuthTokenWithRoles(Role.ADMIN)
+export const someOrdinaryUser = someAuthTokenWithRoles()
 
 export const someSyntheticEvent = (props: any = {}) => ({
   ...props,

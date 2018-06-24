@@ -1,4 +1,10 @@
-import { someString, somePostcode, someDate } from 'common/test/testUtils'
+import {
+  someString,
+  somePostcode,
+  someDate,
+  someAdminUser,
+  someOrdinaryUser,
+} from 'common/test/testUtils'
 import { withDb, execQuery } from 'backend/test/integrationTestUtils'
 import {
   givenThatAnEventExists,
@@ -7,49 +13,85 @@ import {
   someEventProps,
 } from 'backend/events/test/eventTestUtils'
 import { CreateEventRequest } from 'backend/events/domain/Event'
+import { AuthToken } from 'common/AuthToken'
+import { SSL_OP_NO_SESSION_RESUMPTION_ON_RENEGOTIATION } from 'constants'
 
-describe('CreateEventResolver', () => {
-  describe('.createEvent', () => {
+describe('createEvent mutation', () => {
+  describe('as an admin user', () => {
     it(
       'creates the event and returns it',
       withDb(async () => {
-        const result = await execQuery<{ request: CreateEventRequest }>({
-          body: `
-          mutation($request: CreateEventRequest) {
-            createEvent(request: $request) {
-              name
-              venue {
-                name
-              }
-              organiser {
-                name
-              }
-            }
-          }
-        `,
-          variables: {
-            request: {
-              startTime: someDate(),
-              endTime: someDate(),
-              introduction: someString(),
-              name: 'my-event',
-              venueName: 'my-venue',
-              organiserName: 'my-organiser',
-              postcode: somePostcode(),
-            },
+        const result = await createEvent({
+          request: {
+            name: 'my-event',
+            venueName: 'my-venue',
+            organiserName: 'my-organiser',
           },
+          user: someAdminUser,
         })
 
         expect(result.createEvent).toMatchObject({
           name: 'my-event',
-          organiser: {
-            name: 'my-organiser',
-          },
           venue: {
             name: 'my-venue',
+          },
+          organiser: {
+            name: 'my-organiser',
           },
         })
       }),
     )
   })
+
+  describe('as an ordinary user', () => {
+    it(
+      'rejects the request',
+      withDb(async () => {
+        const result = createEvent({
+          request: {
+            name: 'my-event',
+            venueName: 'my-venue',
+            organiserName: 'my-organiser',
+          },
+          user: someOrdinaryUser,
+        })
+
+        await expect(result).rejects.toThrow()
+      }),
+    )
+  })
 })
+
+async function createEvent(props: {
+  request: Partial<CreateEventRequest>
+  user?: AuthToken
+}) {
+  return execQuery<{ request: CreateEventRequest }>({
+    body: `
+    mutation($request: CreateEventRequest) {
+      createEvent(request: $request) {
+        name
+        venue {
+          name
+        }
+        organiser {
+          name
+        }
+      }
+    }
+  `,
+    variables: {
+      request: {
+        startTime: someDate(),
+        endTime: someDate(),
+        introduction: someString(),
+        name: someString(),
+        venueName: someString(),
+        organiserName: someString(),
+        postcode: somePostcode(),
+        ...props.request,
+      },
+    },
+    user: props.user,
+  })
+}

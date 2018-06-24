@@ -31,7 +31,9 @@ export class OrganiserResolver {
     return this.organiserRepository.findOne(id)
   }
 
-  @FieldResolver()
+  @FieldResolver(() => Photo, {
+    nullable: true,
+  })
   photo(@Root() organiser: Organiser): Photo | undefined {
     if (!organiser.photo) {
       return undefined

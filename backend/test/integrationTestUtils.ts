@@ -1,9 +1,11 @@
 import { execute, parse } from 'graphql'
+import { AuthToken } from 'common/AuthToken'
 import { configureGraphql } from '../config/graphql'
 import { db } from '../db/db'
 
 interface ExecQueryProps<T> {
   body: string
+  user?: AuthToken
   variables?: T
 }
 
@@ -18,7 +20,7 @@ export async function execQuery<T>(
     return execQuery({ body: q })
   }
 
-  const { body, variables } = q
+  const { body, variables, user } = q
 
   const schema = await configureGraphql()
 
@@ -26,6 +28,9 @@ export async function execQuery<T>(
     schema,
     document: parse(body),
     variableValues: variables,
+    contextValue: {
+      user,
+    },
   })
 
   if (result && result.data) {

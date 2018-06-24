@@ -1,4 +1,4 @@
-import { InputType, Resolver, Mutation } from 'type-graphql'
+import { InputType, Resolver, Mutation, Authorized } from 'type-graphql'
 import { MutationRequest } from 'backend/common/resolverUtils'
 import {
   Organiser,
@@ -6,6 +6,7 @@ import {
 } from 'backend/events/domain/Organiser'
 import { OrganiserAdminService } from 'backend/events/application/OrganiserAdminService'
 import { OrganiserRepository } from 'backend/events/external/OrganiserRepository'
+import { Role } from 'common/domain/Role'
 
 @Resolver()
 export class OrganiserMutations {
@@ -14,6 +15,7 @@ export class OrganiserMutations {
     private organiserRepository: OrganiserRepository,
   ) {}
 
+  @Authorized(Role.ADMIN)
   @Mutation(() => Organiser)
   async createOrganiser(
     @MutationRequest(() => CreateOrganiserRequest)
