@@ -9,7 +9,9 @@ import {
 } from 'common/test/testUtils'
 import { AuthToken } from 'common/AuthToken'
 
-const imageData = readFileSync(join(__dirname, 'image.png')).toString('base64')
+const imageData = readFileSync(
+  require.resolve('common/test/somePhoto.jpg'),
+).toString('base64')
 
 describe('CreateOrganiserResolver', () => {
   describe('as an admin user', () => {

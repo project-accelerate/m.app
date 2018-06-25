@@ -1,6 +1,7 @@
 {
   "transform": {
-    "^.+\\.tsx?$": "ts-jest"
+    "^.+\\.tsx?$": "ts-jest",
+    "^\\.(png|svg|jpg)$": "jest-file"
   },
   "setupTestFrameworkScriptFile": "<rootDir>/testSetup.js",
   "testRegex": "__tests__/.*\\.(test|spec)\\.tsx?$",

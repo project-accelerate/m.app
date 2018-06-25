@@ -7,6 +7,7 @@
   },
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^1.2.3",
     "apollo-client": "2",
     "apollo-client-preset": "^1.0.8",
     "apollo-link-context": "^1.0.8",
@@ -28,11 +29,15 @@
     "extract-text-webpack-plugin": "3.0.2",
     "file-loader": "0.11.2",
     "fork-ts-checker-webpack-plugin": "^0.2.8",
+    "formstate": "^1.0.1",
     "frontend.common": "*",
     "fs-extra": "3.0.1",
     "html-webpack-plugin": "2.29.0",
     "jest": "22.4.2",
+    "jest-file": "^1.0.0",
     "lodash": "^4.17.10",
+    "mobx": "^5.0.3",
+    "mobx-react": "^5.2.3",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.8",
@@ -43,8 +48,10 @@
     "react-apollo": "^2.1.5",
     "react-dev-utils": "^5.0.1",
     "react-dom": "^16.4.1",
+    "react-dropzone": "^4.2.11",
     "react-intl": "^2.4.0",
     "react-jss": "^8.4.0",
+    "react-promise": "^2.0.3",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.3.1",
     "resolve": "1.6.0",
@@ -82,6 +89,7 @@
     "@types/node": "^10.3.3",
     "@types/react": "^16.3.18",
     "@types/react-dom": "^16.0.6",
+    "@types/react-dropzone": "^4.2.0",
     "@types/react-hot-loader": "^4.1.0",
     "@types/react-intl": "^2.3.8",
     "@types/react-router": "^4.0.25",
@@ -109,8 +117,6 @@
     "typescript": "^2.9.2"
   },
   "babel": {
-    "presets": [
-      "react-app"
-    ]
+    "presets": ["react-app"]
   }
 }

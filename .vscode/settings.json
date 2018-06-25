@@ -13,5 +13,7 @@
     "build": true,
     "dist": true,
     "tmp": true
-  }
+  },
+  "editor.snippetSuggestions": "none",
+  "templateGenerator.templatesPath": ".vscode/templates"
 }

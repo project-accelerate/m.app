@@ -18,6 +18,9 @@ import theme from '../theme'
 
 interface StoryWrapperConfig {
   user?: AuthToken
+  width?: number
+  height?: number
+  bg?: string
 }
 
 export function storyWrapper(props?: StoryWrapperConfig): StoryDecorator
@@ -35,6 +38,8 @@ export function storyWrapper(
     removeItem: action(`remove`),
   })
 
+  const { width = '100vw', height = '100vh', bg: backgroundColor } = props
+
   const render = (children: () => React.ReactNode) => (
     <AuthGuardProvider tokenManager={tokenManager}>
       <IntlProvider>
@@ -44,7 +49,7 @@ export function storyWrapper(
             sheetsManager={new Map()}
           >
             <CssBaseline />
-            <div style={{ width: '100vw', height: '100vh' }}>{children()}</div>
+            <div style={{ width, height, backgroundColor }}>{children()}</div>
           </MuiThemeProvider>
         </MemoryRouter>
       </IntlProvider>
