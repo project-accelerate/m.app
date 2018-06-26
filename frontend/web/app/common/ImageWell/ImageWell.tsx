@@ -16,6 +16,7 @@ import {
 } from '@material-ui/core'
 import { AddAPhoto, Portrait } from '@material-ui/icons'
 import classnames from 'classnames'
+import { toDataUri } from 'frontend.web/utils'
 
 const styles = ({ spacing, palette }: Theme) =>
   createStyles({
@@ -135,15 +136,6 @@ class _ImageWell extends React.Component<ImageWellProps> {
       )
     }
   }
-}
-
-function toDataUri(blob: Blob) {
-  return new Promise<string>((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = () => resolve(reader.result)
-    reader.onerror = () => reject(reader.error)
-    reader.readAsDataURL(blob)
-  })
 }
 
 export const ImageWell = withStyles(styles)(_ImageWell)

@@ -1,6 +1,7 @@
 import { Service } from 'typedi'
 import { S3 } from 'aws-sdk'
-import { PutObjectOutput } from 'aws-sdk/clients/s3'
+import log from 'winston'
+import { PutObjectOutput, ManagedUpload } from 'aws-sdk/clients/s3'
 import { ConfigService } from 'backend/common/ConfigService'
 import { URL } from 'url'
 
@@ -14,6 +15,7 @@ export class S3Client {
       accessKeyId: config.get('BUCKETEER_AWS_ACCESS_KEY_ID'),
       secretAccessKey: config.get('BUCKETEER_AWS_SECRET_ACCESS_KEY'),
       region: config.get('BUCKETEER_AWS_REGION'),
+      s3DisableBodySigning: true,
     }),
   ) {}
 
@@ -47,22 +49,25 @@ export class S3Client {
     })
   }
 
-  putObject(object: string, buffer: Buffer) {
-    return new Promise<PutObjectOutput>((resolve, reject) => {
-      this.s3.putObject(
-        {
-          Key: object,
-          Bucket: this.bucketName,
-          Body: buffer,
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err)
-          }
+  putObject(
+    object: string,
+    body: S3.Body,
+    opts: { mimetype: string; encoding: string },
+  ) {
+    log.silly('S3 Put', object, body, opts)
 
-          resolve(data)
-        },
-      )
+    const upload = new ManagedUpload({
+      service: this.s3,
+      params: {
+        Key: object,
+        Bucket: this.bucketName,
+        Body: body,
+        ContentType: opts.mimetype,
+        ContentEncoding: opts.encoding,
+      },
     })
+
+    upload.send()
+    return upload.promise()
   }
 }

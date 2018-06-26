@@ -1,16 +1,17 @@
 import { someBuffer } from 'common/test/testUtils'
 import { ConfigService } from '../../ConfigService'
 import { S3Client } from '../S3Client'
+import { someImageUpload, someImage } from 'backend/test/testUtils'
 
 describe('S3Client', () => {
   it('gets uploaded objects', async () => {
     const client = new S3Client(new ConfigService())
     const key = '123'
-    const data = someBuffer()
+    const { stream, encoding, mimetype } = await someImageUpload()
 
-    await client.putObject(key, data)
+    await client.putObject(key, stream, { encoding, mimetype })
 
-    expect(await client.getObject(key)).toEqual(data)
+    expect(await client.getObject(key)).toEqual(someImage)
   })
 
   it('returns configured s3 url for object key', async () => {

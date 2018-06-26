@@ -10,9 +10,10 @@ export class OrganiserAdminService {
     private readonly photoStorageService: PhotoStorageService,
   ) {}
 
-  async addOrganiser({ photoData, ...props }: CreateOrganiserRequest) {
+  async addOrganiser({ photoUpload, ...props }: CreateOrganiserRequest) {
     const photoId =
-      photoData && (await this.photoStorageService.savePhoto(photoData))
+      photoUpload &&
+      (await this.photoStorageService.savePhoto(await photoUpload))
 
     return this.organiserRepository.insert({
       photo: photoId,

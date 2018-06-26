@@ -3,19 +3,22 @@ import { PhotoStorageService } from 'backend/events/application/PhotoStorageServ
 import { S3Client } from 'backend/common/external/S3Client'
 import { URL } from 'url'
 import { UUIDProvider } from 'backend/common/UUIDProvider'
+import { someImageUpload } from 'backend/test/testUtils'
 
 describe(PhotoStorageService, () => {
   it('should upload photo returning id', async () => {
     const fixture = new Fixture()
-    const photoData = 'data:123'
+    const photoUpload = await someImageUpload({
+      mimetype: 'image/jpeg',
+    })
 
     fixture.givenUUID('abc')
 
-    const id = await fixture.service.savePhoto(photoData)
+    const id = await fixture.service.savePhoto(photoUpload)
 
-    expect(id).toBe('abc')
+    expect(id).toBe('abc.jpeg')
 
-    verify(fixture.s3.putObject(id, Buffer.from(photoData)))
+    verify(fixture.s3.putObject(id, photoUpload.stream, photoUpload))
   })
 
   it('should provide public url for photos', () => {
@@ -44,7 +47,7 @@ class Fixture {
   }
 
   givenThatTheUploadSucceeds() {
-    when(this.s3.putObject(anything(), anything())).thenResolve({} as any)
+    when(this.s3.putObject(anything(), anything(), anything())).thenResolve({} as any)
   }
 }
 

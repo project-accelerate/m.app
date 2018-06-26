@@ -2,17 +2,19 @@ import { OrganiserAdminService } from 'backend/events/application/OrganiserAdmin
 import { mock, when, anything, verify } from 'ts-mockito'
 import { OrganiserRepository } from 'backend/events/external/OrganiserRepository'
 import { PhotoStorageService } from 'backend/events/application/PhotoStorageService'
+import { someImageUpload } from 'backend/test/testUtils'
 
 describe(OrganiserAdminService, () => {
   it('saves all data when new organiser is created', async () => {
     const fixture = new Fixture()
+    const photoUpload = someImageUpload()
 
     fixture.givenThatThePhotoIsSavedWithId('photo1')
     fixture.givenThatTheOrganiserInsertsReturningId('organiser1')
 
     const returnedId = await fixture.service.addOrganiser({
       name: 'me',
-      photoData: 'data:123',
+      photoUpload,
       bio: 'my bio',
     })
 
@@ -24,7 +26,7 @@ describe(OrganiserAdminService, () => {
       }),
     )
 
-    verify(fixture.photoStorageService.savePhoto('data:123'))
+    verify(fixture.photoStorageService.savePhoto(await photoUpload))
   })
 })
 

@@ -22,7 +22,7 @@ interface EditOrganiserFormProps {
 interface EditOrganiserFormData {
   name: string
   bio: string
-  profilePic: string | File
+  profilePic?: string
 }
 
 export class EditOrganiserForm extends React.Component<EditOrganiserFormProps> {
@@ -33,6 +33,23 @@ export class EditOrganiserForm extends React.Component<EditOrganiserFormProps> {
     bio: new FieldState(this.initial.bio || ''),
     profilePic: new FieldState(this.initial.profilePic),
   })
+
+  handleSave = async () => {
+    const result = await this.form.validate()
+
+    if (!result.hasError) {
+      const { name, bio, profilePic } = result.value
+      const photoUpload = isBlob(profilePic.value)
+        ? await toDataUri(profilePic.value)
+        : undefined
+
+      this.props.onSave({
+        name: name.value,
+        bio: bio.value,
+        photoUpload,
+      })
+    }
+  }
 
   render() {
     return (

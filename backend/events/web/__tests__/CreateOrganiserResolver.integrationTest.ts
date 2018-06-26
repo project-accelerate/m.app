@@ -8,6 +8,7 @@ import {
   someOrdinaryUser,
 } from 'common/test/testUtils'
 import { AuthToken } from 'common/AuthToken'
+import { someImageUpload } from 'backend/test/testUtils'
 
 const imageData = readFileSync(
   require.resolve('common/test/somePhoto.jpg'),
@@ -22,7 +23,7 @@ describe('CreateOrganiserResolver', () => {
           request: {
             name: 'my-name',
             bio: 'my-bio',
-            photoData: imageData,
+            photoUpload: someImageUpload(),
           },
           user: someAdminUser,
         })
@@ -47,7 +48,7 @@ describe('CreateOrganiserResolver', () => {
           request: {
             name: 'my-name',
             bio: 'my-bio',
-            photoData: imageData,
+            photoUpload: someImageUpload(),
           },
           user: someOrdinaryUser,
         })
