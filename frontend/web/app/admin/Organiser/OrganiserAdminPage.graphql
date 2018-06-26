@@ -1,0 +1,7 @@
+#import "./AllOrganisers.graphql"
+
+query OrganiserAdminPage {
+  allOrganisers {
+    ...AllOrganisers
+  }
+}

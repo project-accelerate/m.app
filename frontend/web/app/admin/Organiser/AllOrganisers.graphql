@@ -1,0 +1,9 @@
+#import "./OrganiserAdminCard.graphql"
+
+fragment AllOrganisers on AllOrganisersConnection {
+  edges {
+    node {
+      ...OrganiserAdminCard
+    }
+  }
+}

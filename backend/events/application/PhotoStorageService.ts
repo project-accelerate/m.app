@@ -41,7 +41,8 @@ export class PhotoStorageService {
 
   private generateId(mimeType: string) {
     // Currently filename == id.
-    // Which isn't ideal, but can be changed if needed......
+    // Which isn't ideal, but YAGNI
+    // We hang on to file extension for mime type just in case
     return `${this.uuid.generate()}.${extension(mimeType)}`
   }
 }

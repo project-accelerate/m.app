@@ -35,6 +35,9 @@ export async function configureWeb(opts: { serveUI: boolean }) {
 
   await server.start({
     endpoint: '/graphql',
+    cors: {
+      origin: '*',
+    },
     playground: opts.serveUI ? false : '/graphql',
     port: PORT,
   })

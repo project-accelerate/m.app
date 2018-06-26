@@ -1,0 +1,8 @@
+fragment OrganiserAdminCard on Organiser {
+  id
+  name
+  bio
+  photo {
+    sourceUrl
+  }
+}

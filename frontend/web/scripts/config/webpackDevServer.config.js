@@ -93,7 +93,12 @@ module.exports = function(proxy, allowedHost) {
       app.use(noopServiceWorkerMiddleware())
 
       // Proxy config file requests to backend
-      app.use('/config.js', httpProxy(process.env.BACKEND_URL))
+      app.use(
+        '/config.js',
+        httpProxy(process.env.BACKEND_URL, {
+          proxyReqPathResolver: () => '/config.js',
+        }),
+      )
     },
   }
 }

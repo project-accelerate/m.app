@@ -5,24 +5,27 @@ import {
   withStyles,
   Grid,
   Typography,
+  createStyles,
 } from '@material-ui/core'
 
 interface LoadingIndicatorProps {
   message?: React.ReactNode
 }
 
-const styles = withStyles(({ spacing, palette }) => ({
-  loadIndicator: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  message: {
-    color: palette.common.white,
-    fontWeight: 'bolder' as FontWeightProperty,
-    marginTop: spacing.unit,
-  },
-}))
+const styles = withStyles(({ spacing, palette }) =>
+  createStyles({
+    loadIndicator: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    message: {
+      color: palette.common.white,
+      fontWeight: 'bolder',
+      marginTop: spacing.unit,
+    },
+  }),
+)
 
 export const LoadingIndicator = styles<LoadingIndicatorProps>(
   function LoadingIndicator({ classes, message = 'Loading…' }) {

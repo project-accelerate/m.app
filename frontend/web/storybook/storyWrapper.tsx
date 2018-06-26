@@ -49,7 +49,11 @@ export function storyWrapper(
             sheetsManager={new Map()}
           >
             <CssBaseline />
-            <div style={{ width, height, backgroundColor }}>{children()}</div>
+            <div
+              style={{ position: 'relative', width, height, backgroundColor }}
+            >
+              {children()}
+            </div>
           </MuiThemeProvider>
         </MemoryRouter>
       </IntlProvider>

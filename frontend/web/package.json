@@ -11,6 +11,7 @@
     "apollo-client": "2",
     "apollo-client-preset": "^1.0.8",
     "apollo-link-context": "^1.0.8",
+    "apollo-upload-client": "^8.1.0",
     "auth0-js": "^9.6.1",
     "autoprefixer": "7.1.6",
     "axios": "^0.18.0",

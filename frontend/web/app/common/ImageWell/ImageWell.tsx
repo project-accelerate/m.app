@@ -53,7 +53,7 @@ const styles = ({ spacing, palette }: Theme) =>
     },
     wrapper: {
       position: 'relative',
-      minHeight: 300,
+      height: 400,
     },
     hasImage: {
       '& $image': {

@@ -12,26 +12,45 @@ import {
   CardContent,
   CardActions,
   Button,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  DialogContent,
 } from '@material-ui/core'
-import { ImageWell } from 'frontend.web/app/common/ImageWell/ImageWell'
+import {
+  ImageWell,
+  ImageWellValue,
+} from 'frontend.web/app/common/ImageWell/ImageWell'
+import { mapValues } from 'lodash'
+import { toDataUri } from 'frontend.web/utils'
+import { EditDialog } from 'frontend.web/app/admin/common/EditDialog/EditDialog'
 
 interface EditOrganiserFormProps {
-  initial?: EditOrganiserFormData
+  title: string
+  initial?: EditOrganiserFormValue
+  onSave: (data: EditOrganiserFormChange) => void
+  onCancel: () => void
 }
 
-interface EditOrganiserFormData {
+interface EditOrganiserFormValue {
   name: string
   bio: string
   profilePic?: string
 }
 
+interface EditOrganiserFormChange {
+  name: string
+  bio: string
+  photoUpload?: File
+}
+
 export class EditOrganiserForm extends React.Component<EditOrganiserFormProps> {
-  initial: Partial<EditOrganiserFormData> = this.props.initial || {}
+  initial: Partial<EditOrganiserFormValue> = this.props.initial || {}
 
   form = new FormState({
     name: new FieldState(this.initial.name || ''),
     bio: new FieldState(this.initial.bio || ''),
-    profilePic: new FieldState(this.initial.profilePic),
+    profilePic: new FieldState<ImageWellValue>(this.initial.profilePic),
   })
 
   handleSave = async () => {
@@ -39,21 +58,23 @@ export class EditOrganiserForm extends React.Component<EditOrganiserFormProps> {
 
     if (!result.hasError) {
       const { name, bio, profilePic } = result.value
-      const photoUpload = isBlob(profilePic.value)
-        ? await toDataUri(profilePic.value)
-        : undefined
 
       this.props.onSave({
         name: name.value,
         bio: bio.value,
-        photoUpload,
+        photoUpload:
+          profilePic.value instanceof File ? profilePic.value : undefined,
       })
     }
   }
 
   render() {
     return (
-      <form>
+      <EditDialog
+        title={this.props.title}
+        onSubmit={this.handleSave}
+        onCancel={this.props.onCancel}
+      >
         <Grid container direction="column" xs={12} spacing={16}>
           <Grid item>
             <ImageWell
@@ -80,16 +101,8 @@ export class EditOrganiserForm extends React.Component<EditOrganiserFormProps> {
               data={this.form.$.bio}
             />
           </Grid>
-          <Grid item container justify="flex-end">
-            <Button variant="text" color="secondary">
-              Cancel
-            </Button>
-            <Button variant="text" color="primary">
-              Save
-            </Button>
-          </Grid>
         </Grid>
-      </form>
+      </EditDialog>
     )
   }
 }

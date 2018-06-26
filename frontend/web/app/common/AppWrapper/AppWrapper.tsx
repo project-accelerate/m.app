@@ -45,22 +45,11 @@ export const AppWrapper = withStyles(styles)(({ children, classes }) => (
         <i className={classes.logo} />
 
         <PageTabs scrollable className={classes.flex} value={0}>
-          <PageTab path="/events" label="Explore" />
-          <PageTab path="/events/calendar" label="Calendar" />
-          <PageTab path="/events/organise" label="Organise" />
+          <PageTab path="/admin/speakers" label="Speakers" />
+          <PageTab path="/admin/events" label="Events" />
+          <PageTab path="/admin/venues" label="Venues" />
+          <PageTab path="/admin/updates" label="Notifications" />
         </PageTabs>
-
-        <LoggedInGuard
-          render={
-            <IconButton
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="Menu"
-            >
-              <AccountCircle />
-            </IconButton>
-          }
-        />
       </Toolbar>
     </AppBar>
     {children}

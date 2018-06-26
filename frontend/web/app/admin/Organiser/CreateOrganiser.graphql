@@ -1,0 +1,5 @@
+mutation CreateOrganiser($req: CreateOrganiserRequest!) {
+  createOrganiser(request: $req) {
+    id
+  }
+}
