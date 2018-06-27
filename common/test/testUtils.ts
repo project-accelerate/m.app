@@ -14,12 +14,13 @@ export const someGeoPoint = (lat = 5, long = 13): Point => ({
   type: 'Point',
   coordinates: [lat, long],
 })
+export const farFutureTimestamp = () => 25_3010_3809
 
 export const someAuthTokenPayload = (
   token: Partial<AuthToken> = {},
 ): AuthToken => ({
   sub: someUuid(),
-  exp: someInt(),
+  exp: farFutureTimestamp(),
   'http://peoplesmomentum.com/roles': [],
   ...token,
 })

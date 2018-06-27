@@ -18,6 +18,13 @@ describe('TokenManager', () => {
     expect(fixture.manager.current.authProps).toMatchObject(token)
   })
 
+  it('should ignore jwt in localStorage if expired', () => {
+    const token = someAuthTokenPayload({ exp: 1 })
+    const fixture = Fixture.withSavedToken(token)
+
+    expect(fixture.manager.current.authProps).toBeUndefined()
+  })
+
   it('should provide new auth credentials on setting token', () => {
     const fixture = new Fixture()
     const newToken = someAuthTokenPayload({ sub: 'me' })
