@@ -39,9 +39,6 @@ export function OrganiserAdminCard({
         {({ active: bioVisible, toggle: toggleBio }) => (
           <>
             <CardActions>
-              <IconButton onClick={() => onEdit(organiser)}>
-                <Edit />
-              </IconButton>
               <DiscloseButton disclosed={bioVisible} onClick={toggleBio} />
             </CardActions>
             {organiser.bio && (
