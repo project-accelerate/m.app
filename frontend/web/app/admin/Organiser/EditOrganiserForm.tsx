@@ -59,7 +59,7 @@ export class EditOrganiserForm extends React.Component<EditOrganiserFormProps> {
     if (!result.hasError) {
       const { name, bio, profilePic } = result.value
 
-      this.props.onSave({
+      await this.props.onSave({
         name: name.value,
         bio: bio.value,
         photoUpload:

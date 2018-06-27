@@ -32,6 +32,10 @@ const styles = withStyles(({ spacing, transitions, palette }) =>
     disclosed: {
       transform: 'rotate(180deg)',
     },
+    mediaWrapper: {
+      position: 'relative',
+      maxHeight: 300,
+    },
     imageOverlay: {
       position: 'absolute',
       left: 0,
@@ -40,6 +44,11 @@ const styles = withStyles(({ spacing, transitions, palette }) =>
       width: '100%',
       color: palette.common.white,
       padding: spacing.unit * 2,
+    },
+    media: {
+      maxHeight: 300,
+      objectFit: 'cover',
+      objectPosition: 'top left',
     },
   }),
 )
@@ -129,8 +138,8 @@ export const CardImage = styles<CardImageProps>(function CardImage({
   }
 
   return (
-    <div>
-      <CardMedia component="img" src={src} />
+    <div className={classes.mediaWrapper}>
+      <CardMedia className={classes.media} component="img" src={src} />
 
       <div className={classes.imageOverlay}>{children}</div>
     </div>
