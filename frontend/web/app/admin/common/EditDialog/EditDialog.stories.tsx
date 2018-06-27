@@ -1,14 +1,15 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
-import { EditDialog } from './EditDialog'
 import { lorem } from 'faker'
+import { EditDialog } from './EditDialog'
+import { asyncAction } from 'frontend.web/storybook/actions'
 
 storiesOf('EditDialog', module).add('Default', () => (
   <EditDialog
     title="Title"
     onCancel={action('cancel')}
-    onSubmit={action('submit')}
+    onSubmit={asyncAction('submit')}
   >
     {lorem.paragraph(2)}
   </EditDialog>

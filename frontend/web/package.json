@@ -52,6 +52,7 @@
     "react-dropzone": "^4.2.11",
     "react-intl": "^2.4.0",
     "react-jss": "^8.4.0",
+    "react-markdown": "^3.3.4",
     "react-promise": "^2.0.3",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.3.1",

@@ -1,27 +1,27 @@
-import { action } from '@storybook/addon-actions'
 import React from 'react'
-import { shallow } from 'enzyme'
+import { shallow, ShallowWrapper } from 'enzyme'
 import { EditDialog } from '../EditDialog'
 
 describe(EditDialog, () => {
   it('should render', () => {
-    const fixture = new Fixture(
-      (
-        <EditDialog
-          title="Title"
-          onCancel={action('cancel')}
-          onSubmit={action('submit')}
-        />
-      ),
-    )
+    const fixture = new Fixture()
 
     expect(fixture.tree).not.toBeEmptyRender()
   })
 })
 
 class Fixture {
-  constructor(
-    public markup: React.ReactElement<{}>,
-    public tree = shallow(markup),
-  ) {}
+  tree: ShallowWrapper
+  cancel = jest.fn()
+  submit = jest.fn()
+
+  constructor() {
+    this.tree = shallow(
+      <EditDialog
+        title="Title"
+        onCancel={this.cancel}
+        onSubmit={this.submit}
+      />,
+    )
+  }
 }

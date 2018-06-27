@@ -6,14 +6,15 @@ import { AdminCrudView } from './AdminCrudView'
 import { delay } from 'bluebird'
 import { Button, Typography } from '@material-ui/core'
 import { storyWrapper } from 'frontend.web/storybook/storyWrapper'
+import { asyncAction } from 'frontend.web/storybook/actions'
 
 storiesOf('AdminCrudView', module)
   .addDecorator(storyWrapper({ width: 320, height: 240, bg: 'steelgrey' }))
   .add('Default', () => (
     <AdminCrudView
       items={[item(), item(), item()]}
-      onAddItem={asycAction('add')}
-      onEditItem={asycAction('save')}
+      onAddItem={asyncAction('add')}
+      onEditItem={asyncAction('edit')}
       renderListItem={({ value, onEdit }) => (
         <>
           <Typography variant="title">{value.id}</Typography>
@@ -38,11 +39,3 @@ storiesOf('AdminCrudView', module)
   ))
 
 const item = () => ({ id: faker.name.firstName() })
-
-function asycAction(label: string) {
-  const syncAction = action(label)
-
-  return async (...args: any[]) => {
-    await delay(1_000)
-  }
-}

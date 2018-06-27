@@ -138,7 +138,7 @@ export class AdminCrudView<
 
           return (
             <>
-              <Grid direction="column" spacing={8} container>
+              <Grid direction="row" wrap="wrap" spacing={16} container>
                 {mode.type === 'add' && (
                   <Grid item>
                     {renderAddItem({
@@ -157,7 +157,7 @@ export class AdminCrudView<
                   </Grid>
                 )}
                 {items.map(item => (
-                  <Grid key={item.id} item>
+                  <Grid key={item.id} item xs={12} md={6}>
                     {renderListItem({
                       value: item,
 
@@ -167,7 +167,10 @@ export class AdminCrudView<
                 ))}
               </Grid>
               {mode.type === 'list' && (
-                <FloatingActionButton onClick={this.handleAdd}>
+                <FloatingActionButton
+                  color="secondary"
+                  onClick={this.handleAdd}
+                >
                   <Add />
                 </FloatingActionButton>
               )}

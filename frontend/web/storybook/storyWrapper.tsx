@@ -14,6 +14,7 @@ import {
   TokenManager,
 } from 'frontend.common/auth'
 import { IntlProvider } from 'react-intl'
+import { delay } from 'bluebird'
 import theme from '../theme'
 
 interface StoryWrapperConfig {

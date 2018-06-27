@@ -8,8 +8,15 @@ import {
   Typography,
   CardActions,
   IconButton,
+  Collapse,
 } from '@material-ui/core'
-import { Edit } from '@material-ui/icons'
+import { Edit, ExpandMore } from '@material-ui/icons'
+import {
+  MarkdownView,
+  Toggle,
+  DiscloseButton,
+  CardImage,
+} from 'frontend.web/app/common/Widgets/Widgets'
 
 interface OrganiserAdminCardProps {
   organiser: OrganiserAdminCardFragment
@@ -22,19 +29,31 @@ export function OrganiserAdminCard({
 }: OrganiserAdminCardProps) {
   return (
     <Card>
-      {organiser.photo && (
-        <CardMedia component="img" src={organiser.photo.sourceUrl} />
-      )}
+      <CardImage src={organiser.photo && organiser.photo.sourceUrl}>
+        <Typography color="inherit" variant="headline">
+          {organiser.name}
+        </Typography>
+      </CardImage>
 
-      <CardContent>
-        <Typography variant="title">{organiser.name}</Typography>
-      </CardContent>
-
-      <CardActions>
-        <IconButton onClick={() => onEdit(organiser)}>
-          <Edit />
-        </IconButton>
-      </CardActions>
+      <Toggle>
+        {({ active: bioVisible, toggle: toggleBio }) => (
+          <>
+            <CardActions>
+              <IconButton onClick={() => onEdit(organiser)}>
+                <Edit />
+              </IconButton>
+              <DiscloseButton disclosed={bioVisible} onClick={toggleBio} />
+            </CardActions>
+            {organiser.bio && (
+              <Collapse in={bioVisible}>
+                <CardContent>
+                  <MarkdownView value={organiser.bio} />
+                </CardContent>
+              </Collapse>
+            )}
+          </>
+        )}
+      </Toggle>
     </Card>
   )
 }

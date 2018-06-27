@@ -10,22 +10,44 @@ import {
   Button,
 } from '@material-ui/core'
 import { contentWidth } from 'frontend.web/app/common/Layouts'
+import { LoadingIndicator } from 'frontend.web/app/common/LoadData/LoadingIndicator'
 
 const styles = () =>
   createStyles({
     content: {
       width: contentWidth,
     },
+    loadingOverlay: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    },
   })
 
 interface EditDialogProps extends WithStyles<typeof styles> {
   title: string
-  onSubmit: () => void
+  onSubmit: () => Promise<void>
   onCancel: () => void
 }
 
 export const EditDialog = withStyles(styles)(
   class EditDialog extends React.Component<EditDialogProps> {
+    state = { busy: false }
+
+    handleSubmit = async () => {
+      try {
+        this.setState({ busy: true })
+        await this.props.onSubmit()
+      } finally {
+        this.setState({ busy: false })
+      }
+    }
+
     render() {
       const { classes } = this.props
 
@@ -44,13 +66,19 @@ export const EditDialog = withStyles(styles)(
               Cancel
             </Button>
             <Button
-              onClick={this.props.onSubmit}
+              onClick={this.handleSubmit}
               variant="raised"
               color="primary"
             >
               Save
             </Button>
           </DialogActions>
+
+          {this.state.busy && (
+            <div className={classes.loadingOverlay}>
+              <LoadingIndicator message="Saving..." />
+            </div>
+          )}
         </Dialog>
       )
     }
