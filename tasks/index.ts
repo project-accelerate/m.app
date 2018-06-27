@@ -14,8 +14,10 @@ import log from 'winston'
 import * as dotenv from 'dotenv'
 import { join } from 'path'
 
-dotenv.config({ path: join(__dirname, '..', 'config', 'public.env') })
-dotenv.config({ path: join(__dirname, '..', 'config', '.env') })
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config({ path: join(__dirname, '..', 'config', 'public.env') })
+  dotenv.config({ path: join(__dirname, '..', 'config', '.env') })
+}
 
 process.on('unhandledRejection', err => {
   process.stderr.write(`${err.message}\n`)

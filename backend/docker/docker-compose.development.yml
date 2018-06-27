@@ -11,3 +11,5 @@ services:
     command: node_modules/.bin/nodemon --watch backend --watch common --exec yarn start backend web.debug
     volumes:
       - ../..:/app
+    environment:
+      - BACKEND_URL=http://localhost:8000

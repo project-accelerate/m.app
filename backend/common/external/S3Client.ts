@@ -15,7 +15,6 @@ export class S3Client {
       accessKeyId: config.get('BUCKETEER_AWS_ACCESS_KEY_ID'),
       secretAccessKey: config.get('BUCKETEER_AWS_SECRET_ACCESS_KEY'),
       region: config.get('BUCKETEER_AWS_REGION'),
-      s3DisableBodySigning: true,
     }),
   ) {}
 
