@@ -149,7 +149,6 @@ describe(AdminCrudView, () => {
         fixture.pressEditItemButton()
         fixture.cancelSubmitEditItem()
 
-        expect(fixture.tree).not.toContainReact(LIST_ITEM_VIEW)
         expect(fixture.tree).toContainReact(EDIT_VIEW)
       })
     })
