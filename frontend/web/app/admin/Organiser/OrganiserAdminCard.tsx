@@ -22,7 +22,9 @@ export function OrganiserAdminCard({
 }: OrganiserAdminCardProps) {
   return (
     <Card>
-      {organiser.photo && <CardMedia src={organiser.photo.sourceUrl} />}
+      {organiser.photo && (
+        <CardMedia component="img" src={organiser.photo.sourceUrl} />
+      )}
 
       <CardContent>
         <Typography variant="title">{organiser.name}</Typography>
