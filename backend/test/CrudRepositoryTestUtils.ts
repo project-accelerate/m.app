@@ -7,6 +7,9 @@ interface CrudRepositoryTestProps<T extends Props, Props> {
   /** Function returning some props required to insert into the repository */
   example: () => Props
 
+  /** Function returning some props required to update into the repository */
+  updateExample: () => Partial<Props>
+
   /** Type of the repository */
   repository: CrudRepositoryConstructor<T, Props>
 
@@ -20,35 +23,89 @@ interface CrudRepositoryTestProps<T extends Props, Props> {
 export function shouldSupportStandardCrudFunctions<T extends Props, Props>(
   opts: CrudRepositoryTestProps<T, Props>,
 ) {
-  const Repository = opts.repository
-  const type = Repository.tableName
-  const createExample = opts.example
-  const relationshipExamples = opts.relationshipExamples || {}
   it(
-    `should get inserted ${opts.repository.tableName}s`,
+    `should get inserted entites`,
     withDb(async () => {
-      const repository = Container.get(Repository)
-      const relationships = fromPairs(
+      const fixture = new Fixture()
+
+      const entity = await fixture.givenThatAnEntityAndItsDependenciesHaveBeenInserted()
+
+      const foundObject = await fixture.repository.findOne(entity.id)
+
+      expect(foundObject).toMatchObject(entity)
+    }),
+  )
+
+  it(
+    `when entity not inserted, should throw for non-optional get`,
+    withDb(async () => {
+      const fixture = new Fixture()
+
+      await expect(fixture.repository.findOneRequired('123')).rejects.toThrow()
+    }),
+  )
+
+  it(
+    `should delete inserted entites`,
+    withDb(async () => {
+      const fixture = new Fixture()
+
+      const entity = await fixture.givenThatAnEntityAndItsDependenciesHaveBeenInserted()
+
+      await fixture.repository.delete(entity.id)
+
+      expect(await fixture.repository.findOne(entity.id)).toBeUndefined()
+    }),
+  )
+
+  it(
+    `should update inserted entites`,
+    withDb(async () => {
+      const fixture = new Fixture()
+
+      const entity = await fixture.givenThatAnEntityAndItsDependenciesHaveBeenInserted()
+
+      await fixture.repository.update(entity.id, fixture.exampleUpdateProps)
+
+      expect(await fixture.repository.findOne(entity.id)).toMatchObject({
+        ...entity,
+        ...fixture.exampleUpdateProps,
+      })
+    }),
+  )
+
+  class Fixture {
+    repository = Container.get(opts.repository)
+
+    exampleProps = opts.example() as any
+
+    exampleUpdateProps = opts.updateExample() as any
+
+    exampleDependencyProps = opts.relationshipExamples || {}
+
+    private async createDependencies() {
+      return fromPairs(
         await Promise.all(
-          map(relationshipExamples, async (createExample: any, key) => [
+          map(this.exampleDependencyProps, async (createExample: any, key) => [
             key,
             await createExample(),
           ]),
         ),
-      )
+      ) as any
+    }
 
-      const props = createExample()
-      const id = await repository.insert({
+    async givenThatAnEntityAndItsDependenciesHaveBeenInserted() {
+      const props = {
+        ...this.exampleProps,
+        ...(await this.createDependencies()),
+      }
+
+      const id = await this.repository.insert({
+        ...this.exampleProps,
         ...(props as any),
-        ...relationships,
       })
 
-      const foundObject = await repository.findOne(id)
-      expect(foundObject).toMatchObject({
-        id,
-        ...(props as any),
-        ...relationships,
-      })
-    }),
-  )
+      return { ...props, id }
+    }
+  }
 }

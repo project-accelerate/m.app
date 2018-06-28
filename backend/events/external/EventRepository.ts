@@ -6,7 +6,7 @@ import {
 } from '../../common/CrudRepository'
 import { Event } from '../domain/Event'
 import { Distance } from '../domain/Distance'
-import { PointField } from 'backend/common/PointField'
+import { PointField } from '../../common/PointField'
 
 const config: CrudRepositoryConfig<Event> = {
   tableName: 'event',

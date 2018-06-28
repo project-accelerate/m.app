@@ -1,4 +1,4 @@
-import { someString, someGeoPoint } from 'common/test/testUtils'
+import { someString, someGeoPoint } from '../../../../common/test/testUtils'
 import { withDb } from '../../../test/integrationTestUtils'
 import { shouldSupportStandardCrudFunctions } from '../../../test/CrudRepositoryTestUtils'
 import {
@@ -18,6 +18,7 @@ describe('EventRepository', () => {
       organiser: givenThatAnOrganiserExists,
       venue: givenThatAVenueExists,
     },
+    updateExample: () => ({ name: 'new name' }),
   })
 
   describe('.findByTimeAndLocation', () => {
@@ -41,10 +42,7 @@ describe('EventRepository', () => {
           distance: new Distance(10, DistanceUnit.km),
           fromTime: new Date('2010-01-01'),
           toTime: new Date('2020-01-01'),
-          location: {
-            type: 'Point',
-            coordinates: [20, 20],
-          },
+          location: someGeoPoint(20, 20),
         })
 
         expect(results.map(r => r.id)).toEqual([nearby])

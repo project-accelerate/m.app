@@ -1,4 +1,4 @@
-import { someString, someGeoPoint } from 'common/test/testUtils'
+import { someString, someGeoPoint } from '../../../../common/test/testUtils'
 import { withDb } from '../../../test/integrationTestUtils'
 import { shouldSupportStandardCrudFunctions } from '../../../test/CrudRepositoryTestUtils'
 import { VenueRepository } from '../VenueRepository'
@@ -8,5 +8,6 @@ describe('VenueRepository', () => {
   shouldSupportStandardCrudFunctions({
     repository: VenueRepository,
     example: someVenueProps,
+    updateExample: () => ({ description: 'new description' }),
   })
 })

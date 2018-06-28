@@ -1,9 +1,9 @@
 import uuid from 'uuid'
 import { flatMap, mapValues } from 'lodash'
 import Knex from 'knex'
-import { WithoutId } from 'backend/common/WithoutId'
+import { WithoutId } from './WithoutId'
 import { Inject, Service, Container } from 'typedi'
-import { DatabaseConnection } from 'backend/common/DatabaseConnection'
+import { DatabaseConnection } from './DatabaseConnection'
 
 export interface CrudRepository<T, Props> {
   /** Database object exposed for custom queries */
@@ -42,6 +42,16 @@ export interface CrudRepository<T, Props> {
   findOne(id: string): Promise<T | undefined>
 
   /**
+   * Find an object by id
+   */
+  delete(id: string): Promise<void>
+
+  /**
+   * Find an object by id, throwing if not found
+   */
+  findOneRequired(id: string): Promise<T>
+
+  /**
    * Return all instances
    */
   findAll(): Promise<T[]>
@@ -52,6 +62,14 @@ export interface CrudRepository<T, Props> {
   insert(
     data: { [P in keyof Props]: Props[P] | Knex.QueryBuilder },
   ): Promise<string>
+
+  /**
+   * Update an object into the database
+   */
+  update(
+    id: string,
+    data: { [P in keyof Partial<Props>]: Props[P] | Knex.QueryBuilder },
+  ): Promise<void>
 }
 
 export interface CrudRepositoryConfig<T> {
@@ -88,14 +106,20 @@ export function CrudRepository<T extends { id: string }, Props = WithoutId<T>>(
         field.query ? [field.query(key)] : [],
     ) as any
 
-    encode(value: Props): any {
+    encode(value: Partial<Props>): any {
       return mapValues(value, (field: any, key: string) => {
         const convert = fieldConverters[key] || {}
         return convert.from ? convert.from(field) : field
       })
     }
 
-    decode(value: any): T {
+    decode(value: any): T
+    decode(): undefined
+    decode(value?: any): T | undefined {
+      if (!value) {
+        return undefined
+      }
+
       return mapValues(value, (field: any, key: string) => {
         const convert = fieldConverters[key] || {}
         return convert.to ? convert.to(field) : field
@@ -115,6 +139,15 @@ export function CrudRepository<T extends { id: string }, Props = WithoutId<T>>(
         .then(x => this.decode(x))
     }
 
+    async findOneRequired(id: string) {
+      const item = await this.findOne(id)
+      if (!item) {
+        throw Error(`Not found: ${this.tableName}:${id}`)
+      }
+
+      return item
+    }
+
     async findAll() {
       return await this.db.knex
         .select('*', ...this.customQueryFields)
@@ -122,12 +155,25 @@ export function CrudRepository<T extends { id: string }, Props = WithoutId<T>>(
         .then(xs => this.decodeAll(xs))
     }
 
-    async insert(data: Props): Promise<string> {
+    async insert(data: any): Promise<string> {
       return await this.db.knex
         .insert({ ...this.encode(data), id: uuid() })
         .into(opts.tableName)
         .returning('id')
         .then(x => x[0])
+    }
+
+    async update(id: string, data: any): Promise<void> {
+      await this.db.knex
+        .update({ ...this.encode(data), id })
+        .into(opts.tableName)
+    }
+
+    async delete(id: string): Promise<void> {
+      await this.db.knex
+        .delete()
+        .from(this.tableName)
+        .where('id', id)
     }
   }
 
