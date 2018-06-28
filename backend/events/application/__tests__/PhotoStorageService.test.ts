@@ -1,9 +1,15 @@
-import { mock, when, anything, instance, verify } from 'ts-mockito'
-import { PhotoStorageService } from 'backend/events/application/PhotoStorageService'
-import { S3Client } from 'backend/common/external/S3Client'
+import {
+  mock,
+  when,
+  anything,
+  instance,
+  verify,
+} from 'ts-mockito/lib/ts-mockito'
+import { PhotoStorageService } from '../PhotoStorageService'
+import { S3Client } from '../../../common/external/S3Client'
 import { URL } from 'url'
-import { UUIDProvider } from 'backend/common/UUIDProvider'
-import { someImageUpload } from 'backend/test/testUtils'
+import { UUIDProvider } from '../../../common/UUIDProvider'
+import { someImageUpload } from '../../../test/testUtils'
 
 describe(PhotoStorageService, () => {
   it('should upload photo returning id', async () => {
@@ -47,7 +53,9 @@ class Fixture {
   }
 
   givenThatTheUploadSucceeds() {
-    when(this.s3.putObject(anything(), anything(), anything())).thenResolve({} as any)
+    when(this.s3.putObject(anything(), anything(), anything())).thenResolve(
+      {} as any,
+    )
   }
 }
 

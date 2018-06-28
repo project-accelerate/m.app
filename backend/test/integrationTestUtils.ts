@@ -1,9 +1,9 @@
 import { execute, parse } from 'graphql'
 import Container from 'typedi'
 import Knex from 'knex'
-import { AuthToken } from 'common/AuthToken'
+import { AuthToken } from '../../common/AuthToken'
 import { configureGraphql } from '../config/graphql'
-import { DatabaseConnection } from 'backend/common/DatabaseConnection'
+import { DatabaseConnection } from '../common/DatabaseConnection'
 
 interface ExecQueryProps<T> {
   body: string

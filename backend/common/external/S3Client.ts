@@ -2,7 +2,7 @@ import { Service } from 'typedi'
 import { S3 } from 'aws-sdk'
 import log from 'winston'
 import { PutObjectOutput, ManagedUpload } from 'aws-sdk/clients/s3'
-import { ConfigService } from 'backend/common/ConfigService'
+import { ConfigService } from '../ConfigService'
 import { URL } from 'url'
 
 @Service()

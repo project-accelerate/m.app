@@ -1,16 +1,34 @@
 import { Service } from 'typedi'
 import { VenueRepository } from '../external/VenueRepository'
-
-interface AddVenueProps {
-  name: string
-  postcode: string
-}
+import { CreateVenueRequest } from '../domain/Venue'
+import { PhotoStorageService } from './PhotoStorageService'
+import { PostcodesIOClient } from '../external/PostcodesIOClient'
 
 @Service()
 export class VenueAdminService {
-  constructor(private readonly venueRepository: VenueRepository) {}
+  constructor(
+    private readonly venueRepository: VenueRepository,
+    private readonly photoStorageService: PhotoStorageService,
+    private readonly postcodeClient: PostcodesIOClient,
+  ) {}
 
-  addVenue(props: AddVenueProps) {
-    return this.venueRepository.insert(props)
+  async addVenue({ photoUpload, address, ...props }: CreateVenueRequest) {
+    const [photoId, location] = await Promise.all([
+      PhotoStorageService.saveUploadedPhoto(
+        this.photoStorageService,
+        photoUpload,
+      ),
+      this.postcodeClient.getPostcode(address.postcode),
+    ])
+
+    return this.venueRepository.insert({
+      photo: photoId,
+      location: {
+        type: 'Point',
+        coordinates: [location.longitude, location.latitude],
+      },
+      ...address,
+      ...props,
+    })
   }
 }

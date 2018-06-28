@@ -1,6 +1,6 @@
 import { Resolver, FieldResolver, Root } from 'type-graphql'
-import { Photo } from 'backend/events/domain/Photo'
-import { PhotoStorageService } from 'backend/events/application/PhotoStorageService'
+import { Photo } from '../domain/Photo'
+import { PhotoStorageService } from '../application/PhotoStorageService'
 import { GraphQLString } from 'graphql'
 
 @Resolver(Photo)

@@ -3,7 +3,7 @@ import {
   somePostcode,
   someDate,
   someGeoPoint,
-} from 'common/test/testUtils'
+} from '../../../../common/test/testUtils'
 import { withDb, execQuery } from '../../../test/integrationTestUtils'
 import {
   givenThatAnEventExists,

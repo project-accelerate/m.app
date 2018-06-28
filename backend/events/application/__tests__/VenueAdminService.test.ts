@@ -17,6 +17,7 @@ import {
   someEventProps,
   someCreateEventRequest,
   someVenue,
+  someCreateVenueRequest,
 } from '../../test/eventTestUtils'
 import {
   somePostcode,
@@ -31,56 +32,52 @@ import { MockCrudRepositoryFixture } from './fixtures/MockCrudRepositoryFixture'
 import { MockPhotoStorageFixture } from './fixtures/MockPhotoStorageFixture'
 import { someImageUpload } from '../../../test/testUtils'
 
-describe('EventAdminService', () => {
-  it('saves all data when new event is created', async () => {
+describe('VenueAdminService', () => {
+  it('saves all data when new venue is created', async () => {
     const fixture = new Fixture()
+    const location = someGeoPoint()
 
-    const venue = someVenue()
-    const eventRequest = someCreateEventRequest({
-      venue: venue.id,
+    const request = someCreateVenueRequest({
       photoUpload: someImageUpload(),
     })
 
-    fixture.venueRepository.givenObjectReturnedFromFindOne(venue)
-    fixture.eventRepository.givenIdReturnedFromInsert('event-id')
+    fixture.venueRepository.givenIdReturnedFromInsert('venue-id')
     fixture.photoStorage.givenThatThePhotoIsSavedWithId('photo-id')
+    fixture.givenLocationForPostcode(request.address.postcode, location)
 
-    const eventId = await fixture.eventAdmin.submitEvent(eventRequest)
+    const venueId = await fixture.venueAdmin.addVenue(request)
+    expect(venueId).toEqual('venue-id')
 
-    expect(eventId).toEqual('event-id')
-
-    fixture.eventRepository.verifyInserted({
-      name: eventRequest.name,
-      organiser: eventRequest.organiser,
-      venue: venue.id,
-      location: venue.location,
-      introduction: eventRequest.introduction,
-      detail: eventRequest.detail,
-      startTime: eventRequest.startTime,
-      endTime: eventRequest.endTime,
+    fixture.venueRepository.verifyInserted({
+      name: request.name,
       photo: 'photo-id',
+      description: request.description,
+      location,
+      streetAddress: request.address.streetAddress,
+      city: request.address.city,
+      postcode: request.address.postcode,
     })
 
-    fixture.photoStorage.verifyPhotoSaved(await eventRequest.photoUpload)
+    fixture.photoStorage.verifyPhotoSaved(await request.photoUpload)
   })
 })
 
 class Fixture {
-  eventRepository = new MockCrudRepositoryFixture(EventRepository)
   venueRepository = new MockCrudRepositoryFixture(VenueRepository)
   photoStorage = new MockPhotoStorageFixture()
+  postcodesClient = mock(PostcodesIOClient)
 
-  eventAdmin = new EventAdminService(
-    this.eventRepository.instance,
+  venueAdmin = new VenueAdminService(
     this.venueRepository.instance,
     this.photoStorage.instance,
+    instance(this.postcodesClient),
   )
 
-  // givenLocationForPostcode(postcode: string, location: Point) {
-  //   const [longitude, latitude] = location.coordinates
+  givenLocationForPostcode(postcode: string, location: Point) {
+    const [longitude, latitude] = location.coordinates
 
-  //   when(this.postcodesClient.getPostcode(postcode)).thenResolve(
-  //     somePostcodesIoPostcode({ postcode, latitude, longitude }),
-  //   )
-  // }
+    when(this.postcodesClient.getPostcode(postcode)).thenResolve(
+      somePostcodesIoPostcode({ postcode, latitude, longitude }),
+    )
+  }
 }

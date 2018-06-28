@@ -1,7 +1,7 @@
 import { Service } from 'typedi'
 import { OrganiserRepository } from '../external/OrganiserRepository'
-import { PhotoStorageService } from 'backend/events/application/PhotoStorageService'
-import { CreateOrganiserRequest } from 'backend/events/domain/Organiser'
+import { PhotoStorageService } from './PhotoStorageService'
+import { CreateOrganiserRequest } from '../domain/Organiser'
 
 @Service()
 export class OrganiserAdminService {
@@ -11,9 +11,10 @@ export class OrganiserAdminService {
   ) {}
 
   async addOrganiser({ photoUpload, ...props }: CreateOrganiserRequest) {
-    const photoId =
-      photoUpload &&
-      (await this.photoStorageService.savePhoto(await photoUpload))
+    const photoId = await PhotoStorageService.saveUploadedPhoto(
+      this.photoStorageService,
+      photoUpload,
+    )
 
     return this.organiserRepository.insert({
       photo: photoId,

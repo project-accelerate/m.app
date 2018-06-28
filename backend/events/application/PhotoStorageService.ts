@@ -1,9 +1,10 @@
 import { Service } from 'typedi'
 import { extension } from 'mime-types'
 import { Readable } from 'stream'
-import { S3Client } from 'backend/common/external/S3Client'
-import { UUIDProvider } from 'backend/common/UUIDProvider'
-import { Photo } from 'backend/events/domain/Photo'
+import { S3Client } from '../../common/external/S3Client'
+import { UUIDProvider } from '../../common/UUIDProvider'
+import { Photo } from '../domain/Photo'
+import { FileUpload } from 'apollo-upload-server'
 
 interface SavePhotoProps {
   stream: Readable
@@ -15,6 +16,17 @@ interface SavePhotoProps {
 export class PhotoStorageService {
   constructor(private uuid: UUIDProvider, private s3: S3Client) {}
 
+  static async saveUploadedPhoto(
+    service: PhotoStorageService,
+    photo?: FileUpload,
+  ) {
+    if (photo) {
+      return service.savePhoto(await photo)
+    }
+
+    return undefined
+  }
+
   async savePhoto(photo: SavePhotoProps) {
     const id = this.generateId(photo.mimetype)
     await this.s3.putObject(this.getS3Key(id), photo.stream, photo)
@@ -22,7 +34,13 @@ export class PhotoStorageService {
     return id
   }
 
-  getPhoto(id: string) {
+  getPhoto(id: string): Photo
+  getPhoto(id: string | undefined): Photo | undefined
+  getPhoto(id?: string) {
+    if (!id) {
+      return undefined
+    }
+
     const photo = new Photo()
     photo.id = id
 

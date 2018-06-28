@@ -1,20 +1,16 @@
-import {
-  ObjectType,
-  Field,
-  Query,
-  Resolver,
-  Mutation,
-  InputType,
-  Arg,
-  GraphQLISODateTime,
-} from 'type-graphql'
-import { MutationRequest } from '../../common/resolverUtils'
+import { Query, Resolver, Arg, Root, FieldResolver } from 'type-graphql'
 import { VenueRepository } from '../external/VenueRepository'
 import { Venue } from '../domain/Venue'
+import { PhotoStorageService } from '../application/PhotoStorageService'
+import { Photo } from '../domain/Photo'
+import { Address } from '../domain/Address'
 
 @Resolver(Venue)
 export class VenueResolver {
-  constructor(public venueRepository: VenueRepository) {}
+  constructor(
+    private venueRepository: VenueRepository,
+    private photoStorageService: PhotoStorageService,
+  ) {}
 
   @Query(() => Venue, {
     nullable: true,
@@ -22,5 +18,15 @@ export class VenueResolver {
   })
   venue(@Arg('id') id: string) {
     return this.venueRepository.findOne(id)
+  }
+
+  @FieldResolver(() => Photo)
+  photo(@Root() venue: Venue) {
+    return this.photoStorageService.getPhoto(venue.photo)
+  }
+
+  @FieldResolver(() => Address)
+  address(@Root() venue: Venue) {
+    return Address.create(venue)
   }
 }

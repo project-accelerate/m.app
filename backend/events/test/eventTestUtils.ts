@@ -1,5 +1,5 @@
 import { EventRepository } from '../external/EventRepository'
-import { Event } from '../domain/Event'
+import { Event, CreateEventRequest } from '../domain/Event'
 import {
   someString,
   someDate,
@@ -7,18 +7,20 @@ import {
   someGeoPoint,
   somePostcode,
   someInt,
-} from 'common/test/testUtils'
+} from '../../../common/test/testUtils'
 import { OrganiserRepository } from '../external/OrganiserRepository'
 import { VenueRepository } from '../external/VenueRepository'
-import { Venue } from '../domain/Venue'
-import { Organiser } from '../domain/Organiser'
+import { Venue, CreateVenueRequest } from '../domain/Venue'
+import { Organiser, CreateOrganiserRequest } from '../domain/Organiser'
 import {
   PostcodesIOPostcode,
   PostcodesIOOutcode,
 } from '../external/PostcodesIOClient'
 import { Distance, DistanceUnit } from '../domain/Distance'
-import { WithoutId } from 'backend/common/WithoutId'
+import { WithoutId } from '../../common/WithoutId'
 import { Container } from 'typedi'
+import { someImageUpload, someImage } from '../../test/testUtils'
+import { Address, AddressInput } from '../domain/Address'
 
 type EventProps = WithoutId<Event>
 type OrganiserProps = WithoutId<Organiser>
@@ -64,6 +66,27 @@ export function somePostcodesIoPostcode(
   }
 }
 
+export function someAddress(props: Partial<Address> = {}): Address {
+  return {
+    streetAddress: someString(),
+    city: someString(),
+    postcode: somePostcode(),
+    location: someGeoPoint(),
+    ...props,
+  }
+}
+
+export function someAddressInput(
+  props: Partial<AddressInput> = {},
+): AddressInput {
+  return {
+    streetAddress: someString(),
+    city: someString(),
+    postcode: somePostcode(),
+    ...props,
+  }
+}
+
 export function somePostcodesIoOutcode(
   props: Partial<PostcodesIOOutcode> = {},
 ) {
@@ -86,12 +109,33 @@ export function someEventProps(props: Partial<EventProps> = {}): EventProps {
   return {
     name: someString(),
     introduction: someString(),
+    detail: someString(),
     organiser: someUuid(),
     venue: someUuid(),
     startTime: someDate(),
     endTime: someDate(),
     location: someGeoPoint(),
     ...props,
+  }
+}
+
+export function someCreateEventRequest(): CreateEventRequest
+export function someCreateEventRequest<
+  Props extends Partial<CreateEventRequest>
+>(props: Props): Props & CreateEventRequest
+export function someCreateEventRequest(
+  props: Partial<CreateEventRequest> = {},
+): CreateEventRequest {
+  return {
+    name: someString(),
+    introduction: someString(),
+    detail: someString(),
+    organiser: someUuid(),
+    venue: someUuid(),
+    startTime: someDate(),
+    endTime: someDate(),
+    photoUpload: someImageUpload(),
+    ...(props as any),
   }
 }
 
@@ -102,7 +146,25 @@ export function someEvent(props: Partial<EventProps> = {}) {
 export function someVenueProps(props: Partial<VenueProps> = {}): VenueProps {
   return {
     name: someString(),
-    postcode: somePostcode(),
+    description: someString(),
+    photo: someString(),
+    ...someAddress(),
+    ...props,
+  }
+}
+
+export function someCreateVenueRequest(): CreateVenueRequest
+export function someCreateVenueRequest<
+  Props extends Partial<CreateVenueRequest>
+>(props: Props): Props & CreateVenueRequest
+export function someCreateVenueRequest(
+  props: Partial<CreateVenueRequest> = {},
+): CreateVenueRequest {
+  return {
+    name: someString(),
+    address: someAddressInput(),
+    description: someString(),
+    photoUpload: someImageUpload(),
     ...props,
   }
 }
@@ -127,6 +189,21 @@ export function fullOrganiserProps(
     name: someString(),
     bio: someString(),
     photo: someString(),
+    ...props,
+  }
+}
+
+export function someCreateOrganiserRequest(): CreateOrganiserRequest
+export function someCreateOrganiserRequest<
+  Props extends Partial<CreateOrganiserRequest>
+>(props: Props): Props & CreateOrganiserRequest
+export function someCreateOrganiserRequest(
+  props: Partial<CreateOrganiserRequest> = {},
+): CreateOrganiserRequest {
+  return {
+    name: someString(),
+    photoUpload: someImageUpload(),
+    bio: someString(),
     ...props,
   }
 }

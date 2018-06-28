@@ -1,16 +1,18 @@
-import { OrganiserAdminService } from 'backend/events/application/OrganiserAdminService'
-import { mock, when, anything, verify } from 'ts-mockito'
-import { OrganiserRepository } from 'backend/events/external/OrganiserRepository'
-import { PhotoStorageService } from 'backend/events/application/PhotoStorageService'
-import { someImageUpload } from 'backend/test/testUtils'
+import { OrganiserAdminService } from '../OrganiserAdminService'
+import { mock, when, anything, verify } from 'ts-mockito/lib/ts-mockito'
+import { OrganiserRepository } from '../../external/OrganiserRepository'
+import { PhotoStorageService } from '../PhotoStorageService'
+import { someImageUpload } from '../../../test/testUtils'
+import { MockPhotoStorageFixture } from './fixtures/MockPhotoStorageFixture'
+import { MockCrudRepositoryFixture } from './fixtures/MockCrudRepositoryFixture'
 
 describe(OrganiserAdminService, () => {
   it('saves all data when new organiser is created', async () => {
     const fixture = new Fixture()
     const photoUpload = someImageUpload()
 
-    fixture.givenThatThePhotoIsSavedWithId('photo1')
-    fixture.givenThatTheOrganiserInsertsReturningId('organiser1')
+    fixture.photoStorage.givenThatThePhotoIsSavedWithId('photo1')
+    fixture.organiserRepository.givenIdReturnedFromInsert('organiser1')
 
     const returnedId = await fixture.service.addOrganiser({
       name: 'me',
@@ -18,32 +20,22 @@ describe(OrganiserAdminService, () => {
       bio: 'my bio',
     })
 
-    verify(
-      fixture.organiserRepository.insert({
-        name: 'me',
-        photo: 'photo1',
-        bio: 'my bio',
-      }),
-    )
+    fixture.organiserRepository.verifyInserted({
+      name: 'me',
+      photo: 'photo1',
+      bio: 'my bio',
+    })
 
-    verify(fixture.photoStorageService.savePhoto(await photoUpload))
+    fixture.photoStorage.verifyPhotoSaved(await photoUpload)
   })
 })
 
 class Fixture {
-  organiserRepository = mock(OrganiserRepository)
-  photoStorageService = mock(PhotoStorageService)
+  organiserRepository = new MockCrudRepositoryFixture(OrganiserRepository)
+  photoStorage = new MockPhotoStorageFixture()
 
   service = new OrganiserAdminService(
-    this.organiserRepository,
-    this.photoStorageService,
+    this.organiserRepository.instance,
+    this.photoStorage.instance,
   )
-
-  givenThatThePhotoIsSavedWithId(id: string) {
-    when(this.photoStorageService.savePhoto(anything())).thenResolve(id)
-  }
-
-  givenThatTheOrganiserInsertsReturningId(id: string) {
-    when(this.organiserRepository.insert(anything())).thenResolve(id)
-  }
 }

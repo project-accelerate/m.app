@@ -1,6 +1,5 @@
 import { FileUpload, GraphQLUpload } from 'apollo-upload-server'
 import { ObjectType, Field, InputType } from 'type-graphql'
-import { Photo } from './Photo'
 
 @InputType()
 export class CreateOrganiserRequest {

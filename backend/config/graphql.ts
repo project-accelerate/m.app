@@ -1,8 +1,8 @@
 import 'reflect-metadata'
 import { Container } from 'typedi'
 import { buildSchema, useContainer } from 'type-graphql'
-import { AuthToken } from 'common/AuthToken'
-import { authValidator } from 'backend/config/auth0'
+import { AuthToken } from '../../common/AuthToken'
+import { authValidator } from './auth0'
 
 export interface GraphQLContext {
   user?: AuthToken

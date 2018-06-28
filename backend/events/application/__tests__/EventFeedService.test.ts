@@ -1,11 +1,11 @@
-import { mock, instance, when, deepEqual } from 'ts-mockito'
+import { mock, instance, when, deepEqual } from 'ts-mockito/lib/ts-mockito'
 import { Point } from 'geojson'
 import {
   someInt,
   somePostcode,
   someGeoPoint,
   someOutcode,
-} from 'common/test/testUtils'
+} from '../../../../common/test/testUtils'
 import { EventRepository } from '../../external/EventRepository'
 import { PostcodesIOClient } from '../../external/PostcodesIOClient'
 import { EventFeedService } from '../EventFeedService'

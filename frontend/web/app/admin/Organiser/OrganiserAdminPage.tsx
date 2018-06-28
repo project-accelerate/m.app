@@ -1,17 +1,14 @@
 import React from 'react'
-import { Button, Paper } from '@material-ui/core'
 import { AdminCrudView } from 'frontend.web/app/admin/common/AdminCrudView/AdminCrudView'
 import { createDataLoader } from 'frontend.web/app/common/LoadData/LoadData'
 import {
   OrganiserAdminPageQuery,
   CreateOrganiserRequest,
-  OrganiserAdminCardFragment,
 } from 'frontend.web/queries'
-import { withApollo, Mutation, WithApolloClient } from 'react-apollo'
+import { withApollo } from 'react-apollo'
 import ApolloClient from 'apollo-client'
 import { OrganiserAdminCard } from './OrganiserAdminCard'
 import { EditOrganiserForm } from './EditOrganiserForm'
-import { normalizeFields } from 'frontend.web/utils'
 import { Main } from 'frontend.web/app/common/Layouts'
 
 interface OrganiserAdminPageProps {

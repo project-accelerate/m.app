@@ -1,6 +1,6 @@
 import express from 'express'
 import { mapValues } from 'lodash'
-import * as configProperties from 'frontend.web/config/properties'
+import * as configProperties from '../../frontend/web/config/properties'
 
 /** Provides configuration variables to frontend */
 export function frontendConfig(): express.RequestHandler {

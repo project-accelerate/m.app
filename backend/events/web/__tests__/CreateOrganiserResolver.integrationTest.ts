@@ -1,14 +1,14 @@
 import { readFileSync } from 'fs'
 import { join } from 'path'
-import { withDb, execQuery } from 'backend/test/integrationTestUtils'
-import { CreateOrganiserRequest } from 'backend/events/domain/Organiser'
+import { withDb, execQuery } from '../../../test/integrationTestUtils'
+import { CreateOrganiserRequest } from '../../domain/Organiser'
 import {
   someString,
   someAdminUser,
   someOrdinaryUser,
-} from 'common/test/testUtils'
-import { AuthToken } from 'common/AuthToken'
-import { someImageUpload } from 'backend/test/testUtils'
+} from '../../../../common/test/testUtils'
+import { AuthToken } from '../../../../common/AuthToken'
+import { someImageUpload } from '../../../test/testUtils'
 
 const imageData = readFileSync(
   require.resolve('common/test/somePhoto.jpg'),

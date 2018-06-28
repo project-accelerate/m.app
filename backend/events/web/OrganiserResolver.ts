@@ -13,9 +13,9 @@ import {
 import { MutationRequest } from '../../common/resolverUtils'
 import { OrganiserRepository } from '../external/OrganiserRepository'
 import { Organiser } from '../domain/Organiser'
-import { Photo } from 'backend/events/domain/Photo'
-import { PhotoStorageService } from 'backend/events/application/PhotoStorageService'
-import { createSimpleConnection } from 'backend/common/Connection'
+import { Photo } from '../domain/Photo'
+import { PhotoStorageService } from '../application/PhotoStorageService'
+import { createSimpleConnection } from '../../common/Connection'
 
 const AllOrganisersConnection = createSimpleConnection({
   type: Organiser,

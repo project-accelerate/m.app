@@ -1,19 +1,13 @@
 import {
-  ObjectType,
   Field,
   Query,
   Resolver,
-  Mutation,
-  InputType,
   Arg,
-  GraphQLISODateTime,
   FieldResolver,
   Root,
   Args,
   ArgsType,
 } from 'type-graphql'
-import { Inject } from 'typedi'
-import { MutationRequest } from '../../common/resolverUtils'
 import { Event } from '../domain/Event'
 import { Venue } from '../domain/Venue'
 import { EventRepository } from '../external/EventRepository'
@@ -21,6 +15,8 @@ import { Organiser } from '../domain/Organiser'
 import { OrganiserRepository } from '../external/OrganiserRepository'
 import { VenueRepository } from '../external/VenueRepository'
 import { EventFeedService } from '../application/EventFeedService'
+import { Photo } from '../domain/Photo'
+import { PhotoStorageService } from '../application/PhotoStorageService'
 
 @ArgsType()
 export class EventFeedArgs {
@@ -36,6 +32,7 @@ export class EventResolver {
     private eventRepository: EventRepository,
     private organiserRepository: OrganiserRepository,
     private venueRepository: VenueRepository,
+    private photoStorageService: PhotoStorageService,
   ) {}
 
   @Query(() => Event, {
@@ -68,5 +65,10 @@ export class EventResolver {
   })
   venue(@Root() event: Event) {
     return this.venueRepository.findOne(event.venue)
+  }
+
+  @FieldResolver(() => Photo)
+  photo(@Root() event: Event) {
+    return this.photoStorageService.getPhoto(event.photo)
   }
 }

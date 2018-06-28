@@ -8,9 +8,8 @@ const EXPIRY_WINDOW = 60_000
  * Represente the current auth state of the application
  **/
 export class TokenState {
-  private decodedToken = (this.authToken &&
-    decode<AuthToken>(this.authToken)) ||
-  undefined
+  private decodedToken =
+    (this.authToken && decode<AuthToken>(this.authToken)) || undefined
 
   constructor(
     /** JWT-encoded user credentials */
@@ -33,7 +32,6 @@ export class TokenState {
       return undefined
     }
 
-    console.log(this.decodedToken.exp, this.getDateTime(), this.expiry)
     if (this.getDateTime() > this.expiry) {
       return undefined
     }

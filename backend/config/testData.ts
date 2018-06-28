@@ -8,7 +8,7 @@ import {
   addDays,
   addHours,
 } from 'date-fns'
-import { someGeoPoint } from 'common/test/testUtils'
+import { someGeoPoint } from '../../common/test/testUtils'
 import { Event } from '../events/domain/Event'
 import { EventRepository } from '../events/external/EventRepository'
 import {
