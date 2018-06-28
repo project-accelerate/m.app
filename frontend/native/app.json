@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Momentum",
-    "description": "This project is really great.",
+    "description": "Platform Socialism",
     "slug": "momentum-app",
     "primaryColor": "#ec0000",
     "privacy": "unlisted",
@@ -31,8 +31,7 @@
       "sourceExts": ["ts", "tsx"],
       "config": "rn.config.js",
       "projectRoots": "",
-      "transformer":
-        "../../node_modules/react-native-typescript-transformer/index.js"
+      "transformer": "node_modules/react-native-typescript-transformer/index.js"
     }
   }
 }
