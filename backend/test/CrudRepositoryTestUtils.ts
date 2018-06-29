@@ -3,32 +3,27 @@ import { map, fromPairs } from 'lodash'
 import { withDb } from './integrationTestUtils'
 import Container from 'typedi'
 
-interface CrudRepositoryTestProps<T extends Props, Props> {
+interface CrudRepositoryTestProps<T extends Props & { id: string }, Props> {
   /** Function returning some props required to insert into the repository */
-  example: () => Props
+  example: () => Promise<T>
 
   /** Function returning some props required to update into the repository */
   updateExample: () => Partial<Props>
 
   /** Type of the repository */
   repository: CrudRepositoryConstructor<T, Props>
-
-  /**
-   * If the table has required foreign key, map of keys to functions
-   * creating instances of the referenced types, returning the id
-   */
-  relationshipExamples?: { [P in keyof Partial<Props>]: () => Promise<string> }
 }
 
-export function shouldSupportStandardCrudFunctions<T extends Props, Props>(
-  opts: CrudRepositoryTestProps<T, Props>,
-) {
+export function shouldSupportStandardCrudFunctions<
+  T extends Props & { id: string },
+  Props
+>(opts: CrudRepositoryTestProps<T, Props>) {
   it(
     `should get inserted entites`,
     withDb(async () => {
       const fixture = new Fixture()
 
-      const entity = await fixture.givenThatAnEntityAndItsDependenciesHaveBeenInserted()
+      const entity = await fixture.givenThatAnEntityHasBeenInserted()
 
       const foundObject = await fixture.repository.findOne(entity.id)
 
@@ -50,7 +45,7 @@ export function shouldSupportStandardCrudFunctions<T extends Props, Props>(
     withDb(async () => {
       const fixture = new Fixture()
 
-      const entity = await fixture.givenThatAnEntityAndItsDependenciesHaveBeenInserted()
+      const entity = await fixture.givenThatAnEntityHasBeenInserted()
 
       await fixture.repository.delete(entity.id)
 
@@ -63,12 +58,12 @@ export function shouldSupportStandardCrudFunctions<T extends Props, Props>(
     withDb(async () => {
       const fixture = new Fixture()
 
-      const entity = await fixture.givenThatAnEntityAndItsDependenciesHaveBeenInserted()
+      const entity = await fixture.givenThatAnEntityHasBeenInserted()
 
       await fixture.repository.update(entity.id, fixture.exampleUpdateProps)
 
       expect(await fixture.repository.findOne(entity.id)).toMatchObject({
-        ...entity,
+        ...(entity as any),
         ...fixture.exampleUpdateProps,
       })
     }),
@@ -77,35 +72,10 @@ export function shouldSupportStandardCrudFunctions<T extends Props, Props>(
   class Fixture {
     repository = Container.get(opts.repository)
 
-    exampleProps = opts.example() as any
-
     exampleUpdateProps = opts.updateExample() as any
 
-    exampleDependencyProps = opts.relationshipExamples || {}
-
-    private async createDependencies() {
-      return fromPairs(
-        await Promise.all(
-          map(this.exampleDependencyProps, async (createExample: any, key) => [
-            key,
-            await createExample(),
-          ]),
-        ),
-      ) as any
-    }
-
-    async givenThatAnEntityAndItsDependenciesHaveBeenInserted() {
-      const props = {
-        ...this.exampleProps,
-        ...(await this.createDependencies()),
-      }
-
-      const id = await this.repository.insert({
-        ...this.exampleProps,
-        ...(props as any),
-      })
-
-      return { ...props, id }
+    async givenThatAnEntityHasBeenInserted() {
+      return opts.example()
     }
   }
 }

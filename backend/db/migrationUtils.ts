@@ -1,3 +1,4 @@
+import * as Knex from 'knex'
 import { CreateTableBuilder } from 'knex'
 
 export function uuidPrimaryKey(table: CreateTableBuilder) {
@@ -25,4 +26,39 @@ export function uuidForeignKey(
     .uuid(name)
     .references(referencedColumn)
     .inTable(references)
+}
+
+interface OneToManyRelation {
+  name: string
+  fromTable: string
+  toTable: string
+  fromRef?: string
+  toRef?: string
+}
+
+export function createOneToManyRelation(
+  knex: Knex,
+  {
+    name,
+    fromTable,
+    toTable,
+    fromRef = fromTable,
+    toRef = toTable,
+  }: OneToManyRelation,
+) {
+  return knex.schema.createTable(name, table => {
+    table
+      .uuid(fromRef)
+      .notNullable()
+      .references('id')
+      .inTable(fromTable)
+      .index()
+
+    table
+      .uuid(toRef)
+      .notNullable()
+      .references('id')
+      .inTable(toTable)
+      .index()
+  })
 }

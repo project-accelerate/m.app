@@ -2,10 +2,14 @@ import uuid from 'uuid'
 import { flatMap, mapValues } from 'lodash'
 import Knex from 'knex'
 import { WithoutId } from './WithoutId'
-import { Inject, Service, Container } from 'typedi'
+import { Container } from 'typedi'
 import { DatabaseConnection } from './DatabaseConnection'
+import {
+  RelationRepository,
+  RelationRepositoryProps,
+} from './RelationRepository'
 
-export interface CrudRepository<T, Props> {
+export interface CrudRepository<T = {}, Props = {}> {
   /** Database object exposed for custom queries */
   db: DatabaseConnection
 
@@ -19,22 +23,30 @@ export interface CrudRepository<T, Props> {
   customQueryFields: string[]
 
   /**
+   * Generate a repository for the related repository
+   */
+  relationTo<T>(
+    repo: CrudRepositoryType<T>,
+    opts: RelationRepositoryProps,
+  ): RelationRepository<T>
+
+  /**
    * Encode an object for insertion into the database, using the fieldConverters
    * in the repository config
    */
-  encode<K extends keyof Props>(value: Props): any
+  encode(value: Props): any
 
   /**
    * Decode an object returned from the database, using the fieldConverters
    * in the repository config
    */
-  decode<K extends keyof T>(value: any): T
+  decode(value: any): T
 
   /**
    * Decode objects returned from the database, using the fieldConverters
    * in the repository config
    */
-  decodeAll<K extends keyof T>(value: any[]): T[]
+  decodeAll(value: any[]): T[]
 
   /**
    * Find an object by id
@@ -59,9 +71,7 @@ export interface CrudRepository<T, Props> {
   /**
    * Insert an object into the database
    */
-  insert(
-    data: { [P in keyof Props]: Props[P] | Knex.QueryBuilder },
-  ): Promise<string>
+  insert(data: { [P in keyof Props]: Props[P] | Knex.QueryBuilder }): Promise<T>
 
   /**
    * Update an object into the database
@@ -71,6 +81,10 @@ export interface CrudRepository<T, Props> {
     data: { [P in keyof Partial<Props>]: Props[P] | Knex.QueryBuilder },
   ): Promise<void>
 }
+
+export type CrudRepositoryType<T = {}> = new (
+  ...args: string[]
+) => CrudRepository<T, {}>
 
 export interface CrudRepositoryConfig<T> {
   tableName: string
@@ -130,6 +144,13 @@ export function CrudRepository<T extends { id: string }, Props = WithoutId<T>>(
       return value.map(row => this.decode(row))
     }
 
+    relationTo<T>(
+      repo: CrudRepositoryType<T>,
+      opts: RelationRepositoryProps,
+    ): RelationRepository<T> {
+      return new RelationRepository(CrudRepositoryBase, repo, opts)
+    }
+
     async findOne(id: string): Promise<T | undefined> {
       return await this.db.knex
         .select('*', ...this.customQueryFields)
@@ -155,12 +176,12 @@ export function CrudRepository<T extends { id: string }, Props = WithoutId<T>>(
         .then(xs => this.decodeAll(xs))
     }
 
-    async insert(data: any): Promise<string> {
+    async insert(data: any): Promise<T> {
       return await this.db.knex
         .insert({ ...this.encode(data), id: uuid() })
         .into(opts.tableName)
         .returning('id')
-        .then(x => x[0])
+        .then(x => ({ ...data, id: x[0] }))
     }
 
     async update(id: string, data: any): Promise<void> {
