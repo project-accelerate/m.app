@@ -27,7 +27,6 @@ class CreateEventResolver {
     @MutationRequest(() => CreateEventRequest)
     request: CreateEventRequest,
   ) {
-    const id = await this.eventAdminService.submitEvent(request)
-    return this.eventRepository.findOne(id)
+    return this.eventAdminService.submitEvent(request)
   }
 }

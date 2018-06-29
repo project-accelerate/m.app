@@ -10,4 +10,13 @@ const config: CrudRepositoryConfig<Organiser> = {
 }
 
 @Service()
-export class OrganiserRepository extends CrudRepository<Organiser>(config) {}
+export class OrganiserRepository extends CrudRepository<Organiser>(config) {
+  async findByEventSpokenAt(event: string) {
+    return this.db.knex
+      .select('organiser.*')
+      .from('event_speakers')
+      .innerJoin('organiser', 'organiser.id', '=', 'event_speakers.speaker')
+      .where('organiser.id', event)
+      .then(res => this.decodeAll(res))
+  }
+}

@@ -1,9 +1,7 @@
 import { ObjectType, Field, GraphQLISODateTime, InputType } from 'type-graphql'
 import { Point } from 'geojson'
-import { Organiser } from './Organiser'
-import { Venue } from './Venue'
 import { FileUpload, GraphQLUpload } from 'apollo-upload-server'
-import { Photo } from './Photo'
+import { GraphQLString } from 'graphql'
 
 @InputType({
   description: 'Request properties to submit a new event',
@@ -12,6 +10,9 @@ export class CreateEventRequest {
   @Field() name!: string
 
   @Field() organiser!: string
+
+  @Field(() => [GraphQLString])
+  speakers!: string[]
 
   @Field() venue!: string
 
@@ -25,7 +26,9 @@ export class CreateEventRequest {
 
   @Field() detail!: string
 
-  @Field(() => GraphQLUpload)
+  @Field(() => GraphQLUpload, {
+    nullable: true,
+  })
   photoUpload?: FileUpload
 }
 

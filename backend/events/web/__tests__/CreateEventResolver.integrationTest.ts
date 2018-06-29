@@ -26,8 +26,8 @@ describe('createEvent mutation', () => {
         const result = await createEvent({
           request: {
             name: 'my-event',
-            venue,
-            organiser,
+            venue: venue.id,
+            organiser: organiser.id,
           },
           user: someAdminUser,
         })
@@ -48,8 +48,8 @@ describe('createEvent mutation', () => {
         const result = createEvent({
           request: {
             name: 'my-event',
-            venue,
-            organiser,
+            venue: venue.id,
+            organiser: organiser.id,
           },
           user: someOrdinaryUser,
         })

@@ -1,33 +1,13 @@
-import {
-  mock,
-  when,
-  anything,
-  verify,
-  instance,
-  deepEqual,
-} from 'ts-mockito/lib/ts-mockito'
+import { mock, when, instance } from 'ts-mockito'
 import { Point } from 'geojson'
 import { PostcodesIOClient } from '../../external/PostcodesIOClient'
-import { EventRepository } from '../../external/EventRepository'
-import { OrganiserAdminService } from '../OrganiserAdminService'
 import { VenueAdminService } from '../VenueAdminService'
-import { EventAdminService } from '../EventAdminService'
 import {
   somePostcodesIoPostcode,
-  someEventProps,
-  someCreateEventRequest,
-  someVenue,
   someCreateVenueRequest,
 } from '../../test/eventTestUtils'
-import {
-  somePostcode,
-  someGeoPoint,
-  someDate,
-  someString,
-  someUuid,
-} from '../../../../common/test/testUtils'
+import { someGeoPoint } from '../../../../common/test/testUtils'
 import { VenueRepository } from '../../external/VenueRepository'
-import { PhotoStorageService } from '../PhotoStorageService'
 import { MockCrudRepositoryFixture } from './fixtures/MockCrudRepositoryFixture'
 import { MockPhotoStorageFixture } from './fixtures/MockPhotoStorageFixture'
 import { someImageUpload } from '../../../test/testUtils'
@@ -45,8 +25,8 @@ describe('VenueAdminService', () => {
     fixture.photoStorage.givenThatThePhotoIsSavedWithId('photo-id')
     fixture.givenLocationForPostcode(request.address.postcode, location)
 
-    const venueId = await fixture.venueAdmin.addVenue(request)
-    expect(venueId).toEqual('venue-id')
+    const venue = await fixture.venueAdmin.addVenue(request)
+    expect(venue.id).toEqual('venue-id')
 
     fixture.venueRepository.verifyInserted({
       name: request.name,

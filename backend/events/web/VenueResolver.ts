@@ -4,6 +4,12 @@ import { Venue } from '../domain/Venue'
 import { PhotoStorageService } from '../application/PhotoStorageService'
 import { Photo } from '../domain/Photo'
 import { Address } from '../domain/Address'
+import { createSimpleConnection } from '../../common/Connection'
+
+const AllVenuesConnection = createSimpleConnection({
+  type: Venue,
+  name: 'AllVenues',
+})
 
 @Resolver(Venue)
 export class VenueResolver {
@@ -18,6 +24,11 @@ export class VenueResolver {
   })
   venue(@Arg('id') id: string) {
     return this.venueRepository.findOne(id)
+  }
+
+  @Query(() => AllVenuesConnection)
+  async allVenues() {
+    return new AllVenuesConnection(await this.venueRepository.findAll())
   }
 
   @FieldResolver(() => Photo)

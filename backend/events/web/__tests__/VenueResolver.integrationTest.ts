@@ -9,10 +9,10 @@ describe('VenueResolver', () => {
     it(
       'looks up venues by id',
       withDb(async () => {
-        const venueId = await givenThatAVenueExists({ name: 'foo' })
+        const venue = await givenThatAVenueExists({ name: 'foo' })
         const result = await execQuery(`
         {
-          venue(id: "${venueId}") {
+          venue(id: "${venue.id}") {
             name
           }
         }

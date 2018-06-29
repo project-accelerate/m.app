@@ -18,7 +18,6 @@ export class OrganiserMutations {
     @MutationRequest(() => CreateOrganiserRequest)
     request: CreateOrganiserRequest,
   ) {
-    const id = await this.organiserAdminService.addOrganiser(request)
-    return this.organiserRepository.findOne(id)
+    return this.organiserAdminService.addOrganiser(request)
   }
 }

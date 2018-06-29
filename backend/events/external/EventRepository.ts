@@ -7,6 +7,7 @@ import {
 import { Event } from '../domain/Event'
 import { Distance } from '../domain/Distance'
 import { PointField } from '../../common/PointField'
+import { OrganiserRepository } from './OrganiserRepository'
 
 const config: CrudRepositoryConfig<Event> = {
   tableName: 'event',
@@ -17,6 +18,13 @@ const config: CrudRepositoryConfig<Event> = {
 
 @Service()
 export class EventRepository extends CrudRepository<Event>(config) {
+  speakers = this.relationTo(OrganiserRepository, {
+    name: 'event_speakers',
+
+    sourceRef: 'event',
+    destRef: 'speaker',
+  })
+
   async findByTimeAndLocation(q: {
     location: Point
     distance: Distance

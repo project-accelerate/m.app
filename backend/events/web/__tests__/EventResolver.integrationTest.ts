@@ -1,15 +1,9 @@
-import {
-  someString,
-  somePostcode,
-  someDate,
-  someGeoPoint,
-} from '../../../../common/test/testUtils'
+import { someGeoPoint } from '../../../../common/test/testUtils'
 import { withDb, execQuery } from '../../../test/integrationTestUtils'
 import {
   givenThatAnEventExists,
   givenThatAVenueExists,
   givenThatAnOrganiserExists,
-  someEventProps,
 } from '../../test/eventTestUtils'
 import { EventFeedArgs } from '../EventResolver'
 import { addDays } from 'date-fns'
@@ -20,14 +14,14 @@ describe('EventResolver', () => {
     withDb(async () => {
       const venue = await givenThatAVenueExists()
       const organiser = await givenThatAnOrganiserExists()
-      const eventId = await givenThatAnEventExists({
-        venue,
-        organiser,
+      const event = await givenThatAnEventExists({
+        venue: venue.id,
+        organiser: organiser.id,
       })
 
       const result = await execQuery(`
       {
-        event(id: "${eventId}") {
+        event(id: "${event.id}") {
           id
           venue {
             id
@@ -40,12 +34,12 @@ describe('EventResolver', () => {
     `)
 
       expect(result.event).toMatchObject({
-        id: eventId,
+        id: event.id,
         venue: {
-          id: venue,
+          id: venue.id,
         },
         organiser: {
-          id: organiser,
+          id: organiser.id,
         },
       })
     }),
@@ -58,7 +52,7 @@ describe('EventResolver', () => {
       const postcode = 'OX49 5NU'
       const location = someGeoPoint(-1.06986930435083, 51.656143706615)
 
-      const eventId = await givenThatAnEventExists({
+      const event = await givenThatAnEventExists({
         location,
         startTime: addDays(new Date(), 2),
       })
@@ -79,7 +73,7 @@ describe('EventResolver', () => {
 
       expect(result.eventFeed).toMatchObject([
         {
-          id: eventId,
+          id: event.id,
         },
       ])
     }),

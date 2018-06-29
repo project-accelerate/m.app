@@ -1,5 +1,9 @@
 import * as Knex from 'knex'
-import { uuidPrimaryKey, uuidForeignKey } from '../migrationUtils'
+import {
+  uuidPrimaryKey,
+  uuidForeignKey,
+  createOneToManyRelation,
+} from '../migrationUtils'
 
 export async function up(knex: Knex) {
   await knex.raw('CREATE EXTENSION IF NOT EXISTS postgis')
@@ -33,6 +37,13 @@ export async function up(knex: Knex) {
     table.text('detail').notNullable()
     table.text('photo')
     table.specificType('location', 'geography').notNullable()
+  })
+
+  await createOneToManyRelation(knex, {
+    name: 'event_speakers',
+    fromTable: 'event',
+    toTable: 'organiser',
+    toRef: 'speaker',
   })
 }
 

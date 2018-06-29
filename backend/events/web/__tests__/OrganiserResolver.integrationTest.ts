@@ -9,10 +9,10 @@ describe('OrganiserResolver', () => {
     it(
       'looks up organisers by id',
       withDb(async () => {
-        const organiserId = await givenThatAnOrganiserExists({ name: 'foo' })
+        const organiser = await givenThatAnOrganiserExists({ name: 'foo' })
         const result = await execQuery(`
         {
-          organiser(id: "${organiserId}") {
+          organiser(id: "${organiser.id}") {
             name
           }
         }

@@ -13,6 +13,7 @@ export class EventAdminService {
   ) {}
 
   async submitEvent({
+    speakers,
     photoUpload,
     venue: venueId,
     ...props
@@ -25,11 +26,15 @@ export class EventAdminService {
       this.venueRepository.findOneRequired(venueId),
     ])
 
-    return this.eventRepository.insert({
+    const event = await this.eventRepository.insert({
       ...props,
       venue: venueId,
       photo: photoId,
       location: venue.location,
     })
+
+    await this.eventRepository.speakers.add(event.id, speakers)
+
+    return event
   }
 }

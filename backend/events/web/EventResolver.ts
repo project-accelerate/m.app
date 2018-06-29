@@ -17,6 +17,17 @@ import { VenueRepository } from '../external/VenueRepository'
 import { EventFeedService } from '../application/EventFeedService'
 import { Photo } from '../domain/Photo'
 import { PhotoStorageService } from '../application/PhotoStorageService'
+import { createSimpleConnection } from '../../common/Connection'
+
+const AllEventsConnection = createSimpleConnection({
+  type: Event,
+  name: 'AllEvents',
+})
+
+const EventSpeakersConnection = createSimpleConnection({
+  type: Organiser,
+  name: 'EventSpeakersConnection',
+})
 
 @ArgsType()
 export class EventFeedArgs {
@@ -35,6 +46,11 @@ export class EventResolver {
     private photoStorageService: PhotoStorageService,
   ) {}
 
+  @Query(() => AllEventsConnection)
+  async allEvents() {
+    return new AllEventsConnection(await this.eventRepository.findAll())
+  }
+
   @Query(() => Event, {
     nullable: true,
     description: 'Get an event by id',
@@ -51,6 +67,13 @@ export class EventResolver {
       ...args,
       months: 3,
     })
+  }
+
+  @FieldResolver(() => EventSpeakersConnection)
+  async speakers(@Root() event: Event) {
+    return new EventSpeakersConnection(
+      await this.eventRepository.speakers.findFrom(event.id),
+    )
   }
 
   @FieldResolver(() => Organiser, {

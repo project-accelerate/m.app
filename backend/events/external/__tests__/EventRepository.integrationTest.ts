@@ -1,4 +1,4 @@
-import { someString, someGeoPoint } from '../../../../common/test/testUtils'
+import { someGeoPoint } from '../../../../common/test/testUtils'
 import { withDb } from '../../../test/integrationTestUtils'
 import { shouldSupportStandardCrudFunctions } from '../../../test/CrudRepositoryTestUtils'
 import {
@@ -6,19 +6,26 @@ import {
   givenThatAnOrganiserExists,
   givenThatAVenueExists,
   givenThatAnEventExists,
+  someOrganiser,
+  someEvent,
 } from '../../test/eventTestUtils'
 import { Distance, DistanceUnit } from '../../domain/Distance'
 import { EventRepository } from '../EventRepository'
+import { shouldSupportOneToManyRelation } from '../../../test/RelationRepositoryTestUtils'
 
 describe('EventRepository', () => {
   shouldSupportStandardCrudFunctions({
     repository: EventRepository,
-    example: someEventProps,
-    relationshipExamples: {
-      organiser: givenThatAnOrganiserExists,
-      venue: givenThatAVenueExists,
-    },
+    example: givenThatAnEventExists,
     updateExample: () => ({ name: 'new name' }),
+  })
+
+  shouldSupportOneToManyRelation({
+    repository: EventRepository,
+    relation: 'speakers',
+
+    sourceExample: givenThatAnEventExists,
+    destExample: givenThatAnOrganiserExists,
   })
 
   describe('.findByTimeAndLocation', () => {
@@ -45,7 +52,7 @@ describe('EventRepository', () => {
           location: someGeoPoint(20, 20),
         })
 
-        expect(results.map(r => r.id)).toEqual([nearby])
+        expect(results.map(r => r.id)).toEqual([nearby.id])
       }),
     )
   })

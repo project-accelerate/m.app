@@ -18,7 +18,6 @@ export class VenueMutations {
     @MutationRequest(() => CreateVenueRequest)
     request: CreateVenueRequest,
   ) {
-    const id = await this.venueAdminService.addVenue(request)
-    return this.venueRepository.findOne(id)
+    return this.venueAdminService.addVenue(request)
   }
 }

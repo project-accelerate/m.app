@@ -135,11 +135,12 @@ export function someCreateEventRequest(
     startTime: someDate(),
     endTime: someDate(),
     photoUpload: someImageUpload(),
-    ...(props as any),
+    speakers: [],
+    ...props,
   }
 }
 
-export function someEvent(props: Partial<EventProps> = {}) {
+export function someEvent(props: Partial<Event> = {}) {
   return Object.assign(new Event(), { id: someUuid() }, someEventProps(props))
 }
 
@@ -169,7 +170,7 @@ export function someCreateVenueRequest(
   }
 }
 
-export function someVenue(props: Partial<VenueProps> = {}) {
+export function someVenue(props: Partial<Venue> = {}) {
   return Object.assign(new Venue(), { id: someUuid() }, someVenueProps(props))
 }
 
@@ -208,7 +209,7 @@ export function someCreateOrganiserRequest(
   }
 }
 
-export function someOrganiser(props: Partial<OrganiserProps> = {}) {
+export function someOrganiser(props: Partial<Organiser> = {}) {
   return Object.assign(
     new Organiser(),
     { id: someUuid() },
@@ -232,8 +233,10 @@ export function givenThatAnOrganiserExists(
 
 export async function givenThatAnEventExists(props: Partial<EventProps> = {}) {
   const [organiser, venue] = await Promise.all([
-    Promise.resolve(props.organiser || givenThatAnOrganiserExists()),
-    Promise.resolve(props.venue || givenThatAVenueExists()),
+    Promise.resolve(
+      props.organiser || givenThatAnOrganiserExists().then(o => o.id),
+    ),
+    Promise.resolve(props.venue || givenThatAVenueExists().then(v => v.id)),
   ])
 
   return Container.get(EventRepository).insert({
