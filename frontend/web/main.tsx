@@ -19,7 +19,7 @@ import { createBrowserHistory } from 'history'
 import { AppWrapper } from './app/common/AppWrapper/AppWrapper'
 import EventFeedPage from './app/events/EventFeedPage'
 import { configureServiceWorker } from './config/serviceWorker'
-import { AuthCallback } from 'app/common/authentication/AuthCallback'
+import { AuthCallback } from './app/common/authentication/AuthCallback'
 import { OrganiserAdminPage } from 'frontend.web/app/admin/Organiser/OrganiserAdminPage'
 
 const App = () => (

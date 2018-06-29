@@ -37,7 +37,7 @@ export const EventFeedCard = style<EventFeedCardProps>(function EventFeedCard({
           {event.name}
         </Typography>
         <Typography component="p" variant="subheading" color="textSecondary">
-          {event.venue.name} {event.venue.postcode}
+          {event.venue.name} {event.venue.address.postcode}
           <br />
           <FormattedRelative value={event.startTime} />
         </Typography>

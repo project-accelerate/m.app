@@ -15,5 +15,6 @@
     "tmp": true
   },
   "editor.snippetSuggestions": "none",
-  "templateGenerator.templatesPath": ".vscode/templates"
+  "templateGenerator.templatesPath": ".vscode/templates",
+  "typescript.updateImportsOnFileMove.enabled": "never"
 }

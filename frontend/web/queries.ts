@@ -51,7 +51,9 @@ export interface EventFeedPageQuery {
     venue: {
       id: string
       name: string
-      postcode: string
+      address: {
+        postcode: string
+      }
     }
     startTime: string
     endTime: string
@@ -81,6 +83,11 @@ export interface OrganiserAdminCardFragment {
   } | null
 }
 
+export interface OrganiserPickerFragment {
+  id: string
+  name: string | null
+}
+
 export interface EventFeedCardFragment {
   id: string
   name: string
@@ -93,7 +100,9 @@ export interface EventFeedCardFragment {
   venue: {
     id: string
     name: string
-    postcode: string
+    address: {
+      postcode: string
+    }
   }
   startTime: string
   endTime: string

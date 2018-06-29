@@ -76,7 +76,9 @@ function someEvent(): EventFeedCardFragment {
     venue: {
       id: faker.random.uuid(),
       name: faker.lorem.words(2),
-      postcode: 'BN2',
+      address: {
+        postcode: 'BN2',
+      },
     },
     startTime: faker.date.future().toJSON(),
     endTime: faker.date.future().toJSON(),

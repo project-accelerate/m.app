@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "sourceRoot": ".",
     "outDir": "build/dist",
     "allowSyntheticDefaultImports": true,
     "module": "esnext",

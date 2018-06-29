@@ -2,13 +2,24 @@ import React from 'react'
 import faker from 'faker'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
-import somePhoto from 'common/test/somePhoto.jpg'
 import { storyWrapper } from 'frontend.web/storybook/storyWrapper'
-import { OrganiserAdminCard } from './OrganiserAdminCard'
+import { asyncAction } from 'frontend.web/storybook/actions'
+import { OrganiserAdminCard } from 'frontend.web/app/admin/Organiser/OrganiserAdminCard'
+import { EditOrganiserForm } from './EditOrganiserForm'
 
-storiesOf('OrganiserAdminCard', module)
+import somePhoto from 'common/test/somePhoto.jpg'
+
+storiesOf('Organiser Admin', module)
   .addDecorator(storyWrapper())
-  .add('No Image', () => (
+  .add('Edit Form', () => (
+    <EditOrganiserForm
+      title="Do Something"
+      onSave={asyncAction('save')}
+      onCancel={action('cancel')}
+    />
+  ))
+  .addDecorator(storyWrapper())
+  .add('Card (No Image)', () => (
     <OrganiserAdminCard
       organiser={{
         id: faker.random.uuid(),
@@ -19,7 +30,7 @@ storiesOf('OrganiserAdminCard', module)
       onEdit={action('edit')}
     />
   ))
-  .add('With Image', () => (
+  .add('Card (Image)', () => (
     <OrganiserAdminCard
       organiser={{
         id: faker.random.uuid(),
