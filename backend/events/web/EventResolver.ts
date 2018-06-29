@@ -90,7 +90,7 @@ export class EventResolver {
     return this.venueRepository.findOne(event.venue)
   }
 
-  @FieldResolver(() => Photo)
+  @FieldResolver(() => Photo, { nullable: true })
   photo(@Root() event: Event) {
     return this.photoStorageService.getPhoto(event.photo)
   }

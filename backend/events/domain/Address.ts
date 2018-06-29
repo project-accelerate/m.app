@@ -9,8 +9,7 @@ export class Address {
     return Object.assign(new Address(), props)
   }
 
-  @Field(() => [GraphQLString])
-  streetAddress!: string
+  @Field() streetAddress!: string
 
   @Field() city!: string
 

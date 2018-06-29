@@ -1,0 +1,14 @@
+fragment VenueAdminCard on Venue {
+  id
+  name
+  description
+  address {
+    streetAddress
+    postcode
+    longitude
+    latitude
+  }
+  photo {
+    sourceUrl
+  }
+}

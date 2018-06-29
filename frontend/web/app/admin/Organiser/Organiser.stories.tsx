@@ -18,7 +18,6 @@ storiesOf('Organiser Admin', module)
       onCancel={action('cancel')}
     />
   ))
-  .addDecorator(storyWrapper())
   .add('Card (No Image)', () => (
     <OrganiserAdminCard
       organiser={{

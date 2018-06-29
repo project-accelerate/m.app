@@ -31,7 +31,7 @@ export class VenueResolver {
     return new AllVenuesConnection(await this.venueRepository.findAll())
   }
 
-  @FieldResolver(() => Photo)
+  @FieldResolver(() => Photo, { nullable: true })
   photo(@Root() venue: Venue) {
     return this.photoStorageService.getPhoto(venue.photo)
   }

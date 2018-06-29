@@ -1,0 +1,21 @@
+fragment EventAdminCard on Event {
+  id
+  name
+  speakers {
+    edges {
+      node {
+        name
+      }
+    }
+  }
+  venue {
+    name
+  }
+  startTime
+  endTime
+  introduction
+  detail
+  photo {
+    sourceUrl
+  }
+}

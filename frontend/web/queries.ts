@@ -61,6 +61,29 @@ export interface EventFeedPageQuery {
   }>
 }
 
+export interface EventAdminCardFragment {
+  id: string
+  name: string
+  speakers: {
+    edges: Array<{
+      node: {
+        name: string | null
+      }
+    }>
+  }
+  // Return the event venue
+  venue: {
+    name: string
+  }
+  startTime: string
+  endTime: string
+  introduction: string
+  detail: string
+  photo: {
+    sourceUrl: string
+  } | null
+}
+
 export interface AllOrganisersFragment {
   edges: Array<{
     node: {
@@ -83,9 +106,19 @@ export interface OrganiserAdminCardFragment {
   } | null
 }
 
-export interface OrganiserPickerFragment {
+export interface VenueAdminCardFragment {
   id: string
-  name: string | null
+  name: string
+  description: string
+  address: {
+    streetAddress: string
+    postcode: string
+    longitude: number
+    latitude: number
+  }
+  photo: {
+    sourceUrl: string
+  } | null
 }
 
 export interface EventFeedCardFragment {
