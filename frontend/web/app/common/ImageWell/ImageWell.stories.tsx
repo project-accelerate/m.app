@@ -1,15 +1,15 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { FieldState } from 'formstate'
+import { action } from '@storybook/addon-actions'
 import somePhoto from 'common/test/somePhoto.jpg'
-import { ImageWell, ImageWellValue } from './ImageWell'
+import { ImageWell } from './ImageWell'
 import { storyWrapper } from 'frontend.web/storybook/storyWrapper'
 
 storiesOf('ImageWell', module)
   .addDecorator(storyWrapper({ width: 320, height: 240 }))
   .add('Empty', () => (
-    <ImageWell image={new FieldState<ImageWellValue>(undefined)} />
+    <ImageWell value={undefined} onChange={action('chagne')} />
   ))
   .add('With image url', () => (
-    <ImageWell image={new FieldState<ImageWellValue>(somePhoto)} />
+    <ImageWell value={somePhoto} onChange={action('change')} />
   ))

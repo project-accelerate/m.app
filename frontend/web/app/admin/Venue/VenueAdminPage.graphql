@@ -1,0 +1,11 @@
+#import "./VenueAdminCard.graphql"
+
+query VenueAdminPage {
+  allVenues {
+    edges {
+      node {
+        ...VenueAdminCard
+      }
+    }
+  }
+}

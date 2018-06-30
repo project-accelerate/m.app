@@ -1,7 +1,4 @@
 import React from 'react'
-import { observable, computed, toJS, observe } from 'mobx'
-import { observer } from 'mobx-react'
-import { delay } from 'bluebird'
 import {
   Snackbar,
   WithStyles,
@@ -60,7 +57,6 @@ interface NotificationData {
   notification: Notification
 }
 
-@observer
 class _NotificationBar extends React.Component<
   NotificationBarProps,
   NotificationBarState

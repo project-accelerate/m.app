@@ -10,16 +10,23 @@ import {
   withStyles,
   Chip,
 } from '@material-ui/core'
-import { observer } from 'mobx-react'
-import { FieldState } from 'formstate'
 import { keyBy, fromPairs } from 'lodash'
 
 interface PickerProps {
-  value: FieldState<string[]>
+  label?: string
+  value: string | undefined
+  onChange: (value: string) => void
   options: PickerOption[]
 }
 
-interface PickerOption {
+interface MultiPickerProps {
+  label?: string
+  value: string[]
+  onChange: (value: string[]) => void
+  options: PickerOption[]
+}
+
+export interface PickerOption {
   id: string
   name: string
 }
@@ -58,46 +65,86 @@ const styles = withStyles(({ spacing, typography }: Theme) => {
   })
 })
 
-export const Picker = observer(
-  styles<PickerProps>(function Picker({
-    value: { value, onChange },
-    options,
-    classes,
-  }) {
-    const optionMap = keyBy(options, 'id')
-    const selection = fromPairs(value.map(id => [id, true]))
+export const Picker = styles<PickerProps>(function Picker({
+  label,
+  value,
+  onChange,
+  options,
+  classes,
+}) {
+  const optionMap = keyBy(options, 'id')
 
-    return (
-      <FormControl className={classes.formControl}>
-        <InputLabel htmlFor="select-multiple-chip">Chip</InputLabel>
-        <Select
-          multiple
-          value={value}
-          onChange={event => {
-            onChange(event.currentTarget.value as any)
-          }}
-          input={<Input id="select-multiple-chip" />}
-          renderValue={selected => (
-            <div className={classes.chips}>
-              {value.map(value => (
-                <Chip key={value} label={value} className={classes.chip} />
-              ))}
-            </div>
-          )}
-        >
-          {options.map(option => (
-            <MenuItem
-              key={option.id}
-              value={option.id}
-              className={
-                option.id in selection ? classes.selectedItem : classes.item
-              }
-            >
-              {option.name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    )
-  }),
-)
+  return (
+    <FormControl fullWidth>
+      <InputLabel htmlFor="select-multiple-chip">{label}</InputLabel>
+      <Select
+        value={value}
+        onChange={event => {
+          onChange(event.target.value)
+        }}
+        input={<Input id="select" />}
+        renderValue={() => value && optionMap[value].name}
+      >
+        {options.map(option => (
+          <MenuItem
+            key={option.id}
+            value={option.id}
+            className={
+              option.id === value ? classes.selectedItem : classes.item
+            }
+          >
+            {option.name}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  )
+})
+
+export const MultiPicker = styles<MultiPickerProps>(function MultiPicker({
+  label,
+  value,
+  onChange,
+  options,
+  classes,
+}) {
+  const optionMap = keyBy(options, 'id')
+  const selection = fromPairs(value.map(id => [id, true]))
+
+  return (
+    <FormControl fullWidth>
+      <InputLabel htmlFor="select-multiple-chip">{label}</InputLabel>
+      <Select
+        multiple
+        value={value}
+        onChange={event => {
+          onChange(event.target.value as any)
+        }}
+        input={<Input id="select-multiple-chip" />}
+        renderValue={selected => (
+          <div className={classes.chips}>
+            {value.map(value => (
+              <Chip
+                key={value}
+                label={optionMap[value].name}
+                className={classes.chip}
+              />
+            ))}
+          </div>
+        )}
+      >
+        {options.map(option => (
+          <MenuItem
+            key={option.id}
+            value={option.id}
+            className={
+              option.id in selection ? classes.selectedItem : classes.item
+            }
+          >
+            {option.name}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  )
+})

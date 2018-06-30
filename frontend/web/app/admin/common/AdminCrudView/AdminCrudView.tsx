@@ -49,12 +49,12 @@ export interface AdminCrudViewListProps<T> {
 
 export interface AdminCrudViewEditProps<T, Edit> {
   value: T
-  onSave: (value: Edit) => void
+  onSave: (value: Edit) => Promise<void>
   onCancel: () => void
 }
 
 export interface AdminCrudViewAddProps<T> {
-  onSave: (value: T) => void
+  onSave: (value: T) => Promise<void>
   onCancel: () => void
 }
 
@@ -62,11 +62,11 @@ export interface AdminCrudViewAddProps<T> {
  * Utility for rendering an editable list of items
  */
 export class AdminCrudView<
-  Item extends AdminCrudViewItem = AdminCrudViewItem,
+  Item extends AdminCrudViewItem,
   SavedItem = Item,
-  AddedItem = Item
+  AddedItem = SavedItem
 > extends React.Component<
-  AdminCrudViewProps<Item, SavedItem, AddedItem>,
+  AdminCrudViewProps<Item & AdminCrudViewItem, SavedItem, AddedItem>,
   AdminCrudViewState<Item>
 > {
   state: AdminCrudViewState<Item> = {

@@ -1,7 +1,11 @@
-#import "./AllOrganisers.graphql"
+#import "./OrganiserAdminCard.graphql"
 
 query OrganiserAdminPage {
   allOrganisers {
-    ...AllOrganisers
+    edges {
+      node {
+        ...OrganiserAdminCard
+      }
+    }
   }
 }

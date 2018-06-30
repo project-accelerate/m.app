@@ -20,7 +20,6 @@ const styles = withStyles(({ spacing, palette }) =>
       justifyContent: 'center',
     },
     message: {
-      fontWeight: 'bolder',
       marginTop: spacing.unit,
     },
   }),

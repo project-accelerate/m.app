@@ -1,0 +1,8 @@
+fragment VenueList on AllVenuesConnection {
+  edges {
+    node {
+      id
+      name
+    }
+  }
+}

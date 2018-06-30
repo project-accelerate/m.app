@@ -20,8 +20,7 @@ export class Address {
 
 @InputType()
 export class AddressInput implements Without<Address, 'location'> {
-  @Field(() => [GraphQLString])
-  streetAddress!: string
+  @Field() streetAddress!: string
 
   @Field() city!: string
 

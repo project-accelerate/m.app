@@ -5,8 +5,7 @@ fragment VenueAdminCard on Venue {
   address {
     streetAddress
     postcode
-    longitude
-    latitude
+    city
   }
   photo {
     sourceUrl

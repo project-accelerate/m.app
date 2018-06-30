@@ -1,0 +1,5 @@
+mutation CreateEvent($req: CreateEventRequest!) {
+  createEvent(request: $req) {
+    id
+  }
+}

@@ -1,16 +1,11 @@
 import React from 'react'
-import Async from 'react-promise'
-import { observer } from 'mobx-react'
-import { FieldState } from 'formstate'
 import Dropzone, { ImageFile } from 'react-dropzone'
 import {
   WithStyles,
   withStyles,
   createStyles,
-  InputLabel,
   Typography,
   Theme,
-  IconButton,
   Toolbar,
   Button,
 } from '@material-ui/core'
@@ -66,33 +61,46 @@ const styles = ({ spacing, palette }: Theme) =>
   })
 
 interface ImageWellProps extends WithStyles<typeof styles> {
-  image: FieldState<ImageWellValue>
+  value: string | File | undefined
+  onChange: (value: File) => void
   placeholder?: React.ReactNode
 }
 
-export type ImageWellValue = File | string | undefined
+interface ImageWellState {
+  imageData?: string
+}
 
-@observer
-class _ImageWell extends React.Component<ImageWellProps> {
+class _ImageWell extends React.Component<ImageWellProps, ImageWellState> {
   static displayName = 'ImageWell'
 
-  get imageData() {
-    const image = this.props.image.value
+  state: ImageWellState = {
+    imageData:
+      typeof this.props.value === 'string' ? this.props.value : undefined,
+  }
 
+  componentDidMount() {
+    this.loadImage(this.props.value)
+  }
+
+  componentWillReceiveProps(newProps: ImageWellProps) {
+    if (newProps.value !== this.props.value) {
+      this.loadImage(newProps.value)
+    }
+  }
+
+  async loadImage(image: string | File | undefined) {
     if (!image) {
-      return Promise.resolve(undefined)
+      this.setState({ imageData: undefined })
+    } else if (typeof image === 'string') {
+      this.setState({ imageData: image })
+    } else {
+      this.setState({ imageData: await toDataUri(image) })
     }
-
-    if (typeof image === 'string') {
-      return Promise.resolve(image)
-    }
-
-    return toDataUri(image)
   }
 
   handleDrop = (files: ImageFile[]) => {
     if (files[0]) {
-      this.props.image.onChange(files[0])
+      this.props.onChange(files[0])
     }
   }
 
@@ -101,27 +109,22 @@ class _ImageWell extends React.Component<ImageWellProps> {
 
     return (
       <Dropzone className={classes.dropzone} onDrop={this.handleDrop}>
-        <Async
-          promise={this.imageData}
-          then={data => (
-            <div
-              className={classnames(classes.wrapper, {
-                [classes.hasImage]: !!data,
-              })}
-            >
-              <img className={classes.image} src={data} />
+        <div
+          className={classnames(classes.wrapper, {
+            [classes.hasImage]: !!this.state.imageData,
+          })}
+        >
+          <img className={classes.image} src={this.state.imageData} />
 
-              <Placeholder />
+          <Placeholder />
 
-              <Toolbar className={classes.toolbar}>
-                {children}
-                <Button mini variant="fab">
-                  <AddAPhoto />
-                </Button>
-              </Toolbar>
-            </div>
-          )}
-        />
+          <Toolbar className={classes.toolbar}>
+            {children}
+            <Button mini variant="fab">
+              <AddAPhoto />
+            </Button>
+          </Toolbar>
+        </div>
       </Dropzone>
     )
 

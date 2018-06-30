@@ -7,6 +7,7 @@ import { asyncAction } from 'frontend.web/storybook/actions'
 
 storiesOf('EditDialog', module).add('Default', () => (
   <EditDialog
+    initial={{}}
     title="Title"
     onCancel={action('cancel')}
     onSubmit={asyncAction('submit')}

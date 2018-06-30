@@ -1,21 +1,9 @@
 import * as log from 'winston'
 import * as faker from 'faker'
 import { times } from 'lodash'
-import {
-  startOfTomorrow,
-  endOfTomorrow,
-  subHours,
-  addDays,
-  addHours,
-} from 'date-fns'
+import { endOfTomorrow, subHours, addDays, addHours } from 'date-fns'
 import { someGeoPoint } from '../../common/test/testUtils'
-import { Event } from '../events/domain/Event'
-import { EventRepository } from '../events/external/EventRepository'
-import {
-  someEvent,
-  givenThatAnEventExists,
-  someEventProps,
-} from '../events/test/eventTestUtils'
+import { givenThatAnEventExists } from '../events/test/eventTestUtils'
 
 export async function configureTestData() {
   await Promise.all(times(20, testEvent))

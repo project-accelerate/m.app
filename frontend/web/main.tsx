@@ -21,6 +21,8 @@ import EventFeedPage from './app/events/EventFeedPage'
 import { configureServiceWorker } from './config/serviceWorker'
 import { AuthCallback } from './app/common/authentication/AuthCallback'
 import { OrganiserAdminPage } from 'frontend.web/app/admin/Organiser/OrganiserAdminPage'
+import { VenueAdminPage } from 'frontend.web/app/admin/Venue/VenueAdminPage'
+import { EventAdminPage } from 'frontend.web/app/admin/Event/EventAdminPage'
 
 const App = () => (
   <AuthGuardProvider tokenManager={tokenManager}>
@@ -31,13 +33,15 @@ const App = () => (
             <LoggedInGuard
               render={
                 <AppWrapper>
-                  <Redirect exact from="/" to="/admin/speakers" />
                   <CssBaseline />
                   <Switch>
                     <Route
                       path="/admin/speakers"
                       component={OrganiserAdminPage}
                     />
+                    <Route path="/admin/venues" component={VenueAdminPage} />
+                    <Route path="/admin/events" component={EventAdminPage} />
+                    <Redirect to="/admin/speakers" />
                   </Switch>
                 </AppWrapper>
               }

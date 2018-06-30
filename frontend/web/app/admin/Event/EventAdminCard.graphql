@@ -4,11 +4,13 @@ fragment EventAdminCard on Event {
   speakers {
     edges {
       node {
+        id
         name
       }
     }
   }
   venue {
+    id
     name
   }
   startTime

@@ -1,0 +1,5 @@
+mutation CreateVenue($req: CreateVenueRequest!) {
+  createVenue(request: $req) {
+    id
+  }
+}

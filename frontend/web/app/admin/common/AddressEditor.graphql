@@ -1,0 +1,5 @@
+fragment AddressEditor on Address {
+  streetAddress
+  city
+  postcode
+}

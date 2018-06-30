@@ -167,7 +167,7 @@ class Fixture {
 
   constructor(props: Partial<AdminCrudViewProps<any, any, any>> = {}) {
     this.tree = mount(
-      <AdminCrudView
+      <AdminCrudView<{ id: string }>
         items={[{ id: 'a' }]}
         onAddItem={this.onAddItem}
         onEditItem={this.onEditItem}

@@ -16,8 +16,7 @@ export class CreateOrganiserRequest {
 export class Organiser {
   @Field() id!: string
 
-  @Field({ nullable: true })
-  name!: string
+  @Field() name!: string
 
   @Field({ nullable: true })
   bio?: string

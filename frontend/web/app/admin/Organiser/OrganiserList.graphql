@@ -1,0 +1,8 @@
+fragment OrganiserList on AllOrganisersConnection {
+  edges {
+    node {
+      id
+      name
+    }
+  }
+}

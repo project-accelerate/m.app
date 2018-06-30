@@ -1,0 +1,27 @@
+#import "./EventAdminCard.graphql"
+
+query EventAdminPage {
+  venueOptions: allVenues {
+    edges {
+      node {
+        id
+        name
+      }
+    }
+  }
+  speakerOptions: allOrganisers {
+    edges {
+      node {
+        id
+        name
+      }
+    }
+  }
+  allEvents {
+    edges {
+      node {
+        ...EventAdminCard
+      }
+    }
+  }
+}

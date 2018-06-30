@@ -19,6 +19,7 @@ class Fixture {
     this.tree = shallow(
       <EditDialog
         title="Title"
+        initial={{}}
         onCancel={this.cancel}
         onSubmit={this.submit}
       />,

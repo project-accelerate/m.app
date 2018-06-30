@@ -1,10 +1,93 @@
 /* tslint:disable */
 //  This file was automatically generated and should not be edited.
 
+export interface CreateEventRequest {
+  name: string
+  organiser: string
+  speakers: Array<string>
+  venue: string
+  startTime: string
+  endTime: string
+  introduction: string
+  detail: string
+  photoUpload?: string | null
+}
+
 export interface CreateOrganiserRequest {
   name: string
   bio?: string | null
   photoUpload?: string | null
+}
+
+export interface CreateVenueRequest {
+  name: string
+  description: string
+  photoUpload?: string | null
+  address: AddressInput
+}
+
+export interface AddressInput {
+  streetAddress: string
+  city: string
+  postcode: string
+}
+
+export interface CreateEventMutationVariables {
+  req: CreateEventRequest
+}
+
+export interface CreateEventMutation {
+  // Submit a new event
+  createEvent: {
+    id: string
+  }
+}
+
+export interface EventAdminPageQuery {
+  venueOptions: {
+    edges: Array<{
+      node: {
+        id: string
+        name: string
+      }
+    }>
+  }
+  speakerOptions: {
+    edges: Array<{
+      node: {
+        id: string
+        name: string
+      }
+    }>
+  }
+  allEvents: {
+    edges: Array<{
+      node: {
+        id: string
+        name: string
+        speakers: {
+          edges: Array<{
+            node: {
+              id: string
+              name: string
+            }
+          }>
+        }
+        // Return the event venue
+        venue: {
+          id: string
+          name: string
+        }
+        startTime: string
+        endTime: string
+        introduction: string
+        detail: string
+        photo: {
+          sourceUrl: string
+        } | null
+      }
+    }>
+  }
 }
 
 export interface CreateOrganiserMutationVariables {
@@ -22,8 +105,38 @@ export interface OrganiserAdminPageQuery {
     edges: Array<{
       node: {
         id: string
-        name: string | null
+        name: string
         bio: string | null
+        photo: {
+          sourceUrl: string
+        } | null
+      }
+    }>
+  }
+}
+
+export interface CreateVenueMutationVariables {
+  req: CreateVenueRequest
+}
+
+export interface CreateVenueMutation {
+  createVenue: {
+    id: string
+  }
+}
+
+export interface VenueAdminPageQuery {
+  allVenues: {
+    edges: Array<{
+      node: {
+        id: string
+        name: string
+        description: string
+        address: {
+          streetAddress: string
+          postcode: string
+          city: string
+        }
         photo: {
           sourceUrl: string
         } | null
@@ -45,7 +158,7 @@ export interface EventFeedPageQuery {
     // Return the event organiser
     organiser: {
       id: string
-      name: string | null
+      name: string
     }
     // Return the event venue
     venue: {
@@ -67,12 +180,14 @@ export interface EventAdminCardFragment {
   speakers: {
     edges: Array<{
       node: {
-        name: string | null
+        id: string
+        name: string
       }
     }>
   }
   // Return the event venue
   venue: {
+    id: string
     name: string
   }
   startTime: string
@@ -84,26 +199,22 @@ export interface EventAdminCardFragment {
   } | null
 }
 
-export interface AllOrganisersFragment {
-  edges: Array<{
-    node: {
-      id: string
-      name: string | null
-      bio: string | null
-      photo: {
-        sourceUrl: string
-      } | null
-    }
-  }>
-}
-
 export interface OrganiserAdminCardFragment {
   id: string
-  name: string | null
+  name: string
   bio: string | null
   photo: {
     sourceUrl: string
   } | null
+}
+
+export interface OrganiserListFragment {
+  edges: Array<{
+    node: {
+      id: string
+      name: string
+    }
+  }>
 }
 
 export interface VenueAdminCardFragment {
@@ -113,12 +224,26 @@ export interface VenueAdminCardFragment {
   address: {
     streetAddress: string
     postcode: string
-    longitude: number
-    latitude: number
+    city: string
   }
   photo: {
     sourceUrl: string
   } | null
+}
+
+export interface VenueListFragment {
+  edges: Array<{
+    node: {
+      id: string
+      name: string
+    }
+  }>
+}
+
+export interface AddressEditorFragment {
+  streetAddress: string
+  city: string
+  postcode: string
 }
 
 export interface EventFeedCardFragment {
@@ -127,7 +252,7 @@ export interface EventFeedCardFragment {
   // Return the event organiser
   organiser: {
     id: string
-    name: string | null
+    name: string
   }
   // Return the event venue
   venue: {

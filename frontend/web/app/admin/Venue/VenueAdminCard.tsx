@@ -45,12 +45,12 @@ export function VenueAdminCard({ venue, onEdit }: VenueAdminCardProps) {
       </CardContent>
 
       <Toggle>
-        {({ active: descriptionVisible, toggle: toggleBio }) => (
+        {({ active: descriptionVisible, toggle: toggleDescription }) => (
           <>
             <CardActions>
               <DiscloseButton
                 disclosed={descriptionVisible}
-                onClick={toggleBio}
+                onClick={toggleDescription}
               />
             </CardActions>
             {venue.description && (
