@@ -1,9 +1,11 @@
-import { CrudRepositoryConstructor } from '../common/CrudRepository'
-import { map, fromPairs } from 'lodash'
-import { withDb } from './integrationTestUtils'
 import Container from 'typedi'
+import {
+  CrudRepositoryConstructor,
+  CrudRepository,
+} from '../common/CrudRepository'
+import { withDb } from './integrationTestUtils'
 
-interface CrudRepositoryTestProps<T extends Props & { id: string }, Props> {
+interface CrudRepositoryTestProps<T extends { id: string }, Props> {
   /** Function returning some props required to insert into the repository */
   example: () => Promise<T>
 
@@ -15,7 +17,7 @@ interface CrudRepositoryTestProps<T extends Props & { id: string }, Props> {
 }
 
 export function shouldSupportStandardCrudFunctions<
-  T extends Props & { id: string },
+  T extends { id: string },
   Props
 >(opts: CrudRepositoryTestProps<T, Props>) {
   it(
@@ -25,7 +27,7 @@ export function shouldSupportStandardCrudFunctions<
 
       const entity = await fixture.givenThatAnEntityHasBeenInserted()
 
-      const foundObject = await fixture.repository.findOne(entity.id)
+      const foundObject = await fixture.repository.findOne({ id: entity.id })
 
       expect(foundObject).toMatchObject(entity)
     }),
@@ -36,7 +38,9 @@ export function shouldSupportStandardCrudFunctions<
     withDb(async () => {
       const fixture = new Fixture()
 
-      await expect(fixture.repository.findOneRequired('123')).rejects.toThrow()
+      await expect(
+        fixture.repository.findOneRequired({ id: '123' }),
+      ).rejects.toThrow()
     }),
   )
 
@@ -47,9 +51,11 @@ export function shouldSupportStandardCrudFunctions<
 
       const entity = await fixture.givenThatAnEntityHasBeenInserted()
 
-      await fixture.repository.delete(entity.id)
+      await fixture.repository.delete({ id: entity.id })
 
-      expect(await fixture.repository.findOne(entity.id)).toBeUndefined()
+      expect(
+        await fixture.repository.findOne({ id: entity.id }),
+      ).toBeUndefined()
     }),
   )
 
@@ -62,15 +68,17 @@ export function shouldSupportStandardCrudFunctions<
 
       await fixture.repository.update(entity.id, fixture.exampleUpdateProps)
 
-      expect(await fixture.repository.findOne(entity.id)).toMatchObject({
-        ...(entity as any),
-        ...fixture.exampleUpdateProps,
-      })
+      expect(await fixture.repository.findOne({ id: entity.id })).toMatchObject(
+        {
+          ...(entity as any),
+          ...fixture.exampleUpdateProps,
+        },
+      )
     }),
   )
 
   class Fixture {
-    repository = Container.get(opts.repository)
+    repository: CrudRepository<any> = Container.get(opts.repository)
 
     exampleUpdateProps = opts.updateExample() as any
 

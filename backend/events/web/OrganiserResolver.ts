@@ -34,7 +34,7 @@ export class OrganiserResolver {
     description: 'Get an organiser by id',
   })
   organiser(@Arg('id') id: string) {
-    return this.organiserRepository.findOne(id)
+    return this.organiserRepository.findOne({ id })
   }
 
   @Query(() => AllOrganisersConnection)

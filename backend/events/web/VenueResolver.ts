@@ -23,7 +23,7 @@ export class VenueResolver {
     description: 'Get a venue by id',
   })
   venue(@Arg('id') id: string) {
-    return this.venueRepository.findOne(id)
+    return this.venueRepository.findOne({ id })
   }
 
   @Query(() => AllVenuesConnection)

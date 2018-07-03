@@ -27,9 +27,12 @@ export class MockCrudRepositoryFixture<
   }
 
   givenObjectReturnedFromFindOne(object: T) {
-    when(this.mock.findOne(object.id)).thenResolve(object)
+    const repository = this.mock as CrudRepository<{ id: string }>
 
-    when(this.mock.findOneRequired(object.id)).thenResolve(object)
+    when(repository.findOne(deepEqual({ id: object.id }))).thenResolve(object)
+    when(repository.findOneRequired(deepEqual({ id: object.id }))).thenResolve(
+      object,
+    )
   }
 
   verifyInserted(props: Props) {

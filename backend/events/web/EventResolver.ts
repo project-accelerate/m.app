@@ -56,7 +56,7 @@ export class EventResolver {
     description: 'Get an event by id',
   })
   event(@Arg('id') id: string) {
-    return this.eventRepository.findOne(id)
+    return this.eventRepository.findOne({ id })
   }
 
   @Query(() => [Event], {
@@ -80,14 +80,14 @@ export class EventResolver {
     description: 'Return the event organiser',
   })
   organiser(@Root() event: Event) {
-    return this.organiserRepository.findOne(event.organiser)
+    return this.organiserRepository.findOne({ id: event.organiser })
   }
 
   @FieldResolver(() => Venue, {
     description: 'Return the event venue',
   })
   venue(@Root() event: Event) {
-    return this.venueRepository.findOne(event.venue)
+    return this.venueRepository.findOne({ id: event.venue })
   }
 
   @FieldResolver(() => Photo, { nullable: true })

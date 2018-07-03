@@ -1,5 +1,5 @@
 import uuid from 'uuid'
-import { flatMap, mapValues } from 'lodash'
+import { flatMap, mapValues, forEach } from 'lodash'
 import Knex from 'knex'
 import { WithoutId } from './WithoutId'
 import { Container } from 'typedi'
@@ -49,19 +49,19 @@ export interface CrudRepository<T = {}, Props = {}> {
   decodeAll(value: any[]): T[]
 
   /**
-   * Find an object by id
+   * Find an object
    */
-  findOne(id: string): Promise<T | undefined>
+  findOne(clauses: SelectClauses<T>): Promise<T | undefined>
 
   /**
    * Find an object by id
    */
-  delete(id: string): Promise<void>
+  delete(clauses: SelectClauses<T>): Promise<void>
 
   /**
    * Find an object by id, throwing if not found
    */
-  findOneRequired(id: string): Promise<T>
+  findOneRequired(clauses: SelectClauses<T>): Promise<T>
 
   /**
    * Return all instances
@@ -102,6 +102,8 @@ export interface FieldConverter<T> {
   query?: (column: string) => Knex.QueryBuilder
 }
 
+export type SelectClauses<T> = Partial<T>
+
 export function CrudRepository<T extends { id: string }, Props = WithoutId<T>>(
   opts: CrudRepositoryConfig<T>,
 ): CrudRepositoryConstructor<T, Props> {
@@ -120,7 +122,7 @@ export function CrudRepository<T extends { id: string }, Props = WithoutId<T>>(
         field.query ? [field.query(key)] : [],
     ) as any
 
-    encode(value: Partial<Props>): any {
+    encode(value: Partial<T>): any {
       return mapValues(value, (field: any, key: string) => {
         const convert = fieldConverters[key] || {}
         return convert.from ? convert.from(field) : field
@@ -151,29 +153,34 @@ export function CrudRepository<T extends { id: string }, Props = WithoutId<T>>(
       return new RelationRepository(CrudRepositoryBase, repo, opts)
     }
 
-    async findOne(id: string): Promise<T | undefined> {
+    async find(clauses: SelectClauses<T>): Promise<T[]> {
+      return await this.db.knex
+        .select('*', ...this.customQueryFields)
+        .from(opts.tableName)
+        .where(this.encode(clauses))
+        .then(xs => this.decodeAll(xs))
+    }
+
+    async findOne(clauses: SelectClauses<T>): Promise<T | undefined> {
       return await this.db.knex
         .select('*', ...this.customQueryFields)
         .first()
         .from(opts.tableName)
-        .where('id', id)
+        .where(this.encode(clauses))
         .then(x => this.decode(x))
     }
 
-    async findOneRequired(id: string) {
-      const item = await this.findOne(id)
+    async findOneRequired(clauses: SelectClauses<T>) {
+      const item = await this.findOne(clauses)
       if (!item) {
-        throw Error(`Not found: ${this.tableName}:${id}`)
+        throw Error(`Not found: ${this.tableName}:${JSON.stringify(clauses)}`)
       }
 
       return item
     }
 
     async findAll() {
-      return await this.db.knex
-        .select('*', ...this.customQueryFields)
-        .from(opts.tableName)
-        .then(xs => this.decodeAll(xs))
+      return this.find({})
     }
 
     async insert(data: any): Promise<T> {
@@ -190,11 +197,11 @@ export function CrudRepository<T extends { id: string }, Props = WithoutId<T>>(
         .into(opts.tableName)
     }
 
-    async delete(id: string): Promise<void> {
+    async delete(clauses: SelectClauses<T>): Promise<void> {
       await this.db.knex
         .delete()
         .from(this.tableName)
-        .where('id', id)
+        .where(clauses)
     }
   }
 

@@ -23,7 +23,7 @@ export class EventAdminService {
         this.photoStorageService,
         photoUpload,
       ),
-      this.venueRepository.findOneRequired(venueId),
+      this.venueRepository.findOneRequired({ id: venueId }),
     ])
 
     const event = await this.eventRepository.insert({
