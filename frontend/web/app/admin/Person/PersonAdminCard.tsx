@@ -1,16 +1,12 @@
 import React from 'react'
-import { OrganiserAdminCardFragment } from 'frontend.web/queries'
+import { PersonAdminCardFragment } from 'frontend.web/queries'
 import {
   Card,
   CardContent,
-  CardHeader,
-  CardMedia,
   Typography,
   CardActions,
-  IconButton,
   Collapse,
 } from '@material-ui/core'
-import { Edit, ExpandMore } from '@material-ui/icons'
 import {
   MarkdownView,
   Toggle,
@@ -18,20 +14,20 @@ import {
   CardImage,
 } from 'frontend.web/app/common/Widgets/Widgets'
 
-interface OrganiserAdminCardProps {
-  organiser: OrganiserAdminCardFragment
-  onEdit: (organiser: OrganiserAdminCardFragment) => void
+interface PersonAdminCardProps {
+  person: PersonAdminCardFragment
+  onEdit: (organiser: PersonAdminCardFragment) => void
 }
 
-export function OrganiserAdminCard({
-  organiser,
+export function PersonAdminCard({
+  person,
   onEdit,
-}: OrganiserAdminCardProps) {
+}: PersonAdminCardProps) {
   return (
     <Card>
-      <CardImage src={organiser.photo && organiser.photo.sourceUrl}>
+      <CardImage src={person.photo && person.photo.sourceUrl}>
         <Typography color="inherit" variant="headline">
-          {organiser.name}
+          {person.name}
         </Typography>
       </CardImage>
 
@@ -41,10 +37,10 @@ export function OrganiserAdminCard({
             <CardActions>
               <DiscloseButton disclosed={bioVisible} onClick={toggleBio} />
             </CardActions>
-            {organiser.bio && (
+            {person.bio && (
               <Collapse in={bioVisible}>
                 <CardContent>
-                  <MarkdownView value={organiser.bio} />
+                  <MarkdownView value={person.bio} />
                 </CardContent>
               </Collapse>
             )}

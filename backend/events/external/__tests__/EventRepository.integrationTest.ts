@@ -2,12 +2,8 @@ import { someGeoPoint } from '../../../../common/test/testUtils'
 import { withDb } from '../../../test/integrationTestUtils'
 import { shouldSupportStandardCrudFunctions } from '../../../test/CrudRepositoryTestUtils'
 import {
-  someEventProps,
-  givenThatAnOrganiserExists,
-  givenThatAVenueExists,
+  givenThatAPersonExists,
   givenThatAnEventExists,
-  someOrganiser,
-  someEvent,
 } from '../../test/eventTestUtils'
 import { Distance, DistanceUnit } from '../../domain/Distance'
 import { EventRepository } from '../EventRepository'
@@ -25,7 +21,7 @@ describe('EventRepository', () => {
     relation: 'speakers',
 
     sourceExample: givenThatAnEventExists,
-    destExample: givenThatAnOrganiserExists,
+    destExample: givenThatAPersonExists,
   })
 
   describe('.findByTimeAndLocation', () => {

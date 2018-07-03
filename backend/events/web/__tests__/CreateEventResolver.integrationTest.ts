@@ -1,16 +1,11 @@
 import {
-  someString,
-  somePostcode,
-  someDate,
   someAdminUser,
   someOrdinaryUser,
 } from '../../../../common/test/testUtils'
 import { withDb, execQuery } from '../../../test/integrationTestUtils'
 import {
-  givenThatAnEventExists,
   givenThatAVenueExists,
-  givenThatAnOrganiserExists,
-  someEventProps,
+  givenThatAPersonExists,
   someCreateEventRequest,
 } from '../../test/eventTestUtils'
 import { CreateEventRequest } from '../../domain/Event'
@@ -22,7 +17,7 @@ describe('createEvent mutation', () => {
       'creates the event and returns it',
       withDb(async () => {
         const venue = await givenThatAVenueExists()
-        const organiser = await givenThatAnOrganiserExists()
+        const organiser = await givenThatAPersonExists()
         const result = await createEvent({
           request: {
             name: 'my-event',
@@ -44,7 +39,7 @@ describe('createEvent mutation', () => {
       'rejects the request',
       withDb(async () => {
         const venue = await givenThatAVenueExists()
-        const organiser = await givenThatAnOrganiserExists()
+        const organiser = await givenThatAPersonExists()
         const result = createEvent({
           request: {
             name: 'my-event',
@@ -72,7 +67,7 @@ async function createEvent(props: {
         venue {
           name
         }
-        organiser {
+        person {
           name
         }
       }

@@ -2,29 +2,29 @@ import React from 'react'
 import { AdminCrudView } from 'frontend.web/app/admin/common/AdminCrudView/AdminCrudView'
 import { createDataLoader } from 'frontend.web/app/common/LoadData/LoadData'
 import {
-  OrganiserAdminPageQuery,
-  CreateOrganiserRequest,
+  PersonAdminPageQuery,
+  CreatePersonRequest,
 } from 'frontend.web/queries'
 import { withApollo } from 'react-apollo'
 import ApolloClient from 'apollo-client'
-import { OrganiserAdminCard } from './OrganiserAdminCard'
-import { EditOrganiserForm } from './EditOrganiserForm'
+import { PersonAdminCard } from './PersonAdminCard'
+import { EditPersonForm } from './EditPersonForm'
 import { Main } from 'frontend.web/app/common/Layouts'
 
-interface OrganiserAdminPageProps {
+interface PersonAdminPageProps {
   client: ApolloClient<{}>
 }
 
-interface RequestAddProps extends CreateOrganiserRequest {
+interface RequestAddProps extends CreatePersonRequest {
   // Workaround for Apollo incorectly treating Upload as string
   photoUpload?: any
 }
 
-export const OrganiserAdminPage = withApollo(
-  class OrganiserAdminPage extends React.Component<OrganiserAdminPageProps> {
+export const PersonAdminPage = withApollo(
+  class PersonAdminPage extends React.Component<PersonAdminPageProps> {
     handleRequestAdd = async (req: RequestAddProps) => {
       await this.props.client.mutate({
-        mutation: require('./CreateOrganiser.graphql'),
+        mutation: require('./CreatePerson.graphql'),
         variables: {
           req,
         },
@@ -43,16 +43,16 @@ export const OrganiserAdminPage = withApollo(
           <LoadData variables={{}}>
             {({ data }) => (
               <AdminCrudView
-                items={data.allOrganisers.edges.map(e => e.node)}
+                items={data.allPeople.edges.map(e => e.node)}
                 renderAddItem={({ onSave, onCancel }) => (
-                  <EditOrganiserForm
+                  <EditPersonForm
                     title="New Speaker"
                     onSave={onSave}
                     onCancel={onCancel}
                   />
                 )}
                 renderEditItem={({ value, onSave, onCancel }) => (
-                  <EditOrganiserForm
+                  <EditPersonForm
                     title="Edit Speaker"
                     initial={{
                       name: value.name || '',
@@ -66,7 +66,7 @@ export const OrganiserAdminPage = withApollo(
                   />
                 )}
                 renderListItem={({ value, onEdit }) => (
-                  <OrganiserAdminCard onEdit={onEdit} organiser={value} />
+                  <PersonAdminCard onEdit={onEdit} person={value} />
                 )}
                 onAddItem={this.handleRequestAdd}
                 onEditItem={this.handleRequestEdit}
@@ -80,6 +80,6 @@ export const OrganiserAdminPage = withApollo(
   },
 )
 
-const LoadData = createDataLoader<OrganiserAdminPageQuery, {}>(
-  require('./OrganiserAdminPage.graphql'),
+const LoadData = createDataLoader<PersonAdminPageQuery, {}>(
+  require('./PersonAdminPage.graphql'),
 )

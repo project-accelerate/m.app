@@ -1,40 +1,39 @@
 import { withDb, execQuery } from '../../../test/integrationTestUtils'
 import {
-  givenThatAnOrganiserExists,
-  someEventProps,
+  givenThatAPersonExists,
 } from '../../test/eventTestUtils'
 
-describe('OrganiserResolver', () => {
-  describe('.organiser', () => {
+describe('PersonResolver', () => {
+  describe('.person', () => {
     it(
-      'looks up organisers by id',
+      'looks up people by id',
       withDb(async () => {
-        const organiser = await givenThatAnOrganiserExists({ name: 'foo' })
+        const person = await givenThatAPersonExists({ name: 'foo' })
         const result = await execQuery(`
         {
-          organiser(id: "${organiser.id}") {
+          person(id: "${person.id}") {
             name
           }
         }
       `)
 
-        expect(result.organiser).toMatchObject({
+        expect(result.person).toMatchObject({
           name: 'foo',
         })
       }),
     )
   })
 
-  describe('.allOrganisers', () => {
+  describe('.allPeople', () => {
     it(
-      'returns all organisers',
+      'returns all people',
       withDb(async () => {
-        await givenThatAnOrganiserExists({ name: '1' })
-        await givenThatAnOrganiserExists({ name: '2' })
+        await givenThatAPersonExists({ name: '1' })
+        await givenThatAPersonExists({ name: '2' })
 
         const result = await execQuery(`
       {
-        allOrganisers {
+        allPeople {
           total
           edges {
             node {
@@ -45,7 +44,7 @@ describe('OrganiserResolver', () => {
       }
       `)
 
-        expect(result.allOrganisers).toMatchObject({
+        expect(result.allPeople).toMatchObject({
           total: 2,
           edges: [{ node: { name: '1' } }, { node: { name: '2' } }],
         })

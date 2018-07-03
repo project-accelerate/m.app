@@ -1,0 +1,11 @@
+#import "./PersonAdminCard.graphql"
+
+query PersonAdminPage {
+  allPeople {
+    edges {
+      node {
+        ...PersonAdminCard
+      }
+    }
+  }
+}

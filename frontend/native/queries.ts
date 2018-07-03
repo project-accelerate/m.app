@@ -13,7 +13,7 @@ export interface CreateEventRequest {
   photoUpload?: string | null
 }
 
-export interface CreateOrganiserRequest {
+export interface CreatePersonRequest {
   name: string
   bio?: string | null
   photoUpload?: string | null
@@ -90,18 +90,18 @@ export interface EventAdminPageQuery {
   }
 }
 
-export interface CreateOrganiserMutationVariables {
-  req: CreateOrganiserRequest
+export interface CreatePersonMutationVariables {
+  req: CreatePersonRequest
 }
 
-export interface CreateOrganiserMutation {
-  createOrganiser: {
+export interface CreatePersonMutation {
+  createPerson: {
     id: string
   }
 }
 
-export interface OrganiserAdminPageQuery {
-  allOrganisers: {
+export interface PersonAdminPageQuery {
+  allPeople: {
     edges: Array<{
       node: {
         id: string
@@ -155,7 +155,7 @@ export interface EventFeedPageQuery {
   eventFeed: Array<{
     id: string
     name: string
-    // Return the event organiser
+    // Return the event person
     organiser: {
       id: string
       name: string
@@ -199,7 +199,7 @@ export interface EventAdminCardFragment {
   } | null
 }
 
-export interface OrganiserAdminCardFragment {
+export interface PersonAdminCardFragment {
   id: string
   name: string
   bio: string | null
@@ -208,7 +208,7 @@ export interface OrganiserAdminCardFragment {
   } | null
 }
 
-export interface OrganiserListFragment {
+export interface PersonListFragment {
   edges: Array<{
     node: {
       id: string
@@ -249,7 +249,7 @@ export interface AddressEditorFragment {
 export interface EventFeedCardFragment {
   id: string
   name: string
-  // Return the event organiser
+  // Return the event person
   organiser: {
     id: string
     name: string

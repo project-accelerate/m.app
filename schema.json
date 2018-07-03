@@ -111,8 +111,8 @@
               "deprecationReason": null
             },
             {
-              "name": "organiser",
-              "description": "Get an organiser by id",
+              "name": "person",
+              "description": "Get an person by id",
               "args": [
                 {
                   "name": "id",
@@ -131,14 +131,14 @@
               ],
               "type": {
                 "kind": "OBJECT",
-                "name": "Organiser",
+                "name": "Person",
                 "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "allOrganisers",
+              "name": "allPeople",
               "description": "",
               "args": [],
               "type": {
@@ -146,7 +146,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "AllOrganisersConnection",
+                  "name": "AllPeopleConnection",
                   "ofType": null
                 }
               },
@@ -409,15 +409,15 @@
               "deprecationReason": null
             },
             {
-              "name": "organiser",
-              "description": "Return the event organiser",
+              "name": "person",
+              "description": "Return the event person",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "Organiser",
+                  "name": "Person",
                   "ofType": null
                 }
               },
@@ -545,7 +545,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "Organiser",
+                  "name": "Person",
                   "ofType": null
                 }
               },
@@ -560,7 +560,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "Organiser",
+          "name": "Person",
           "description": "",
           "fields": [
             {
@@ -859,7 +859,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "AllOrganisersConnection",
+          "name": "AllPeopleConnection",
           "description": "",
           "fields": [
             {
@@ -893,7 +893,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "OBJECT",
-                      "name": "AllOrganisersEdge",
+                      "name": "AllPeopleEdge",
                       "ofType": null
                     }
                   }
@@ -910,7 +910,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "AllOrganisersEdge",
+          "name": "AllPeopleEdge",
           "description": "",
           "fields": [
             {
@@ -922,7 +922,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "Organiser",
+                  "name": "Person",
                   "ofType": null
                 }
               },
@@ -1050,7 +1050,7 @@
               "deprecationReason": null
             },
             {
-              "name": "createOrganiser",
+              "name": "createPerson",
               "description": "",
               "args": [
                 {
@@ -1061,7 +1061,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "CreateOrganiserRequest",
+                      "name": "CreatePersonRequest",
                       "ofType": null
                     }
                   },
@@ -1073,7 +1073,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "Organiser",
+                  "name": "Person",
                   "ofType": null
                 }
               },
@@ -1138,7 +1138,7 @@
               "defaultValue": null
             },
             {
-              "name": "organiser",
+              "name": "person",
               "description": "",
               "type": {
                 "kind": "NON_NULL",
@@ -1271,7 +1271,7 @@
         },
         {
           "kind": "INPUT_OBJECT",
-          "name": "CreateOrganiserRequest",
+          "name": "CreatePersonRequest",
           "description": "",
           "fields": null,
           "inputFields": [

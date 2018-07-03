@@ -1,26 +1,26 @@
-import { OrganiserAdminService } from '../OrganiserAdminService'
+import { PersonAdminService } from '../PersonAdminService'
 import { mock, when, anything, verify } from 'ts-mockito/lib/ts-mockito'
-import { OrganiserRepository } from '../../external/OrganiserRepository'
+import { PersonRepository } from '../../external/PersonRepository'
 import { PhotoStorageService } from '../PhotoStorageService'
 import { someImageUpload } from '../../../test/testUtils'
 import { MockPhotoStorageFixture } from './fixtures/MockPhotoStorageFixture'
 import { MockCrudRepositoryFixture } from './fixtures/MockCrudRepositoryFixture'
 
-describe(OrganiserAdminService, () => {
-  it('saves all data when new organiser is created', async () => {
+describe(PersonAdminService, () => {
+  it('saves all data when new person is created', async () => {
     const fixture = new Fixture()
     const photoUpload = someImageUpload()
 
     fixture.photoStorage.givenThatThePhotoIsSavedWithId('photo1')
-    fixture.organiserRepository.givenIdReturnedFromInsert('organiser1')
+    fixture.personRepository.givenIdReturnedFromInsert('person1')
 
-    const returnedId = await fixture.service.addOrganiser({
+    const returnedId = await fixture.service.addPerson({
       name: 'me',
       photoUpload,
       bio: 'my bio',
     })
 
-    fixture.organiserRepository.verifyInserted({
+    fixture.personRepository.verifyInserted({
       name: 'me',
       photo: 'photo1',
       bio: 'my bio',
@@ -31,11 +31,11 @@ describe(OrganiserAdminService, () => {
 })
 
 class Fixture {
-  organiserRepository = new MockCrudRepositoryFixture(OrganiserRepository)
+  personRepository = new MockCrudRepositoryFixture(PersonRepository)
   photoStorage = new MockPhotoStorageFixture()
 
-  service = new OrganiserAdminService(
-    this.organiserRepository.instance,
+  service = new PersonAdminService(
+    this.personRepository.instance,
     this.photoStorage.instance,
   )
 }

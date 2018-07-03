@@ -7,34 +7,34 @@ import {
 } from 'frontend.web/app/admin/common/FormInputText'
 import { Validator } from 'frontend.web/app/admin/common/EditDialog/Validator'
 
-interface EditOrganiserFormProps {
+interface EditPersonFormProps {
   title: string
-  initial?: EditOrganiserFormValue
-  onSave: (data: EditOrganiserFormChange) => void
+  initial?: EditPersonFormValue
+  onSave: (data: EditPersonFormChange) => void
   onCancel: () => void
 }
 
-interface EditOrganiserFormValue {
+interface EditPersonFormValue {
   name: string
   bio: string
   profilePic?: string | File
 }
 
-interface EditOrganiserFormChange {
+interface EditPersonFormChange {
   name: string
   bio: string
   photoUpload?: File
 }
 
-export class EditOrganiserForm extends React.Component<EditOrganiserFormProps> {
-  handleSave = async ({ profilePic, ...value }: EditOrganiserFormValue) => {
+export class EditPersonForm extends React.Component<EditPersonFormProps> {
+  handleSave = async ({ profilePic, ...value }: EditPersonFormValue) => {
     await this.props.onSave({
       ...value,
       photoUpload: profilePic instanceof File ? profilePic : undefined,
     })
   }
 
-  get initialValues(): EditOrganiserFormValue {
+  get initialValues(): EditPersonFormValue {
     return {
       bio: '',
       name: '',

@@ -1,4 +1,4 @@
-fragment OrganiserAdminCard on Organiser {
+fragment PersonAdminCard on Person {
   id
   name
   bio

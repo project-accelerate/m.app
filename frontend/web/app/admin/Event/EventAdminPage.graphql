@@ -9,7 +9,7 @@ query EventAdminPage {
       }
     }
   }
-  speakerOptions: allOrganisers {
+  speakerOptions: allPeople {
     edges {
       node {
         id

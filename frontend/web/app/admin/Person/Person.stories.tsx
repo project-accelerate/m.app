@@ -4,23 +4,23 @@ import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { storyWrapper } from 'frontend.web/storybook/storyWrapper'
 import { asyncAction } from 'frontend.web/storybook/actions'
-import { OrganiserAdminCard } from 'frontend.web/app/admin/Organiser/OrganiserAdminCard'
-import { EditOrganiserForm } from './EditOrganiserForm'
+import { PersonAdminCard } from 'frontend.web/app/admin/Person/PersonAdminCard'
+import { EditPersonForm } from './EditPersonForm'
 
 import somePhoto from 'common/test/somePhoto.jpg'
 
-storiesOf('Organiser Admin', module)
+storiesOf('Person Admin', module)
   .addDecorator(storyWrapper())
   .add('Edit Form', () => (
-    <EditOrganiserForm
+    <EditPersonForm
       title="Do Something"
       onSave={asyncAction('save')}
       onCancel={action('cancel')}
     />
   ))
   .add('Card (No Image)', () => (
-    <OrganiserAdminCard
-      organiser={{
+    <PersonAdminCard
+      person={{
         id: faker.random.uuid(),
         name: `${faker.name.firstName()} ${faker.name.lastName()}`,
         bio: faker.lorem.paragraphs(4),
@@ -30,8 +30,8 @@ storiesOf('Organiser Admin', module)
     />
   ))
   .add('Card (Image)', () => (
-    <OrganiserAdminCard
-      organiser={{
+    <PersonAdminCard
+      person={{
         id: faker.random.uuid(),
         name: `${faker.name.firstName()} ${faker.name.lastName()}`,
         bio: faker.lorem.paragraphs(4),

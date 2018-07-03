@@ -1,4 +1,4 @@
-fragment OrganiserList on AllOrganisersConnection {
+fragment PersonList on AllPeopleConnection {
   edges {
     node {
       id

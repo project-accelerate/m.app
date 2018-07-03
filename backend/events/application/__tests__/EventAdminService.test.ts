@@ -11,7 +11,7 @@ import { EventAdminService } from '../EventAdminService'
 import {
   someCreateEventRequest,
   someVenue,
-  someOrganiser,
+  somePerson,
 } from '../../test/eventTestUtils'
 import {
   somePostcode,
@@ -25,14 +25,14 @@ import { MockCrudRepositoryFixture } from './fixtures/MockCrudRepositoryFixture'
 import { MockPhotoStorageFixture } from './fixtures/MockPhotoStorageFixture'
 import { someImageUpload } from '../../../test/testUtils'
 import { MockRelationFixture } from './fixtures/MockRelationFixture'
-import { Organiser } from '../../domain/Organiser'
+import { Person } from '../../domain/Person'
 
 describe('EventAdminService', () => {
   it('saves all data when new event is created', async () => {
     const fixture = new Fixture()
 
     const venue = someVenue()
-    const speaker = someOrganiser()
+    const speaker = somePerson()
     const eventRequest = someCreateEventRequest({
       venue: venue.id,
       photoUpload: someImageUpload(),
@@ -66,7 +66,7 @@ describe('EventAdminService', () => {
 })
 
 class Fixture {
-  speakersRelation = new MockRelationFixture<Organiser>()
+  speakersRelation = new MockRelationFixture<Person>()
   eventRepository = new MockCrudRepositoryFixture(EventRepository).mockRelation(
     'speakers',
     this.speakersRelation,

@@ -1,0 +1,5 @@
+mutation CreatePerson($req: CreatePersonRequest!) {
+  createPerson(request: $req) {
+    id
+  }
+}

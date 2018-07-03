@@ -11,8 +11,8 @@ import {
 import { Event } from '../domain/Event'
 import { Venue } from '../domain/Venue'
 import { EventRepository } from '../external/EventRepository'
-import { Organiser } from '../domain/Organiser'
-import { OrganiserRepository } from '../external/OrganiserRepository'
+import { Person } from '../domain/Person'
+import { PersonRepository } from '../external/PersonRepository'
 import { VenueRepository } from '../external/VenueRepository'
 import { EventFeedService } from '../application/EventFeedService'
 import { Photo } from '../domain/Photo'
@@ -25,7 +25,7 @@ const AllEventsConnection = createSimpleConnection({
 })
 
 const EventSpeakersConnection = createSimpleConnection({
-  type: Organiser,
+  type: Person,
   name: 'EventSpeakersConnection',
 })
 
@@ -41,7 +41,7 @@ export class EventResolver {
   constructor(
     private eventFeedService: EventFeedService,
     private eventRepository: EventRepository,
-    private organiserRepository: OrganiserRepository,
+    private personRepository: PersonRepository,
     private venueRepository: VenueRepository,
     private photoStorageService: PhotoStorageService,
   ) {}
@@ -76,11 +76,11 @@ export class EventResolver {
     )
   }
 
-  @FieldResolver(() => Organiser, {
+  @FieldResolver(() => Person, {
     description: 'Return the event organiser',
   })
   organiser(@Root() event: Event) {
-    return this.organiserRepository.findOne({ id: event.organiser })
+    return this.personRepository.findOne({ id: event.organiser })
   }
 
   @FieldResolver(() => Venue, {

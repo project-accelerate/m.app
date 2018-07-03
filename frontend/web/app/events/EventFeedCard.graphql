@@ -1,7 +1,7 @@
 fragment EventFeedCard on Event {
   id
   name
-  organiser {
+  person {
     id
     name
   }

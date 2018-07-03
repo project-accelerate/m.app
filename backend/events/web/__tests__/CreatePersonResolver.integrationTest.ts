@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs'
 import { join } from 'path'
 import { withDb, execQuery } from '../../../test/integrationTestUtils'
-import { CreateOrganiserRequest } from '../../domain/Organiser'
+import { CreatePersonRequest } from '../../domain/Person'
 import {
   someString,
   someAdminUser,
@@ -14,12 +14,12 @@ const imageData = readFileSync(
   require.resolve('common/test/somePhoto.jpg'),
 ).toString('base64')
 
-describe('CreateOrganiserResolver', () => {
+describe('CreatePersonResolver', () => {
   describe('as an admin user', () => {
     it(
-      'creates the organiser',
+      'creates the person',
       withDb(async () => {
-        const result = await createOrganiser({
+        const result = await createPerson({
           request: {
             name: 'my-name',
             bio: 'my-bio',
@@ -28,7 +28,7 @@ describe('CreateOrganiserResolver', () => {
           user: someAdminUser,
         })
 
-        expect(result.createOrganiser).toMatchObject({
+        expect(result.createPerson).toMatchObject({
           id: expect.stringContaining('-'),
           name: 'my-name',
           bio: 'my-bio',
@@ -44,7 +44,7 @@ describe('CreateOrganiserResolver', () => {
     it(
       'rejects the request',
       withDb(async () => {
-        const result = createOrganiser({
+        const result = createPerson({
           request: {
             name: 'my-name',
             bio: 'my-bio',
@@ -59,14 +59,14 @@ describe('CreateOrganiserResolver', () => {
   })
 })
 
-export function createOrganiser(props: {
-  request: Partial<CreateOrganiserRequest>
+export function createPerson(props: {
+  request: Partial<CreatePersonRequest>
   user?: AuthToken
 }) {
-  return execQuery<{ req: CreateOrganiserRequest }>({
+  return execQuery<{ req: CreatePersonRequest }>({
     body: `
-    mutation CreateOrganiser($req: CreateOrganiserRequest){
-      createOrganiser(request: $req) {
+    mutation CreatePerson($req: CreatePersonRequest){
+      createPerson(request: $req) {
         id
         name
         bio

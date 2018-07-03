@@ -8,10 +8,10 @@ import {
   somePostcode,
   someInt,
 } from '../../../common/test/testUtils'
-import { OrganiserRepository } from '../external/OrganiserRepository'
+import { PersonRepository } from '../external/PersonRepository'
 import { VenueRepository } from '../external/VenueRepository'
 import { Venue, CreateVenueRequest } from '../domain/Venue'
-import { Organiser, CreateOrganiserRequest } from '../domain/Organiser'
+import { Person, CreatePersonRequest } from '../domain/Person'
 import {
   PostcodesIOPostcode,
   PostcodesIOOutcode,
@@ -19,11 +19,11 @@ import {
 import { Distance, DistanceUnit } from '../domain/Distance'
 import { WithoutId } from '../../common/WithoutId'
 import { Container } from 'typedi'
-import { someImageUpload, someImage } from '../../test/testUtils'
+import { someImageUpload } from '../../test/testUtils'
 import { Address, AddressInput } from '../domain/Address'
 
 type EventProps = WithoutId<Event>
-type OrganiserProps = WithoutId<Organiser>
+type PersonProps = WithoutId<Person>
 type VenueProps = WithoutId<Venue>
 
 export function somePostcodesIoPostcode(
@@ -174,18 +174,18 @@ export function someVenue(props: Partial<Venue> = {}) {
   return Object.assign(new Venue(), { id: someUuid() }, someVenueProps(props))
 }
 
-export function someOrganiserProps(
-  props: Partial<OrganiserProps> = {},
-): OrganiserProps {
+export function somePersonProps(
+  props: Partial<PersonProps> = {},
+): PersonProps {
   return {
     name: someString(),
     ...props,
   }
 }
 
-export function fullOrganiserProps(
-  props: Partial<OrganiserProps> = {},
-): OrganiserProps {
+export function fullPersonProps(
+  props: Partial<PersonProps> = {},
+): PersonProps {
   return {
     name: someString(),
     bio: someString(),
@@ -194,13 +194,13 @@ export function fullOrganiserProps(
   }
 }
 
-export function someCreateOrganiserRequest(): CreateOrganiserRequest
-export function someCreateOrganiserRequest<
-  Props extends Partial<CreateOrganiserRequest>
->(props: Props): Props & CreateOrganiserRequest
-export function someCreateOrganiserRequest(
-  props: Partial<CreateOrganiserRequest> = {},
-): CreateOrganiserRequest {
+export function someCreatePersonRequest(): CreatePersonRequest
+export function someCreatePersonRequest<
+  Props extends Partial<CreatePersonRequest>
+>(props: Props): Props & CreatePersonRequest
+export function someCreatePersonRequest(
+  props: Partial<CreatePersonRequest> = {},
+): CreatePersonRequest {
   return {
     name: someString(),
     photoUpload: someImageUpload(),
@@ -209,11 +209,11 @@ export function someCreateOrganiserRequest(
   }
 }
 
-export function someOrganiser(props: Partial<Organiser> = {}) {
+export function somePerson(props: Partial<Person> = {}) {
   return Object.assign(
-    new Organiser(),
+    new Person(),
     { id: someUuid() },
-    someOrganiserProps(props),
+    somePersonProps(props),
   )
 }
 
@@ -225,16 +225,16 @@ export function givenThatAVenueExists(props: Partial<VenueProps> = {}) {
   return Container.get(VenueRepository).insert(someVenueProps(props))
 }
 
-export function givenThatAnOrganiserExists(
-  props: Partial<OrganiserProps> = {},
+export function givenThatAPersonExists(
+  props: Partial<PersonProps> = {},
 ) {
-  return Container.get(OrganiserRepository).insert(someOrganiserProps(props))
+  return Container.get(PersonRepository).insert(somePersonProps(props))
 }
 
 export async function givenThatAnEventExists(props: Partial<EventProps> = {}) {
   const [organiser, venue] = await Promise.all([
     Promise.resolve(
-      props.organiser || givenThatAnOrganiserExists().then(o => o.id),
+      props.organiser || givenThatAPersonExists().then(o => o.id),
     ),
     Promise.resolve(props.venue || givenThatAVenueExists().then(v => v.id)),
   ])

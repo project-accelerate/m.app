@@ -1,22 +1,22 @@
 import { Service } from 'typedi'
-import { OrganiserRepository } from '../external/OrganiserRepository'
+import { PersonRepository } from '../external/PersonRepository'
 import { PhotoStorageService } from './PhotoStorageService'
-import { CreateOrganiserRequest } from '../domain/Organiser'
+import { CreatePersonRequest } from '../domain/Person'
 
 @Service()
-export class OrganiserAdminService {
+export class PersonAdminService {
   constructor(
-    private readonly organiserRepository: OrganiserRepository,
+    private readonly personRepository: PersonRepository,
     private readonly photoStorageService: PhotoStorageService,
   ) {}
 
-  async addOrganiser({ photoUpload, ...props }: CreateOrganiserRequest) {
+  async addPerson({ photoUpload, ...props }: CreatePersonRequest) {
     const photoId = await PhotoStorageService.saveUploadedPhoto(
       this.photoStorageService,
       photoUpload,
     )
 
-    return this.organiserRepository.insert({
+    return this.personRepository.insert({
       photo: photoId,
       ...props,
     })

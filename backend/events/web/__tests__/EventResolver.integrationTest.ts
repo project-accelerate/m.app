@@ -3,7 +3,7 @@ import { withDb, execQuery } from '../../../test/integrationTestUtils'
 import {
   givenThatAnEventExists,
   givenThatAVenueExists,
-  givenThatAnOrganiserExists,
+  givenThatAPersonExists,
 } from '../../test/eventTestUtils'
 import { EventFeedArgs } from '../EventResolver'
 import { addDays } from 'date-fns'
@@ -13,7 +13,7 @@ describe('EventResolver', () => {
     'looks up events by id, returning associated objects',
     withDb(async () => {
       const venue = await givenThatAVenueExists()
-      const organiser = await givenThatAnOrganiserExists()
+      const organiser = await givenThatAPersonExists()
       const event = await givenThatAnEventExists({
         venue: venue.id,
         organiser: organiser.id,

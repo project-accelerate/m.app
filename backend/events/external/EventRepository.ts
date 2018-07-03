@@ -7,7 +7,7 @@ import {
 import { Event } from '../domain/Event'
 import { Distance } from '../domain/Distance'
 import { PointField } from '../../common/PointField'
-import { OrganiserRepository } from './OrganiserRepository'
+import { PersonRepository } from './PersonRepository'
 
 const config: CrudRepositoryConfig<Event> = {
   tableName: 'event',
@@ -18,7 +18,7 @@ const config: CrudRepositoryConfig<Event> = {
 
 @Service()
 export class EventRepository extends CrudRepository<Event>(config) {
-  speakers = this.relationTo(OrganiserRepository, {
+  speakers = this.relationTo(PersonRepository, {
     name: 'event_speakers',
 
     sourceRef: 'event',

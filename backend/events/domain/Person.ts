@@ -2,7 +2,7 @@ import { FileUpload, GraphQLUpload } from 'apollo-upload-server'
 import { ObjectType, Field, InputType } from 'type-graphql'
 
 @InputType()
-export class CreateOrganiserRequest {
+export class CreatePersonRequest {
   @Field() name!: string
 
   @Field({ nullable: true })
@@ -13,7 +13,7 @@ export class CreateOrganiserRequest {
 }
 
 @ObjectType()
-export class Organiser {
+export class Person {
   @Field() id!: string
 
   @Field() name!: string

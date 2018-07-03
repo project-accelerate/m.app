@@ -11,41 +11,41 @@ import {
   Root,
 } from 'type-graphql'
 import { MutationRequest } from '../../common/resolverUtils'
-import { OrganiserRepository } from '../external/OrganiserRepository'
-import { Organiser } from '../domain/Organiser'
+import { PersonRepository } from '../external/PersonRepository'
+import { Person } from '../domain/Person'
 import { Photo } from '../domain/Photo'
 import { PhotoStorageService } from '../application/PhotoStorageService'
 import { createSimpleConnection } from '../../common/Connection'
 
-const AllOrganisersConnection = createSimpleConnection({
-  type: Organiser,
-  name: 'AllOrganisers',
+const AllPeopleConnection = createSimpleConnection({
+  type: Person,
+  name: 'AllPeople',
 })
 
-@Resolver(Organiser)
-export class OrganiserResolver {
+@Resolver(Person)
+export class PersonResolver {
   constructor(
-    public organiserRepository: OrganiserRepository,
+    public personRepository: PersonRepository,
     public photoStorageService: PhotoStorageService,
   ) {}
 
-  @Query(() => Organiser, {
+  @Query(() => Person, {
     nullable: true,
-    description: 'Get an organiser by id',
+    description: 'Get an person by id',
   })
-  organiser(@Arg('id') id: string) {
-    return this.organiserRepository.findOne({ id })
+  person(@Arg('id') id: string) {
+    return this.personRepository.findOne({ id })
   }
 
-  @Query(() => AllOrganisersConnection)
-  async allOrganisers() {
-    return new AllOrganisersConnection(await this.organiserRepository.findAll())
+  @Query(() => AllPeopleConnection)
+  async allPeople() {
+    return new AllPeopleConnection(await this.personRepository.findAll())
   }
 
   @FieldResolver(() => Photo, {
     nullable: true,
   })
-  photo(@Root() organiser: Organiser): Photo | undefined {
+  photo(@Root() organiser: Person): Photo | undefined {
     if (!organiser.photo) {
       return undefined
     }
