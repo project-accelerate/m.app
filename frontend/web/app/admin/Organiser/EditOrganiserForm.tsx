@@ -5,6 +5,7 @@ import {
   FormGrid,
   FormImage,
 } from 'frontend.web/app/admin/common/FormInputText'
+import { Validator } from 'frontend.web/app/admin/common/EditDialog/Validator'
 
 interface EditOrganiserFormProps {
   title: string
@@ -48,6 +49,11 @@ export class EditOrganiserForm extends React.Component<EditOrganiserFormProps> {
         initial={this.initialValues}
         onSubmit={this.handleSave}
         onCancel={this.props.onCancel}
+        validate={{
+          name: Validator.notEmpty('You must provide a name for the speaker'),
+          bio: Validator.anything(),
+          profilePic: Validator.anything(),
+        }}
       >
         <FormGrid>
           <FormImage
@@ -62,6 +68,8 @@ export class EditOrganiserForm extends React.Component<EditOrganiserFormProps> {
           />
           <FormText
             fullWidth
+            multiline
+            rows={15}
             name="bio"
             label="Bio"
             helperText="Short biography of the speaker"

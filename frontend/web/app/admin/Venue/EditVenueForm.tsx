@@ -6,6 +6,7 @@ import {
   FormGrid,
   FormImage,
 } from 'frontend.web/app/admin/common/FormInputText'
+import { Validator } from 'frontend.web/app/admin/common/EditDialog/Validator'
 
 interface EditVenueFormProps {
   title: string
@@ -53,6 +54,18 @@ export class EditVenueForm extends React.Component<EditVenueFormProps> {
         initial={this.initialValues}
         onSubmit={this.handleSave}
         onCancel={this.props.onCancel}
+        validate={{
+          name: Validator.notEmpty('You must provide a name for the venue'),
+          description: Validator.anything(),
+          streetAddress: Validator.notEmpty(
+            'You must provide an address for the venue',
+          ),
+          city: Validator.notEmpty('You must provide a city for the venue'),
+          postcode: Validator.isValidPostcode(
+            'You must provide valid postcode for the venue',
+          ),
+          photo: Validator.anything(),
+        }}
       >
         <FormGrid>
           <FormImage

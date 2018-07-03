@@ -20,6 +20,7 @@ class Fixture {
       <EditDialog
         title="Title"
         initial={{}}
+        validate={{}}
         onCancel={this.cancel}
         onSubmit={this.submit}
       />,

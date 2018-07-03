@@ -12,6 +12,8 @@ import {
 import { contentWidth } from 'frontend.web/app/common/Layouts'
 import { LoadingIndicator } from 'frontend.web/app/common/LoadData/LoadingIndicator'
 import { Formik } from 'formik'
+import { Validator } from 'frontend.web/app/admin/common/EditDialog/Validator'
+import { forEach, isEmpty } from 'lodash'
 
 const styles = () =>
   createStyles({
@@ -33,6 +35,7 @@ const styles = () =>
 interface EditDialogProps<T> {
   title: string
   initial: T
+  validate: { [P in keyof T]: Validator<T[P]> }
   onSubmit: (value: T) => Promise<void>
   onCancel: () => void
 }
@@ -56,6 +59,19 @@ export const EditDialog = withStyles(styles)(
       }
     }
 
+    validate(values: any) {
+      const errors: any = {}
+
+      forEach(this.props.validate, (validate: Validator<any>, key) => {
+        const result = validate(values[key])
+        if (result !== true) {
+          errors[key] = result
+        }
+      })
+
+      return errors
+    }
+
     render() {
       const { classes } = this.props
 
@@ -63,7 +79,8 @@ export const EditDialog = withStyles(styles)(
         <Formik
           initialValues={this.props.initial}
           onSubmit={this.handleSubmit}
-          render={({ submitForm }) => (
+          validate={values => this.validate(values)}
+          render={({ submitForm, values }) => (
             <Dialog open onClose={this.props.onCancel} fullWidth>
               <DialogTitle>{this.props.title}</DialogTitle>
 
@@ -77,7 +94,12 @@ export const EditDialog = withStyles(styles)(
                 >
                   Cancel
                 </Button>
-                <Button onClick={submitForm} variant="raised" color="primary">
+                <Button
+                  disabled={!isEmpty(this.validate(values))}
+                  onClick={submitForm}
+                  variant="raised"
+                  color="primary"
+                >
                   Save
                 </Button>
               </DialogActions>

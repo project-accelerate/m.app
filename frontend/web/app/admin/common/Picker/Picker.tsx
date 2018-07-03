@@ -9,11 +9,14 @@ import {
   createStyles,
   withStyles,
   Chip,
+  FormHelperText,
 } from '@material-ui/core'
 import { keyBy, fromPairs } from 'lodash'
 
 interface PickerProps {
   label?: string
+  error?: boolean
+  helperText?: string
   value: string | undefined
   onChange: (value: string) => void
   options: PickerOption[]
@@ -21,6 +24,8 @@ interface PickerProps {
 
 interface MultiPickerProps {
   label?: string
+  error?: boolean
+  helperText?: string
   value: string[]
   onChange: (value: string[]) => void
   options: PickerOption[]
@@ -71,11 +76,13 @@ export const Picker = styles<PickerProps>(function Picker({
   onChange,
   options,
   classes,
+  error,
+  helperText,
 }) {
   const optionMap = keyBy(options, 'id')
 
   return (
-    <FormControl fullWidth>
+    <FormControl fullWidth error={error}>
       <InputLabel htmlFor="select-multiple-chip">{label}</InputLabel>
       <Select
         value={value}
@@ -97,6 +104,7 @@ export const Picker = styles<PickerProps>(function Picker({
           </MenuItem>
         ))}
       </Select>
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>
   )
 })
@@ -107,12 +115,14 @@ export const MultiPicker = styles<MultiPickerProps>(function MultiPicker({
   onChange,
   options,
   classes,
+  error,
+  helperText,
 }) {
   const optionMap = keyBy(options, 'id')
   const selection = fromPairs(value.map(id => [id, true]))
 
   return (
-    <FormControl fullWidth>
+    <FormControl fullWidth error={error}>
       <InputLabel htmlFor="select-multiple-chip">{label}</InputLabel>
       <Select
         multiple
@@ -145,6 +155,7 @@ export const MultiPicker = styles<MultiPickerProps>(function MultiPicker({
           </MenuItem>
         ))}
       </Select>
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>
   )
 })

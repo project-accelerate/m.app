@@ -11,6 +11,7 @@ storiesOf('EditDialog', module).add('Default', () => (
     title="Title"
     onCancel={action('cancel')}
     onSubmit={asyncAction('submit')}
+    validate={{}}
   >
     {lorem.paragraph(2)}
   </EditDialog>

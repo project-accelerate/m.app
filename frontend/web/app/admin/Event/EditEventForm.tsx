@@ -10,6 +10,7 @@ import {
   FormMultiPicker,
 } from 'frontend.web/app/admin/common/FormInputText'
 import { PickerOption } from 'frontend.web/app/admin/common/Picker/Picker'
+import { Validator } from 'frontend.web/app/admin/common/EditDialog/Validator'
 
 interface EditEventFormProps {
   venueOptions: PickerOption[]
@@ -69,6 +70,22 @@ export class EditEventForm extends React.Component<EditEventFormProps> {
       <EditDialog
         title={this.props.title}
         initial={this.initialValues}
+        validate={{
+          name: Validator.notEmpty('You must provide a name for the event'),
+          venue: Validator.notEmpty('You must provide a venue for the event'),
+          startTime: Validator.notEmpty(
+            'You must provide a start time for the event',
+          ),
+          endTime: Validator.notEmpty(
+            'You must provide an end time for the event',
+          ),
+          speakers: Validator.atLeastOne(
+            'You must provide at least one speaker for the event',
+          ),
+          introduction: Validator.anything(),
+          detail: Validator.anything(),
+          photo: Validator.anything(),
+        }}
         onSubmit={this.handleSave}
         onCancel={this.props.onCancel}
       >

@@ -25,13 +25,14 @@ export function FormText(props: FormInputProps<string> & TextFieldProps) {
   return (
     <Field
       name={name}
-      render={({ field }) => (
+      render={({ field, form }) => (
         <TextField
           {...field}
           {...fieldConfig}
           placeholder={placeholder}
           label={label}
-          helperText={helperText}
+          helperText={form.errors[name] || helperText}
+          error={Boolean(form.errors[name])}
         />
       )}
     />
@@ -57,13 +58,20 @@ interface FormPickerProps extends FormInputProps<string> {
   options: PickerOption[]
 }
 
-export function FormPicker({ name, options, ...pickerProps }: FormPickerProps) {
+export function FormPicker({
+  name,
+  options,
+  helperText,
+  ...pickerProps
+}: FormPickerProps) {
   return (
     <Field
       name={name}
       render={({ form, field }) => (
         <Picker
           {...pickerProps}
+          helperText={form.errors[name] || helperText}
+          error={Boolean(form.errors[name])}
           options={options}
           value={field.value}
           onChange={value => form.setFieldValue(name, value)}
@@ -80,6 +88,7 @@ interface FormMultiPickerProps extends FormInputProps<string[]> {
 export function FormMultiPicker({
   name,
   options,
+  helperText,
   ...pickerProps
 }: FormMultiPickerProps) {
   return (
@@ -88,6 +97,8 @@ export function FormMultiPicker({
       render={({ form, field }) => (
         <MultiPicker
           {...pickerProps}
+          helperText={form.errors[name] || helperText}
+          error={Boolean(form.errors[name])}
           options={options}
           value={field.value || []}
           onChange={value => form.setFieldValue(name, value)}
@@ -101,7 +112,11 @@ interface FormDateTimeProps extends Partial<DateTimePickerWrapperProps> {
   name: string
 }
 
-export function FormDateTime({ name, ...pickerProps }: FormDateTimeProps) {
+export function FormDateTime({
+  name,
+  helperText,
+  ...pickerProps
+}: FormDateTimeProps) {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Field
@@ -109,6 +124,8 @@ export function FormDateTime({ name, ...pickerProps }: FormDateTimeProps) {
         render={({ form, field }) => (
           <DateTimePicker
             {...pickerProps}
+            helperText={form.errors[name] || helperText}
+            error={Boolean(form.errors[name])}
             value={field.value}
             onChange={value => form.setFieldValue(name, value)}
           />
