@@ -1,10 +1,7 @@
 fragment EventFeedCard on Event {
   id
   name
-  person {
-    id
-    name
-  }
+  family
   venue {
     id
     name

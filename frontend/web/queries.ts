@@ -3,14 +3,19 @@
 
 export interface CreateEventRequest {
   name: string
-  organiser: string
   speakers: Array<string>
   venue: string
   startTime: string
   endTime: string
   introduction: string
   detail: string
+  family: EventFamily
   photoUpload?: string | null
+}
+
+export enum EventFamily {
+  LABOUR_2018 = 'LABOUR_2018',
+  TWT_2018 = 'TWT_2018',
 }
 
 export interface CreatePersonRequest {
@@ -65,6 +70,7 @@ export interface EventAdminPageQuery {
       node: {
         id: string
         name: string
+        family: EventFamily
         speakers: {
           edges: Array<{
             node: {
@@ -155,11 +161,7 @@ export interface EventFeedPageQuery {
   eventFeed: Array<{
     id: string
     name: string
-    // Return the event person
-    organiser: {
-      id: string
-      name: string
-    }
+    family: EventFamily
     // Return the event venue
     venue: {
       id: string
@@ -177,6 +179,7 @@ export interface EventFeedPageQuery {
 export interface EventAdminCardFragment {
   id: string
   name: string
+  family: EventFamily
   speakers: {
     edges: Array<{
       node: {
@@ -249,11 +252,7 @@ export interface AddressEditorFragment {
 export interface EventFeedCardFragment {
   id: string
   name: string
-  // Return the event person
-  organiser: {
-    id: string
-    name: string
-  }
+  family: EventFamily
   // Return the event venue
   venue: {
     id: string

@@ -27,9 +27,9 @@ export const EventAdminPage = withApollo(
     handleRequestAdd = async (req: EditEventFormChange) => {
       await this.addEvent({
         name: req.name,
-        organiser: 'twt',
         speakers: req.speakers,
         venue: req.venue,
+        family: req.family,
         startTime: req.startTime,
         endTime: req.endTime,
         introduction: req.introduction,

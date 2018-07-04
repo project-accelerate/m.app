@@ -329,6 +329,22 @@
               "deprecationReason": null
             },
             {
+              "name": "family",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "EventFamily",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "startTime",
               "description": "",
               "args": [],
@@ -409,22 +425,6 @@
               "deprecationReason": null
             },
             {
-              "name": "person",
-              "description": "Return the event person",
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "OBJECT",
-                  "name": "Person",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "venue",
               "description": "Return the event venue",
               "args": [],
@@ -467,6 +467,29 @@
           "inputFields": null,
           "interfaces": null,
           "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "ENUM",
+          "name": "EventFamily",
+          "description": "",
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "TWT_2018",
+              "description": "",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "LABOUR_2018",
+              "description": "",
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
           "possibleTypes": null
         },
         {
@@ -1138,20 +1161,6 @@
               "defaultValue": null
             },
             {
-              "name": "person",
-              "description": "",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              "defaultValue": null
-            },
-            {
               "name": "speakers",
               "description": "",
               "type": {
@@ -1238,6 +1247,20 @@
                 "ofType": {
                   "kind": "SCALAR",
                   "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "family",
+              "description": "",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "EventFamily",
                   "ofType": null
                 }
               },

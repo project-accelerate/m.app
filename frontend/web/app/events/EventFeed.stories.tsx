@@ -13,6 +13,7 @@ import {
   EventFeed,
 } from './EventFeed'
 import { LoadingIndicator } from '../common/LoadData/LoadingIndicator'
+import { EventFamily } from 'common/domain/EventFamily'
 
 storiesOf('EventFeed', module)
   .addDecorator(storyWrapper())
@@ -69,10 +70,7 @@ function someEvent(): EventFeedCardFragment {
   return {
     id: faker.random.uuid(),
     name: faker.lorem.words(4),
-    organiser: {
-      id: faker.random.uuid(),
-      name: faker.lorem.words(3),
-    },
+    family: EventFamily.TWT_2018,
     venue: {
       id: faker.random.uuid(),
       name: faker.lorem.words(2),

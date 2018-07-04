@@ -1,6 +1,7 @@
 fragment EventAdminCard on Event {
   id
   name
+  family
   speakers {
     edges {
       node {

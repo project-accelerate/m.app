@@ -1,5 +1,4 @@
 import React from 'react'
-import { Grid } from '@material-ui/core'
 import { EditDialog } from 'frontend.web/app/admin/common/EditDialog/EditDialog'
 import {
   FormText,
@@ -11,6 +10,11 @@ import {
 } from 'frontend.web/app/admin/common/FormInputText'
 import { PickerOption } from 'frontend.web/app/admin/common/Picker/Picker'
 import { Validator } from 'frontend.web/app/admin/common/EditDialog/Validator'
+import {
+  EventFamily,
+  getEventFamilyName,
+  allEventFamilies,
+} from 'common/domain/EventFamily'
 
 interface EditEventFormProps {
   venueOptions: PickerOption[]
@@ -26,6 +30,7 @@ export interface EditEventFormValue {
   venue: string
   startTime: string
   endTime: string
+  family: EventFamily
   introduction: string
   speakers: string[]
   detail: string
@@ -38,6 +43,7 @@ export interface EditEventFormChange {
   speakers: string[]
   startTime: string
   endTime: string
+  family: EventFamily
   introduction: string
   detail: string
   photoUpload?: File
@@ -51,6 +57,7 @@ export class EditEventForm extends React.Component<EditEventFormProps> {
       startTime: '',
       endTime: '',
       speakers: [],
+      family: EventFamily.TWT_2018,
       introduction: '',
       detail: '',
       photo: '',
@@ -64,6 +71,11 @@ export class EditEventForm extends React.Component<EditEventFormProps> {
       photoUpload: photo instanceof File ? photo : undefined,
     })
   }
+
+  familyOptions = allEventFamilies.map(id => ({
+    id,
+    name: getEventFamilyName(id),
+  }))
 
   render() {
     return (
@@ -82,6 +94,9 @@ export class EditEventForm extends React.Component<EditEventFormProps> {
           speakers: Validator.atLeastOne(
             'You must provide at least one speaker for the event',
           ),
+          family: Validator.notEmpty(
+            'You must say whether the event is for Labour conference or TWT',
+          ),
           introduction: Validator.anything(),
           detail: Validator.anything(),
           photo: Validator.anything(),
@@ -99,6 +114,12 @@ export class EditEventForm extends React.Component<EditEventFormProps> {
             name="name"
             label="Name"
             helperText="Name of the event"
+          />
+          <FormPicker
+            label="Conference"
+            name="family"
+            options={this.familyOptions}
+            helperText="Conference that the event will be part of"
           />
           <FormPicker
             label="Venue"
