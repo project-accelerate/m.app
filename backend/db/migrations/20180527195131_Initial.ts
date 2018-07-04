@@ -8,7 +8,7 @@ import {
 export async function up(knex: Knex) {
   await knex.raw('CREATE EXTENSION IF NOT EXISTS postgis')
 
-  await knex.schema.createTable('organiser', table => {
+  await knex.schema.createTable('person', table => {
     uuidPrimaryKey(table)
 
     table.text('name').notNullable()
@@ -27,10 +27,10 @@ export async function up(knex: Knex) {
 
   await knex.schema.createTable('event', table => {
     uuidPrimaryKey(table)
-    uuidForeignKey(table, { references: 'organiser' }).notNullable()
     uuidForeignKey(table, { references: 'venue' }).notNullable()
 
     table.text('name').notNullable()
+    table.string('family').notNullable()
     table.dateTime('startTime').notNullable()
     table.dateTime('endTime').notNullable()
     table.text('introduction').notNullable()
@@ -42,14 +42,14 @@ export async function up(knex: Knex) {
   await createOneToManyRelation(knex, {
     name: 'event_speakers',
     fromTable: 'event',
-    toTable: 'organiser',
+    toTable: 'person',
     toRef: 'speaker',
   })
 }
 
 export async function down(knex: Knex) {
   await knex.schema.dropTable('event')
-  await knex.schema.dropTable('organiser')
+  await knex.schema.dropTable('person')
   await knex.schema.dropTable('venue')
 }
 
