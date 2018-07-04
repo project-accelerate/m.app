@@ -49,7 +49,7 @@ describe('EventAdminService', () => {
 
     fixture.eventRepository.verifyInserted({
       name: eventRequest.name,
-      organiser: eventRequest.organiser,
+      family: eventRequest.family,
       venue: venue.id,
       location: venue.location,
       introduction: eventRequest.introduction,

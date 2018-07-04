@@ -1,8 +1,5 @@
 import * as Knex from 'knex'
-import {
-  uuidPrimaryKey,
-  uuidForeignKey,
-} from '../migrationUtils'
+import { uuidPrimaryKey, uuidForeignKey } from '../migrationUtils'
 
 export async function up(knex: Knex) {
   await knex.schema.alterTable('event', table => {
@@ -20,7 +17,7 @@ export async function up(knex: Knex) {
   await knex.raw('drop table organiser cascade;')
 
   await knex.schema.alterTable('event', table => {
-    table.string('organiser').notNullable()
+    table.string('family').notNullable()
   })
 }
 

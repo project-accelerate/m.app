@@ -17,12 +17,10 @@ describe('createEvent mutation', () => {
       'creates the event and returns it',
       withDb(async () => {
         const venue = await givenThatAVenueExists()
-        const organiser = await givenThatAPersonExists()
         const result = await createEvent({
           request: {
             name: 'my-event',
             venue: venue.id,
-            organiser: organiser.id,
           },
           user: someAdminUser,
         })
@@ -39,12 +37,10 @@ describe('createEvent mutation', () => {
       'rejects the request',
       withDb(async () => {
         const venue = await givenThatAVenueExists()
-        const organiser = await givenThatAPersonExists()
         const result = createEvent({
           request: {
             name: 'my-event',
             venue: venue.id,
-            organiser: organiser.id,
           },
           user: someOrdinaryUser,
         })

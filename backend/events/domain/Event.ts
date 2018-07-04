@@ -1,15 +1,24 @@
-import { ObjectType, Field, GraphQLISODateTime, InputType } from 'type-graphql'
+import {
+  ObjectType,
+  Field,
+  GraphQLISODateTime,
+  InputType,
+  registerEnumType,
+} from 'type-graphql'
 import { Point } from 'geojson'
 import { FileUpload, GraphQLUpload } from 'apollo-upload-server'
 import { GraphQLString } from 'graphql'
+import { EventFamily } from 'common/domain/EventFamily'
+
+registerEnumType(EventFamily, {
+  name: 'EventFamily',
+})
 
 @InputType({
   description: 'Request properties to submit a new event',
 })
 export class CreateEventRequest {
   @Field() name!: string
-
-  @Field() organiser!: string
 
   @Field(() => [GraphQLString])
   speakers!: string[]
@@ -26,6 +35,9 @@ export class CreateEventRequest {
 
   @Field() detail!: string
 
+  @Field(() => EventFamily)
+  family!: EventFamily
+
   @Field(() => GraphQLUpload, {
     nullable: true,
   })
@@ -38,7 +50,8 @@ export class Event {
 
   @Field() name!: string
 
-  organiser!: string
+  @Field(() => EventFamily)
+  family!: EventFamily
 
   venue!: string
 
