@@ -33,14 +33,14 @@ function handleArg(args: Args): ArgValue[] {
       const value = args[key]
 
       if (value === true) {
-        return [`--${key}`]
+        return [`"--${key}"`]
       }
 
       if (value === false) {
-        return [`--no-${key}`]
+        return [`"--no-${key}"`]
       }
 
-      return handleArg(value).flatMap(x => [`--${key}`, x])
+      return handleArg(value).flatMap(x => [`"--${key}"`, `"${x}"`])
     })
   }
 
