@@ -1,0 +1,38 @@
+{
+  "expo": {
+    "name": "Momentum",
+    "description": "Platform Socialism",
+    "slug": "momentum-app",
+    "primaryColor": "#ec0000",
+    "privacy": "unlisted",
+    "sdkVersion": "28.0.0",
+    "ignoreNodeModulesValidation": true,
+    "platforms": ["ios", "android"],
+    "version": "1.0.1",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "entryPoint": "./__expobook__/entry.js",
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.peoplesmomentum.app"
+    },
+    "android": {
+      "package": "com.peoplesmomentum.app"
+    },
+    "packagerOpts": {
+      "sourceExts": ["ts", "tsx"],
+      "projectRoots": "",
+      "transformer": "node_modules/react-native-typescript-transformer/index.js"
+    }
+  },
+  "sdkVersion": "28.0.0"
+}

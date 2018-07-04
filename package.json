@@ -20,6 +20,7 @@
     "deploy:frontend:native": "ts-node --project tasks/tsconfig.json -T tasks deployFrontendNative",
     "build:frontend:native": "ts-node --project tasks/tsconfig.json -T tasks buildFrontendNativeBinaries",
     "storybook:web": "ts-node --project tasks/tsconfig.json -T tasks storybook web 6001",
+    "storybook:native": "ts-node --project tasks/tsconfig.json -T tasks storybookExpo native",
     "preview:web": "ts-node --project tasks/tsconfig.json -T tasks preview",
     "heroku-postbuild": "ts-node --project tasks/tsconfig.json -T tasks buildAll",
     "postinstall": "ts-node --project tasks/tsconfig.json -T tasks postinstall",
