@@ -17,7 +17,7 @@
     "develop:backend": "ts-node --project tasks/tsconfig.json -T tasks developBackend",
     "develop:frontend:web": "ts-node --project tasks/tsconfig.json -T tasks developFrontend",
     "develop:frontend:native": "ts-node --project tasks/tsconfig.json -T tasks developFrontendNative",
-    "deploy:frontend:native": "ts-node --project tasks/tsconfig.json -T tasks deployFrontendNative",
+    "deploy:frontend:native": "ts-node --project tasks/tsconfig.json -T tasks publishFrontendNative",
     "build:frontend:native": "ts-node --project tasks/tsconfig.json -T tasks buildFrontendNativeBinaries",
     "storybook:web": "ts-node --project tasks/tsconfig.json -T tasks storybook web 6001",
     "storybook:native": "ts-node --project tasks/tsconfig.json -T tasks storybookExpo native",
