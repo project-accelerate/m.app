@@ -1,23 +1,8 @@
 import * as React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { AuthGuardProvider, LoggedInGuard } from 'frontend.common/auth'
-import { auth } from './config/auth'
+import { HomeScreen } from './app/twt/Home/HomeScreen'
 
 export default class App extends React.Component {
   render() {
-    return (
-      <View style={styles.container}>
-        <Text>Open up App.js!!!</Text>
-      </View>
-    )
+    return <HomeScreen />
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-})
