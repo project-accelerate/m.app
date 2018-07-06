@@ -31,6 +31,7 @@ const LayoutStyles = StyleSheet.create({
   },
   hero: {
     alignItems: 'center',
+    position: 'relative',
     justifyContent: 'center',
   },
 })
@@ -60,10 +61,10 @@ export function Background({ children }: React.Props<{}>) {
   )
 }
 
-export function Hero(props: { src: number }) {
+export function Hero(props: { children?: React.ReactNode }) {
   return (
     <View style={LayoutStyles.hero}>
-      <Image style={LayoutStyles.heroImage} source={props.src} />
+      {props.children}
     </View>
   )
 }

@@ -22,6 +22,7 @@ export namespace theme {
 
     export const accent = '#ff2c63'
     export const contrast = 'rgba(60,60,60,0.9)'
+    export const imageOverlay = 'rgba(0,0,0,0.5)'
 
     export const header = accent
     export const cardBg = 'rgba(255,255,255,0.9)'

@@ -1,5 +1,12 @@
 import React from 'react'
-import { StyleSheet, Text, StyleProp, TextStyle } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  StyleProp,
+  TextStyle,
+  View,
+  ViewStyle,
+} from 'react-native'
 import { theme } from '../../../theme'
 
 const TypographyVariants = StyleSheet.create({
@@ -9,6 +16,12 @@ const TypographyVariants = StyleSheet.create({
   },
   accent: {
     color: theme.pallete.accent,
+  },
+})
+
+const TypographyStyles = StyleSheet.create({
+  paragraph: {
+    marginBottom: theme.spacing.level(1),
   },
 })
 
@@ -29,3 +42,22 @@ export function Typography({ variant, children, style }: TypographyProps) {
 export function Br(): React.ReactNode {
   return '\n'
 }
+
+interface ParagraphsProps {
+  style?: StyleProp<ViewStyle>
+  children?: React.ReactNode
+}
+
+export function Paragraphs({ style, children }: ParagraphsProps) {
+  return (
+    <View style={style}>
+      {React.Children.map(children, (child, i) => (
+        <Text style={TypographyStyles.paragraph} key={getKey(child) || i}>
+          {child}
+        </Text>
+      ))}
+    </View>
+  )
+}
+
+const getKey = (x: any) => x.key

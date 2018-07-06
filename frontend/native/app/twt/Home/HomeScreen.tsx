@@ -11,6 +11,7 @@ import {
   NavigationScreenProps,
   NavigationScreenOptions,
 } from 'react-navigation'
+import { Carousel } from '../../common/Carousel/Carousel';
 
 export class HomeScreen extends React.Component<NavigationScreenProps> {
   static navigationOptions: NavigationScreenOptions = {
@@ -21,7 +22,7 @@ export class HomeScreen extends React.Component<NavigationScreenProps> {
     return (
       <Background>
         <MenuScreenLayout>
-          <Hero src={logo} />
+          <Carousel />
 
           <ButtonGrid>
             <Button onPress={() => this.props.navigation.push('Timetable')}>

@@ -25,7 +25,7 @@ export function developFrontendNative() {
   const expo = createShellCmd('node_modules/.bin/exp', {
     cwd: 'frontend/native',
   })
-  expo('start', { minify: false, lan: true, dev: true })
+  expo('start', { minify: false, lan: true, dev: true, offline: true })
 }
 
 export function storybook(target: string, port: string) {

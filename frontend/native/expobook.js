@@ -11,6 +11,10 @@ const storyFiles = [
     name: 'common > Layouts',
     source: require('./app/common/Layouts/Layouts.stories'),
   },
+  {
+    name: 'common > Carousel',
+    source: require('./app/common/Carousel/Carousel.stories'),
+  },
 ]
 
 const expobook = createExpo()

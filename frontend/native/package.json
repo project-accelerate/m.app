@@ -6,6 +6,7 @@
   "dependencies": {
     "@shoutem/ui": "^0.23.4",
     "@types/date-fns": "^2.6.0",
+    "@types/react-native-snap-carousel": "^3.6.3",
     "apollo-cache-inmemory": "^1.2.5",
     "apollo-client": "^2.3.5",
     "apollo-link-http": "^1.5.4",
@@ -18,6 +19,7 @@
     "react-apollo": "^2.1.9",
     "react-art": "^16.4.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-28.0.0.tar.gz",
+    "react-native-snap-carousel": "^3.7.2",
     "react-native-typescript-transformer": "^1.2.10",
     "react-navigation": "^2.5.5",
     "tslib": "^1.9.2"
