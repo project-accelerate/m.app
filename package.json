@@ -23,7 +23,6 @@
     "storybook:native": "ts-node --project tasks/tsconfig.json -T tasks storybookExpo native",
     "preview:web": "ts-node --project tasks/tsconfig.json -T tasks preview",
     "heroku-postbuild": "ts-node --project tasks/tsconfig.json -T tasks buildAll",
-    "postinstall": "ts-node --project tasks/tsconfig.json -T tasks postinstall",
     "pretty": "prettier --write",
     "precommit": "lint-staged",
     "migration:make": "ts-node --project tasks/tsconfig.json -T tasks makeMigration",

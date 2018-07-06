@@ -1,0 +1,14 @@
+fragment EventListItem on Event {
+  id
+  name
+  family
+  venue {
+    id
+    name
+  }
+  startTime
+  endTime
+  photo {
+    sourceUrl
+  }
+}

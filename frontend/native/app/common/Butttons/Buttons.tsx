@@ -6,6 +6,8 @@ import {
   View,
   TouchableHighlight,
   Text,
+  TouchableNativeFeedback,
+  TouchableOpacity,
 } from 'react-native'
 import { theme } from '../../../theme'
 

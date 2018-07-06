@@ -7,8 +7,16 @@ import {
 } from '../../common/Layouts/Layouts'
 
 import logo from './twt.png'
+import {
+  NavigationScreenProps,
+  NavigationScreenOptions,
+} from 'react-navigation'
 
-export class HomeScreen extends React.Component {
+export class HomeScreen extends React.Component<NavigationScreenProps> {
+  static navigationOptions: NavigationScreenOptions = {
+    header: null,
+  }
+
   render() {
     return (
       <Background>
@@ -16,7 +24,9 @@ export class HomeScreen extends React.Component {
           <Hero src={logo} />
 
           <ButtonGrid>
-            <Button>Timetable</Button>
+            <Button onPress={() => this.props.navigation.push('Timetable')}>
+              Timetable
+            </Button>
             <Button>News</Button>
             <Button>Meetups</Button>
             <Button>Votes</Button>

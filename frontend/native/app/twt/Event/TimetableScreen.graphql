@@ -1,0 +1,11 @@
+#import "./EventListItem.graphql"
+
+query TimetableScreen {
+  events: allEvents {
+    edges {
+      node {
+        ...EventListItem
+      }
+    }
+  }
+}
