@@ -2,7 +2,7 @@ import { NativeModules } from 'react-native'
 import { Constants } from 'expo'
 
 const substitutions = {
-  $PACKAGER_HOSTNAME: getPackagerHostname,
+  $PACKAGER_HOSTNAME: getPackagerHostname(),
 }
 
 export const BACKEND_URL = configProperty('backendUrl')
@@ -12,15 +12,20 @@ function configProperty(key: string, opts: { defaultValue?: string } = {}) {
   const { releaseChannel = 'development' } = Constants.manifest
   const configs = require('../env.json')
 
-  if (releaseChannel in configs) {
-    return applySubstitutions(configs[releaseChannel][key] || opts.defaultValue)
+  const mergedConfigs = {
+    ...configs.common,
+    ...configs[releaseChannel],
   }
 
-  return applySubstitutions(configs.common[key] || opts.defaultValue)
+  return applySubstitutions(mergedConfigs[key] || opts.defaultValue)
 }
 
 /** When running in development mode, return the devserver's hostname */
 function getPackagerHostname() {
+  if (Constants.appOwnership === 'standalone') {
+    return undefined
+  }
+
   const scriptURL = NativeModules.SourceCode.scriptURL
 
   const address = scriptURL.split('://')[1].split('/')[0]
