@@ -5,13 +5,20 @@ import {
   ConnectionList,
 } from '../../common/ConnectionList/ConnectionList'
 import { EventListItemFragment } from '../../../queries'
-import { EventListItem } from './EventListItem'
+import { EventListItem, EventListItemPressedEvent } from './EventListItem'
 
-export function EventList(props: { data?: Connection<EventListItemFragment> }) {
+interface EventListProps {
+  onEventPress: (event: EventListItemPressedEvent) => void
+  data: Connection<EventListItemFragment>
+}
+
+export function EventList({ data, onEventPress }: EventListProps) {
   return (
     <ConnectionList
-      data={props.data}
-      renderItem={event => <EventListItem event={event} />}
+      data={data}
+      renderItem={event => (
+        <EventListItem onPress={onEventPress} event={event} />
+      )}
       sectionBy={event => startOfDay(event.startTime).toISOString()}
       renderSection={dateTime => format(dateTime, 'Do MMM')}
     />

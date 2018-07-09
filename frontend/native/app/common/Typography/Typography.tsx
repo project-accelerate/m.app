@@ -14,6 +14,9 @@ const TypographyVariants = StyleSheet.create({
     fontWeight: '500',
     fontSize: 18,
   },
+  subtitle: {
+    fontWeight: '500',
+  },
   accent: {
     color: theme.pallete.accent,
   },
@@ -45,14 +48,18 @@ export function Br(): React.ReactNode {
 
 interface ParagraphsProps {
   style?: StyleProp<ViewStyle>
+  textStyle?: StyleProp<TextStyle>
   children?: React.ReactNode
 }
 
-export function Paragraphs({ style, children }: ParagraphsProps) {
+export function Paragraphs({ textStyle, style, children }: ParagraphsProps) {
   return (
     <View style={style}>
       {React.Children.map(children, (child, i) => (
-        <Text style={TypographyStyles.paragraph} key={getKey(child) || i}>
+        <Text
+          style={[textStyle, TypographyStyles.paragraph]}
+          key={getKey(child) || i}
+        >
           {child}
         </Text>
       ))}

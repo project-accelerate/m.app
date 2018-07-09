@@ -6,6 +6,35 @@ export enum EventFamily {
   TWT_2018 = 'TWT_2018',
 }
 
+export interface EventDetailScreenQueryVariables {
+  id: string
+}
+
+export interface EventDetailScreenQuery {
+  // Get an event by id
+  event: {
+    name: string
+    speakers: {
+      edges: Array<{
+        node: {
+          id: string
+          name: string
+          photo: {
+            sourceUrl: string
+          } | null
+        }
+      }>
+    }
+    startTime: string
+    endTime: string
+    introduction: string
+    detail: string
+    photo: {
+      sourceUrl: string
+    } | null
+  } | null
+}
+
 export interface TimetableScreenQuery {
   events: {
     edges: Array<{
@@ -26,6 +55,28 @@ export interface TimetableScreenQuery {
       }
     }>
   }
+}
+
+export interface EventDetailFragment {
+  name: string
+  speakers: {
+    edges: Array<{
+      node: {
+        id: string
+        name: string
+        photo: {
+          sourceUrl: string
+        } | null
+      }
+    }>
+  }
+  startTime: string
+  endTime: string
+  introduction: string
+  detail: string
+  photo: {
+    sourceUrl: string
+  } | null
 }
 
 export interface EventListItemFragment {

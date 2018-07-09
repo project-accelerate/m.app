@@ -1,0 +1,7 @@
+#import "./EventDetail.graphql"
+
+query EventDetailScreen($id: String!) {
+  event(id: $id) {
+    ...EventDetail
+  }
+}

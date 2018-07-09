@@ -1,5 +1,14 @@
 import React from 'react'
-import { ActivityIndicator, View, StyleSheet } from 'react-native'
+import {
+  ActivityIndicator,
+  View,
+  StyleSheet,
+  ImageStyle,
+  StyleProp,
+  Image,
+  ImageBackground,
+} from 'react-native'
+import { theme } from '../../../theme'
 
 const LoadingOverlayStyle = StyleSheet.create({
   container: {
@@ -16,4 +25,72 @@ export function LoadingOverlay() {
       <ActivityIndicator />
     </View>
   )
+}
+
+const ProfileImageStyle = StyleSheet.create({
+  small: {
+    width: 96,
+    height: 96,
+  },
+  fullWidth: {
+    width: '100%',
+    height: '50%',
+  },
+})
+
+interface ProfileImageProps {
+  style?: StyleProp<ImageStyle>
+  size?: keyof typeof ProfileImageStyle
+  image: { sourceUrl: string } | number | null
+  children?: React.ReactNode
+}
+
+export function ProfileImage({
+  children,
+  style,
+  image,
+  size = 'small',
+}: ProfileImageProps) {
+  if (!image) {
+    return null
+  }
+
+  return (
+    <ImageBackground
+      style={[style, ProfileImageStyle[size]]}
+      source={
+        typeof image === 'number'
+          ? image
+          : { cache: 'force-cache', uri: image.sourceUrl }
+      }
+    >
+      {children}
+    </ImageBackground>
+  )
+}
+
+const BannerStyles = StyleSheet.create({
+  banner: {
+    backgroundColor: theme.pallete.accent,
+    padding: theme.spacing.level(1),
+  },
+})
+
+export function Banner({ children }: React.Props<{}>) {
+  return <View style={BannerStyles.banner}>{children}</View>
+}
+
+const GridStyles = StyleSheet.create({
+  grid: {
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+  },
+  item: {
+    width: '50%',
+    padding: theme.spacing.level(1),
+  },
+})
+
+export function Grid({ children }: React.Props<{}>) {
+  return <View style={GridStyles.grid}>{children}</View>
 }

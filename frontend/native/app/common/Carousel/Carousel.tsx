@@ -28,14 +28,16 @@ const CarouselStyles = StyleSheet.create({
   image: {
     resizeMode: 'cover',
   },
-  text: {
+  textContainer: {
     position: 'absolute',
     backgroundColor: theme.pallete.imageOverlay,
-    color: theme.pallete.white,
     padding: theme.spacing.level(1),
     width: '100%',
     left: 0,
     bottom: 0,
+  },
+  text: {
+    color: theme.pallete.white,
   },
   logo: {
     position: 'absolute',
@@ -70,7 +72,10 @@ export class Carousel extends React.Component {
             imageStyle={CarouselStyles.image}
             source={item.image}
           >
-            <Paragraphs style={CarouselStyles.text}>
+            <Paragraphs
+              style={CarouselStyles.textContainer}
+              textStyle={CarouselStyles.text}
+            >
               <Typography variant="cardTitle">{item.id}</Typography>
               <Typography>{faker.lorem.sentence()}</Typography>
             </Paragraphs>

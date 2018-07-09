@@ -1,0 +1,21 @@
+fragment EventDetail on Event {
+  name
+  speakers {
+    edges {
+      node {
+        id
+        name
+        photo {
+          sourceUrl
+        }
+      }
+    }
+  }
+  startTime
+  endTime
+  introduction
+  detail
+  photo {
+    sourceUrl
+  }
+}
