@@ -6,6 +6,8 @@ import { TimetableScreen } from './app/twt/Event/TimetableScreen'
 import { graphQlClient } from './config/graphql'
 import { theme } from './theme'
 import { routes } from './routes'
+import { Updates } from 'expo'
+import { AppState } from 'react-native'
 
 const Navigator = createStackNavigator(routes, {
   navigationOptions: {
@@ -25,3 +27,13 @@ export default class App extends React.Component {
     )
   }
 }
+
+AppState.addEventListener('change', async state => {
+  if (!__DEV__ && state === 'active') {
+    const update = await Updates.fetchUpdateAsync()
+
+    if (update.isNew) {
+      Updates.reloadFromCache()
+    }
+  }
+})
