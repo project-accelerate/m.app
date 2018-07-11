@@ -22,6 +22,8 @@ export namespace theme {
 
     export const accent = '#ff2c63'
     export const contrast = 'rgba(60,60,60,0.9)'
+    export const red = 'rgba(255,20,20,1)'
+    export const black = 'rgba(0,0,0,1)'
     export const imageOverlay = 'rgba(0,0,0,0.5)'
 
     export const header = accent

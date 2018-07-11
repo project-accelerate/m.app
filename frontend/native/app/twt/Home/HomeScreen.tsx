@@ -1,17 +1,12 @@
 import * as React from 'react'
 import { ButtonGrid, Button } from '../../common/Butttons/Buttons'
-import {
-  Background,
-  MenuScreenLayout,
-  Hero,
-} from '../../common/Layouts/Layouts'
+import { Background, MenuScreenLayout } from '../../common/Layouts/Layouts'
 
-import logo from './twt.png'
 import {
   NavigationScreenProps,
   NavigationScreenOptions,
 } from 'react-navigation'
-import { Carousel } from '../../common/Carousel/Carousel';
+import { Carousel } from '../../common/Carousel/Carousel'
 
 export class HomeScreen extends React.Component<NavigationScreenProps> {
   static navigationOptions: NavigationScreenOptions = {

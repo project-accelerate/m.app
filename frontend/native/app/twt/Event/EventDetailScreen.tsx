@@ -34,6 +34,7 @@ export class EventDetailScreen extends React.Component<
     navigation,
   }: NavigationScreenProps): NavigationScreenOptions => ({
     title: navigation.getParam('title'),
+    // headerTransparent: true
   })
 
   get queryVariables(): EventDetailScreenQueryVariables {
@@ -48,7 +49,7 @@ export class EventDetailScreen extends React.Component<
 
   render() {
     return (
-      <Background>
+      <Background solid>
         <FetchEvent variables={this.queryVariables}>
           {({ data }) => (
             <EventDetail

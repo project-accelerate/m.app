@@ -5,6 +5,7 @@ import { theme } from '../../../theme'
 import { Typography } from '../../common/Typography/Typography'
 import { format } from 'date-fns'
 import { ProfileImage } from '../../common/Widgets/Widgets'
+import { timeOf } from '../../common/date-formats'
 
 const EventListItemStyle = StyleSheet.create({
   container: {
@@ -44,8 +45,7 @@ export function EventListItem({ event, onPress }: EventListItemProps) {
           </Typography>
 
           <Typography variant="accent" style={EventListItemStyle.text}>
-            {format(event.startTime, 'h:mma')} -{' '}
-            {format(event.endTime, 'h:mma')}
+            {timeOf(event.startTime)} - {timeOf(event.endTime)}
           </Typography>
         </View>
       </View>

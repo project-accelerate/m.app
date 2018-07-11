@@ -6,17 +6,16 @@ import {
   View,
   TouchableHighlight,
   Text,
-  TouchableNativeFeedback,
-  TouchableOpacity,
 } from 'react-native'
 import { theme } from '../../../theme'
 
 const ButtonStyle = StyleSheet.create({
   button: {
-    backgroundColor: '#ff2c63',
+    backgroundColor: theme.pallete.accent,
     padding: theme.spacing.level(3),
     borderColor: theme.pallete.white,
-    borderWidth: 2,
+    borderWidth: 1,
+    opacity: 0.9,
   },
   text: {
     color: theme.pallete.white,
@@ -32,7 +31,7 @@ const ButtonStyle = StyleSheet.create({
   },
   gridItem: {
     width: '50%',
-    paddingVertical: theme.spacing.level(3),
+    paddingVertical: theme.spacing.level(2),
   },
 })
 

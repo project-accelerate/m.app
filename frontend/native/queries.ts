@@ -13,6 +13,7 @@ export interface EventDetailScreenQueryVariables {
 export interface EventDetailScreenQuery {
   // Get an event by id
   event: {
+    id: string
     name: string
     speakers: {
       edges: Array<{
@@ -24,6 +25,17 @@ export interface EventDetailScreenQuery {
           } | null
         }
       }>
+    }
+    // Return the event venue
+    venue: {
+      id: string
+      name: string
+      address: {
+        streetAddress: string
+        postcode: string
+        latitude: number
+        longitude: number
+      }
     }
     startTime: string
     endTime: string
@@ -58,6 +70,7 @@ export interface TimetableScreenQuery {
 }
 
 export interface EventDetailFragment {
+  id: string
   name: string
   speakers: {
     edges: Array<{
@@ -69,6 +82,17 @@ export interface EventDetailFragment {
         } | null
       }
     }>
+  }
+  // Return the event venue
+  venue: {
+    id: string
+    name: string
+    address: {
+      streetAddress: string
+      postcode: string
+      latitude: number
+      longitude: number
+    }
   }
   startTime: string
   endTime: string

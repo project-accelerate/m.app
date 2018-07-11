@@ -11,19 +11,25 @@ import {
 } from 'react-native'
 import jez from './jez.jpg'
 import ash from './ash.jpg'
-import skel from './skel.jpg'
+import twt from '../twt.png'
 import { theme } from '../../../theme'
 import { Typography, Paragraphs } from '../Typography/Typography'
 
 interface CarouselItem {
   id: string
   image: ImageSourcePropType
+  title: string
+  info: string
 }
 
 const CarouselStyles = StyleSheet.create({
+  root: {
+    backgroundColor: theme.pallete.black,
+  },
   container: {
     height: '100%',
     width: '100%',
+    backgroundColor: theme.pallete.accent,
   },
   image: {
     resizeMode: 'cover',
@@ -51,9 +57,24 @@ const CarouselStyles = StyleSheet.create({
 
 export class Carousel extends React.Component {
   items: CarouselItem[] = [
-    { id: 'jez', image: jez },
-    { id: 'ash', image: ash },
-    { id: 'skel', image: skel },
+    {
+      id: 'jez',
+      image: jez,
+      title: 'Headline 1',
+      info: faker.lorem.sentences(),
+    },
+    {
+      id: 'ash',
+      image: ash,
+      title: 'Headline 2',
+      info: faker.lorem.sentences(),
+    },
+    {
+      id: 'twt',
+      image: twt,
+      title: 'Headline 3',
+      info: faker.lorem.sentences(),
+    },
   ]
 
   render() {
@@ -61,29 +82,31 @@ export class Carousel extends React.Component {
     const { width } = Dimensions.get('window')
 
     return (
-      <SnapCarousel
-        autoplay
-        loop
-        layout="tinder"
-        data={this.items}
-        renderItem={({ item, index }) => (
-          <ImageBackground
-            style={CarouselStyles.container}
-            imageStyle={CarouselStyles.image}
-            source={item.image}
-          >
-            <Paragraphs
-              style={CarouselStyles.textContainer}
-              textStyle={CarouselStyles.text}
+      <View style={CarouselStyles.root}>
+        <SnapCarousel
+          autoplay
+          loop
+          layout="stack"
+          data={this.items}
+          renderItem={({ item, index }) => (
+            <ImageBackground
+              style={CarouselStyles.container}
+              imageStyle={CarouselStyles.image}
+              source={item.image}
             >
-              <Typography variant="cardTitle">{item.id}</Typography>
-              <Typography>{faker.lorem.sentence()}</Typography>
-            </Paragraphs>
-          </ImageBackground>
-        )}
-        sliderWidth={width}
-        itemWidth={width}
-      />
+              <Paragraphs
+                style={CarouselStyles.textContainer}
+                textStyle={CarouselStyles.text}
+              >
+                <Typography variant="cardTitle">{item.title}</Typography>
+                <Typography>{item.info}</Typography>
+              </Paragraphs>
+            </ImageBackground>
+          )}
+          sliderWidth={width}
+          itemWidth={width}
+        />
+      </View>
     )
   }
 }

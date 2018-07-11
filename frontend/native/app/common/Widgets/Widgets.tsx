@@ -5,8 +5,9 @@ import {
   StyleSheet,
   ImageStyle,
   StyleProp,
-  Image,
   ImageBackground,
+  Dimensions,
+  ViewStyle,
 } from 'react-native'
 import { theme } from '../../../theme'
 
@@ -34,7 +35,14 @@ const ProfileImageStyle = StyleSheet.create({
   },
   fullWidth: {
     width: '100%',
-    height: '50%',
+  },
+  halfSquare: {
+    width: Dimensions.get('screen').width * 0.5,
+    height: Dimensions.get('screen').width * 0.5,
+  },
+  halfScreen: {
+    width: '100%',
+    height: Dimensions.get('screen').height * 0.4,
   },
 })
 
@@ -71,7 +79,11 @@ export function ProfileImage({
 
 const BannerStyles = StyleSheet.create({
   banner: {
-    backgroundColor: theme.pallete.accent,
+    backgroundColor: theme.pallete.imageOverlay,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    width: '100%',
     padding: theme.spacing.level(1),
   },
 })
@@ -82,15 +94,29 @@ export function Banner({ children }: React.Props<{}>) {
 
 const GridStyles = StyleSheet.create({
   grid: {
-    flexDirection: 'column',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     flexWrap: 'wrap',
   },
   item: {
-    width: '50%',
     padding: theme.spacing.level(1),
   },
 })
 
-export function Grid({ children }: React.Props<{}>) {
-  return <View style={GridStyles.grid}>{children}</View>
+export function Grid({
+  children,
+  style,
+}: {
+  children: React.ReactElement<{}>[]
+  style?: StyleProp<ViewStyle>
+}) {
+  return (
+    <View style={[GridStyles.grid, style]}>
+      {children.map((child, i) => (
+        <View key={child.key || i} style={GridStyles.item}>
+          {child}
+        </View>
+      ))}
+    </View>
+  )
 }

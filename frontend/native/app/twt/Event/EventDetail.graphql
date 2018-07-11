@@ -1,4 +1,5 @@
 fragment EventDetail on Event {
+  id
   name
   speakers {
     edges {
@@ -9,6 +10,16 @@ fragment EventDetail on Event {
           sourceUrl
         }
       }
+    }
+  }
+  venue {
+    id
+    name
+    address {
+      streetAddress
+      postcode
+      latitude
+      longitude
     }
   }
   startTime

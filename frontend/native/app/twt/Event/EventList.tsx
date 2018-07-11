@@ -6,6 +6,7 @@ import {
 } from '../../common/ConnectionList/ConnectionList'
 import { EventListItemFragment } from '../../../queries'
 import { EventListItem, EventListItemPressedEvent } from './EventListItem'
+import { longDateOf } from '../../common/date-formats'
 
 interface EventListProps {
   onEventPress: (event: EventListItemPressedEvent) => void
@@ -20,7 +21,7 @@ export function EventList({ data, onEventPress }: EventListProps) {
         <EventListItem onPress={onEventPress} event={event} />
       )}
       sectionBy={event => startOfDay(event.startTime).toISOString()}
-      renderSection={dateTime => format(dateTime, 'Do MMM')}
+      renderSection={longDateOf}
     />
   )
 }

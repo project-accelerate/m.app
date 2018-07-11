@@ -49,7 +49,16 @@ export function MenuScreenLayout({ children }: MenuScreenProps) {
   )
 }
 
-export function Background({ children }: React.Props<{}>) {
+interface BackgroundProps {
+  solid?: boolean
+  children?: React.ReactNode
+}
+
+export function Background({ children, solid }: BackgroundProps) {
+  if (solid) {
+    return <View style={LayoutStyles.bg}>{children}</View>
+  }
+
   return (
     <ImageBackground
       source={bg}
@@ -62,9 +71,5 @@ export function Background({ children }: React.Props<{}>) {
 }
 
 export function Hero(props: { children?: React.ReactNode }) {
-  return (
-    <View style={LayoutStyles.hero}>
-      {props.children}
-    </View>
-  )
+  return <View style={LayoutStyles.hero}>{props.children}</View>
 }
