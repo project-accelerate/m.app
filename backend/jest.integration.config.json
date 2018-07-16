@@ -6,6 +6,9 @@
   "testRegex": "__tests__/.*\\.integrationTest\\.ts?$",
   "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
   "collectCoverage": true,
-  "collectCoverageFrom": ["<rootDir>/*/external/*", "<rootDir>/*/web/*"],
+  "collectCoverageFrom": [
+    "<rootDir>/app/*/external/*",
+    "<rootDir>/app/*/web/*"
+  ],
   "coverageDirectory": ".coverage"
 }
