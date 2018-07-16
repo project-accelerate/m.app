@@ -6,8 +6,8 @@ import {
   someString,
   someAdminUser,
   someOrdinaryUser,
-} from '../../../../common/test/testUtils'
-import { AuthToken } from '../../../../common/AuthToken'
+} from 'common/test/testUtils'
+import { AuthToken } from 'common/AuthToken'
 import { someImageUpload } from '../../../test/testUtils'
 
 const imageData = readFileSync(

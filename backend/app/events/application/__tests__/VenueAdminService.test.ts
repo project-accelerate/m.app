@@ -6,7 +6,7 @@ import {
   somePostcodesIoPostcode,
   someCreateVenueRequest,
 } from '../../test/eventTestUtils'
-import { someGeoPoint } from '../../../../common/test/testUtils'
+import { someGeoPoint } from 'common/test/testUtils'
 import { VenueRepository } from '../../external/VenueRepository'
 import { MockCrudRepositoryFixture } from './fixtures/MockCrudRepositoryFixture'
 import { MockPhotoStorageFixture } from './fixtures/MockPhotoStorageFixture'

@@ -3,7 +3,7 @@ import * as faker from 'faker'
 import { times } from 'lodash'
 import { endOfTomorrow, subHours, addDays, addHours } from 'date-fns'
 import { someGeoPoint } from '../../common/test/testUtils'
-import { givenThatAnEventExists } from '../events/test/eventTestUtils'
+import { givenThatAnEventExists } from '../app/events/test/eventTestUtils'
 
 export async function configureTestData() {
   await Promise.all(times(20, testEvent))

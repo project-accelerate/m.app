@@ -1,7 +1,4 @@
-import {
-  someAdminUser,
-  someOrdinaryUser,
-} from '../../../../common/test/testUtils'
+import { someAdminUser, someOrdinaryUser } from 'common/test/testUtils'
 import { withDb, execQuery } from '../../../test/integrationTestUtils'
 import {
   givenThatAVenueExists,
@@ -9,7 +6,7 @@ import {
   someCreateEventRequest,
 } from '../../test/eventTestUtils'
 import { CreateEventRequest } from '../../domain/Event'
-import { AuthToken } from '../../../../common/AuthToken'
+import { AuthToken } from 'common/AuthToken'
 
 describe('createEvent mutation', () => {
   describe('as an admin user', () => {

@@ -1,7 +1,7 @@
 import { Service } from 'typedi'
 import { addMonths } from 'date-fns'
 import { Point } from 'geojson'
-import { isFullPostcode, isOutcode } from '../../../common/domain/postcode'
+import { isFullPostcode, isOutcode } from 'common/domain/postcode'
 import { DateProvider } from '../../common/DateProvider'
 import { EventRepository } from '../external/EventRepository'
 import { PostcodesIOClient } from '../external/PostcodesIOClient'

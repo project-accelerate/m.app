@@ -1,7 +1,5 @@
 import { withDb, execQuery } from '../../../test/integrationTestUtils'
-import {
-  givenThatAPersonExists,
-} from '../../test/eventTestUtils'
+import { givenThatAPersonExists } from '../../test/eventTestUtils'
 
 describe('PersonResolver', () => {
   describe('.person', () => {

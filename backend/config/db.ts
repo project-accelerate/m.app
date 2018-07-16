@@ -1,9 +1,7 @@
 import 'reflect-metadata'
 import Container from 'typedi'
-import Knex from 'knex'
 import log from 'winston'
-import { join } from 'path'
-import { DatabaseConnection } from '../common/DatabaseConnection'
+import { DatabaseConnection } from '../app/common/DatabaseConnection'
 
 export async function configureDb() {
   const db = Container.get(DatabaseConnection)

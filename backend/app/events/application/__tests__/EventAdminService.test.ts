@@ -19,7 +19,7 @@ import {
   someDate,
   someString,
   someUuid,
-} from '../../../../common/test/testUtils'
+} from 'common/test/testUtils'
 import { VenueRepository } from '../../external/VenueRepository'
 import { MockCrudRepositoryFixture } from './fixtures/MockCrudRepositoryFixture'
 import { MockPhotoStorageFixture } from './fixtures/MockPhotoStorageFixture'

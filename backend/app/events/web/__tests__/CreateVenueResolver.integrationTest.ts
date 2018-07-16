@@ -1,11 +1,8 @@
 import { readFileSync } from 'fs'
 import { withDb, execQuery } from '../../../test/integrationTestUtils'
 import { CreateVenueRequest } from '../../domain/Venue'
-import {
-  someAdminUser,
-  someOrdinaryUser,
-} from '../../../../common/test/testUtils'
-import { AuthToken } from '../../../../common/AuthToken'
+import { someAdminUser, someOrdinaryUser } from 'common/test/testUtils'
+import { AuthToken } from 'common/AuthToken'
 import { someCreateVenueRequest } from '../../test/eventTestUtils'
 
 describe('CreateVenueResolver', () => {

@@ -1,8 +1,7 @@
 import jwt from 'express-jwt'
 import { expressJwtSecret } from 'jwks-rsa'
 import { ContextCallback } from 'graphql-yoga/dist/src/types'
-import { ConfigService } from '../common/ConfigService'
-import { Role } from '../../common/domain/Role'
+import { ConfigService } from '../app/common/ConfigService'
 import { AuthChecker } from 'type-graphql'
 import { GraphQLContext } from './graphql'
 

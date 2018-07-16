@@ -3,7 +3,7 @@ import { printSchema } from 'graphql'
 import { writeFileSync } from 'fs'
 
 import { configureGraphql } from '../backend/config/graphql'
-import { ConfigService } from 'backend/common/ConfigService'
+import { ConfigService } from 'backend/app/common/ConfigService'
 import { Container } from 'typedi'
 
 export async function graphqlSchema() {

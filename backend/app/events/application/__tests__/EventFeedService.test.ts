@@ -5,7 +5,7 @@ import {
   somePostcode,
   someGeoPoint,
   someOutcode,
-} from '../../../../common/test/testUtils'
+} from 'common/test/testUtils'
 import { EventRepository } from '../../external/EventRepository'
 import { PostcodesIOClient } from '../../external/PostcodesIOClient'
 import { EventFeedService } from '../EventFeedService'

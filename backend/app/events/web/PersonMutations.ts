@@ -3,7 +3,7 @@ import { MutationRequest } from '../../common/resolverUtils'
 import { Person, CreatePersonRequest } from '../domain/Person'
 import { PersonAdminService } from '../application/PersonAdminService'
 import { PersonRepository } from '../external/PersonRepository'
-import { Role } from '../../../common/domain/Role'
+import { Role } from 'common/domain/Role'
 
 @Resolver()
 export class PersonMutations {

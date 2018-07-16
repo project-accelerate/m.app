@@ -3,7 +3,7 @@ import { MutationRequest } from '../../common/resolverUtils'
 import { Venue, CreateVenueRequest } from '../domain/Venue'
 import { VenueAdminService } from '../application/VenueAdminService'
 import { VenueRepository } from '../external/VenueRepository'
-import { Role } from '../../../common/domain/Role'
+import { Role } from 'common/domain/Role'
 
 @Resolver()
 export class VenueMutations {

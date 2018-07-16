@@ -1,4 +1,4 @@
-import { someGeoPoint } from '../../../../common/test/testUtils'
+import { someGeoPoint } from 'common/test/testUtils'
 import { withDb } from '../../../test/integrationTestUtils'
 import { shouldSupportStandardCrudFunctions } from '../../../test/CrudRepositoryTestUtils'
 import {

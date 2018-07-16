@@ -7,7 +7,7 @@ import {
   someGeoPoint,
   somePostcode,
   someInt,
-} from '../../../common/test/testUtils'
+} from 'common/test/testUtils'
 import { PersonRepository } from '../external/PersonRepository'
 import { VenueRepository } from '../external/VenueRepository'
 import { Venue, CreateVenueRequest } from '../domain/Venue'

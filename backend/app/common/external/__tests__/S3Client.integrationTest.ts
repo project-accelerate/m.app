@@ -1,4 +1,4 @@
-import { someBuffer } from '../../../../common/test/testUtils'
+import { someBuffer } from 'common/test/testUtils'
 import { ConfigService } from '../../ConfigService'
 import { S3Client } from '../S3Client'
 import { someImageUpload, someImage } from '../../../test/testUtils'

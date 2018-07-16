@@ -1,5 +1,5 @@
 import decode from 'jwt-decode'
-import { AuthToken } from '../../../common/AuthToken'
+import { AuthToken } from 'common/AuthToken'
 
 /** Treat token as expired a minute before it actually expires */
 const EXPIRY_WINDOW = 60_000

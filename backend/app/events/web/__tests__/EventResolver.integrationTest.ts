@@ -1,4 +1,4 @@
-import { someGeoPoint } from '../../../../common/test/testUtils'
+import { someGeoPoint } from 'common/test/testUtils'
 import { withDb, execQuery } from '../../../test/integrationTestUtils'
 import {
   givenThatAnEventExists,
