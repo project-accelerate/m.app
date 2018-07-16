@@ -8,7 +8,7 @@
     "sdkVersion": "28.0.0",
     "ignoreNodeModulesValidation": true,
     "platforms": ["ios", "android"],
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -25,7 +25,12 @@
       "bundleIdentifier": "com.peoplesmomentum.app"
     },
     "android": {
-      "package": "com.peoplesmomentum.app"
+      "package": "com.peoplesmomentum.app",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyC89f_jlusXaC_HGA3u3Qeiqr84GQPQLyI"
+        }
+      }
     },
     "packagerOpts": {
       "sourceExts": ["ts", "tsx"],
