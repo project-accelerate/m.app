@@ -7,7 +7,7 @@ import {
   deepEqual,
 } from 'ts-mockito/lib/ts-mockito'
 import { FileUploadData } from 'apollo-upload-server'
-import { PhotoStorageService } from '../../PhotoStorageService'
+import { PhotoStorageService } from '../application/PhotoStorageService'
 
 export class MockPhotoStorageFixture {
   mock = mock(PhotoStorageService)

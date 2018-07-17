@@ -1,5 +1,5 @@
 import { mock, instance, when, anything, verify, deepEqual } from 'ts-mockito'
-import { CrudRepository } from '../../../../common/CrudRepository'
+import { CrudRepository } from '../CrudRepository'
 import { MockRelationFixture } from './MockRelationFixture'
 
 export class MockCrudRepositoryFixture<

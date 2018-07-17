@@ -6,13 +6,6 @@ import {
   instance,
   deepEqual,
 } from 'ts-mockito/lib/ts-mockito'
-import { EventRepository } from '../../external/EventRepository'
-import { EventAdminService } from '../EventAdminService'
-import {
-  someCreateEventRequest,
-  someVenue,
-  somePerson,
-} from '../../test/eventTestUtils'
 import {
   somePostcode,
   someGeoPoint,
@@ -20,11 +13,18 @@ import {
   someString,
   someUuid,
 } from 'common/test/testUtils'
+import { MockCrudRepositoryFixture } from 'backend/app/common/test/MockCrudRepositoryFixture'
+import { MockRelationFixture } from 'backend/app/common/test/MockRelationFixture'
+import { EventRepository } from '../../external/EventRepository'
+import { EventAdminService } from '../EventAdminService'
+import {
+  someCreateEventRequest,
+  someVenue,
+  somePerson,
+} from '../../test/eventTestUtils'
 import { VenueRepository } from '../../external/VenueRepository'
-import { MockCrudRepositoryFixture } from './fixtures/MockCrudRepositoryFixture'
-import { MockPhotoStorageFixture } from './fixtures/MockPhotoStorageFixture'
+import { MockPhotoStorageFixture } from '../../test/MockPhotoStorageFixture'
 import { someImageUpload } from '../../../test/testUtils'
-import { MockRelationFixture } from './fixtures/MockRelationFixture'
 import { Person } from '../../domain/Person'
 
 describe('EventAdminService', () => {

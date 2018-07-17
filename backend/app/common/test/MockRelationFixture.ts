@@ -1,5 +1,5 @@
 import { mock, instance, when, verify, objectContaining } from 'ts-mockito'
-import { RelationRepository } from '../../../../common/RelationRepository'
+import { RelationRepository } from '../RelationRepository'
 
 export class MockRelationFixture<T> {
   mock = mock(RelationRepository)

@@ -1,7 +1,7 @@
 import { ObjectType, Field, InputType } from 'type-graphql'
-import { ConferenceId } from './Conference'
 import { CreateUserRequest } from 'backend/app/user/domain/User'
 import { RegisterDeviceRequest } from 'backend/app/user/domain/Device'
+import { ConferenceId } from './Conference'
 
 @InputType()
 export class RegisterConferenceAttendanceRequest {
@@ -9,8 +9,8 @@ export class RegisterConferenceAttendanceRequest {
 
   @Field() device!: RegisterDeviceRequest
 
-  @Field(() => [ConferenceAttendance])
-  attendances!: ConferenceAttendance[]
+  @Field(() => [ConferenceId])
+  attendances!: ConferenceId[]
 }
 
 @ObjectType()
@@ -19,5 +19,6 @@ export class ConferenceAttendance {
 
   attendee!: string
 
-  @Field() conference!: ConferenceId
+  @Field(() => ConferenceId)
+  conference!: ConferenceId
 }

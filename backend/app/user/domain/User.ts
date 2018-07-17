@@ -19,7 +19,10 @@ export class User implements UserProps {
   email?: string
 
   @Field()
-  acceptsNotificationType(@Arg('type') notificationType: NotificationType) {
+  acceptsNotificationType(
+    @Arg('type', () => NotificationType)
+    notificationType: NotificationType,
+  ): boolean {
     return this.optedIntoNotifications
   }
 

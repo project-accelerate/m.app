@@ -49,6 +49,11 @@ export interface CrudRepository<T = {}, Props = {}> {
   decodeAll(value: any[]): T[]
 
   /**
+   * Find all instances of an object matching the condition
+   */
+  find(clauses: SelectClauses<T>): Promise<T[]>
+
+  /**
    * Find an object
    */
   findOne(clauses: SelectClauses<T>): Promise<T | undefined>

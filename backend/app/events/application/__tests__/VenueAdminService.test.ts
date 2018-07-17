@@ -1,15 +1,15 @@
 import { mock, when, instance } from 'ts-mockito'
 import { Point } from 'geojson'
+import { someGeoPoint } from 'common/test/testUtils'
+import { MockCrudRepositoryFixture } from 'backend/app/common/test/MockCrudRepositoryFixture'
 import { PostcodesIOClient } from '../../external/PostcodesIOClient'
 import { VenueAdminService } from '../VenueAdminService'
 import {
   somePostcodesIoPostcode,
   someCreateVenueRequest,
 } from '../../test/eventTestUtils'
-import { someGeoPoint } from 'common/test/testUtils'
 import { VenueRepository } from '../../external/VenueRepository'
-import { MockCrudRepositoryFixture } from './fixtures/MockCrudRepositoryFixture'
-import { MockPhotoStorageFixture } from './fixtures/MockPhotoStorageFixture'
+import { MockPhotoStorageFixture } from '../../test/MockPhotoStorageFixture'
 import { someImageUpload } from '../../../test/testUtils'
 
 describe('VenueAdminService', () => {

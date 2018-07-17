@@ -24,6 +24,10 @@ export function someUserProps(props: Partial<UserProps> = {}): UserProps {
   }
 }
 
+export function someUser(props: Partial<User>): User {
+  return Object.assign(new User(), { id: someUuid() }, props)
+}
+
 export async function givenThatAUserExists(
   props: Partial<UserProps> = {},
 ): Promise<User> {
@@ -37,6 +41,10 @@ export function someDeviceProps(props: Partial<DeviceProps> = {}): DeviceProps {
     owner: someUuid(),
     ...props,
   }
+}
+
+export function someDevice(props: Partial<Device>): Device {
+  return Object.assign(new Device(), { id: someUuid() }, props)
 }
 
 export async function givenThatADeviceExists({

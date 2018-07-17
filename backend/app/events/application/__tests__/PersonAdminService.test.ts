@@ -1,10 +1,8 @@
+import { MockCrudRepositoryFixture } from 'backend/app/common/test/MockCrudRepositoryFixture'
 import { PersonAdminService } from '../PersonAdminService'
-import { mock, when, anything, verify } from 'ts-mockito/lib/ts-mockito'
 import { PersonRepository } from '../../external/PersonRepository'
-import { PhotoStorageService } from '../PhotoStorageService'
 import { someImageUpload } from '../../../test/testUtils'
-import { MockPhotoStorageFixture } from './fixtures/MockPhotoStorageFixture'
-import { MockCrudRepositoryFixture } from './fixtures/MockCrudRepositoryFixture'
+import { MockPhotoStorageFixture } from '../../test/MockPhotoStorageFixture'
 
 describe(PersonAdminService, () => {
   it('saves all data when new person is created', async () => {
