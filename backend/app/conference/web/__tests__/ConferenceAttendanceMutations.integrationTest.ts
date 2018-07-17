@@ -1,14 +1,14 @@
 import { withDb, execQuery } from 'backend/app/test/integrationTestUtils'
 import { RegisterConferenceAttendanceRequest } from 'backend/app/conference/domain/ConferenceAttendance'
-import { ConferenceId } from 'backend/app/conference/domain/Conference'
 import { DeviceType } from 'backend/app/user/domain/Device'
+import { EventFamily } from 'common/domain/EventFamily'
 
 describe('registerConferenceAttendance mutation', () => {
   it(
     'registers the conference attendance and returns it',
     withDb(async () => {
       const { attendances } = await registerConferenceAttendance({
-        attendances: [ConferenceId.LABOUR_2018],
+        attendances: [EventFamily.LABOUR_2018],
         device: {
           deviceToken: 'my-device-token',
           deviceType: DeviceType.ANDROID,
@@ -20,7 +20,7 @@ describe('registerConferenceAttendance mutation', () => {
 
       expect(attendances).toMatchObject([
         {
-          conference: ConferenceId.LABOUR_2018,
+          conference: EventFamily.LABOUR_2018,
           attendee: {
             id: expect.any(String),
             devices: [

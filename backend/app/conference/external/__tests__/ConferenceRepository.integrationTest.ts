@@ -4,7 +4,6 @@ import {
   givenThatAConferenceAttendanceExists,
   someOtherConferenceId,
 } from '../../test/conferenceTestUtils'
-import { ConferenceId } from 'backend/app/conference/domain/Conference'
 
 describe('ConferenceAttendanceRepository', () => {
   shouldSupportStandardCrudFunctions({

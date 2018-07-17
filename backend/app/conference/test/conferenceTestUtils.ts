@@ -1,19 +1,19 @@
 import { Container } from 'typedi'
 import { someUuid } from 'common/test/testUtils'
-import { ConferenceId } from 'backend/app/conference/domain/Conference'
 import { WithoutId } from 'backend/app/common/WithoutId'
 import { givenThatAUserExists } from 'backend/app/user/test/userTestUtils'
 import { ConferenceAttendanceRepository } from '../external/ConferenceAttendanceRepository'
 import { ConferenceAttendance } from '../domain/ConferenceAttendance'
+import { EventFamily } from 'common/domain/EventFamily'
 
 type ConferenceAttendanceProps = WithoutId<ConferenceAttendance>
 
 export function someConferenceId() {
-  return ConferenceId.TWT_2018
+  return EventFamily.TWT_2018
 }
 
 export function someOtherConferenceId() {
-  return ConferenceId.LABOUR_2018
+  return EventFamily.LABOUR_2018
 }
 
 export function someConferenceAttendanceProps(

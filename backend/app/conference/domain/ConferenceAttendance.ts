@@ -1,7 +1,7 @@
-import { ObjectType, Field, InputType } from 'type-graphql'
+import { ObjectType, Field, InputType, registerEnumType } from 'type-graphql'
 import { CreateUserRequest } from 'backend/app/user/domain/User'
 import { RegisterDeviceRequest } from 'backend/app/user/domain/Device'
-import { ConferenceId } from './Conference'
+import { EventFamily } from 'common/domain/EventFamily'
 
 @InputType()
 export class RegisterConferenceAttendanceRequest {
@@ -9,8 +9,8 @@ export class RegisterConferenceAttendanceRequest {
 
   @Field() device!: RegisterDeviceRequest
 
-  @Field(() => [ConferenceId])
-  attendances!: ConferenceId[]
+  @Field(() => [EventFamily])
+  attendances!: EventFamily[]
 }
 
 @ObjectType()
@@ -19,6 +19,10 @@ export class ConferenceAttendance {
 
   attendee!: string
 
-  @Field(() => ConferenceId)
-  conference!: ConferenceId
+  @Field(() => EventFamily)
+  conference!: EventFamily
 }
+
+registerEnumType(EventFamily, {
+  name: 'EventFamily',
+})

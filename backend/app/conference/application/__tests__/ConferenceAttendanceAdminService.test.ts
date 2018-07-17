@@ -1,4 +1,4 @@
-import { ConferenceId } from '../../domain/Conference'
+import { EventFamily } from 'common/domain/EventFamily'
 import { DeviceType } from 'backend/app/user/domain/Device'
 import { MockCrudRepositoryFixture } from 'backend/app/common/test/MockCrudRepositoryFixture'
 import { MockUserAdminServiceFixture } from 'backend/app/user/test/MockUserAdminServiceFixture'
@@ -14,7 +14,7 @@ describe(ConferenceAttendanceAdminService, () => {
     fixture.userAdminService.givenThatUserRegistersWithId('my-user-id')
 
     await fixture.service.registerConferenceAttendances({
-      attendances: [ConferenceId.LABOUR_2018],
+      attendances: [EventFamily.LABOUR_2018],
       device: {
         deviceType: DeviceType.ANDROID,
         deviceToken: 'my-device-token',
@@ -26,7 +26,7 @@ describe(ConferenceAttendanceAdminService, () => {
 
     fixture.conferenceAttendance.verifyInserted({
       attendee: 'my-user-id',
-      conference: ConferenceId.LABOUR_2018,
+      conference: EventFamily.LABOUR_2018,
     })
 
     fixture.deviceAdminService.verifyDeviceRegisteredToOwner({
