@@ -7,7 +7,7 @@ describe('registerConferenceAttendance mutation', () => {
   it(
     'registers the conference attendance and returns it',
     withDb(async () => {
-      const { attendances } = await registerConferenceAttendance({
+      const { registration } = await registerConferenceAttendance({
         attendances: [EventFamily.LABOUR_2018],
         device: {
           deviceToken: 'my-device-token',
@@ -18,21 +18,22 @@ describe('registerConferenceAttendance mutation', () => {
         },
       })
 
-      expect(attendances).toMatchObject([
-        {
-          conference: EventFamily.LABOUR_2018,
-          attendee: {
+      expect(registration).toMatchObject({
+        attendances: [
+          {
             id: expect.any(String),
-            devices: [
-              {
-                id: expect.any(String),
-                deviceToken: 'my-device-token',
-                deviceType: DeviceType.ANDROID,
-              },
-            ],
+            conference: EventFamily.LABOUR_2018,
           },
+        ],
+        user: {
+          id: expect.any(String),
         },
-      ])
+        device: {
+          id: expect.any(String),
+          deviceToken: 'my-device-token',
+          deviceType: DeviceType.ANDROID,
+        },
+      })
     }),
   )
 })
@@ -43,15 +44,18 @@ async function registerConferenceAttendance(
   return execQuery<{ request: RegisterConferenceAttendanceRequest }>({
     body: `
       mutation($request: RegisterConferenceAttendanceRequest) {
-        attendances: registerConferenceAttendance(request: $request) {
-          conference
-          attendee {
+        registration: registerConferenceAttendance(request: $request) {
+          attendances {
             id
-            devices {
-              id
-              deviceToken
-              deviceType
-            }
+            conference
+          }
+          user {
+            id
+          }
+          device {
+            id
+            deviceToken
+            deviceType
           }
         }
       }

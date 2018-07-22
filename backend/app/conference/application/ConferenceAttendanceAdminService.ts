@@ -2,7 +2,7 @@ import { Service } from 'typedi'
 import { ConferenceAttendanceRepository } from '../external/ConferenceAttendanceRepository'
 import {
   RegisterConferenceAttendanceRequest,
-  ConferenceAttendance,
+  RegisterConferenceAttendanceResponse,
 } from 'backend/app/conference/domain/ConferenceAttendance'
 import { UserAdminService } from 'backend/app/user/application/UserAdminService'
 import { DeviceAdminService } from 'backend/app/user/application/DeviceAdminService'
@@ -17,21 +17,25 @@ export class ConferenceAttendanceAdminService {
 
   async registerConferenceAttendances(
     request: RegisterConferenceAttendanceRequest,
-  ): Promise<ConferenceAttendance[]> {
+  ): Promise<RegisterConferenceAttendanceResponse> {
     const user = await this.userAdminService.addUser(request.user)
 
-    await this.deviceAdminService.registerDeviceToOwner({
+    const device = await this.deviceAdminService.registerDeviceToOwner({
       device: request.device,
       owner: user.id,
     })
 
-    return await Promise.all(
-      request.attendances.map(conference =>
-        this.conferenceAttendanceRepository.insert({
-          attendee: user.id,
-          conference,
-        }),
+    return {
+      user,
+      device,
+      attendances: await Promise.all(
+        request.attendances.map(conference =>
+          this.conferenceAttendanceRepository.insert({
+            attendee: user.id,
+            conference,
+          }),
+        ),
       ),
-    )
+    }
   }
 }

@@ -1,24 +1,32 @@
-import { ObjectType, Field, InputType } from 'type-graphql'
+import { ObjectType, Field, InputType, registerEnumType } from 'type-graphql'
 
 export enum DeviceType {
-  IOS = 'iOS',
-  ANDROID = 'Android',
+  IOS = 'IOS',
+  ANDROID = 'ANDROID',
 }
+
+registerEnumType(DeviceType, {
+  name: 'DeviceType',
+})
 
 @InputType()
 export class RegisterDeviceRequest {
-  @Field() deviceToken!: string
+  @Field({ nullable: true })
+  deviceToken?: string
 
-  @Field() deviceType!: DeviceType
+  @Field(() => DeviceType, { nullable: true })
+  deviceType?: DeviceType
 }
 
 @ObjectType()
 export class Device {
   @Field() id!: string
 
-  @Field() deviceToken!: string
+  @Field({ nullable: true })
+  deviceToken?: string
 
-  @Field() deviceType!: DeviceType
+  @Field(() => DeviceType, { nullable: true })
+  deviceType?: DeviceType
 
   owner!: string
 }

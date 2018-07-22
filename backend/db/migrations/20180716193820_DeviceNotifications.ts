@@ -12,14 +12,8 @@ export async function up(db: Knex) {
   await db.schema.createTable('Device', table => {
     uuidPrimaryKey(table)
 
-    table
-      .string('deviceToken')
-      .notNullable()
-      .index()
-    table
-      .string('deviceType')
-      .notNullable()
-      .index()
+    table.string('deviceToken').index()
+    table.string('deviceType').index()
 
     uuidForeignKey(table, {
       references: 'User',

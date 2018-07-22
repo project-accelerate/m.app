@@ -1,6 +1,6 @@
 import { ObjectType, Field, InputType, registerEnumType } from 'type-graphql'
-import { CreateUserRequest } from 'backend/app/user/domain/User'
-import { RegisterDeviceRequest } from 'backend/app/user/domain/Device'
+import { CreateUserRequest, User } from 'backend/app/user/domain/User'
+import { RegisterDeviceRequest, Device } from 'backend/app/user/domain/Device'
 import { EventFamily } from 'common/domain/EventFamily'
 
 @InputType()
@@ -21,6 +21,16 @@ export class ConferenceAttendance {
 
   @Field(() => EventFamily)
   conference!: EventFamily
+}
+
+@ObjectType()
+export class RegisterConferenceAttendanceResponse {
+  @Field() device!: Device
+
+  @Field() user!: User
+
+  @Field(() => [ConferenceAttendance])
+  attendances!: ConferenceAttendance[]
 }
 
 registerEnumType(EventFamily, {

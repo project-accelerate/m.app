@@ -1,10 +1,10 @@
 import { Resolver, Mutation } from 'type-graphql'
 import { MutationRequest } from 'backend/app/common/resolverUtils'
 import {
-  ConferenceAttendance,
   RegisterConferenceAttendanceRequest,
+  RegisterConferenceAttendanceResponse,
 } from '../domain/ConferenceAttendance'
-import { ConferenceAttendanceAdminService } from 'backend/app/conference/application/ConferenceAttendanceAdminService'
+import { ConferenceAttendanceAdminService } from '../application/ConferenceAttendanceAdminService'
 
 @Resolver()
 export class RegisterConferenceAttendance {
@@ -12,11 +12,11 @@ export class RegisterConferenceAttendance {
     private conferenceAttendanceAdminService: ConferenceAttendanceAdminService,
   ) {}
 
-  @Mutation(() => [ConferenceAttendance])
+  @Mutation(() => RegisterConferenceAttendanceResponse)
   registerConferenceAttendance(
     @MutationRequest(() => RegisterConferenceAttendanceRequest)
     request: RegisterConferenceAttendanceRequest,
-  ): Promise<ConferenceAttendance[]> {
+  ): Promise<RegisterConferenceAttendanceResponse> {
     return this.conferenceAttendanceAdminService.registerConferenceAttendances(
       request,
     )
