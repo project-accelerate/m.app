@@ -8,6 +8,10 @@ const storyFiles = [
     source: require('./app/twt/Event/Event.stories'),
   },
   {
+    name: 'twt > Registration',
+    source: require('./app/twt/Registration/Registration.stories'),
+  },
+  {
     name: 'common > Layouts',
     source: require('./app/common/Layouts/Layouts.stories'),
   },

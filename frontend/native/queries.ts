@@ -6,6 +6,26 @@ export enum EventFamily {
   TWT_2018 = 'TWT_2018',
 }
 
+export interface RegisterConferenceAttendanceRequest {
+  user: CreateUserRequest
+  device: RegisterDeviceRequest
+  attendances: Array<EventFamily>
+}
+
+export interface CreateUserRequest {
+  optedIntoNotifications: boolean
+}
+
+export interface RegisterDeviceRequest {
+  deviceToken?: string | null
+  deviceType?: DeviceType | null
+}
+
+export enum DeviceType {
+  ANDROID = 'ANDROID',
+  IOS = 'IOS',
+}
+
 export interface EventDetailScreenQueryVariables {
   id: string
 }
@@ -65,6 +85,25 @@ export interface TimetableScreenQuery {
           sourceUrl: string
         } | null
       }
+    }>
+  }
+}
+
+export interface RegisterDeviceMutationVariables {
+  request: RegisterConferenceAttendanceRequest
+}
+
+export interface RegisterDeviceMutation {
+  registration: {
+    user: {
+      id: string
+    }
+    device: {
+      id: string
+    }
+    attendances: Array<{
+      id: string
+      conference: EventFamily
     }>
   }
 }

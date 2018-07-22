@@ -1,5 +1,12 @@
 import React from 'react'
-import { ImageBackground, StyleSheet, View, Image } from 'react-native'
+import {
+  ImageBackground,
+  StyleSheet,
+  View,
+  Image,
+  StyleProp,
+  ViewStyle,
+} from 'react-native'
 
 import bg from './bg.jpg'
 import { theme } from '../../../theme'
@@ -50,13 +57,14 @@ export function MenuScreenLayout({ children }: MenuScreenProps) {
 }
 
 interface BackgroundProps {
+  style?: StyleProp<ViewStyle>
   solid?: boolean
   children?: React.ReactNode
 }
 
-export function Background({ children, solid }: BackgroundProps) {
+export function Background({ children, style, solid }: BackgroundProps) {
   if (solid) {
-    return <View style={LayoutStyles.bg}>{children}</View>
+    return <View style={[LayoutStyles.bg, style]}>{children}</View>
   }
 
   return (

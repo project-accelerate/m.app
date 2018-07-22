@@ -29,8 +29,4 @@ export namespace theme {
     export const header = accent
     export const cardBg = 'rgba(255,255,255,0.9)'
   }
-
-  export namespace typography {
-
-  }
 }

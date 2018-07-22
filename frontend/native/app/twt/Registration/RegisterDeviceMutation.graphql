@@ -1,0 +1,14 @@
+mutation RegisterDevice($request: RegisterConferenceAttendanceRequest!) {
+  registration: registerConferenceAttendance(request: $request) {
+    user {
+      id
+    }
+    device {
+      id
+    }
+    attendances {
+      id
+      conference
+    }
+  }
+}
