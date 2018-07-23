@@ -25,12 +25,11 @@ export async function configureWeb(opts: { serveUI: boolean }) {
   server.express.get('/config.js', frontendConfig())
 
   if (opts.serveUI) {
+    const ui = readFileSync(frontendPath('build', 'index.html'))
+
     server.express.use(express.static(frontendPath('build')))
     server.express.use(express.static(frontendPath('public')))
-    server.express.get(
-      '*',
-      serveFile(readFileSync(frontendPath('build', 'index.html'))),
-    )
+    server.express.get('*', serveFile(ui, { exclude: '/graphql' }))
   }
 
   await server.start({
@@ -38,15 +37,22 @@ export async function configureWeb(opts: { serveUI: boolean }) {
     cors: {
       origin: '*',
     },
-    playground: opts.serveUI ? false : '/graphql',
+    playground: '/graphql',
     port: PORT,
   })
 
   log.info(`Application started on ${PORT}`)
 }
 
-function serveFile(file: Buffer): express.RequestHandler {
-  return (req, res) => {
+function serveFile(
+  file: Buffer,
+  opts: { exclude?: string } = {},
+): express.RequestHandler {
+  return (req, res, next) => {
+    if (req.path === opts.exclude) {
+      return next()
+    }
+
     res.writeHead(200, { 'Content-Type': 'text/html' })
     res.write(file)
     res.end()
