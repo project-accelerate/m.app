@@ -1,9 +1,6 @@
 import React from 'react'
 import {
   NavigationScreenOptions,
-  NavigationScreenOption,
-  NavigationScene,
-  NavigationScreenProp,
   NavigationScreenProps,
 } from 'react-navigation'
 import {

@@ -16,6 +16,7 @@
     "expo": "^28.0.0",
     "formik": "^1.0.1",
     "graphql": "^0.13.2",
+    "prop-types": "^15.6.2",
     "react": "^16.4.1",
     "react-apollo": "^2.1.9",
     "react-art": "^16.4.1",

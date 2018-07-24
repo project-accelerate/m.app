@@ -1,7 +1,6 @@
 import { createDockerUp } from './utils/docker'
 import { createShellCmd } from './utils/shell'
-import { resolve, join } from 'path'
-import { spawn } from 'child_process'
+import { join } from 'path'
 
 const baseDockerfile = 'backend/docker/docker-compose.yml'
 const devDockerfile = 'backend/docker/docker-compose.development.yml'

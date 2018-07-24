@@ -23,7 +23,7 @@ const LoadingOverlayStyle = StyleSheet.create({
 export function LoadingOverlay() {
   return (
     <View style={LoadingOverlayStyle.container}>
-      <ActivityIndicator />
+      <ActivityIndicator size="large" color={theme.pallete.accent} />
     </View>
   )
 }

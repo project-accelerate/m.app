@@ -1,6 +1,7 @@
 import React from 'react'
-import { Platform } from 'react-native'
+import { Platform, Text, ActivityIndicator, View } from 'react-native'
 import { Notifications } from 'expo'
+
 import {
   DeviceRegistrationState,
   getDeviceRegistrationState,
@@ -8,71 +9,49 @@ import {
 } from './DeviceRegistrationState'
 import {
   RegistrationIsDelegateQuestion,
-  AcceptNotificationsPanel,
   RegistrationBg,
+  AcceptNotificationsPanel,
 } from './RegistrationPanels'
 import { registerDevice, requestNotificationPermission } from './registerDevice'
 import { EventFamily, DeviceType } from '../../../queries'
+import { LoadingOverlay } from '../../common/Widgets/Widgets'
+import { createTransition } from '../../common/Layouts/Transitioner'
+import { theme } from '../../../theme'
 
 interface RegistrationContainerState {
-  completed: boolean
-  stage: React.ReactElement<{}>
-  form: RegistrationFormState
-}
-
-interface RegistrationFormState {
+  skipped: boolean
   isConferenceDelegate: boolean
   optedIntoNotifications: boolean
 }
 
 let RegistrationState: DeviceRegistrationState | undefined
 
-export class RegistrationContainer extends React.Component {
-  panels = [
-    <RegistrationIsDelegateQuestion
-      onSubmit={this.submitHandler('isConferenceDelegate')}
-    />,
-    <AcceptNotificationsPanel
-      onSubmit={this.submitHandler('optedIntoNotifications')}
-    />,
-  ]
-
-  state: RegistrationContainerState = {
-    stage: this.panels.shift()!,
-    completed: typeof RegistrationState !== 'undefined',
-    form: {
-      isConferenceDelegate: false,
-      optedIntoNotifications: true,
-    },
+export class RegistrationContainer extends React.Component<
+  {},
+  RegistrationContainerState
+> {
+  state = {
+    skipped: typeof RegistrationState !== 'undefined',
+    isConferenceDelegate: false,
+    optedIntoNotifications: true,
   }
 
   static async setup() {
     RegistrationState = await getDeviceRegistrationState()
   }
 
-  submitHandler<Key extends keyof RegistrationFormState>(key: Key) {
-    return (value: RegistrationFormState[Key]) => {
-      this.setState({
-        ...this.state,
-        form: {
-          ...this.state.form,
-          [key]: value,
-        },
-      })
+  stages = [
+    <RegistrationIsDelegateQuestion
+      onSubmit={this.answer('isConferenceDelegate')}
+    />,
+    <AcceptNotificationsPanel
+      onSubmit={this.answer('optedIntoNotifications')}
+    />,
+  ]
 
-      this.advancePanel()
-    }
-  }
+  initialStage = this.stages.shift()!
 
-  advancePanel() {
-    const next = this.panels.shift()
-
-    if (!next) {
-      this.handleCompleted()
-    }
-
-    this.setState({ stage: next })
-  }
+  transitioner = createTransition()
 
   getDeviceType() {
     if (Platform.OS === 'ios') {
@@ -87,7 +66,7 @@ export class RegistrationContainer extends React.Component {
   }
 
   async getUserDeviceRegistrationRequest() {
-    const { optedIntoNotifications } = this.state.form
+    const { optedIntoNotifications } = this.state
 
     const deviceToken =
       optedIntoNotifications && (await requestNotificationPermission())
@@ -105,12 +84,12 @@ export class RegistrationContainer extends React.Component {
     }
   }
 
-  async handleCompleted() {
+  async register() {
     const { device, user } = await this.getUserDeviceRegistrationRequest()
 
     const registration = await registerDevice({
       request: {
-        attendances: this.state.form.isConferenceDelegate
+        attendances: this.state.isConferenceDelegate
           ? [EventFamily.LABOUR_2018, EventFamily.TWT_2018]
           : [EventFamily.TWT_2018],
         device,
@@ -122,15 +101,33 @@ export class RegistrationContainer extends React.Component {
       deviceId: registration.device.id,
       userId: registration.user.id,
     })
+  }
 
-    this.setState({ completed: true })
+  answer<Key extends keyof RegistrationContainerState>(key: Key) {
+    return (value: RegistrationContainerState[Key]) => {
+      this.setState({ [key]: value } as any)
+      const next = this.stages.shift()
+
+      if (next) {
+        this.transitioner.transitionTo(next)
+      } else {
+        this.transitioner
+          .transitionTo(<LoadingOverlay />)
+          .then(() => this.register())
+          .then(() => this.setState({ skipped: true }))
+      }
+    }
   }
 
   render() {
-    if (this.state.completed) {
+    if (this.state.skipped) {
       return this.props.children
     }
 
-    return <RegistrationBg>{this.state.stage}</RegistrationBg>
+    return (
+      <RegistrationBg>
+        {this.transitioner.render({ initialContent: this.initialStage })}
+      </RegistrationBg>
+    )
   }
 }
