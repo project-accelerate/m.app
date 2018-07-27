@@ -17,6 +17,7 @@ import { EventFamily, DeviceType } from '../../../queries'
 import { LoadingOverlay } from '../../common/Widgets/Widgets'
 import { createTransition } from '../../common/Layouts/Transitioner'
 import { theme } from '../../../theme'
+import { RegistrationProvider } from './UserProvider'
 
 interface RegistrationContainerState {
   skipped: boolean
@@ -97,10 +98,12 @@ export class RegistrationContainer extends React.Component<
       },
     })
 
-    await setDeviceRegistrationState({
+    const RegistrationState = {
       deviceId: registration.device.id,
       userId: registration.user.id,
-    })
+    }
+
+    await setDeviceRegistrationState(RegistrationState)
   }
 
   answer<Key extends keyof RegistrationContainerState>(key: Key) {
@@ -121,7 +124,11 @@ export class RegistrationContainer extends React.Component<
 
   render() {
     if (this.state.skipped) {
-      return this.props.children
+      return (
+        <RegistrationProvider value={RegistrationState!}>
+          {this.props.children}
+        </RegistrationProvider>
+      )
     }
 
     return (

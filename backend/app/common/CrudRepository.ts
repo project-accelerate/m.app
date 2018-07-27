@@ -107,7 +107,23 @@ export interface FieldConverter<T> {
   query?: (column: string) => Knex.QueryBuilder
 }
 
-export type SelectClauses<T> = Partial<T>
+const ONE_OF = Symbol('ONE_OF')
+
+export function oneOf<T>(...xs: T[]): OneOf<T> {
+  return { [ONE_OF]: true, value: new Set(xs) }
+}
+
+export function isOneOf<T>(x: T | OneOf<T>): x is OneOf<T> {
+  return (x as any)[ONE_OF]
+}
+
+export interface OneOf<T> {
+  [ONE_OF]: true
+  value: Set<T>
+}
+
+export type SelectClauses<T> = Partial<{ [P in keyof T]: OneOf<T[P]> | T[P] }>
+export type SelectClause<T> = OneOf<T>
 
 export function CrudRepository<T extends { id: string }, Props = WithoutId<T>>(
   opts: CrudRepositoryConfig<T>,
@@ -127,11 +143,33 @@ export function CrudRepository<T extends { id: string }, Props = WithoutId<T>>(
         field.query ? [field.query(key)] : [],
     ) as any
 
+    encodeField(value: any, key: string) {
+      const convert = fieldConverters[key] || {}
+      return convert.from ? convert.from(value) : value
+    }
+
+    encodeOneOf(value: OneOf<any>, key: string) {
+      return Array.from(value.value).map(x => this.encodeField(x, key))
+    }
+
     encode(value: Partial<T>): any {
-      return mapValues(value, (field: any, key: string) => {
-        const convert = fieldConverters[key] || {}
-        return convert.from ? convert.from(field) : field
-      })
+      return mapValues(value, (value, key) => this.encodeField(value, key))
+    }
+
+    encodeClauses(
+      clauses: SelectClauses<T>,
+    ): (q: Knex.QueryBuilder) => Knex.QueryBuilder
+    encodeClauses(clauses: any) {
+      return Object.keys(clauses).reduce(
+        (prev, key) => (q: Knex.QueryBuilder) => {
+          if (isOneOf(clauses[key])) {
+            return prev(q).whereIn(key, this.encodeOneOf(clauses[key], key))
+          } else {
+            return prev(q).where(key, this.encodeField(clauses[key], key))
+          }
+        },
+        (q: Knex.QueryBuilder) => q,
+      )
     }
 
     decode(value: any): T
@@ -162,7 +200,7 @@ export function CrudRepository<T extends { id: string }, Props = WithoutId<T>>(
       return await this.db.knex
         .select('*', ...this.customQueryFields)
         .from(opts.tableName)
-        .where(this.encode(clauses))
+        .where(this.encodeClauses(clauses))
         .then(xs => this.decodeAll(xs))
     }
 
@@ -171,7 +209,7 @@ export function CrudRepository<T extends { id: string }, Props = WithoutId<T>>(
         .select('*', ...this.customQueryFields)
         .first()
         .from(opts.tableName)
-        .where(this.encode(clauses))
+        .where(this.encodeClauses(clauses))
         .then(x => this.decode(x))
     }
 
