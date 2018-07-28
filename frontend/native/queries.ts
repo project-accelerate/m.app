@@ -67,25 +67,31 @@ export interface EventDetailScreenQuery {
   } | null
 }
 
+export interface TimetableScreenQueryVariables {
+  userId: string
+}
+
 export interface TimetableScreenQuery {
-  events: {
-    edges: Array<{
-      node: {
-        id: string
-        name: string
-        family: EventFamily
-        // Return the event venue
-        venue: {
+  user: {
+    events: {
+      edges: Array<{
+        node: {
           id: string
           name: string
+          family: EventFamily
+          // Return the event venue
+          venue: {
+            id: string
+            name: string
+          }
+          startTime: string
+          endTime: string
+          photo: {
+            sourceUrl: string
+          } | null
         }
-        startTime: string
-        endTime: string
-        photo: {
-          sourceUrl: string
-        } | null
-      }
-    }>
+      }>
+    }
   }
 }
 

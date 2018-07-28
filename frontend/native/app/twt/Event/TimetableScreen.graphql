@@ -1,10 +1,12 @@
 #import "./EventListItem.graphql"
 
-query TimetableScreen {
-  events: allEvents {
-    edges {
-      node {
-        ...EventListItem
+query TimetableScreen($userId: String!) {
+  user(id: $userId) {
+    events: conferenceEvents {
+      edges {
+        node {
+          ...EventListItem
+        }
       }
     }
   }

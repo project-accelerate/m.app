@@ -1,8 +1,6 @@
 import React from 'react'
-import { ListView } from 'react-native'
 import {
   NavigationScreenOptions,
-  NavigationScene,
   NavigationScreenProps,
 } from 'react-navigation'
 import { Background } from '../../common/Layouts/Layouts'
@@ -12,6 +10,7 @@ import { createFetchData } from '../../common/FetchData/FetchData'
 import { EventListItemPressedEvent } from './EventListItem'
 import { getRoutename } from '../../../routes'
 import TimetableScreenQueryDocument from './TimetableScreen.graphql'
+import { WithRegistration } from '../Registration/UserProvider'
 
 const FetchEvents = createFetchData<TimetableScreenQuery, {}>({
   query: TimetableScreenQueryDocument,
@@ -32,14 +31,18 @@ export class TimetableScreen extends React.Component<NavigationScreenProps> {
   render() {
     return (
       <Background>
-        <FetchEvents variables={{}}>
-          {({ data }) => (
-            <EventList
-              data={data.events}
-              onEventPress={this.handleEventPressed}
-            />
+        <WithRegistration>
+          {({ userId }) => (
+            <FetchEvents variables={{ userId }}>
+              {({ data }) => (
+                <EventList
+                  data={data.user.events}
+                  onEventPress={this.handleEventPressed}
+                />
+              )}
+            </FetchEvents>
           )}
-        </FetchEvents>
+        </WithRegistration>
       </Background>
     )
   }

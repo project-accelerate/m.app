@@ -1,5 +1,5 @@
 import React from 'react'
-import { Platform, Text, ActivityIndicator, View } from 'react-native'
+import { Platform } from 'react-native'
 import { Notifications } from 'expo'
 
 import {
@@ -16,29 +16,28 @@ import { registerDevice, requestNotificationPermission } from './registerDevice'
 import { EventFamily, DeviceType } from '../../../queries'
 import { LoadingOverlay } from '../../common/Widgets/Widgets'
 import { createTransition } from '../../common/Layouts/Transitioner'
-import { theme } from '../../../theme'
 import { RegistrationProvider } from './UserProvider'
 
 interface RegistrationContainerState {
-  skipped: boolean
+  registrationState?: DeviceRegistrationState
   isConferenceDelegate: boolean
   optedIntoNotifications: boolean
 }
 
-let RegistrationState: DeviceRegistrationState | undefined
+let InitialRegistrationState: DeviceRegistrationState | undefined
 
 export class RegistrationContainer extends React.Component<
   {},
   RegistrationContainerState
 > {
   state = {
-    skipped: typeof RegistrationState !== 'undefined',
+    registrationState: InitialRegistrationState,
     isConferenceDelegate: false,
     optedIntoNotifications: true,
   }
 
   static async setup() {
-    RegistrationState = await getDeviceRegistrationState()
+    InitialRegistrationState = await getDeviceRegistrationState()
   }
 
   stages = [
@@ -98,12 +97,14 @@ export class RegistrationContainer extends React.Component<
       },
     })
 
-    const RegistrationState = {
+    const registrationState = {
       deviceId: registration.device.id,
       userId: registration.user.id,
     }
 
-    await setDeviceRegistrationState(RegistrationState)
+    await setDeviceRegistrationState(registrationState)
+
+    this.setState({ registrationState })
   }
 
   answer<Key extends keyof RegistrationContainerState>(key: Key) {
@@ -117,15 +118,14 @@ export class RegistrationContainer extends React.Component<
         this.transitioner
           .transitionTo(<LoadingOverlay />)
           .then(() => this.register())
-          .then(() => this.setState({ skipped: true }))
       }
     }
   }
 
   render() {
-    if (this.state.skipped) {
+    if (this.state.registrationState) {
       return (
-        <RegistrationProvider value={RegistrationState!}>
+        <RegistrationProvider value={this.state.registrationState}>
           {this.props.children}
         </RegistrationProvider>
       )
