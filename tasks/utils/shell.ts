@@ -32,6 +32,10 @@ function handleArg(args: Args): ArgValue[] {
     return Object.keys(args).flatMap(key => {
       const value = args[key]
 
+      if (value === undefined) {
+        return []
+      }
+
       if (value === true) {
         return [`"--${key}"`]
       }

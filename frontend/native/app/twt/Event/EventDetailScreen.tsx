@@ -11,6 +11,7 @@ import { createFetchData } from '../../common/FetchData/FetchData'
 import { EventDetail, EventDetailSpeakerPressEvent } from './EventDetail'
 import { Background } from '../../common/Layouts/Layouts'
 import EventDetailScreenQueryDocument from './EventDetailScreen.graphql'
+import { Screen } from '../../common/Widgets/Widgets'
 
 export interface EventDetailScreenParams {
   id: string
@@ -46,16 +47,18 @@ export class EventDetailScreen extends React.Component<
 
   render() {
     return (
-      <Background solid>
-        <FetchEvent variables={this.queryVariables}>
-          {({ data }) => (
-            <EventDetail
-              event={FetchEvent.required(data.event)}
-              onSpeakerPress={this.handleSpeakerPressed}
-            />
-          )}
-        </FetchEvent>
-      </Background>
+      <Screen floatMenu>
+        <Background solid>
+          <FetchEvent variables={this.queryVariables}>
+            {({ data }) => (
+              <EventDetail
+                event={FetchEvent.required(data.event)}
+                onSpeakerPress={this.handleSpeakerPressed}
+              />
+            )}
+          </FetchEvent>
+        </Background>
+      </Screen>
     )
   }
 }

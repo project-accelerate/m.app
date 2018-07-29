@@ -1,12 +1,12 @@
 import * as React from 'react'
 import { ApolloProvider } from 'react-apollo'
-import { createStackNavigator } from 'react-navigation'
-import { graphQlClient } from './config/graphql'
-import { theme } from './theme'
-import { routes } from './routes'
+import { createDrawerNavigator } from 'react-navigation'
+import { AppLoading } from 'expo'
 import { RegistrationContainer } from './app/twt/Registration/RegistrationContainer'
 import { setupAppUpdates } from './config/appUpdates'
-import { AppLoading } from 'expo'
+import { graphQlClient } from './config/graphql'
+import { topLevelRoutes } from './routes'
+import { Drawer } from './app/common/Drawer/Drawer'
 
 interface ApplicationState {
   loading?: boolean
@@ -17,13 +17,9 @@ export default class App extends React.Component {
     loading: true,
   }
 
-  navigator = createStackNavigator(routes, {
-    navigationOptions: {
-      headerTintColor: theme.pallete.white,
-      headerStyle: {
-        backgroundColor: theme.pallete.header,
-      },
-    },
+  navigator = createDrawerNavigator(topLevelRoutes, {
+    initialRouteName: 'HomeScreen',
+    contentComponent: Drawer,
   })
 
   async componentDidMount() {

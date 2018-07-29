@@ -4,8 +4,10 @@
   "main": "main.js",
   "private": true,
   "dependencies": {
+    "@expo/vector-icons": "^6.3.1",
     "@shoutem/ui": "^0.23.4",
     "@types/date-fns": "^2.6.0",
+    "@types/expo__vector-icons": "^6.2.2",
     "@types/react-native-snap-carousel": "^3.6.3",
     "apollo-cache-inmemory": "^1.2.5",
     "apollo-client": "^2.3.5",

@@ -11,7 +11,6 @@ import {
 } from 'react-native'
 import jez from './jez.jpg'
 import ash from './ash.jpg'
-import twt from '../twt.png'
 import { theme } from '../../../theme'
 import { Typography, Paragraphs } from '../Typography/Typography'
 
@@ -27,8 +26,6 @@ const CarouselStyles = StyleSheet.create({
     backgroundColor: theme.pallete.black,
   },
   container: {
-    height: '100%',
-    width: '100%',
     backgroundColor: theme.pallete.accent,
   },
   image: {
@@ -67,12 +64,6 @@ export class Carousel extends React.Component {
       id: 'ash',
       image: ash,
       title: 'Headline 2',
-      info: faker.lorem.sentences(),
-    },
-    {
-      id: 'twt',
-      image: twt,
-      title: 'Headline 3',
       info: faker.lorem.sentences(),
     },
   ]

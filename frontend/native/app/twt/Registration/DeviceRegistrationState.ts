@@ -24,9 +24,6 @@ export async function setDeviceRegistrationState(
   state: DeviceRegistrationState,
 ) {
   console.log('saving registration state', state)
-  if (__DEV__) {
-    return
-  }
 
   await AsyncStorage.setItem(
     DEVICE_REGISTRATION_STATE_KEY,

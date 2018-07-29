@@ -20,11 +20,15 @@ export function preview() {
   up()
 }
 
-export function developFrontendNative() {
+export function developFrontendNative(platform?: string) {
   const expo = createShellCmd('node_modules/.bin/exp', {
     cwd: 'frontend/native',
   })
-  expo('start', { lan: true, dev: true })
+
+  const android = platform === 'android' ? { android: true } : undefined
+  const ios = platform === 'ios' ? { ios: true } : undefined
+
+  expo('start', { lan: true, dev: true, ...android, ...ios })
 }
 
 export function storybook(target: string, port: string) {

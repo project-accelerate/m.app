@@ -11,6 +11,7 @@ import { EventListItemPressedEvent } from './EventListItem'
 import { getRoutename } from '../../../routes'
 import TimetableScreenQueryDocument from './TimetableScreen.graphql'
 import { WithRegistration } from '../Registration/UserProvider'
+import { Screen } from '../../common/Widgets/Widgets'
 
 const FetchEvents = createFetchData<TimetableScreenQuery, {}>({
   query: TimetableScreenQueryDocument,
@@ -18,11 +19,12 @@ const FetchEvents = createFetchData<TimetableScreenQuery, {}>({
 
 export class TimetableScreen extends React.Component<NavigationScreenProps> {
   static navigationOptions: NavigationScreenOptions = {
-    headerTitle: 'Timetable',
+    headerTitle: 'Programme',
+    drawerLabel: 'Programme',
   }
 
   handleEventPressed = ({ event }: EventListItemPressedEvent) => {
-    this.props.navigation.push(getRoutename('EventDetail'), {
+    this.props.navigation.push(getRoutename('EventDetailScreen'), {
       id: event.id,
       title: event.name,
     })
@@ -30,7 +32,7 @@ export class TimetableScreen extends React.Component<NavigationScreenProps> {
 
   render() {
     return (
-      <Background>
+      <Screen>
         <WithRegistration>
           {({ userId }) => (
             <FetchEvents variables={{ userId }}>
@@ -43,7 +45,7 @@ export class TimetableScreen extends React.Component<NavigationScreenProps> {
             </FetchEvents>
           )}
         </WithRegistration>
-      </Background>
+      </Screen>
     )
   }
 }

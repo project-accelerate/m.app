@@ -16,6 +16,10 @@ export namespace theme {
     )
   }
 
+  export namespace zIndex {
+    export const menu = 100
+  }
+
   export namespace pallete {
     export const white = '#fff'
     export const transparent = 'rgba(255,255,255,0)'
