@@ -1,13 +1,13 @@
 import {
   createStackNavigator,
   NavigationScreenOptions,
-  NavigationActions,
   NavigationScreenProps,
   NavigationScreenProp,
 } from 'react-navigation'
 import { HomeScreen } from './app/twt/Home/HomeScreen'
 import { TimetableScreen } from './app/twt/Event/TimetableScreen'
 import { EventDetailScreen } from './app/twt/Event/EventDetailScreen'
+import { CalendarScreen } from './app/twt/Calendar/CalendarScreen'
 import { theme } from './theme'
 
 export interface RouteComponent extends React.ComponentClass<any> {
@@ -30,8 +30,9 @@ export const nonTopLevelRoutes = {
 }
 
 export const topLevelRoutes = {
-  HomeScreen: createRootNavigator(HomeScreen),
-  TimetableScreen: createRootNavigator(TimetableScreen),
+  HomeScreen: createRootNavigator(() => HomeScreen),
+  TimetableScreen: createRootNavigator(() => TimetableScreen),
+  CalendarScreen: createRootNavigator(() => CalendarScreen),
 }
 
 export const allRoutes: Record<string, RouteComponent | undefined> = {
@@ -45,20 +46,22 @@ export function getRoutename(key: RouteKey) {
   return key
 }
 
-function createRootNavigator(root: RouteComponent) {
+function createRootNavigator(getParent: () => RouteComponent) {
+  const parent = getParent()
+
   const availableRoutes = {
-    [root.name]: root,
+    [parent.name]: parent,
     ...nonTopLevelRoutes,
   }
 
   const navigator = createStackNavigator(availableRoutes, {
-    initialRouteName: root.name,
+    initialRouteName: parent.name,
     navigationOptions: {
       headerTintColor: theme.pallete.white,
       header: null,
     },
   })
 
-  navigator.navigationOptions = root.navigationOptions
+  navigator.navigationOptions = parent.navigationOptions
   return navigator
 }

@@ -12,12 +12,20 @@ const storyFiles = [
     source: require('./app/twt/Registration/Registration.stories'),
   },
   {
+    name: 'twt > Calendar',
+    source: require('./app/twt/Calendar/Calendar.stories'),
+  },
+  {
     name: 'common > Layouts',
     source: require('./app/common/Layouts/Layouts.stories'),
   },
   {
     name: 'common > Carousel',
     source: require('./app/common/Carousel/Carousel.stories'),
+  },
+  {
+    name: 'common > Widgets',
+    source: require('./app/common/Widgets/Widgets.stories'),
   },
 ]
 

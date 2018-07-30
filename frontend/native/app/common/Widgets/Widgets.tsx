@@ -20,7 +20,6 @@ import {
   NavigationInjectedProps,
   NavigationRoute,
 } from 'react-navigation'
-import { topLevelRoutes, nonTopLevelRoutes, allRoutes } from '../../../routes'
 import { Typography } from '../Typography/Typography'
 
 const LoadingOverlayStyle = StyleSheet.create({
@@ -228,3 +227,50 @@ export const Screen = withNavigation(function MenuBar({
     </View>
   )
 })
+
+interface ToolbarProps {
+  children?: React.ReactNode
+}
+
+const ToolbarStyles = StyleSheet.create({
+  wrapper: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    backgroundColor: theme.pallete.contrast,
+    paddingHorizontal: theme.spacing.level(1),
+  },
+  radio: {
+    backgroundColor: theme.pallete.white,
+    paddingHorizontal: theme.spacing.level(2),
+    paddingVertical: theme.spacing.level(1),
+    borderColor: theme.pallete.black,
+    borderWidth: 2,
+    flexGrow: 1,
+    alignItems: 'center',
+  },
+  radioActive: {
+    backgroundColor: theme.pallete.accent,
+  },
+})
+
+export function Toolbar({ children = [] }: ToolbarProps) {
+  return <View style={ToolbarStyles.wrapper}>{children}</View>
+}
+
+interface ToolbarRadioProps {
+  id?: string
+  active?: boolean
+  onPress: (id?: string) => void
+  children?: React.ReactNode
+}
+
+export function ToolbarRadio(props: ToolbarRadioProps) {
+  return (
+    <TouchableOpacity
+      onPress={() => props.onPress(this.props.id)}
+      style={[ToolbarStyles.radio, props.active && ToolbarStyles.radioActive]}
+    >
+      <Typography variant="caption">{props.children}</Typography>
+    </TouchableOpacity>
+  )
+}

@@ -10,9 +10,9 @@ const DEVICE_REGISTRATION_STATE_KEY = 'DEVICE_REGISTRATION_STATE_KEY'
 export async function getDeviceRegistrationState(): Promise<
   DeviceRegistrationState | undefined
 > {
-  if (__DEV__) {
-    return undefined
-  }
+  // if (__DEV__) {
+  //   return undefined
+  // }
 
   const state = await AsyncStorage.getItem(DEVICE_REGISTRATION_STATE_KEY)
   console.log('retreived registration state:', state)
