@@ -11,6 +11,7 @@ import {
   RegistrationIsDelegateQuestion,
   RegistrationBg,
   AcceptNotificationsPanel,
+  RegistrationAskEmailPanel,
 } from './RegistrationPanels'
 import { registerDevice, requestNotificationPermission } from './registerDevice'
 import { EventFamily, DeviceType } from '../../../queries'
@@ -22,6 +23,7 @@ interface RegistrationContainerState {
   registrationState?: DeviceRegistrationState
   isConferenceDelegate: boolean
   optedIntoNotifications: boolean
+  email?: string
 }
 
 let InitialRegistrationState: DeviceRegistrationState | undefined
@@ -44,6 +46,7 @@ export class RegistrationContainer extends React.Component<
     <RegistrationIsDelegateQuestion
       onSubmit={this.answer('isConferenceDelegate')}
     />,
+    <RegistrationAskEmailPanel onSubmit={this.answer('email')} />,
     <AcceptNotificationsPanel
       onSubmit={this.answer('optedIntoNotifications')}
     />,

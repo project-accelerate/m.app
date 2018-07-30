@@ -1,5 +1,6 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, TextInput } from 'react-native'
+import { Checkbox } from 'react-native-paper'
 import { Button } from '../../common/Butttons/Buttons'
 import { Typography } from '../../common/Typography/Typography'
 import { Background } from '../../common/Layouts/Layouts'
@@ -28,6 +29,14 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
+  },
+  field: {
+    width: '100%',
+    fontSize: 18,
+    padding: theme.spacing.level(1),
+    marginBottom: theme.spacing.level(2),
+    borderColor: theme.pallete.control,
+    borderWidth: 1,
   },
   helpText: {
     marginTop: theme.spacing.level(2),
@@ -72,7 +81,7 @@ export function RegistrationIsDelegateQuestion(
 }
 
 export function AcceptNotificationsPanel(
-  props: RegistrationQuestionProps<props>,
+  props: RegistrationQuestionProps<boolean>,
 ) {
   return (
     <RegistrationPanel>
@@ -100,6 +109,45 @@ export function AcceptNotificationsPanel(
 
       <RegistrationHelpText>
         You can change your notification settings later if you want.
+      </RegistrationHelpText>
+    </RegistrationPanel>
+  )
+}
+
+export function RegistrationAskEmailPanel(
+  props: RegistrationQuestionProps<string>,
+) {
+  return (
+    <RegistrationPanel>
+      <RegistrationPrompt>Give us your email please?</RegistrationPrompt>
+
+      <RegistrationActions>
+        <TextInput
+          style={styles.field}
+          underlineColorAndroid="transparent"
+          value="me@example.com"
+        />
+      </RegistrationActions>
+
+      <RegistrationActions>
+        <Button
+          size="small"
+          style={styles.button}
+          onPress={submitHandler(props, true)}
+        >
+          Skip
+        </Button>
+        <Button
+          size="small"
+          style={styles.button}
+          onPress={submitHandler(props, false)}
+        >
+          Ok
+        </Button>
+      </RegistrationActions>
+
+      <RegistrationHelpText>
+        This is useful because blah blah. Some explanatory text here.
       </RegistrationHelpText>
     </RegistrationPanel>
   )

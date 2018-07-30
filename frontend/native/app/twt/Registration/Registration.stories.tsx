@@ -2,12 +2,19 @@ import React from 'react'
 import {
   RegistrationIsDelegateQuestion,
   RegistrationBg,
+  RegistrationAskEmailPanel,
+  RegistrationAcceptTermsPanel,
 } from './RegistrationPanels'
 
 export const stories = {
-  RegisterConferencePanel: () => (
+  RegistrationIsDelegateQuestion: () => (
     <RegistrationBg>
       <RegistrationIsDelegateQuestion onSubmit={console.log} />
+    </RegistrationBg>
+  ),
+  RegistrationAskEmailPanel: () => (
+    <RegistrationBg>
+      <RegistrationAskEmailPanel onSubmit={console.log} />
     </RegistrationBg>
   ),
 }
