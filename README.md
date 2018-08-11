@@ -39,7 +39,8 @@ yarn
   * `yarn develop:frontend:web`
 
 * Running a local frontend (native app) development server
-  * `yarn develop:frontend:native`
+  * `yarn develop:frontend:native` (develop against staging)
+  * `yarn develop:frontend:native local` (develop against local)
   * One of:
     * `yarn emulator ios` (requires iOS developer tools to be installed)
     * `yarn emulator android` (requires Android developer tools to be installed and a virtual device to be running)

@@ -3,7 +3,6 @@ import {
   NavigationScreenOptions,
   NavigationScreenProps,
 } from 'react-navigation'
-import { Background } from '../../common/Layouts/Layouts'
 import { TimetableScreenQuery } from '../../../queries'
 import { EventList } from './EventList'
 import { createFetchData } from '../../common/FetchData/FetchData'
