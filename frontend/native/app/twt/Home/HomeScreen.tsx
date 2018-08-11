@@ -32,7 +32,7 @@ export class HomeScreen extends React.Component<NavigationScreenProps> {
 
   render() {
     return (
-      <Screen floatMenu>
+      <Screen floatMenu noBackButton>
         <View style={style.container}>
           <ProfileImage style={style.logo} size="small" image={twt} />
         </View>

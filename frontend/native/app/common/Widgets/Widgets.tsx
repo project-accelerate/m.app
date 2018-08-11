@@ -21,9 +21,11 @@ import {
   withNavigation,
   NavigationInjectedProps,
   NavigationRoute,
+  NavigationActions,
 } from 'react-navigation'
 import { Typography } from '../Typography/Typography'
 import { allRoutes, topLevelRoutes } from '../../../routes'
+import { HomeScreen } from '../../twt/Home/HomeScreen'
 
 const FieldStyle = StyleSheet.create({
   field: {
@@ -165,6 +167,7 @@ interface MenuBarProps
   extends Partial<NavigationInjectedProps>,
     React.Props<{}> {
   floatMenu?: boolean
+  noBackButton?: boolean
 }
 
 const ScreenStyles = StyleSheet.create({
@@ -203,9 +206,18 @@ export const Screen = withNavigation(function MenuBar({
   navigation,
   children,
   floatMenu,
+  noBackButton,
 }: MenuBarProps): React.ReactElement<{}> {
   const openDrawer = () => navigation!.openDrawer()
-  const goBack = () => navigation!.goBack()
+  const goBack = () => {
+    if (isTopLevel) {
+      navigation!.navigate({
+        routeName: HomeScreen.name,
+      })
+    } else {
+      navigation!.goBack()
+    }
+  }
   const state = navigation!.state as NavigationRoute
   const route = allRoutes[state.routeName]
   const getOptions = route && route.navigationOptions
@@ -223,7 +235,7 @@ export const Screen = withNavigation(function MenuBar({
     <View style={ScreenStyles.screen}>
       <SafeAreaView style={[ScreenStyles.menu, floatStyle]}>
         <TouchableOpacity style={ScreenStyles.button} onPress={goBack}>
-          {!isTopLevel && (
+          {!noBackButton && (
             <FontAwesome
               style={ScreenStyles.buttonIcon}
               name="chevron-left"
