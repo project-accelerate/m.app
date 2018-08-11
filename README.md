@@ -41,8 +41,8 @@ yarn
 * Running a local frontend (native app) development server
   * `yarn develop:frontend:native`
   * One of:
-    * `yarn emulator:ios` (requires iOS developer tools to be installed)
-    * `yarn emulator:android` (requires Android developer tools to be installed and a virtual device to be running)
+    * `yarn emulator ios` (requires iOS developer tools to be installed)
+    * `yarn emulator android` (requires Android developer tools to be installed and a virtual device to be running)
     * Open the [Expo client app](https://expo.io/tools#client) on a device running on the same LAN and scan the QR code from the terminal
 
 * Running a storybook for UI component development (admin ui)
@@ -51,8 +51,8 @@ yarn
 * Running a storybook for UI component development (native app)
   * `yarn storybook:native`
   * One of:
-    * `yarn emulator:ios` (requires iOS developer tools to be installed)
-    * `yarn emulator:android` (requires Android developer tools to be installed and a virtual device to be running)
+    * `yarn emulator ios` (requires iOS developer tools to be installed)
+    * `yarn emulator android` (requires Android developer tools to be installed and a virtual device to be running)
     * Open the [Expo client app](https://expo.io/tools#client) on a device running on the same LAN and scan the QR code from the terminal
 
 * Running a full test cycle

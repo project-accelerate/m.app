@@ -46,3 +46,11 @@ export function storybookExpo(target: string) {
 
   expoBook()
 }
+
+export function emulator(platform: string) {
+  const expo = createShellCmd('node_modules/.bin/exp', {
+    cwd: 'frontend/native',
+  })
+
+  expo(platform)
+}
