@@ -32,7 +32,7 @@ export class RegistrationContainer extends React.Component<
   {},
   RegistrationContainerState
 > {
-  state = {
+  state: RegistrationContainerState = {
     registrationState: InitialRegistrationState,
     isConferenceDelegate: false,
     optedIntoNotifications: true,
@@ -69,7 +69,7 @@ export class RegistrationContainer extends React.Component<
   }
 
   async getUserDeviceRegistrationRequest() {
-    const { optedIntoNotifications } = this.state
+    const { optedIntoNotifications, email } = this.state
 
     const deviceToken =
       optedIntoNotifications && (await requestNotificationPermission())
@@ -79,6 +79,7 @@ export class RegistrationContainer extends React.Component<
     return {
       user: {
         optedIntoNotifications,
+        email,
       },
       device: {
         deviceToken,

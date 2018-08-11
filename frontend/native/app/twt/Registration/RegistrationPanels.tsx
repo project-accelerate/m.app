@@ -1,10 +1,11 @@
 import React from 'react'
-import { View, StyleSheet, TextInput } from 'react-native'
-import { Checkbox } from 'react-native-paper'
+import { View, StyleSheet } from 'react-native'
+import { Formik } from 'formik'
 import { Button } from '../../common/Butttons/Buttons'
 import { Typography } from '../../common/Typography/Typography'
 import { Background } from '../../common/Layouts/Layouts'
 import { theme } from '../../../theme'
+import { FormField } from '../../common/Widgets/Widgets'
 
 const styles = StyleSheet.create({
   bg: {
@@ -29,14 +30,6 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-  },
-  field: {
-    width: '100%',
-    fontSize: 18,
-    padding: theme.spacing.level(1),
-    marginBottom: theme.spacing.level(2),
-    borderColor: theme.pallete.control,
-    borderWidth: 1,
   },
   helpText: {
     marginTop: theme.spacing.level(2),
@@ -115,41 +108,39 @@ export function AcceptNotificationsPanel(
 }
 
 export function RegistrationAskEmailPanel(
-  props: RegistrationQuestionProps<string>,
+  props: RegistrationQuestionProps<string | undefined>,
 ) {
   return (
-    <RegistrationPanel>
-      <RegistrationPrompt>Give us your email please?</RegistrationPrompt>
+    <Formik
+      onSubmit={(value: { email: string }) => props.onSubmit(value.email)}
+      initialValues={{ email: '' }}
+      render={({ handleSubmit }) => (
+        <RegistrationPanel>
+          <RegistrationPrompt>Give us your email please?</RegistrationPrompt>
 
-      <RegistrationActions>
-        <TextInput
-          style={styles.field}
-          underlineColorAndroid="transparent"
-          value="me@example.com"
-        />
-      </RegistrationActions>
+          <RegistrationActions>
+            <FormField name="email" type="email" />
+          </RegistrationActions>
 
-      <RegistrationActions>
-        <Button
-          size="small"
-          style={styles.button}
-          onPress={submitHandler(props, true)}
-        >
-          Skip
-        </Button>
-        <Button
-          size="small"
-          style={styles.button}
-          onPress={submitHandler(props, false)}
-        >
-          Ok
-        </Button>
-      </RegistrationActions>
+          <RegistrationActions>
+            <Button
+              size="small"
+              style={styles.button}
+              onPress={submitHandler(props, undefined)}
+            >
+              Skip
+            </Button>
+            <Button size="small" style={styles.button} onPress={handleSubmit}>
+              Ok
+            </Button>
+          </RegistrationActions>
 
-      <RegistrationHelpText>
-        This is useful because blah blah. Some explanatory text here.
-      </RegistrationHelpText>
-    </RegistrationPanel>
+          <RegistrationHelpText>
+            This is useful because blah blah. Some explanatory text here.
+          </RegistrationHelpText>
+        </RegistrationPanel>
+      )}
+    />
   )
 }
 

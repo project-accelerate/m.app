@@ -11,7 +11,10 @@ import {
   TouchableOpacity,
   SafeAreaView,
   StatusBar,
+  TextInputProps,
+  TextInput,
 } from 'react-native'
+import formInput from 'react-native-formik'
 import { FontAwesome } from '@expo/vector-icons'
 import { theme } from '../../../theme'
 import {
@@ -21,6 +24,29 @@ import {
 } from 'react-navigation'
 import { Typography } from '../Typography/Typography'
 import { allRoutes, topLevelRoutes } from '../../../routes'
+
+const FieldStyle = StyleSheet.create({
+  field: {
+    width: '100%',
+    fontSize: 18,
+    padding: theme.spacing.level(1),
+    marginBottom: theme.spacing.level(2),
+    borderColor: theme.pallete.control,
+    borderWidth: 1,
+  },
+})
+
+export function Field({ style, ...props }: TextInputProps) {
+  return (
+    <TextInput
+      {...props}
+      underlineColorAndroid="transparent"
+      style={[style, FieldStyle.field]}
+    />
+  )
+}
+
+export const FormField = formInput(Field)
 
 const LoadingOverlayStyle = StyleSheet.create({
   container: {
