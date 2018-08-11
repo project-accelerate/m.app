@@ -22,10 +22,12 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
+      "buildNumber": "2",
       "bundleIdentifier": "com.peoplesmomentum.app"
     },
     "android": {
       "package": "com.peoplesmomentum.app",
+      "versionCode": 2,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyC89f_jlusXaC_HGA3u3Qeiqr84GQPQLyI"
