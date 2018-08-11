@@ -3,7 +3,6 @@ import {
   RegistrationIsDelegateQuestion,
   RegistrationBg,
   RegistrationAskEmailPanel,
-  RegistrationAcceptTermsPanel,
 } from './RegistrationPanels'
 
 export const stories = {

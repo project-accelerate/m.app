@@ -14,6 +14,7 @@ export interface RegisterConferenceAttendanceRequest {
 
 export interface CreateUserRequest {
   optedIntoNotifications: boolean
+  email?: string | null
 }
 
 export interface RegisterDeviceRequest {
