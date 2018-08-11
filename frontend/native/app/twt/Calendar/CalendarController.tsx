@@ -5,7 +5,7 @@ import { CalendarView, CalendarEvent } from './Calendar'
 
 interface SavedEventCalendarProps {
   now: Date
-  events?: SavedEvent[]
+  events: SavedEvent[]
   onEventPress: (id: string) => void
 }
 

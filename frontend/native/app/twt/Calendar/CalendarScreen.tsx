@@ -4,6 +4,8 @@ import { NavigationScreenOptions } from 'react-navigation'
 import { times } from 'lodash'
 import { Screen, Toolbar, ToolbarRadio } from '../../common/Widgets/Widgets'
 import { SavedEventCalendar } from './CalendarController'
+import { lorem } from 'faker'
+import { addHours } from 'date-fns'
 
 export class CalendarScreen extends React.Component {
   static navigationOptions: NavigationScreenOptions = {
@@ -18,7 +20,16 @@ export class CalendarScreen extends React.Component {
   render() {
     return (
       <Screen>
-        <SavedEventCalendar now={this.now} onEventPress={this.handlePress} />
+        <SavedEventCalendar
+          now={this.now}
+          events={times(5, i => ({
+            id: String(i),
+            name: lorem.words(3),
+            start: addHours(this.now, i * 2).toISOString(),
+            end: addHours(this.now, i * 2 + 1).toISOString(),
+          }))}
+          onEventPress={this.handlePress}
+        />
       </Screen>
     )
   }

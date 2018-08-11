@@ -1,12 +1,6 @@
 import React from 'react'
 import { MapView } from 'expo'
-import {
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  View,
-  TouchableNativeFeedback,
-} from 'react-native'
+import { TouchableOpacity, StyleSheet, ScrollView, View } from 'react-native'
 import { ProfileImage, Banner, Grid } from '../../common/Widgets/Widgets'
 import { Typography, Markdown, Br } from '../../common/Typography/Typography'
 import { EventDetailFragment } from '../../../queries'
@@ -69,7 +63,13 @@ const style = StyleSheet.create({
 export function EventDetail({ event, onSpeakerPress }: EventDetailPageProps) {
   return (
     <ScrollView>
-      <ProfileImage image={event.photo} size="halfScreen" />
+      <ProfileImage image={event.photo} size="halfScreen">
+        <Banner>
+          <Typography style={style.speakerName} variant="cardTitle">
+            {event.name}
+          </Typography>
+        </Banner>
+      </ProfileImage>
 
       <Grid style={style.header}>
         <Typography darkBg variant="accent2">

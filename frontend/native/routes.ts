@@ -30,9 +30,9 @@ export const nonTopLevelRoutes = {
 }
 
 export const topLevelRoutes = {
-  HomeScreen: createRootNavigator(() => HomeScreen),
-  TimetableScreen: createRootNavigator(() => TimetableScreen),
-  CalendarScreen: createRootNavigator(() => CalendarScreen),
+  HomeScreen: createRootNavigator(HomeScreen),
+  TimetableScreen: createRootNavigator(TimetableScreen),
+  CalendarScreen: createRootNavigator(CalendarScreen),
 }
 
 export const allRoutes: Record<string, RouteComponent | undefined> = {
@@ -46,9 +46,7 @@ export function getRoutename(key: RouteKey) {
   return key
 }
 
-function createRootNavigator(getParent: () => RouteComponent) {
-  const parent = getParent()
-
+function createRootNavigator(parent: RouteComponent) {
   const availableRoutes = {
     [parent.name]: parent,
     ...nonTopLevelRoutes,

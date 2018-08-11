@@ -9,7 +9,6 @@ import {
   Dimensions,
   ViewStyle,
   TouchableOpacity,
-  Text,
   SafeAreaView,
   StatusBar,
 } from 'react-native'
@@ -21,6 +20,7 @@ import {
   NavigationRoute,
 } from 'react-navigation'
 import { Typography } from '../Typography/Typography'
+import { allRoutes, topLevelRoutes } from '../../../routes'
 
 const LoadingOverlayStyle = StyleSheet.create({
   container: {
@@ -52,7 +52,7 @@ const ProfileImageStyle = StyleSheet.create({
   },
   halfScreen: {
     width: '100%',
-    height: Dimensions.get('screen').height * 0.4,
+    height: Dimensions.get('screen').height * 0.5,
   },
   fullScreen: {
     width: '100%',
@@ -161,7 +161,7 @@ const ScreenStyles = StyleSheet.create({
     width: '100%',
   },
   button: {
-    padding: theme.spacing.level(1),
+    padding: 14,
   },
   buttonIcon: {
     textShadowColor: theme.pallete.black,
@@ -202,7 +202,7 @@ export const Screen = withNavigation(function MenuBar({
               style={ScreenStyles.buttonIcon}
               name="chevron-left"
               color="white"
-              size={24}
+              size={26}
             />
           )}
         </TouchableOpacity>
@@ -219,7 +219,7 @@ export const Screen = withNavigation(function MenuBar({
             style={ScreenStyles.buttonIcon}
             name="bars"
             color="white"
-            size={24}
+            size={26}
           />
         </TouchableOpacity>
       </SafeAreaView>
