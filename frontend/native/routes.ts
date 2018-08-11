@@ -9,6 +9,7 @@ import { TimetableScreen } from './app/twt/Event/TimetableScreen'
 import { EventDetailScreen } from './app/twt/Event/EventDetailScreen'
 import { CalendarScreen } from './app/twt/Calendar/CalendarScreen'
 import { theme } from './theme'
+import { DevPanel } from './devtool/DevPanel'
 
 export interface RouteComponent extends React.ComponentClass<any> {
   navigationOptions:
@@ -29,10 +30,13 @@ export const nonTopLevelRoutes = {
   EventDetailScreen,
 }
 
+const devOnlyRoutes = __DEV__ ? { DevPanel } : {}
+
 export const topLevelRoutes = {
   HomeScreen: createRootNavigator(HomeScreen),
   TimetableScreen: createRootNavigator(TimetableScreen),
   CalendarScreen: createRootNavigator(CalendarScreen),
+  ...devOnlyRoutes,
 }
 
 export const allRoutes: Record<string, RouteComponent | undefined> = {
