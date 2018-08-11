@@ -20,15 +20,16 @@ export function preview() {
   up()
 }
 
-export function developFrontendNative(platform?: string) {
+export function developFrontendNative(channel?: 'local') {
   const expo = createShellCmd('node_modules/.bin/exp', {
     cwd: 'frontend/native',
   })
 
-  const android = platform === 'android' ? { android: true } : undefined
-  const ios = platform === 'ios' ? { ios: true } : undefined
-
-  expo('start', { lan: true, dev: true, ...android, ...ios })
+  if (channel === 'local') {
+    expo('start', { lan: true, dev: true, config: 'app.localdev.json' })
+  } else {
+    expo('start', { lan: true, dev: true })
+  }
 }
 
 export function storybook(target: string, port: string) {

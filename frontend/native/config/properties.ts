@@ -6,15 +6,31 @@ const substitutions = {
 }
 
 export const BACKEND_URL = configProperty('backendUrl')
+export const ALWAYS_REGISTER_DEVICE = configProperty('alwaysRegisterDevice', {
+  defaultValue: false,
+})
+export const PROFILE = configProfile()
+
+console.log(`Running with ${configProfile()} profile`)
+
+function configProfile() {
+  const { extra = {}, releaseChannel } = Constants.manifest
+  const devChannel = extra.local ? 'local' : 'development'
+
+  return releaseChannel || devChannel
+}
 
 /** Look up config property based on environment */
-function configProperty(key: string, opts: { defaultValue?: string } = {}) {
-  const { releaseChannel = 'development' } = Constants.manifest
+function configProperty<T = string>(
+  key: string,
+  opts: { defaultValue?: T } = {},
+): T {
+  const profile = configProfile()
   const configs = require('../env.json')
 
   const mergedConfigs = {
     ...configs.common,
-    ...configs[releaseChannel],
+    ...configs[profile],
   }
 
   return applySubstitutions(mergedConfigs[key] || opts.defaultValue)
@@ -33,7 +49,11 @@ function getPackagerHostname() {
 }
 
 /** Apply variable substitutions from substitution map in this file */
-function applySubstitutions(value: string) {
+function applySubstitutions(value: any) {
+  if (typeof value !== 'string') {
+    return value
+  }
+
   return Object.keys(substitutions).reduce(substitute, value)
 }
 
