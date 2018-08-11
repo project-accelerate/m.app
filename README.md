@@ -30,7 +30,7 @@ yarn
 (cd frontend/native && yarn)
 ```
 
-## Development workflow
+# Development workflow
 
 * Running a local backend server
   * `yarn develop:backend`
@@ -65,3 +65,57 @@ yarn
   * `yarn test:unit common`
   * `yarn test:unit backend`
   * `yarn test:integration:backend`
+
+# Contributor workflow
+
+* Ask in #m-app to be added to the github team
+* Ask for login credentials for the staging site
+* Find a task in the 'Ready' column of our [task board]( https://github.com/project-accelerate/m.app/projects/1)
+  * Look for the topmost feature you feel able to do.
+  * If it's your first time contributing, look out for the "good first issue" tag.
+* Create a branch for the feature and implement the feature.
+* When it's done, open a pull request and request a review in `#m-app`
+
+
+# Getting help
+
+In general, if you're stuck figuring out how something works, please ask in `#m-app` rathen than try to go it alone! Aside from being much nicer for you, this gives others something to refer to and helps the maintainers understand when something is too complicated or needs documenting better.
+
+
+## FAQs
+
+### When I run the admin UI, I get a "POST http://localhost:3000/graphql 404 (Not Found)" error
+
+The frontend can't find a backend server. This is either because you haven't started it (using yarn:develop:backend) or you've overriden the BACKEND_URL config with a bad address.
+
+### (Mac/Windows) When I start the backend, I get a "initdb: could not create directory "/var/lib/postgresql/data/pg_wal": No space left on device" error
+
+Your docker VM has probably run out of disk space. Try deleting some old images.
+
+
+### (Linux): When I start the backend, I get "ERROR: Couldn't connect to Docker daemon at http+docker://localhost - is it running?"
+
+On Linux, Docker needs to run as a privilaged user. There are various approaches to doing this. We recommend the one detailed here: https://nickjanetakis.com/blog/docker-tip-20-running-docker-without-sudo-on-linux
+
+
+## Useful reading
+
+### Key frontend libraries:
+* https://reactjs.org/
+* https://www.apollographql.com/docs/react/
+* https://facebook.github.io/react-native/ (native only)
+* https://docs.expo.io/ (native only)
+* https://reactnavigation.org/ (native only)
+* https://auth0.com/docs/libraries/auth0js/v9 (web only)
+* https://material-ui.com/ (web only)
+* https://reacttraining.com/react-router/ (web only)
+ 
+### Key backend libraries:
+* https://knexjs.org/
+* https://19majkel94.github.io/type-graphql/
+
+## Useful contacts
+
+* In the first instance, `#m-app` slack channel
+* For detailed questions about features & requirements: `@John Colbourne`
+* For detailed questions about technical design, help: `@chrisd` 
