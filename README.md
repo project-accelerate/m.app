@@ -68,11 +68,12 @@ yarn
 
 # Contributor workflow
 
-* Ask in #m-app to be added to the github team
+* Ask in `#m-app` to be added to the github team
 * Ask for login credentials for the staging site
 * Find a task in the 'Ready' column of our [task board]( https://github.com/project-accelerate/m.app/projects/1)
   * Look for the topmost feature you feel able to do.
   * If it's your first time contributing, look out for the "good first issue" tag.
+* Tell us on `#m-app` that you're going to pick this up
 * Create a branch for the feature and implement the feature.
 * When it's done, open a pull request and request a review in `#m-app`
 
