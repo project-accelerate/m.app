@@ -13,6 +13,10 @@ import {
   StatusBar,
   TextInputProps,
   TextInput,
+  TouchableNativeFeedbackProps,
+  TouchableWithoutFeedbackProps,
+  TouchableNativeFeedback,
+  TouchableWithoutFeedback,
 } from 'react-native'
 import formInput from 'react-native-formik'
 import { FontAwesome } from '@expo/vector-icons'
@@ -26,6 +30,8 @@ import {
 import { Typography } from '../Typography/Typography'
 import { allRoutes, topLevelRoutes } from '../../../routes'
 import { HomeScreen } from '../../twt/Home/HomeScreen'
+import { getStatusBarHeight } from '../platform'
+import { Constants } from 'expo'
 
 const FieldStyle = StyleSheet.create({
   field: {
@@ -228,8 +234,8 @@ export const Screen = withNavigation(function MenuBar({
   const title = navigationOptions && navigationOptions.headerTitle
   const isTopLevel = state.routeName in topLevelRoutes
   const floatStyle = floatMenu
-    ? [{ top: StatusBar.currentHeight }, ScreenStyles.floating]
-    : [{ paddingTop: StatusBar.currentHeight }, ScreenStyles.notFloating]
+    ? [{ top: getStatusBarHeight() }, ScreenStyles.floating]
+    : [{ paddingTop: getStatusBarHeight() }, ScreenStyles.notFloating]
 
   return (
     <View style={ScreenStyles.screen}>
@@ -311,4 +317,12 @@ export function ToolbarRadio(props: ToolbarRadioProps) {
       <Typography variant="caption">{props.children}</Typography>
     </TouchableOpacity>
   )
+}
+
+export function Touchable(props: TouchableWithoutFeedbackProps) {
+  if (Constants.platform.android) {
+    return <TouchableNativeFeedback {...props} />
+  }
+
+  return <TouchableWithoutFeedback {...props} />
 }
