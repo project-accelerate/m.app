@@ -101,6 +101,13 @@ Your docker VM has probably run out of disk space. Try deleting some old images.
 On Linux, Docker needs to run as a privilaged user. There are various approaches to doing this. We recommend the one detailed here: https://nickjanetakis.com/blog/docker-tip-20-running-docker-without-sudo-on-linux
 
 
+### When I run yarn emulator, I get an error or the app doesn't start
+
+Make sure you're started the development server. If you haven't, make sure you run `yarn develop:frontend:native` before launching the emulator.
+
+If that still doesn't work, try closing the emulator, restarting the development server and trying again. The native development server can be a bit flaky sometimes.
+
+
 ### I get a "module not found error" when I start the app after doing a git pull.
 
 You probably need update your npm dependencies
@@ -116,9 +123,11 @@ yarn
 
 ### I get a "EACCESS permission denied" when I do a yarn install
 
-Your node_modules directory is probably corrupted. Delete and reinstall
+Your node_modules directory is probably corrupted. It happens occasionally. Delete and reinstall
 
 ```bash
+rm -rf node_modules frontend/native/node_modules
+
 git clone https://github.com/project-accelerate/m.app.git
 cd m.app
 yarn
