@@ -5,8 +5,12 @@ import { givenThatAUserExists } from 'backend/app/user/test/userTestUtils'
 import { ConferenceAttendanceRepository } from '../external/ConferenceAttendanceRepository'
 import { ConferenceAttendance } from '../domain/ConferenceAttendance'
 import { EventFamily } from 'common/domain/EventFamily'
+import { EventAttendance } from 'backend/app/conference/domain/EventAttendance'
+import { EventAttendanceRepository } from 'backend/app/conference/external/EventAttedanceRepository'
+import { givenThatAnEventExists } from 'backend/app/events/test/eventTestUtils'
 
 type ConferenceAttendanceProps = WithoutId<ConferenceAttendance>
+type EventAttendanceProps = WithoutId<EventAttendance>
 
 export function someConferenceId() {
   return EventFamily.TWT_2018
@@ -36,4 +40,34 @@ export async function givenThatAConferenceAttendanceExists({
       ...props,
     }),
   )
+}
+
+export function someEventAttendanceProps(
+  props: Partial<EventAttendanceProps> = {},
+): EventAttendanceProps {
+  return {
+    event: someUuid(),
+    user: someUuid(),
+    ...props,
+  }
+}
+
+export function someOtherEventAttendanceProps(
+  props: Partial<EventAttendanceProps> = {},
+): EventAttendanceProps {
+  return {
+    event: someUuid(),
+    user: someUuid(),
+    ...props,
+  }
+}
+
+export async function givenThatAnEventAttendanceExists({
+  event,
+  user,
+}: Partial<EventAttendanceProps> = {}): Promise<EventAttendance> {
+  return Container.get(EventAttendanceRepository).insert({
+    event: event || (await givenThatAnEventExists()).id,
+    user: user || (await givenThatAUserExists()).id,
+  })
 }

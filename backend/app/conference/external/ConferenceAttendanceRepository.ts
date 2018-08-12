@@ -8,4 +8,6 @@ const config: CrudRepositoryConfig<ConferenceAttendance> = {
   tableName: 'ConferenceAttendance',
 }
 
-export class ConferenceAttendanceRepository extends CrudRepository(config) {}
+export class ConferenceAttendanceRepository extends CrudRepository(config) {
+  
+}

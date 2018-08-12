@@ -10,7 +10,7 @@ interface CrudRepositoryTestProps<T extends { id: string }, Props> {
   example: () => Promise<T>
 
   /** Function returning some props required to update into the repository */
-  updateExample: () => Partial<Props>
+  updateExample: () => Partial<Props> | Promise<Partial<Props>>
 
   /** Type of the repository */
   repository: CrudRepositoryConstructor<T, Props>
@@ -64,14 +64,15 @@ export function shouldSupportStandardCrudFunctions<
     withDb(async () => {
       const fixture = new Fixture()
 
+      const exampleUpdateProps = (await opts.updateExample()) as any
       const entity = await fixture.givenThatAnEntityHasBeenInserted()
 
-      await fixture.repository.update(entity.id, fixture.exampleUpdateProps)
+      await fixture.repository.update(entity.id, exampleUpdateProps)
 
       expect(await fixture.repository.findOne({ id: entity.id })).toMatchObject(
         {
           ...(entity as any),
-          ...fixture.exampleUpdateProps,
+          ...exampleUpdateProps,
         },
       )
     }),
@@ -79,8 +80,6 @@ export function shouldSupportStandardCrudFunctions<
 
   class Fixture {
     repository: CrudRepository<any> = Container.get(opts.repository)
-
-    exampleUpdateProps = opts.updateExample() as any
 
     async givenThatAnEntityHasBeenInserted() {
       return opts.example()

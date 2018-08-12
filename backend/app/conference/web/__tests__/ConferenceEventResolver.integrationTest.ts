@@ -1,49 +1,51 @@
 import { withDb, execQuery } from 'backend/app/test/integrationTestUtils'
-import { RegisterConferenceAttendanceRequest } from 'backend/app/conference/domain/ConferenceAttendance'
-import { DeviceType } from 'backend/app/user/domain/Device'
-import { EventFamily } from 'common/domain/EventFamily'
-import { givenThatAConferenceAttendanceExists } from 'backend/app/conference/test/conferenceTestUtils'
+import { givenThatAnEventAttendanceExists } from 'backend/app/conference/test/conferenceTestUtils'
+import { someUuid } from 'common/test/testUtils'
 import { givenThatAnEventExists } from 'backend/app/events/test/eventTestUtils'
 
-describe('User.conferenceEvents', () => {
-  it(
-    'returns events for the user',
-    withDb(async () => {
-      const attendance = await givenThatAConferenceAttendanceExists()
-      const event = await givenThatAnEventExists({
-        family: attendance.conference,
-      })
+describe('Event.userIsAttending', () => {
+  describe('when user is not attending', () => {
+    it(
+      'returns false',
+      withDb(async () => {
+        const { event } = await userConferenceEvents({
+          eventId: (await givenThatAnEventExists()).id,
+          userId: someUuid(),
+        })
 
-      const { user } = await userConferenceEvents(attendance.attendee)
+        expect(event.userIsAttending).toBeFalsy()
+      }),
+    )
+  })
 
-      expect(user).toMatchObject({
-        conferenceEvents: {
-          edges: [
-            {
-              node: { id: event.id },
-            },
-          ],
-        },
-      })
-    }),
-  )
+  describe('when user is attending', () => {
+    it(
+      'returns true',
+      withDb(async () => {
+        const attendance = await givenThatAnEventAttendanceExists()
+        const { event } = await userConferenceEvents({
+          eventId: attendance.event,
+          userId: attendance.user,
+        })
+
+        expect(event.userIsAttending).toBeTruthy()
+      }),
+    )
+  })
 })
 
-async function userConferenceEvents(userId: string) {
+async function userConferenceEvents(variables: {
+  eventId: string
+  userId: string
+}) {
   return execQuery({
     body: `
-      query($id: String!) {
-        user(id: $id) {
-          conferenceEvents {
-            edges {
-              node {
-                id
-              }
-            }
-          }
+      query($eventId: String!, $userId: String!) {
+        event(id: $eventId) {
+          userIsAttending(userId: $userId)
         }
       }
     `,
-    variables: { id: userId },
+    variables,
   })
 }
