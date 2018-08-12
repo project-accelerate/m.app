@@ -11,7 +11,9 @@ export function developBackend() {
 }
 
 export function developFrontend() {
-  const runFrontendScript = createShellCmd('node', { cwd: 'frontend/web' })
+  const runFrontendScript = createShellCmd('node', {
+    cwd: join('frontend', 'web'),
+  })
   runFrontendScript('scripts/start')
 }
 
@@ -21,7 +23,7 @@ export function preview() {
 }
 
 export function developFrontendNative(channel?: 'local') {
-  const expo = createShellCmd('node_modules/.bin/exp', {
+  const expo = createShellCmd(join('node_modules', '.bin', 'exp'), {
     cwd: 'frontend/native',
   })
 
@@ -33,15 +35,18 @@ export function developFrontendNative(channel?: 'local') {
 }
 
 export function storybook(target: string, port: string) {
-  const storybook = createShellCmd('node_modules/.bin/start-storybook', {
-    cwd: join('frontend', target),
-  })
+  const storybook = createShellCmd(
+    join('node_modules', '.bin', 'start-storybook'),
+    {
+      cwd: join('frontend', target),
+    },
+  )
 
   storybook({ port })
 }
 
 export function storybookExpo(target: string) {
-  const expoBook = createShellCmd('node_modules/.bin/expobook', {
+  const expoBook = createShellCmd(join('node_modules', '.bin', 'expobook'), {
     cwd: join('frontend', target),
   })
 
@@ -49,7 +54,7 @@ export function storybookExpo(target: string) {
 }
 
 export function emulator(platform: string) {
-  const expo = createShellCmd('node_modules/.bin/exp', {
+  const expo = createShellCmd(join('node_modules', '.bin', 'exp'), {
     cwd: 'frontend/native',
   })
 
