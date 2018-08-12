@@ -1,10 +1,10 @@
 import React from 'react'
-import { View, StyleSheet, TouchableNativeFeedback } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { EventListItemFragment } from '../../../queries'
 import { theme } from '../../../theme'
 import { Typography } from '../../common/Typography/Typography'
 import { format } from 'date-fns'
-import { ProfileImage } from '../../common/Widgets/Widgets'
+import { ProfileImage, Touchable } from '../../common/Widgets/Widgets'
 import { timeOf } from '../../common/date-formats'
 
 const EventListItemStyle = StyleSheet.create({
@@ -31,7 +31,7 @@ export interface EventListItemPressedEvent {
 
 export function EventListItem({ event, onPress }: EventListItemProps) {
   return (
-    <TouchableNativeFeedback onPress={() => onPress({ event })}>
+    <Touchable onPress={() => onPress({ event })}>
       <View style={EventListItemStyle.container}>
         <ProfileImage style={EventListItemStyle.image} image={event.photo} />
 
@@ -49,6 +49,6 @@ export function EventListItem({ event, onPress }: EventListItemProps) {
           </Typography>
         </View>
       </View>
-    </TouchableNativeFeedback>
+    </Touchable>
   )
 }

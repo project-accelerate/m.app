@@ -13,6 +13,10 @@ import {
   StatusBar,
   TextInputProps,
   TextInput,
+  TouchableNativeFeedbackProps,
+  TouchableWithoutFeedbackProps,
+  TouchableNativeFeedback,
+  TouchableWithoutFeedback,
 } from 'react-native'
 import formInput from 'react-native-formik'
 import { FontAwesome } from '@expo/vector-icons'
@@ -27,6 +31,7 @@ import { Typography } from '../Typography/Typography'
 import { allRoutes, topLevelRoutes } from '../../../routes'
 import { HomeScreen } from '../../twt/Home/HomeScreen'
 import { getStatusBarHeight } from '../platform'
+import { Constants } from 'expo'
 
 const FieldStyle = StyleSheet.create({
   field: {
@@ -312,4 +317,12 @@ export function ToolbarRadio(props: ToolbarRadioProps) {
       <Typography variant="caption">{props.children}</Typography>
     </TouchableOpacity>
   )
+}
+
+export function Touchable(props: TouchableWithoutFeedbackProps) {
+  if (Constants.platform.android) {
+    return <TouchableNativeFeedback {...props} />
+  }
+
+  return <TouchableWithoutFeedback {...props} />
 }
