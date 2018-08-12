@@ -1,16 +1,19 @@
 import { createShellCmd } from './utils/shell'
+import { join } from 'path'
 
 export function buildAll() {
   buildFrontendWeb()
 }
 
 export function buildFrontendWeb() {
-  const runFrontendScript = createShellCmd('node', { cwd: 'frontend/web' })
+  const runFrontendScript = createShellCmd('node', {
+    cwd: join('frontend', 'web'),
+  })
   runFrontendScript('scripts/build')
 }
 
 export function buildFrontendNativeBinaries(releaseChannel = 'beta') {
-  const exp = createShellCmd('node_modules/.bin/exp', {
+  const exp = createShellCmd(join('node_modules', '.bin', 'exp'), {
     cwd: 'frontend/native',
   })
 
@@ -19,7 +22,7 @@ export function buildFrontendNativeBinaries(releaseChannel = 'beta') {
 }
 
 export function publishFrontendNative(releaseChannel = 'beta') {
-  const exp = createShellCmd('node_modules/.bin/exp', {
+  const exp = createShellCmd(join('node_modules', '.bin', 'exp'), {
     cwd: 'frontend/native',
   })
 
