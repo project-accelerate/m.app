@@ -26,6 +26,7 @@ import {
 import { Typography } from '../Typography/Typography'
 import { allRoutes, topLevelRoutes } from '../../../routes'
 import { HomeScreen } from '../../twt/Home/HomeScreen'
+import { getStatusBarHeight } from '../platform'
 
 const FieldStyle = StyleSheet.create({
   field: {
@@ -228,8 +229,8 @@ export const Screen = withNavigation(function MenuBar({
   const title = navigationOptions && navigationOptions.headerTitle
   const isTopLevel = state.routeName in topLevelRoutes
   const floatStyle = floatMenu
-    ? [{ top: StatusBar.currentHeight }, ScreenStyles.floating]
-    : [{ paddingTop: StatusBar.currentHeight }, ScreenStyles.notFloating]
+    ? [{ top: getStatusBarHeight() }, ScreenStyles.floating]
+    : [{ paddingTop: getStatusBarHeight() }, ScreenStyles.notFloating]
 
   return (
     <View style={ScreenStyles.screen}>

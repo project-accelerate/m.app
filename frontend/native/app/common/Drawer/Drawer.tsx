@@ -14,6 +14,7 @@ import { Typography } from '../Typography/Typography'
 import twt from '../twt.png'
 import { ProfileImage } from '../Widgets/Widgets'
 import { HomeScreen } from '../../twt/Home/HomeScreen'
+import { getStatusBarHeight } from '../platform'
 
 const style = StyleSheet.create({
   root: {
@@ -21,7 +22,7 @@ const style = StyleSheet.create({
     height: '100%',
   },
   header: {
-    marginTop: StatusBar.currentHeight,
+    marginTop: getStatusBarHeight(),
   },
   items: {
     flex: 1,
