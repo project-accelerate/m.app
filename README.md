@@ -90,6 +90,7 @@ In general, if you're stuck figuring out how something works, please ask in `#m-
 
 The frontend can't find a backend server. This is either because you haven't started it (using yarn:develop:backend) or you've overriden the BACKEND_URL config with a bad address.
 
+
 ### (Mac/Windows) When I start the backend, I get a "initdb: could not create directory "/var/lib/postgresql/data/pg_wal": No space left on device" error
 
 Your docker VM has probably run out of disk space. Try deleting some old images.
@@ -98,6 +99,34 @@ Your docker VM has probably run out of disk space. Try deleting some old images.
 ### (Linux): When I start the backend, I get "ERROR: Couldn't connect to Docker daemon at http+docker://localhost - is it running?"
 
 On Linux, Docker needs to run as a privilaged user. There are various approaches to doing this. We recommend the one detailed here: https://nickjanetakis.com/blog/docker-tip-20-running-docker-without-sudo-on-linux
+
+
+### I get a "module not found error" when I start the app after doing a git pull.
+
+You probably need update your npm dependencies
+
+```bash
+git clone https://github.com/project-accelerate/m.app.git
+cd m.app
+yarn
+
+# At present, the native mobile app is a separate yarn project and dependencies must be installed separately
+(cd frontend/native && yarn)
+```
+
+### I get a "EACCESS permission denied" when I do a yarn install
+
+Your node_modules directory is probably corrupted. Delete and reinstall
+
+```bash
+git clone https://github.com/project-accelerate/m.app.git
+cd m.app
+yarn
+
+# At present, the native mobile app is a separate yarn project and dependencies must be installed separately
+(cd frontend/native && yarn)
+```
+
 
 
 ## Useful reading
