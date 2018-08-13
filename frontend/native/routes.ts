@@ -8,6 +8,7 @@ import { HomeScreen } from './app/twt/Home/HomeScreen'
 import { TimetableScreen } from './app/twt/Event/TimetableScreen'
 import { EventDetailScreen } from './app/twt/Event/EventDetailScreen'
 import { CalendarScreen } from './app/twt/Calendar/CalendarScreen'
+import { MeetUpsTimetable } from './app/twt/MeetUps/MeetUpsTimetable'
 import { theme } from './theme'
 import { DevPanel } from './devtool/DevPanel'
 
@@ -36,6 +37,7 @@ export const topLevelRoutes = {
   HomeScreen: createRootNavigator(HomeScreen),
   TimetableScreen: createRootNavigator(TimetableScreen),
   CalendarScreen: createRootNavigator(CalendarScreen),
+  MeetUpsTimetable: createRootNavigator(MeetUpsTimetable),
   ...devOnlyRoutes,
 }
 
