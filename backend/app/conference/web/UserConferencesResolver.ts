@@ -42,4 +42,15 @@ export class UserConferencesResolver {
 
     return attendances.map(attendance => attendance.conference)
   }
+
+  @FieldResolver(() => [Event])
+  async eventsAttending(@Root() user: User) {
+    const attendances = await this.eventAttendanceReposity.find({
+      user: user.id,
+    })
+
+    return this.eventRepository.find({
+      id: oneOf(...attendances.map(a => a.event)),
+    })
+  }
 }
