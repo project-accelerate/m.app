@@ -9,11 +9,16 @@ import { createFetchData } from '../../common/FetchData/FetchData'
 import { EventListItemPressedEvent } from './EventListItem'
 import { getRoutename } from '../../../routes'
 import TimetableScreenQueryDocument from './TimetableScreen.graphql'
-import { WithRegistration } from '../Registration/UserProvider'
 import { Screen } from '../../common/Widgets/Widgets'
+import * as registration from '../Registration/registration'
+import { createStateConnector } from '../../../state'
 
 const FetchEvents = createFetchData<TimetableScreenQuery, {}>({
   query: TimetableScreenQueryDocument,
+})
+
+const Connect = createStateConnector({
+  userId: registration.selectors.userId,
 })
 
 export class TimetableScreen extends React.Component<NavigationScreenProps> {
@@ -32,7 +37,7 @@ export class TimetableScreen extends React.Component<NavigationScreenProps> {
   render() {
     return (
       <Screen>
-        <WithRegistration>
+        <Connect>
           {({ userId }) => (
             <FetchEvents variables={{ userId }}>
               {({ data }) => (
@@ -43,7 +48,7 @@ export class TimetableScreen extends React.Component<NavigationScreenProps> {
               )}
             </FetchEvents>
           )}
-        </WithRegistration>
+        </Connect>
       </Screen>
     )
   }

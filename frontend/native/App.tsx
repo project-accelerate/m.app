@@ -7,6 +7,7 @@ import { setupAppUpdates } from './config/appUpdates'
 import { graphQlClient } from './config/graphql'
 import { topLevelRoutes } from './routes'
 import { Drawer } from './app/common/Drawer/Drawer'
+import { ReduxProvider } from './config/redux'
 
 interface ApplicationState {
   loading?: boolean
@@ -23,7 +24,7 @@ export default class App extends React.Component {
   })
 
   async componentDidMount() {
-    await Promise.all([setupAppUpdates(), RegistrationContainer.setup()])
+    await Promise.all([setupAppUpdates(), ReduxProvider.setup()])
 
     this.setState({ loading: false })
   }
@@ -37,9 +38,11 @@ export default class App extends React.Component {
 
     return (
       <ApolloProvider client={graphQlClient}>
-        <RegistrationContainer>
-          <this.navigator />
-        </RegistrationContainer>
+        <ReduxProvider>
+          <RegistrationContainer>
+            <this.navigator />
+          </RegistrationContainer>
+        </ReduxProvider>
       </ApolloProvider>
     )
   }
