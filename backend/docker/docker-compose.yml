@@ -1,6 +1,9 @@
 version: "3"
 
 services:
+  amqp:
+    image: rabbitmq
+
   s3-test:
     image: lphoward/fake-s3
 
@@ -16,6 +19,7 @@ services:
       dockerfile: backend/docker/backend.dockerfile
     environment:
       - PORT=8000
+      - CLOUDAMQP_URL=amqp://amqp
       - DATABASE_URL=postgres://postgres@db/postgres
       - LOG_LEVEL=debug
       - BUCKETEER_AWS_ACCESS_KEY_ID=BUCKETEER_AWS_ACCESS_KEY_ID
@@ -28,3 +32,4 @@ services:
     depends_on:
       - db
       - s3-test
+      - amqp
