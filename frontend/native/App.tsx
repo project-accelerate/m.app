@@ -25,7 +25,6 @@ export default class App extends React.Component {
 
   async componentDidMount() {
     await Promise.all([setupAppUpdates(), ReduxProvider.setup()])
-
     this.setState({ loading: false })
   }
 

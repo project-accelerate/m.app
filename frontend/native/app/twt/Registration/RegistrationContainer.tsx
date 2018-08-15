@@ -5,7 +5,7 @@ import {
   AcceptNotificationsPanel,
   RegistrationAskEmailPanel,
 } from './RegistrationPanels'
-import * as registration from './registration'
+import { registration } from './registrationState'
 import { createStateConnector } from '../../../state'
 import { createWizard, WizardStageProps } from '../../common/Wizard/Wizard'
 

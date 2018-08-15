@@ -12,6 +12,7 @@ import { theme } from '../../../theme'
 import { Typography } from '../Typography/Typography'
 
 const ConnectionListStyle = StyleSheet.create({
+  sectionSeparator: {},
   itemSeparator: {
     width: '100%',
     backgroundColor: theme.pallete.transparent,

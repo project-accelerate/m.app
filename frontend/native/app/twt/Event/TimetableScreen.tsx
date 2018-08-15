@@ -4,14 +4,14 @@ import {
   NavigationScreenProps,
 } from 'react-navigation'
 import { TimetableScreenQuery } from '../../../queries'
-import { EventList } from './EventList'
-import { createFetchData } from '../../common/FetchData/FetchData'
-import { EventListItemPressedEvent } from './EventListItem'
 import { getRoutename } from '../../../routes'
-import TimetableScreenQueryDocument from './TimetableScreen.graphql'
-import { Screen } from '../../common/Widgets/Widgets'
-import * as registration from '../Registration/registration'
 import { createStateConnector } from '../../../state'
+import { createFetchData } from '../../common/FetchData/FetchData'
+import { Screen } from '../../common/Widgets/Widgets'
+import { registration } from '../Registration/registrationState'
+import TimetableScreenQueryDocument from './TimetableScreen.graphql'
+import { EventListItemPressedEvent } from './EventListItem'
+import { EventList } from './EventList'
 
 const FetchEvents = createFetchData<TimetableScreenQuery, {}>({
   query: TimetableScreenQueryDocument,

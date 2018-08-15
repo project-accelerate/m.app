@@ -6,10 +6,13 @@ import { Typography, Markdown, Br } from '../../common/Typography/Typography'
 import { EventDetailFragment } from '../../../queries'
 import { theme } from '../../../theme'
 import { timeOf, longDateOf } from '../../common/date-formats'
+import { Button } from '../../common/Butttons/Buttons'
 
 interface EventDetailPageProps {
   event: EventDetailFragment
   onSpeakerPress: (event: EventDetailSpeakerPressEvent) => void
+  favourited: boolean
+  onToggleFavourited: () => void
 }
 
 export interface EventDetailSpeakerPressEvent {
@@ -60,7 +63,12 @@ const style = StyleSheet.create({
   },
 })
 
-export function EventDetail({ event, onSpeakerPress }: EventDetailPageProps) {
+export function EventDetail({
+  event,
+  onSpeakerPress,
+  favourited,
+  onToggleFavourited,
+}: EventDetailPageProps) {
   return (
     <ScrollView>
       <ProfileImage image={event.photo} size="halfScreen">
@@ -81,6 +89,10 @@ export function EventDetail({ event, onSpeakerPress }: EventDetailPageProps) {
           {event.venue.name}
         </Typography>
       </Grid>
+
+      <Button onPress={onToggleFavourited}>
+        {favourited ? 'Saved' : 'Save'}
+      </Button>
 
       <Markdown style={style.content} value={event.introduction} />
 

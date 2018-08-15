@@ -27,6 +27,40 @@ export enum DeviceType {
   IOS = 'IOS',
 }
 
+export interface AttendEventMutationVariables {
+  user: string
+  event: string
+}
+
+export interface AttendEventMutation {
+  mutateUser: {
+    attendEvent: {
+      user: {
+        eventsAttending: Array<{
+          id: string
+        }>
+      }
+    }
+  }
+}
+
+export interface CancelEventAttendanceMutationVariables {
+  user: string
+  event: string
+}
+
+export interface CancelEventAttendanceMutation {
+  mutateUser: {
+    cancelAttendance: {
+      user: {
+        eventsAttending: Array<{
+          id: string
+        }>
+      }
+    }
+  }
+}
+
 export interface EventDetailScreenQueryVariables {
   id: string
 }
@@ -112,6 +146,20 @@ export interface RegisterDeviceMutation {
       id: string
       conference: EventFamily
     }>
+  }
+}
+
+export interface CalendarEventFragment {
+  id: string
+  name: string
+  startTime: string
+  endTime: string
+  photo: {
+    sourceUrl: string
+  } | null
+  // Return the event venue
+  venue: {
+    name: string
   }
 }
 

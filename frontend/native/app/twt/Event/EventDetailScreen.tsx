@@ -12,6 +12,9 @@ import { EventDetail, EventDetailSpeakerPressEvent } from './EventDetail'
 import { Background } from '../../common/Layouts/Layouts'
 import EventDetailScreenQueryDocument from './EventDetailScreen.graphql'
 import { Screen } from '../../common/Widgets/Widgets'
+import { registration } from '../Registration/registrationState'
+import { createParametricStateConnector } from '../../../state'
+import { calendar } from '../Calendar/calendarState'
 
 export interface EventDetailScreenParams {
   id: string
@@ -25,6 +28,11 @@ const FetchEvent = createFetchData<
   query: EventDetailScreenQueryDocument,
 })
 
+const Connect = createParametricStateConnector<{ eventId: string }>()({
+  userId: registration.selectors.userId,
+  isSaved: calendar.selectors.isSaved,
+})
+
 export class EventDetailScreen extends React.Component<
   NavigationScreenProps<EventDetailScreenParams>
 > {
@@ -35,9 +43,13 @@ export class EventDetailScreen extends React.Component<
     // headerTransparent: true
   })
 
+  get eventId() {
+    return this.props.navigation.getParam('id')
+  }
+
   get queryVariables(): EventDetailScreenQueryVariables {
     return {
-      id: this.props.navigation.getParam('id'),
+      id: this.eventId,
     }
   }
 
@@ -48,16 +60,28 @@ export class EventDetailScreen extends React.Component<
   render() {
     return (
       <Screen floatMenu>
-        <Background solid>
-          <FetchEvent variables={this.queryVariables}>
-            {({ data }) => (
-              <EventDetail
-                event={FetchEvent.required(data.event)}
-                onSpeakerPress={this.handleSpeakerPressed}
-              />
-            )}
-          </FetchEvent>
-        </Background>
+        <Connect eventId={this.eventId}>
+          {({ userId, isSaved, actions }) => (
+            <Background solid>
+              <FetchEvent variables={this.queryVariables}>
+                {({ data, client }) => (
+                  <EventDetail
+                    event={FetchEvent.required(data.event)}
+                    favourited={isSaved}
+                    onSpeakerPress={this.handleSpeakerPressed}
+                    onToggleFavourited={() => {
+                      actions.calendar.toggleEventSaved({
+                        event: FetchEvent.required(data.event),
+                        alertMinutesBefore: 30,
+                        userId,
+                      })
+                    }}
+                  />
+                )}
+              </FetchEvent>
+            </Background>
+          )}
+        </Connect>
       </Screen>
     )
   }
