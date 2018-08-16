@@ -25,10 +25,9 @@ import {
   withNavigation,
   NavigationInjectedProps,
   NavigationRoute,
-  NavigationActions,
 } from 'react-navigation'
 import { Typography } from '../Typography/Typography'
-import { allRoutes, topLevelRoutes } from '../../../routes'
+import { Routes } from '../../../routes'
 import { HomeScreen } from '../../twt/Home/HomeScreen'
 import { getStatusBarHeight } from '../platform'
 import { Constants } from 'expo'
@@ -225,14 +224,14 @@ export const Screen = withNavigation(function MenuBar({
     }
   }
   const state = navigation!.state as NavigationRoute
-  const route = allRoutes[state.routeName]
+  const route = Routes.get().resolve(state.routeName)
   const getOptions = route && route.navigationOptions
   const navigationOptions =
     typeof getOptions === 'function'
       ? getOptions({ navigation } as any)
       : getOptions
   const title = navigationOptions && navigationOptions.headerTitle
-  const isTopLevel = state.routeName in topLevelRoutes
+  const isTopLevel = Routes.get().isTopLevel(state.routeName)
   const floatStyle = floatMenu
     ? [{ top: getStatusBarHeight() }, ScreenStyles.floating]
     : [{ paddingTop: getStatusBarHeight() }, ScreenStyles.notFloating]
@@ -311,7 +310,7 @@ interface ToolbarRadioProps {
 export function ToolbarRadio(props: ToolbarRadioProps) {
   return (
     <TouchableOpacity
-      onPress={() => props.onPress(this.props.id)}
+      onPress={() => props.onPress(props.id)}
       style={[ToolbarStyles.radio, props.active && ToolbarStyles.radioActive]}
     >
       <Typography variant="caption">{props.children}</Typography>

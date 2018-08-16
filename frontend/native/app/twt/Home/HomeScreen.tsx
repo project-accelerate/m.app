@@ -1,11 +1,10 @@
 import * as React from 'react'
 import faker from 'faker'
-import { View, Image, StyleSheet, ScrollView } from 'react-native'
+import { View, StyleSheet, ScrollView } from 'react-native'
 import {
   NavigationScreenProps,
   NavigationScreenOptions,
 } from 'react-navigation'
-import { Carousel } from '../../common/Carousel/Carousel'
 import { Screen, ProfileImage } from '../../common/Widgets/Widgets'
 import twt from './twt.png'
 import { theme } from '../../../theme'

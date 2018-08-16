@@ -2,49 +2,58 @@ import React from 'react'
 import { View } from 'react-native'
 import { Toolbar, ToolbarRadio } from '../../common/Widgets/Widgets'
 import { CalendarView, CalendarEvent } from './Calendar'
+import { calendar } from './calendarState'
+import { isSameDay, format, addHours, startOfDay, addDays } from 'date-fns'
 
 interface SavedEventCalendarProps {
-  now: Date
-  events: SavedEvent[]
+  activeDay: Date
+  dayOptions: Date[]
+  events: calendar.SavedEventDetails[]
   onEventPress: (id: string) => void
-}
-
-interface SavedEvent {
-  id: string
-  name: string
-  start: string
-  end: string
+  onDayChanged: (day: Date) => void
 }
 
 export class SavedEventCalendar extends React.Component<
   SavedEventCalendarProps
 > {
-  now = new Date()
+  initialTime = new Date()
 
-  handleEventPress = (id: string) => {}
+  get startTime() {
+    return addHours(startOfDay(this.props.activeDay), calendar.startHourOfDay)
+  }
 
-  handleDatePress = () => {}
+  get endTime() {
+    return addDays(this.startTime, 1)
+  }
 
   render() {
     return (
       <View>
         <Toolbar>
-          <ToolbarRadio active onPress={this.handleDatePress}>
-            22 Sep
-          </ToolbarRadio>
-          <ToolbarRadio onPress={this.handleDatePress}>23 Sep</ToolbarRadio>
-          <ToolbarRadio onPress={this.handleDatePress}>24 Sep</ToolbarRadio>
-          <ToolbarRadio onPress={this.handleDatePress}>25 Sep</ToolbarRadio>
+          {this.props.dayOptions.map(day => (
+            <ToolbarRadio
+              active={isSameDay(day, this.props.activeDay)}
+              key={day.toISOString()}
+              onPress={() => this.props.onDayChanged(day)}
+            >
+              {format(day, 'ddd')}
+            </ToolbarRadio>
+          ))}
         </Toolbar>
-        <CalendarView now={this.now}>
+
+        <CalendarView
+          now={this.initialTime}
+          startTime={this.startTime}
+          endTime={this.endTime}
+        >
           {this.props.events.map(event => (
             <CalendarEvent
               key={event.id}
               id={event.id}
               title={event.name}
-              start={new Date(event.start)}
-              end={new Date(event.end)}
-              onPress={this.handleEventPress}
+              start={new Date(event.startTime)}
+              end={new Date(event.endTime)}
+              onPress={this.props.onEventPress}
             />
           ))}
         </CalendarView>

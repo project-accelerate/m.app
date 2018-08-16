@@ -1,6 +1,6 @@
 import { omit, sortBy, compact } from 'lodash'
 import { Dispatch } from 'redux'
-import { format, subHours, addSeconds } from 'date-fns'
+import { format, subHours, addSeconds, getHours, getDate } from 'date-fns'
 import { Notifications } from 'expo'
 import { theme } from '../../../theme'
 import {
@@ -42,6 +42,8 @@ import { createLogger } from '../../common/logger'
  */
 
 export namespace calendar {
+  export const startHourOfDay = 4
+
   interface State {
     [eventId: string]: SavedEvent | undefined
   }
@@ -51,11 +53,12 @@ export namespace calendar {
     details: SavedEventDetails
   }
 
-  interface SavedEventDetails {
+  export interface SavedEventDetails {
     id: string
     name: string
     venueName: string
     startTime: string
+    endTime: string
   }
 
   type Action =
@@ -69,9 +72,12 @@ export namespace calendar {
   export const selectors = {
     allEvents: (state: AppState) => state.calendarEvents || {},
 
-    sortedEvents: (state: AppState) => {
+    eventsInDay: (state: AppState, props: { day: Date }) => {
       const eventList = compact(Object.values(selectors.allEvents(state)))
-      return sortBy(eventList, x => x.details.startTime)
+        .filter(x => isSameCalendarDay(x.details.startTime, props.day))
+        .map(x => x.details)
+
+      return sortBy(eventList, x => x.startTime)
     },
 
     isSaved: (state: AppState, props: { eventId: string }) => {
@@ -120,6 +126,7 @@ export namespace calendar {
         name: props.event.name,
         venueName: props.event.venue.name,
         startTime: props.event.startTime,
+        endTime: props.event.endTime,
       }
 
       const notificationTime = subHours(
@@ -267,5 +274,13 @@ export namespace calendar {
         'h:mm',
       )}`,
     }
+  }
+
+  function isSameCalendarDay(lhs: Date | string, rhs: Date | string) {
+    if (getHours(lhs) < startHourOfDay && getHours(rhs) >= startHourOfDay) {
+      return getDate(rhs) === getDate(lhs) - 1
+    }
+
+    return getDate(lhs) === getDate(rhs)
   }
 }

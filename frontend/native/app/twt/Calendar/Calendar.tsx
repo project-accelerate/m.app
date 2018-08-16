@@ -1,18 +1,24 @@
 import React from 'react'
 import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
-import { differenceInHours, min, max, addHours, format } from 'date-fns'
+import {
+  differenceInHours,
+  min,
+  max,
+  addHours,
+  format,
+  startOfDay,
+} from 'date-fns'
 import { times } from 'lodash'
 import { Typography } from '../../common/Typography/Typography'
 import { theme } from '../../../theme'
 
 interface CalendarViewProps {
-  now: Date
+  startTime: Date
+  endTime: Date
   children?: React.ReactElement<CalendarEventProps>[]
 }
 
 interface CalendarViewState {
-  startTime: Date
-  endTime: Date
   clashGroups: string[][]
 }
 
@@ -22,6 +28,7 @@ const styles = StyleSheet.create({
   root: {
     position: 'relative',
     width: '100%',
+    marginVertical: theme.spacing.level(5),
   },
   content: {
     position: 'relative',
@@ -54,22 +61,15 @@ export class CalendarView extends React.Component<
   CalendarViewProps,
   CalendarViewState
 > {
-  state: CalendarViewState = CalendarView.getDerivedStateFromProps(this.props)
-
   static getDerivedStateFromProps({ children = [] }: CalendarViewProps) {
-    const startTime = min(...children.map(c => c.props.start))
-    const endTime = max(...children.map(c => c.props.end))
-
     return {
-      startTime,
-      endTime,
       clashGroups: calculateClashes({
-        startTime,
-        endTime,
         items: children.map(c => c.props),
       }),
     }
   }
+
+  state: CalendarViewState = CalendarView.getDerivedStateFromProps(this.props)
 
   get hourMarks() {
     return times(this.totalHours + 1, i => {
@@ -82,7 +82,7 @@ export class CalendarView extends React.Component<
           ]}
         >
           <Typography variant="caption">
-            {format(addHours(this.state.startTime, i), 'ha')}
+            {format(addHours(this.props.startTime, i), 'ha')}
           </Typography>
         </View>
       )
@@ -90,17 +90,17 @@ export class CalendarView extends React.Component<
   }
 
   get totalHours() {
-    return differenceInHours(this.state.endTime, this.state.startTime)
+    return differenceInHours(this.props.endTime, this.props.startTime)
   }
 
   get viewBounds() {
     return {
-      height: (this.totalHours + 1) * PIXELS_PER_HOUR,
+      height: this.totalHours * PIXELS_PER_HOUR,
     }
   }
 
   verticalOffset(item: CalendarEventProps) {
-    return differenceInHours(item.start, this.state.startTime) * PIXELS_PER_HOUR
+    return differenceInHours(item.start, this.props.startTime) * PIXELS_PER_HOUR
   }
 
   height(item: CalendarEventProps) {
@@ -158,12 +158,8 @@ export class CalendarEvent extends React.Component<CalendarEventProps> {
   }
 }
 
-/** TODO: n^2 */
-function calculateClashes(props: {
-  startTime: Date
-  endTime: Date
-  items: CalendarEventProps[]
-}) {
+/** HACK: n^2 is probably fine here? */
+function calculateClashes(props: { items: CalendarEventProps[] }) {
   const groups: string[][] = []
   const existing = new Map<string, number>()
 

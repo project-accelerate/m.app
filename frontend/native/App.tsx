@@ -5,7 +5,7 @@ import { AppLoading } from 'expo'
 import { RegistrationContainer } from './app/twt/Registration/RegistrationContainer'
 import { setupAppUpdates } from './config/appUpdates'
 import { graphQlClient } from './config/graphql'
-import { topLevelRoutes } from './routes'
+import { Routes } from './routes'
 import { Drawer } from './app/common/Drawer/Drawer'
 import { ReduxProvider } from './config/redux'
 
@@ -18,7 +18,7 @@ export default class App extends React.Component {
     loading: true,
   }
 
-  navigator = createDrawerNavigator(topLevelRoutes, {
+  navigator = createDrawerNavigator(Routes.get().topLevelRoutes, {
     initialRouteName: 'HomeScreen',
     contentComponent: Drawer,
   })

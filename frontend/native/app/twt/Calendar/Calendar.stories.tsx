@@ -12,14 +12,16 @@ export const stories = {
         {
           id: '1',
           name: 'A New Populism?',
-          start: time(18.3).toISOString(),
-          end: time(20, 0).toISOString(),
+          startTime: time(18.3).toISOString(),
+          endTime: time(20, 0).toISOString(),
+          venueName: 'Corn Exchange',
         },
         {
           id: '2',
           name: 'In and Against the State',
-          start: time(21).toISOString(),
-          end: time(22, 0).toISOString(),
+          startTime: time(21).toISOString(),
+          endTime: time(22, 0).toISOString(),
+          venueName: 'Newspeak House',
         },
       ]}
       onEventPress={console.log}
@@ -27,7 +29,7 @@ export const stories = {
   ),
   empty: () => <CalendarView now={now} />,
   'with events': () => (
-    <CalendarView now={now}>
+    <CalendarView now={now} {...defaultTimes}>
       <CalendarEvent
         id="a"
         title="Utopia Now!"
@@ -45,7 +47,7 @@ export const stories = {
     </CalendarView>
   ),
   'with clashing events': () => (
-    <CalendarView now={now}>
+    <CalendarView now={now} {...defaultTimes}>
       <CalendarEvent
         id="a"
         title="Utopia Now!"
@@ -70,4 +72,9 @@ function time(hours: number, minutes: number = 0) {
   date.setMinutes(minutes)
 
   return date
+}
+
+const defaultTimes = {
+  startTime: time(11, 0),
+  endTime: time(23, 0),
 }

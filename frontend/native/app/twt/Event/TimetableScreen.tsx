@@ -4,7 +4,7 @@ import {
   NavigationScreenProps,
 } from 'react-navigation'
 import { TimetableScreenQuery } from '../../../queries'
-import { getRoutename } from '../../../routes'
+import { Routes } from '../../../routes'
 import { createStateConnector } from '../../../state'
 import { createFetchData } from '../../common/FetchData/FetchData'
 import { Screen } from '../../common/Widgets/Widgets'
@@ -28,7 +28,7 @@ export class TimetableScreen extends React.Component<NavigationScreenProps> {
   }
 
   handleEventPressed = ({ event }: EventListItemPressedEvent) => {
-    this.props.navigation.push(getRoutename('EventDetailScreen'), {
+    this.props.navigation.push(Routes.get().getRoutename('EventDetailScreen'), {
       id: event.id,
       title: event.name,
     })
