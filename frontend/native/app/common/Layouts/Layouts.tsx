@@ -6,6 +6,7 @@ import {
   Image,
   StyleProp,
   ViewStyle,
+  ViewProps,
 } from 'react-native'
 
 import bg from './bg.jpg'

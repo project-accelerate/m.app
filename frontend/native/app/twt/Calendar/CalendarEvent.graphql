@@ -1,0 +1,12 @@
+fragment CalendarEvent on Event {
+  id
+  name
+  startTime
+  endTime
+  photo {
+    sourceUrl
+  }
+  venue {
+    name
+  }
+}

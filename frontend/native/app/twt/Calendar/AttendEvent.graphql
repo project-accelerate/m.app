@@ -1,0 +1,11 @@
+mutation AttendEvent($user: String!, $event: String!) {
+  mutateUser(id: $user) {
+    attendEvent(eventId: $event) {
+      user {
+        eventsAttending {
+          id
+        }
+      }
+    }
+  }
+}

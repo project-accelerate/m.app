@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import { NavigationInjectedProps } from 'react-navigation'
-import { getNavigationOptions, allRoutes } from '../../../routes'
+import { Routes } from '../../../routes'
 import { theme } from '../../../theme'
 import { Typography } from '../Typography/Typography'
 import twt from '../twt.png'
@@ -75,12 +75,12 @@ export class Drawer extends React.Component<DrawerProps> {
   }
 
   getRouteComponent(item: Route) {
-    return allRoutes[item.routeName]
+    return Routes.get().allRoutes[item.routeName]
   }
 
   getNavigationOptions(item: Route) {
     const route = this.getRouteComponent(item)
-    return (route && getNavigationOptions(route, this.props as any)) || {}
+    return Routes.get().getNavigationOptions(route, this.props as any)
   }
 
   render() {

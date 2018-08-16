@@ -1,11 +1,12 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { Formik } from 'formik'
+import { Formik, FormikHandlers } from 'formik'
 import { Button } from '../../common/Butttons/Buttons'
 import { Typography } from '../../common/Typography/Typography'
 import { Background } from '../../common/Layouts/Layouts'
 import { theme } from '../../../theme'
 import { FormField } from '../../common/Widgets/Widgets'
+import { RegistrationStageProps } from './RegistrationContainer'
 
 const styles = StyleSheet.create({
   bg: {
@@ -36,13 +37,7 @@ const styles = StyleSheet.create({
   },
 })
 
-interface RegistrationQuestionProps<T> {
-  onSubmit: (response: T) => void
-}
-
-export function RegistrationIsDelegateQuestion(
-  props: RegistrationQuestionProps<boolean>,
-) {
+export function RegistrationIsDelegateQuestion(props: RegistrationStageProps) {
   return (
     <RegistrationPanel>
       <RegistrationPrompt>
@@ -53,14 +48,14 @@ export function RegistrationIsDelegateQuestion(
         <Button
           size="small"
           style={styles.button}
-          onPress={submitHandler(props, true)}
+          onPress={() => props.onSubmit({ isConferenceDelegate: true })}
         >
           Yes
         </Button>
         <Button
           size="small"
           style={styles.button}
-          onPress={submitHandler(props, false)}
+          onPress={() => props.onSubmit({ isConferenceDelegate: false })}
         >
           No
         </Button>
@@ -73,9 +68,7 @@ export function RegistrationIsDelegateQuestion(
   )
 }
 
-export function AcceptNotificationsPanel(
-  props: RegistrationQuestionProps<boolean>,
-) {
+export function AcceptNotificationsPanel(props: RegistrationStageProps) {
   return (
     <RegistrationPanel>
       <RegistrationPrompt>
@@ -87,14 +80,14 @@ export function AcceptNotificationsPanel(
         <Button
           size="small"
           style={styles.button}
-          onPress={submitHandler(props, true)}
+          onPress={() => props.onSubmit({ optedIntoNotifications: true })}
         >
           Yes
         </Button>
         <Button
           size="small"
           style={styles.button}
-          onPress={submitHandler(props, false)}
+          onPress={() => props.onSubmit({ optedIntoNotifications: false })}
         >
           No
         </Button>
@@ -107,14 +100,14 @@ export function AcceptNotificationsPanel(
   )
 }
 
-export function RegistrationAskEmailPanel(
-  props: RegistrationQuestionProps<string | undefined>,
-) {
+export function RegistrationAskEmailPanel(props: RegistrationStageProps) {
   return (
     <Formik
-      onSubmit={(value: { email: string }) => props.onSubmit(value.email)}
+      onSubmit={(value: { email: string }) =>
+        props.onSubmit({ email: value.email })
+      }
       initialValues={{ email: '' }}
-      render={({ handleSubmit }) => (
+      render={({ handleSubmit }: FormikHandlers) => (
         <RegistrationPanel>
           <RegistrationPrompt>Give us your email please?</RegistrationPrompt>
 
@@ -123,11 +116,7 @@ export function RegistrationAskEmailPanel(
           </RegistrationActions>
 
           <RegistrationActions>
-            <Button
-              size="small"
-              style={styles.button}
-              onPress={submitHandler(props, undefined)}
-            >
+            <Button size="small" style={styles.button} onPress={props.onSkip}>
               Skip
             </Button>
             <Button size="small" style={styles.button} onPress={handleSubmit}>
@@ -174,8 +163,4 @@ function RegistrationHelpText({ children }: React.Props<{}>) {
 
 function RegistrationActions({ children }: React.Props<{}>) {
   return <View style={styles.actions}>{children}</View>
-}
-
-function submitHandler<T>(props: RegistrationQuestionProps<T>, value: T) {
-  return () => props.onSubmit(value)
 }

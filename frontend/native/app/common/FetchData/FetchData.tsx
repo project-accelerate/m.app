@@ -2,6 +2,7 @@ import React from 'react'
 import { DocumentNode } from 'graphql'
 import { Query } from 'react-apollo'
 import { LoadingOverlay } from '../Widgets/Widgets'
+import { ApolloClient } from 'apollo-client'
 
 interface FetchDataOpts {
   query: DocumentNode
@@ -9,7 +10,7 @@ interface FetchDataOpts {
 
 interface FetchDataProps<Data, Params> {
   variables: Params
-  children: (props: { data: Data }) => React.ReactNode
+  children: (props: { data: Data; client: ApolloClient<{}> }) => React.ReactNode
 }
 
 export function createFetchData<Data, Params>({ query }: FetchDataOpts) {
@@ -27,12 +28,12 @@ export function createFetchData<Data, Params>({ query }: FetchDataOpts) {
 
       return (
         <Query query={query} variables={variables}>
-          {({ data, loading }) => {
+          {({ data, loading, client }) => {
             if (!data || loading) {
               return <LoadingOverlay />
             }
 
-            return children({ data })
+            return children({ data, client })
           }}
         </Query>
       )

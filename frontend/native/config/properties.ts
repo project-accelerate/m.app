@@ -6,9 +6,6 @@ const substitutions = {
 }
 
 export const BACKEND_URL = configProperty('backendUrl')
-export const ALWAYS_REGISTER_DEVICE = configProperty('alwaysRegisterDevice', {
-  defaultValue: false,
-})
 export const PROFILE = configProfile()
 
 console.log(`Running with ${configProfile()} profile`)

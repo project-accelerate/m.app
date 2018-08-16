@@ -1,0 +1,11 @@
+mutation CancelEventAttendance($user: String!, $event: String!) {
+  mutateUser(id: $user) {
+    cancelAttendance(eventId: $event) {
+      user {
+        eventsAttending {
+          id
+        }
+      }
+    }
+  }
+}

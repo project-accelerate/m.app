@@ -2,7 +2,10 @@ import { withDb, execQuery } from 'backend/app/test/integrationTestUtils'
 import { RegisterConferenceAttendanceRequest } from 'backend/app/conference/domain/ConferenceAttendance'
 import { DeviceType } from 'backend/app/user/domain/Device'
 import { EventFamily } from 'common/domain/EventFamily'
-import { givenThatAConferenceAttendanceExists } from 'backend/app/conference/test/conferenceTestUtils'
+import {
+  givenThatAConferenceAttendanceExists,
+  givenThatAnEventAttendanceExists,
+} from 'backend/app/conference/test/conferenceTestUtils'
 import { givenThatAnEventExists } from 'backend/app/events/test/eventTestUtils'
 
 describe('User.conferenceEvents', () => {
@@ -27,6 +30,19 @@ describe('User.conferenceEvents', () => {
       })
     }),
   )
+
+  it(
+    'returns events that the user is attending',
+    withDb(async () => {
+      const attendance = await givenThatAnEventAttendanceExists()
+
+      const { user } = await eventsAttending(attendance.user)
+
+      expect(user).toMatchObject({
+        eventsAttending: [{ id: attendance.event }],
+      })
+    }),
+  )
 })
 
 async function userConferenceEvents(userId: string) {
@@ -40,6 +56,21 @@ async function userConferenceEvents(userId: string) {
                 id
               }
             }
+          }
+        }
+      }
+    `,
+    variables: { id: userId },
+  })
+}
+
+async function eventsAttending(userId: string) {
+  return execQuery({
+    body: `
+      query($id: String!) {
+        user(id: $id) {
+          eventsAttending {
+            id
           }
         }
       }
