@@ -3,7 +3,15 @@ import { View } from 'react-native'
 import { Toolbar, ToolbarRadio } from '../../common/Widgets/Widgets'
 import { CalendarView, CalendarEvent } from './Calendar'
 import { calendar } from './calendarState'
-import { isSameDay, format, addHours, startOfDay, addDays } from 'date-fns'
+import {
+  isSameDay,
+  format,
+  addHours,
+  startOfDay,
+  addDays,
+  max,
+  min,
+} from 'date-fns'
 
 interface SavedEventCalendarProps {
   activeDay: Date
@@ -18,12 +26,19 @@ export class SavedEventCalendar extends React.Component<
 > {
   initialTime = new Date()
 
-  get startTime() {
+  get startOfCalendarDay() {
     return addHours(startOfDay(this.props.activeDay), calendar.startHourOfDay)
   }
 
+  get startTime() {
+    const firstEvent = this.props.events[0]
+    const defaultStart = addHours(this.startOfCalendarDay, 6)
+
+    return firstEvent ? min(firstEvent.startTime, defaultStart) : defaultStart
+  }
+
   get endTime() {
-    return addDays(this.startTime, 1)
+    return addDays(this.startOfCalendarDay, 1)
   }
 
   render() {

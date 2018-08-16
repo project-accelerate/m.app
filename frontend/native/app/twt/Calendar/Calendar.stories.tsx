@@ -2,12 +2,15 @@ import React from 'react'
 import { CalendarEvent, CalendarView } from './Calendar'
 import { SavedEventCalendar } from './CalendarController'
 
-const now = time(18)
-
 export const stories = {
   'whole screen': () => (
     <SavedEventCalendar
-      now={now}
+      activeDay={new Date('2010-01-01')}
+      dayOptions={[
+        new Date('2010-01-01'),
+        new Date('2010-01-02'),
+        new Date('2010-01-03'),
+      ]}
       events={[
         {
           id: '1',
@@ -25,6 +28,7 @@ export const stories = {
         },
       ]}
       onEventPress={console.log}
+      onDayChanged={console.log}
     />
   ),
   empty: () => <CalendarView now={now} />,
