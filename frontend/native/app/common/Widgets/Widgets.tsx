@@ -31,6 +31,7 @@ import { Routes } from '../../../routes'
 import { HomeScreen } from '../../twt/Home/HomeScreen'
 import { getStatusBarHeight } from '../platform'
 import { Constants } from 'expo'
+import { NotificationListener } from '../Notification/NotificationListener'
 
 const FieldStyle = StyleSheet.create({
   field: {
@@ -238,6 +239,7 @@ export const Screen = withNavigation(function MenuBar({
 
   return (
     <View style={ScreenStyles.screen}>
+      <NotificationListener />
       <SafeAreaView style={[ScreenStyles.menu, floatStyle]}>
         <TouchableOpacity style={ScreenStyles.button} onPress={goBack}>
           {!noBackButton && (

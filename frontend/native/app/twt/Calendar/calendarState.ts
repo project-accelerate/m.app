@@ -18,6 +18,7 @@ import { graphQlClient } from '../../../config/graphql'
 import AttendEvent from './AttendEvent.graphql'
 import CancelEventAttendance from './CancelEventAttendance.graphql'
 import { createLogger } from '../../common/logger'
+import { createEventReminderNotification } from './EventReminderNotification'
 
 /**
  * IMPORTANT!
@@ -135,7 +136,7 @@ export namespace calendar {
       )
 
       const notificationToken = await Notifications.scheduleLocalNotificationAsync(
-        createNotification(details),
+        createEventReminderNotification(details),
         {
           time: notificationTime,
         },
@@ -200,7 +201,7 @@ export namespace calendar {
       }
 
       await Notifications.scheduleLocalNotificationAsync(
-        createNotification(event),
+        createEventReminderNotification(event),
         { time: addSeconds(new Date(), 10) },
       )
     },
@@ -252,27 +253,6 @@ export namespace calendar {
       })
     } catch (error) {
       console.error(error)
-    }
-  }
-
-  function createNotification(
-    event: SavedEventDetails,
-  ): Notifications.LocalNotification {
-    return {
-      title: `Happening soon`,
-      data: event,
-      android: {
-        color: theme.pallete.accent,
-        vibrate: true,
-        sound: true,
-      },
-      ios: {
-        sound: true,
-      },
-      body: `${event.name} will be starting at ${event.venueName} at ${format(
-        event.startTime,
-        'h:mm',
-      )}`,
     }
   }
 

@@ -27,7 +27,9 @@ export class Routes {
     return Routes.instance
   }
 
-  private devOnlyRoutes = __DEV__ ? { DevPanel } : {}
+  private devOnlyRoutes = __DEV__
+    ? { DevPanel: this.createRootNavigator(DevPanel) }
+    : {}
 
   getNavigationOptions(
     component: RouteComponent | undefined,
