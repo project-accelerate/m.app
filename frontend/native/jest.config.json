@@ -1,17 +1,34 @@
 {
+  "preset": "react-native",
+  "transformIgnorePatterns": [
+    "node_modules/(?!(.*-)?react-(.*-)?native(-.*)?)"
+  ],
+  "moduleFileExtensions": [
+    "ts",
+    "tsx",
+    "js",
+    "jsx",
+    "json",
+    "ios.ts",
+    "ios.tsx",
+    "android.ts",
+    "android.tsx"
+  ],
+  "snapshotSerializers": ["./node_modules/enzyme-to-json/serializer"],
   "transform": {
     "^.+\\.jsx?$": "babel-jest",
     "^.+\\.tsx?$": "ts-jest"
   },
   "setupTestFrameworkScriptFile": "<rootDir>/testSetup.js",
   "testRegex": "__tests__/.*\\.(test|spec)\\.tsx?$",
-  "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
   "collectCoverage": true,
   "collectCoverageFrom": ["<rootDir>/**/*.ts?(x)"],
   "coverageDirectory": ".coverage",
   "globals": {
+    "window": {},
     "ts-jest": {
-      "useBabelrc": true
+      "useBabelrc": true,
+      "tsConfigFile": "tsconfig.json"
     }
   }
 }

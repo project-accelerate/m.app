@@ -8,6 +8,7 @@
     "@shoutem/ui": "^0.23.4",
     "@types/date-fns": "^2.6.0",
     "@types/expo__vector-icons": "^6.2.2",
+    "@types/jest": "^23.3.1",
     "@types/lodash": "^4.14.115",
     "@types/react": "^16.4.10",
     "@types/react-native-snap-carousel": "^3.6.3",
@@ -46,6 +47,7 @@
     "@types/node": "^10.3.3",
     "@types/react-native": "^0.55.21",
     "@types/react-navigation": "^2.0.9",
+    "enzyme-to-json": "^3.3.4",
     "expobook": "^0.0.4",
     "faker": "^4.1.0",
     "react-native-graphql-transformer": "^0.1.3"

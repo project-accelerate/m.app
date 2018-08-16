@@ -5,7 +5,7 @@ import {
 } from 'react-navigation'
 import { Screen } from '../../common/Widgets/Widgets'
 import { SavedEventCalendar } from './CalendarController'
-import { addHours, isSameDay } from 'date-fns'
+import { isSameDay } from 'date-fns'
 import { createParametricStateConnector } from '../../../state'
 import { calendar } from './calendarState'
 import { EventDetailScreen } from '../Event/EventDetailScreen'
