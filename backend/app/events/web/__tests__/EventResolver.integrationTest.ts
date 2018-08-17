@@ -9,6 +9,21 @@ import { addDays } from 'date-fns'
 
 describe('EventResolver', () => {
   it(
+    'get all events with family TWT_2018 ',
+    withDb(async () => {
+      const result = await execQuery(`
+      {
+        eventsByFamily(family: "${'TWT_2018'}") {
+          id
+        }
+      }
+    `)
+
+      expect(result.length).toBeGreaterThan(1)
+    }),
+  )
+
+  it(
     'looks up events by id, returning associated objects',
     withDb(async () => {
       const venue = await givenThatAVenueExists()
