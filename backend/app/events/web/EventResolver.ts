@@ -17,6 +17,7 @@ import { EventFeedService } from '../application/EventFeedService'
 import { Photo } from '../domain/Photo'
 import { PhotoStorageService } from '../application/PhotoStorageService'
 import { createSimpleConnection } from '../../common/Connection'
+import { EventFamily } from '../../../../node_modules/common/domain/EventFamily'
 
 const AllEventsConnection = createSimpleConnection({
   type: Event,
@@ -55,6 +56,14 @@ export class EventResolver {
   })
   event(@Arg('id') id: string) {
     return this.eventRepository.findOne({ id })
+  }
+
+  @Query(() => Event, {
+    nullable: true,
+    description: 'Get all events of a family',
+  })
+  eventsByFamily(@Arg('family') family: EventFamily) {
+    return this.eventRepository.find({ family })
   }
 
   @Query(() => [Event], {
