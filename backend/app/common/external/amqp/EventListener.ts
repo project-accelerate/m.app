@@ -1,5 +1,4 @@
 import { Container } from 'typedi'
-import log from 'winston'
 import { AMQPConnection } from './AMQPConnection'
 
 export function EventListener(type: Function): MethodDecorator {
