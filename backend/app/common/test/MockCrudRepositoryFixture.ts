@@ -1,4 +1,12 @@
-import { mock, instance, when, anything, verify, deepEqual } from 'ts-mockito'
+import {
+  mock,
+  instance,
+  when,
+  anything,
+  verify,
+  deepEqual,
+  anyOfClass,
+} from 'ts-mockito'
 import { CrudRepository } from '../CrudRepository'
 import { MockRelationFixture } from './MockRelationFixture'
 
@@ -24,15 +32,26 @@ export class MockCrudRepositoryFixture<
 
   givenIdReturnedFromInsert(id: string) {
     when(this.mock.insert(anything())).thenCall(props => ({ ...props, id }))
+
+    when(this.mock.insert(anyOfClass(Array))).thenCall(items =>
+      items.map((props: any) => ({ ...props, id })),
+    )
   }
 
-  givenObjectReturnedFromFindOne(object: T) {
+  givenObjectReturnedFromFindById(object: T) {
     const repository = this.mock as CrudRepository<{ id: string }>
 
     when(repository.findOne(deepEqual({ id: object.id }))).thenResolve(object)
     when(repository.findOneRequired(deepEqual({ id: object.id }))).thenResolve(
       object,
     )
+    when(repository.findOne(deepEqual({ id: object.id }))).thenResolve(object)
+  }
+
+  givenObjectsReturnedFromFindAll(objects: Props[]) {
+    const repository = this.mock as CrudRepository<{ id: string }>
+
+    when(repository.findAll()).thenResolve(objects as any)
   }
 
   verifyInserted(props: Props) {

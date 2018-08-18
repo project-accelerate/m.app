@@ -34,6 +34,19 @@ export function shouldSupportStandardCrudFunctions<
   )
 
   it(
+    `should support inserting many`,
+    withDb(async () => {
+      const fixture = new Fixture()
+      const items = Promise.all([opts.example(), opts.example()])
+
+      const result = await fixture.repository.insert(items)
+      const foundObject = await fixture.repository.findOne({ id: result[0].id })
+
+      expect(foundObject).toMatchObject(result[0])
+    }),
+  )
+
+  it(
     `when entity not inserted, should throw for non-optional get`,
     withDb(async () => {
       const fixture = new Fixture()
