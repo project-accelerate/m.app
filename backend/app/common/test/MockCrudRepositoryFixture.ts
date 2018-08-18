@@ -39,7 +39,7 @@ export class MockCrudRepositoryFixture<
   }
 
   givenObjectReturnedFromFindById(object: T) {
-    const repository = this.mock as CrudRepository<{ id: string }>
+    const repository = this.mock
 
     when(repository.findOne(deepEqual({ id: object.id }))).thenResolve(object)
     when(repository.findOneRequired(deepEqual({ id: object.id }))).thenResolve(
@@ -49,7 +49,7 @@ export class MockCrudRepositoryFixture<
   }
 
   givenObjectsReturnedFromFindAll(objects: Props[]) {
-    const repository = this.mock as CrudRepository<{ id: string }>
+    const repository = this.mock
 
     when(repository.findAll()).thenResolve(objects as any)
   }
