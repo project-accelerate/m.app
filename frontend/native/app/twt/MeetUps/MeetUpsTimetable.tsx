@@ -4,16 +4,21 @@ import {
   NavigationScreenProps,
 } from 'react-navigation'
 import { TimetableScreenQuery } from '../../../queries'
-import { EventList } from '../Event/EventList'
+import { Routes } from '../../../routes'
+import { createStateConnector } from '../../../state'
 import { createFetchData } from '../../common/FetchData/FetchData'
-import { EventListItemPressedEvent } from '../Event/EventListItem'
-import { getRoutename } from '../../../routes'
-import TimetableScreenQueryDocument from '../Event/TimetableScreen.graphql'
-import { WithRegistration } from '../Registration/UserProvider'
 import { Screen } from '../../common/Widgets/Widgets'
+import { registration } from '../Registration/registrationState'
+import TimetableScreenQueryDocument from './TimetableScreen.graphql'
+import { EventListItemPressedEvent } from '../Event/EventListItem'
+import { EventList } from '../Event/EventList'
 
 const FetchEvents = createFetchData<TimetableScreenQuery, {}>({
   query: TimetableScreenQueryDocument,
+})
+
+const Connect = createStateConnector({
+  userId: registration.selectors.userId,
 })
 
 export class MeetUpsTimetable extends React.Component<NavigationScreenProps> {
@@ -23,7 +28,7 @@ export class MeetUpsTimetable extends React.Component<NavigationScreenProps> {
   }
 
   handleEventPressed = ({ event }: EventListItemPressedEvent) => {
-    this.props.navigation.push(getRoutename('EventDetailScreen'), {
+    this.props.navigation.push(Routes.get().getRoutename('EventDetailScreen'), {
       id: event.id,
       title: event.name,
     })
@@ -32,7 +37,7 @@ export class MeetUpsTimetable extends React.Component<NavigationScreenProps> {
   render() {
     return (
       <Screen>
-        <WithRegistration>
+        <Connect>
           {({ userId }) => (
             <FetchEvents variables={{ userId }}>
               {({ data }) => (
@@ -43,7 +48,7 @@ export class MeetUpsTimetable extends React.Component<NavigationScreenProps> {
               )}
             </FetchEvents>
           )}
-        </WithRegistration>
+        </Connect>
       </Screen>
     )
   }
