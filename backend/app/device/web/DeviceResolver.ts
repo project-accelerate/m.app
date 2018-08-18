@@ -1,8 +1,8 @@
 import { Resolver, FieldResolver, Root, Arg, Query } from 'type-graphql'
-import { DeviceRepository } from 'backend/app/user/external/DeviceRepository'
+import { User } from 'backend/app/user/domain/User'
+import { UserRepository } from 'backend/app/user/external/UserRepository'
 import { Device } from '../domain/Device'
-import { User } from '../domain/User'
-import { UserRepository } from '../external/UserRepository'
+import { DeviceRepository } from '../external/DeviceRepository'
 
 @Resolver(() => Device)
 export class DeviceResolver {
