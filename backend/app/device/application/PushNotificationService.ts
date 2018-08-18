@@ -33,7 +33,7 @@ export class PushNotificationService {
     )
   }
 
-  @ScheduledTask(TaskType.HALF_HOURLY)
+  @ScheduledTask(TaskType.HOURLY)
   async checkNotificationReceipts() {
     const deliveryReceipts = await this.getNotificationReceipts()
 
