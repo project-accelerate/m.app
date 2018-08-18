@@ -1,0 +1,5 @@
+sudo: required
+cache: yarn
+install: yarn --frozen-lockfile
+services:
+  - docker
