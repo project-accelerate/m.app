@@ -13,6 +13,7 @@
     "test:unit": "ts-node --project tasks/tsconfig.json -T tasks unitTest",
     "test:integration:backend": "ts-node --project tasks/tsconfig.json -T tasks integrationTest backend",
     "start": "ts-node --project tasks/tsconfig.json -T tasks start",
+    "scheduled": "ts-node --project tasks/tsconfig.json -T tasks runScheduledTask",
     "release": "ts-node --project tasks/tsconfig.json -T tasks release",
     "develop:backend": "ts-node --project tasks/tsconfig.json -T tasks developBackend",
     "develop:frontend:web": "ts-node --project tasks/tsconfig.json -T tasks developFrontend",

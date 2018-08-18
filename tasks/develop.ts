@@ -1,4 +1,4 @@
-import { createDockerUp } from './utils/docker'
+import { createDockerUp, createDockerRun } from './utils/docker'
 import { createShellCmd } from './utils/shell'
 import { join } from 'path'
 
@@ -8,6 +8,17 @@ const devDockerfile = 'backend/docker/docker-compose.development.yml'
 export function developBackend() {
   const up = createDockerUp([baseDockerfile, devDockerfile])
   up()
+}
+
+export function runScheduledTask(id: string) {
+  const run = createDockerRun(
+    [baseDockerfile, devDockerfile],
+    'web',
+    'yarn start backend',
+    { workdir: `/app` },
+  )
+
+  run('task', id)
 }
 
 export function developFrontend() {

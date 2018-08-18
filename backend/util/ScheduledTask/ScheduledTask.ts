@@ -8,8 +8,8 @@ export function ScheduledTask(type: TaskType): MethodDecorator {
       type,
       name: `${parent.constructor.name}.${key.toString()}`,
       handler: async () => {
-        const service = Container.get(parent.constructor)
-        await parent[key]()
+        const service = Container.get<any>(parent.constructor)
+        await service[key]()
       },
     })
   }

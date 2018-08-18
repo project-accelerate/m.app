@@ -117,10 +117,11 @@
     "ts-jest": "^22.4.6",
     "ts-loader": "3",
     "ts-mockito": "^2.3.0",
-    "ts-node": "^6.0.3",
-    "typescript": "^2.9.2"
+    "ts-node": "^6.0.3"
   },
   "babel": {
-    "presets": ["react-app"]
+    "presets": [
+      "react-app"
+    ]
   }
 }
