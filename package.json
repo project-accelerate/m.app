@@ -34,9 +34,9 @@
     "yarn": "^1.0.0"
   },
   "dependencies": {
-    "node": "^10.8.0",
     "@types/dotenv": "^4.0.3",
     "dotenv": "^6.0.0",
+    "node": "^10.8.0",
     "ts-node": "^6.1.1",
     "typescript": "2.9"
   },
