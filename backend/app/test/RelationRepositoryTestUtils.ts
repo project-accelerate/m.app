@@ -16,7 +16,7 @@ interface OneToManyRelationTestProps<
 
 export function shouldSupportOneToManyRelation<
   Key extends string,
-  Repository extends CrudRepository & Record<Key, RelationRepository>
+  Repository extends CrudRepository & Record<Key, RelationRepository<any>>
 >(props: OneToManyRelationTestProps<Key, Repository>) {
   describe(props.relation, () => {
     it(
