@@ -1,15 +1,15 @@
-import { Service } from "typedi";
-import { keyBy } from "lodash";
-import { Memoize } from "lodash-decorators";
-import { ExpoPushReceipt } from "expo-server-sdk";
-import { ScheduledTask, TaskType } from "backend/util/ScheduledTask";
-import { oneOf } from "backend/app/common/CrudRepository";
-import { DateProvider } from "backend/app/common/DateProvider";
-import { ExpoPushClient } from "../external/ExpoPushClient";
-import { PendingNotificationRepository } from "../external/PendingNotificationRepository";
-import { PushNotificationRequest } from "../domain/PushNotificationRequest";
-import { DeviceAdminService } from "./DeviceAdminService";
-import { PendingNotification } from "../../../../node_modules/backend/app/device/domain/PendingNotification";
+import { Service } from 'typedi'
+import { keyBy } from 'lodash'
+import { Memoize } from 'lodash-decorators'
+import { ExpoPushReceipt } from 'expo-server-sdk'
+import { ScheduledTask, TaskType } from 'backend/util/ScheduledTask'
+import { oneOf } from 'backend/app/common/CrudRepository'
+import { DateProvider } from 'backend/app/common/DateProvider'
+import { ExpoPushClient } from '../external/ExpoPushClient'
+import { PendingNotificationRepository } from '../external/PendingNotificationRepository'
+import { PushNotificationRequest } from '../domain/PushNotificationRequest'
+import { DeviceAdminService } from './DeviceAdminService'
+import { PendingNotification } from '../../../../node_modules/backend/app/device/domain/PendingNotification'
 
 @Service()
 export class PushNotificationService {
@@ -17,19 +17,19 @@ export class PushNotificationService {
     private dateProvider: DateProvider,
     private expoClient: ExpoPushClient,
     private pendingNotificationRepository: PendingNotificationRepository,
-    private deviceAdminService: DeviceAdminService
-  ) { }
+    private deviceAdminService: DeviceAdminService,
+  ) {}
 
   async sendNotifications(requests: PushNotificationRequest[]) {
     const messages = requests.map(req => req.payload)
     const tickets = await this.expoClient.sendNotifications(messages)
 
-    await this.pendingNotificationRepository.insert(
+    await this.pendingNotificationRepository.bulkInsert(
       tickets.map((receipt, i) => ({
         timeSent: this.dateProvider.now(),
         ticketId: receipt.id,
-        deviceId: requests[i].deviceId
-      }))
+        deviceId: requests[i].deviceId,
+      })),
     )
   }
 
@@ -38,22 +38,25 @@ export class PushNotificationService {
     const deliveryReceipts = await this.getNotificationReceipts()
 
     if (deliveryReceipts.unregisteredDeviceIds.length > 0) {
-      this.deviceAdminService
-        .unregisterDevicesFromOwners(deliveryReceipts.unregisteredDeviceIds)
+      this.deviceAdminService.unregisterDevicesFromOwners(
+        deliveryReceipts.unregisteredDeviceIds,
+      )
     }
 
     this.pendingNotificationRepository.delete({
-      id: oneOf(...deliveryReceipts.completedNotificationIds)
+      id: oneOf(...deliveryReceipts.completedNotificationIds),
     })
   }
 
   private async getNotificationReceipts() {
     const pendingNotifications = await this.pendingNotificationRepository.findAll()
-    const ticketIds = pendingNotifications.map(notification => notification.ticketId)
+    const ticketIds = pendingNotifications.map(
+      notification => notification.ticketId,
+    )
 
-    const receipts = await this
-      .expoClient.
-      requestNotificationReceipts(ticketIds)
+    const receipts = await this.expoClient.requestNotificationReceipts(
+      ticketIds,
+    )
 
     return new NotificationDeliveryReceipts(pendingNotifications, receipts)
   }
@@ -62,13 +65,18 @@ export class PushNotificationService {
 class NotificationDeliveryReceipts {
   private pendingNotificationsByTicketId: Record<string, PendingNotification>
 
-  constructor(notifications: PendingNotification[], private receipts: Record<string, ExpoPushReceipt>) {
+  constructor(
+    notifications: PendingNotification[],
+    private receipts: Record<string, ExpoPushReceipt>,
+  ) {
     this.pendingNotificationsByTicketId = keyBy(notifications, n => n.ticketId)
   }
 
   @Memoize
   get completedNotificationIds() {
-    return this.receivedTicketIds.map(ticketId => this.pendingNotificationsByTicketId[ticketId].id)
+    return this.receivedTicketIds.map(
+      ticketId => this.pendingNotificationsByTicketId[ticketId].id,
+    )
   }
 
   @Memoize
@@ -79,7 +87,9 @@ class NotificationDeliveryReceipts {
   @Memoize
   get unregisteredDeviceIds() {
     return this.receivedTicketIds
-      .filter(ticketId => this.receiptIndicatesUnregisteredDevice(this.getPushRecipt(ticketId)))
+      .filter(ticketId =>
+        this.receiptIndicatesUnregisteredDevice(this.getPushRecipt(ticketId)),
+      )
       .map(ticketId => this.getDeviceIdForTicket(ticketId))
   }
 
@@ -93,9 +103,9 @@ class NotificationDeliveryReceipts {
 
   private receiptIndicatesUnregisteredDevice(receipt: ExpoPushReceipt) {
     return (
-      receipt.status === 'error'
-      && receipt.details
-      && receipt.details.error === 'DeviceNotRegistered'
+      receipt.status === 'error' &&
+      receipt.details &&
+      receipt.details.error === 'DeviceNotRegistered'
     )
   }
 }

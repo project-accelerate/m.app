@@ -77,7 +77,11 @@ export interface CrudRepository<T = {}, Props = {}> {
    * Insert an object into the database
    */
   insert(data: Props): Promise<T>
-  insert(data: Props[]): Promise<T[]>
+
+  /**
+   * Insert many objects into the database
+   */
+  bulkInsert(data: Props[]): Promise<void>
 
   /**
    * Update an object into the database
@@ -226,18 +230,18 @@ export function CrudRepository<T extends { id: string }, Props = WithoutId<T>>(
     }
 
     async insert(data: any): Promise<any> {
-      if (!Array.isArray(data)) {
-        return this.insert([data]).then(result => result[0])
-      }
-
-      const insertedData = data.map(d => ({ ...this.encode(d), id: uuid() }))
-
-      await this.db.knex
-        .insert(insertedData)
+      return await this.db.knex
+        .insert({ ...this.encode(data), id: uuid() })
         .into(opts.tableName)
+        .returning('id')
         .then(x => ({ ...data, id: x[0] }))
+    }
 
-      return insertedData
+    async bulkInsert(data: any[]): Promise<any> {
+      return await this.db.knex
+        .insert(data.map(d => ({ ...this.encode(d), id: uuid() })))
+        .into(opts.tableName)
+        .returning('id')
     }
 
     async update(id: string, data: any): Promise<void> {

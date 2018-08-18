@@ -37,12 +37,12 @@ export function shouldSupportStandardCrudFunctions<
     `should support inserting many`,
     withDb(async () => {
       const fixture = new Fixture()
-      const items = Promise.all([opts.example(), opts.example()])
+      const items = await Promise.all([opts.example(), opts.example()])
 
-      const result = await fixture.repository.insert(items)
-      const foundObject = await fixture.repository.findOne({ id: result[0].id })
+      const result = await fixture.repository.bulkInsert(items)
+      const foundObject = await fixture.repository.findOne({ id: items[0].id })
 
-      expect(foundObject).toMatchObject(result[0])
+      expect(foundObject).toMatchObject(items[0])
     }),
   )
 
