@@ -28,14 +28,17 @@ export function typecheck(dir: string) {
   tsc({ noEmit: true })
 }
 
-export async function unitTest(dir: string) {
+export async function unitTest(dir: string, ...jestArgs: string[]) {
   const jest = createShellCmd('jest', { cwd: dir })
 
-  jest({
-    config: 'jest.config.json',
-    watchman: false,
-    forceExit: true,
-  })
+  jest(
+    {
+      config: 'jest.config.json',
+      watchman: false,
+      forceExit: true,
+    },
+    ...jestArgs,
+  )
 }
 
 export async function integrationTest(dir: string) {
