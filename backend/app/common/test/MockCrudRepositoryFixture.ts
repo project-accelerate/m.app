@@ -54,7 +54,11 @@ export class MockCrudRepositoryFixture<
     when(repository.findAll()).thenResolve(objects as any)
   }
 
-  verifyInserted(props: Props) {
-    verify(this.mock.insert(deepEqual(props))).called()
+  verifyInserted(props: Props | Props[]) {
+    if (Array.isArray(props)) {
+      verify(this.mock.bulkInsert(deepEqual(props))).called()
+    } else {
+      verify(this.mock.insert(deepEqual(props))).called()
+    }
   }
 }
