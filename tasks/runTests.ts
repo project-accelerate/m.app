@@ -30,6 +30,7 @@ export function typecheck(dir: string) {
 
 export async function unitTest(dir: string, ...jestArgs: string[]) {
   const jest = createShellCmd('jest', { cwd: dir })
+  jest({ clearCache: true })
 
   jest(
     {
