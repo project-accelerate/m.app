@@ -76,15 +76,13 @@ export interface CrudRepository<T = {}, Props = {}> {
   /**
    * Insert an object into the database
    */
-  insert(data: { [P in keyof Props]: Props[P] | Knex.QueryBuilder }): Promise<T>
+  insert(data: Props): Promise<T>
+  insert(data: Props[]): Promise<T[]>
 
   /**
    * Update an object into the database
    */
-  update(
-    id: string,
-    data: { [P in keyof Partial<Props>]: Props[P] | Knex.QueryBuilder },
-  ): Promise<void>
+  update(id: string, data: Change<Partial<Props>>): Promise<void>
 }
 
 export type CrudRepositoryType<T = {}> = new (
@@ -122,6 +120,7 @@ export interface OneOf<T> {
   value: Set<T>
 }
 
+export type Change<T> = { [P in keyof T]: T[P] | Knex.QueryBuilder }
 export type SelectClauses<T> = Partial<{ [P in keyof T]: OneOf<T[P]> | T[P] }>
 export type SelectClause<T> = OneOf<T>
 
@@ -226,12 +225,19 @@ export function CrudRepository<T extends { id: string }, Props = WithoutId<T>>(
       return this.find({})
     }
 
-    async insert(data: any): Promise<T> {
-      return await this.db.knex
-        .insert({ ...this.encode(data), id: uuid() })
+    async insert(data: any): Promise<any> {
+      if (!Array.isArray(data)) {
+        return this.insert([data]).then(result => result[0])
+      }
+
+      const insertedData = data.map(d => ({ ...this.encode(d), id: uuid() }))
+
+      await this.db.knex
+        .insert(insertedData)
         .into(opts.tableName)
-        .returning('id')
         .then(x => ({ ...data, id: x[0] }))
+
+      return insertedData
     }
 
     async update(id: string, data: any): Promise<void> {
