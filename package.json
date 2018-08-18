@@ -33,6 +33,7 @@
     "node": "^10.0.0",
     "yarn": "^1.0.0"
   },
+  "engineStrict": false,
   "dependencies": {
     "@types/dotenv": "^4.0.3",
     "dotenv": "^6.0.0",
