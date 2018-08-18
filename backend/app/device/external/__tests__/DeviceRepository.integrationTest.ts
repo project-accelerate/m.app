@@ -3,7 +3,7 @@ import { DeviceRepository } from '../DeviceRepository'
 import {
   givenThatADeviceExists,
   someOtherDeviceType,
-} from '../../test/userTestUtils'
+} from '../../test/deviceTestUtils'
 
 describe('DeviceRepository', () => {
   shouldSupportStandardCrudFunctions({

@@ -39,7 +39,7 @@ describe('EventAdminService', () => {
       speakers: [speaker.id],
     })
 
-    fixture.venueRepository.givenObjectReturnedFromFindOne(venue)
+    fixture.venueRepository.givenObjectReturnedFromFindById(venue)
     fixture.eventRepository.givenIdReturnedFromInsert('event-id')
     fixture.photoStorage.givenThatThePhotoIsSavedWithId('photo-id')
 

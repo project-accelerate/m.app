@@ -1,6 +1,6 @@
 import { withDb, execQuery } from 'backend/app/test/integrationTestUtils'
 import { RegisterConferenceAttendanceRequest } from 'backend/app/conference/domain/ConferenceAttendance'
-import { DeviceType } from 'backend/app/user/domain/Device'
+import { DeviceType } from 'backend/app/device/domain/Device'
 import { EventFamily } from 'common/domain/EventFamily'
 import {
   givenThatAConferenceAttendanceExists,
