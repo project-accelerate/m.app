@@ -8,6 +8,7 @@
     "allowJs": true,
     "strict": true,
     "skipLibCheck": true,
+    "baseUrl": ".",
     "rootDir": ".",
     "lib": [
       "dom",
@@ -21,9 +22,10 @@
     "typeRoots": ["node_modules/@types", "../node_modules/@types"],
     "jsx": "react",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "paths": {
+      "expo-server-sdk": ["types/expo-server-sdk"]
+    }
   },
-  "exclude": [
-    "../node_modules"
-  ]
+  "exclude": ["../node_modules"]
 }
