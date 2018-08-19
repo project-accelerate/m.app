@@ -5,7 +5,7 @@ import {
   RegisterConferenceAttendanceResponse,
 } from 'backend/app/conference/domain/ConferenceAttendance'
 import { UserAdminService } from 'backend/app/user/application/UserAdminService'
-import { DeviceAdminService } from 'backend/app/user/application/DeviceAdminService'
+import { DeviceAdminService } from 'backend/app/device/application/DeviceAdminService'
 
 @Service()
 export class ConferenceAttendanceAdminService {

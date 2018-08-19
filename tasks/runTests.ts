@@ -7,7 +7,7 @@ const jestDockerConfigs = [
   'backend/docker/docker-compose.test.yml',
 ]
 
-export async function runAllTests() {
+export function runAllTests() {
   typecheckAll()
   unitTest('frontend/common')
   unitTest('frontend/web')
@@ -28,17 +28,21 @@ export function typecheck(dir: string) {
   tsc({ noEmit: true })
 }
 
-export async function unitTest(dir: string) {
+export function unitTest(dir: string, ...jestArgs: string[]) {
   const jest = createShellCmd('jest', { cwd: dir })
+  jest({ clearCache: true })
 
-  jest({
-    config: 'jest.config.json',
-    watchman: false,
-    forceExit: true,
-  })
+  jest(
+    {
+      config: 'jest.config.json',
+      watchman: false,
+      forceExit: true,
+    },
+    ...jestArgs,
+  )
 }
 
-export async function integrationTest(dir: string) {
+export function integrationTest(dir: string) {
   const jestInDocker = createDockerRun(
     jestDockerConfigs,
     'web',

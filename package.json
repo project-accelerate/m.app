@@ -13,6 +13,7 @@
     "test:unit": "ts-node --project tasks/tsconfig.json -T tasks unitTest",
     "test:integration:backend": "ts-node --project tasks/tsconfig.json -T tasks integrationTest backend",
     "start": "ts-node --project tasks/tsconfig.json -T tasks start",
+    "scheduled": "ts-node --project tasks/tsconfig.json -T tasks runScheduledTask",
     "release": "ts-node --project tasks/tsconfig.json -T tasks release",
     "develop:backend": "ts-node --project tasks/tsconfig.json -T tasks developBackend",
     "develop:frontend:web": "ts-node --project tasks/tsconfig.json -T tasks developFrontend",
@@ -33,13 +34,14 @@
     "node": "^10.0.0",
     "yarn": "^1.0.0"
   },
+  "engineStrict": false,
   "dependencies": {
     "@types/dotenv": "^4.0.3",
     "dotenv": "^6.0.0",
     "mkdirp": "^0.5.1",
     "node": "^10.8.0",
     "ts-node": "^6.1.1",
-    "typescript": "2.9"
+    "typescript": "^3.0.1"
   },
   "devDependencies": {
     "husky": "^0.14.3",

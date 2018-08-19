@@ -1,8 +1,8 @@
 import { EventFamily } from 'common/domain/EventFamily'
-import { DeviceType } from 'backend/app/user/domain/Device'
+import { DeviceType } from 'backend/app/device/domain/Device'
 import { MockCrudRepositoryFixture } from 'backend/app/common/test/MockCrudRepositoryFixture'
 import { MockUserAdminServiceFixture } from 'backend/app/user/test/MockUserAdminServiceFixture'
-import { MockDeviceAdminServiceFixture } from 'backend/app/user/test/MockDeviceAdminServiceFixture'
+import { MockDeviceAdminServiceFixture } from 'backend/app/device/test/MockDeviceAdminServiceFixture'
 import { ConferenceAttendanceRepository } from '../../external/ConferenceAttendanceRepository'
 import { ConferenceAttendanceAdminService } from '../ConferenceAttendanceAdminService'
 
