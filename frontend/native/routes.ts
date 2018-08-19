@@ -6,6 +6,7 @@ import {
 } from 'react-navigation'
 import { HomeScreen } from './app/twt/Home/HomeScreen'
 import { TimetableScreen } from './app/twt/Event/TimetableScreen'
+import { MeetupsTimetableScreen } from './app/twt/Meetups/MeetupsTimetableScreen'
 import { EventDetailScreen } from './app/twt/Event/EventDetailScreen'
 import { CalendarScreen } from './app/twt/Calendar/CalendarScreen'
 import { theme } from './theme'
@@ -50,6 +51,7 @@ export class Routes {
   topLevelRoutes = {
     HomeScreen: this.createRootNavigator(HomeScreen),
     TimetableScreen: this.createRootNavigator(TimetableScreen),
+    MeetupsTimetableScreen: this.createRootNavigator(MeetupsTimetableScreen),
     CalendarScreen: this.createRootNavigator(CalendarScreen),
     ...this.devOnlyRoutes,
   }

@@ -1,0 +1,11 @@
+#import "./EventListItem.graphql"
+
+query MeetupsScreen {
+  events: meetupEvents {
+    edges {
+      node {
+        ...EventListItem
+      }
+    }
+  }
+}

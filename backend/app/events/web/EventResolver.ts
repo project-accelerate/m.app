@@ -7,6 +7,7 @@ import {
   Root,
   Args,
   ArgsType,
+  registerEnumType,
 } from 'type-graphql'
 import { Event } from '../domain/Event'
 import { Venue } from '../domain/Venue'
@@ -22,6 +23,11 @@ import { EventFamily } from '../../../../node_modules/common/domain/EventFamily'
 const AllEventsConnection = createSimpleConnection({
   type: Event,
   name: 'AllEvents',
+})
+
+const AllMeetupEventsConnection = createSimpleConnection({
+  type: Event,
+  name: 'AllMeetupEvents',
 })
 
 const EventSpeakersConnection = createSimpleConnection({
@@ -58,12 +64,22 @@ export class EventResolver {
     return this.eventRepository.findOne({ id })
   }
 
-  @Query(() => Event, {
+  @Query(() => [Event], {
     nullable: true,
     description: 'Get all events of a family',
   })
-  eventsByFamily(@Arg('family') family: EventFamily) {
+  eventsByFamily(
+    @Arg('family', type => EventFamily)
+    family: EventFamily,
+  ) {
     return this.eventRepository.find({ family })
+  }
+
+  @Query(() => AllMeetupEventsConnection)
+  async meetupEvents() {
+    return new AllMeetupEventsConnection(
+      await this.eventRepository.find({ family: EventFamily.TWT_MEETUP_2018 }),
+    )
   }
 
   @Query(() => [Event], {
