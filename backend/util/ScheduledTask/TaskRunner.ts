@@ -1,6 +1,7 @@
 import log from 'winston'
 import { Service } from 'typedi'
 import { TaskType } from './TaskType'
+import { AppMetrics } from 'backend/util/Metrics'
 
 interface Task {
   type: TaskType
@@ -12,6 +13,8 @@ interface Task {
 export class TaskRunner {
   private taskMap = new Map<TaskType, Task[]>()
 
+  constructor(private metrics: AppMetrics) {}
+
   async run(type: string) {
     if (!this.isValidType(type)) {
       log.error(
@@ -21,7 +24,7 @@ export class TaskRunner {
 
     for (const task of this.getTasksForType(type as TaskType)) {
       log.info(`[TaskRunner]: Running ${task.name}`)
-      await task.handler()
+      await this.metrics.measureTime(task.name, () => task.handler())
       log.info(`[TaskRunner]: Completed ${task.name}`)
     }
   }
