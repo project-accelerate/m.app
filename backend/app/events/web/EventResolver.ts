@@ -58,6 +58,13 @@ export class EventResolver {
   }
 
   @Query(() => [Event], {
+    description: 'Get events a person speaks at',
+  })
+  async eventsForSpeaker(@Arg('person') person: string) {
+    return await this.eventRepository.findEventsbySpeaker(person)
+  }
+
+  @Query(() => [Event], {
     description: 'Get feed of upcoming events for a given locaton',
   })
   eventFeed(@Args() args: EventFeedArgs) {

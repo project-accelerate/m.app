@@ -41,7 +41,8 @@ export function createFetchData<Data, Params>({ query }: FetchDataOpts) {
 
     render() {
       const { variables, children } = this.props
-
+      console.log(query)
+      console.log(variables)
       return (
         <Query key={this.state.retry} query={query} variables={variables}>
           {({ data, loading, client, error }) => {

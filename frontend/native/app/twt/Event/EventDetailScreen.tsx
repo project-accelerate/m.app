@@ -15,6 +15,7 @@ import { Screen } from '../../common/Widgets/Widgets'
 import { registration } from '../Registration/registrationState'
 import { createParametricStateConnector } from '../../../state'
 import { calendar } from '../Calendar/calendarState'
+import { Routes } from '../../../routes'
 
 export interface EventDetailScreenParams {
   id: string
@@ -54,7 +55,13 @@ export class EventDetailScreen extends React.Component<
   }
 
   handleSpeakerPressed = ({ speaker }: EventDetailSpeakerPressEvent) => {
-    console.log('press', speaker)
+    this.props.navigation.push(
+      Routes.get().getRoutename('SpeakerDetailScreen'),
+      {
+        id: speaker.id,
+        name: speaker.name,
+      },
+    )
   }
 
   render() {

@@ -7,6 +7,7 @@ import {
 import { HomeScreen } from './app/twt/Home/HomeScreen'
 import { TimetableScreen } from './app/twt/Event/TimetableScreen'
 import { EventDetailScreen } from './app/twt/Event/EventDetailScreen'
+import { SpeakerDetailScreen } from './app/twt/Speaker/SpeakerDetailScreen'
 import { CalendarScreen } from './app/twt/Calendar/CalendarScreen'
 import { theme } from './theme'
 import { DevPanel } from './devtool/DevPanel'
@@ -45,6 +46,7 @@ export class Routes {
   }
   nonTopLevelRoutes = {
     EventDetailScreen,
+    SpeakerDetailScreen,
   }
 
   topLevelRoutes = {

@@ -1,0 +1,11 @@
+#import "./SpeakerDetail.graphql"
+#import "../Event/EventListItem.graphql"
+
+query SpeakerDetailScreen($id: String!) {
+  person(id: $id) {
+    ...SpeakerDetail
+  }
+  eventsForSpeaker(person: $id) {
+    ...EventListItem
+  }
+}
