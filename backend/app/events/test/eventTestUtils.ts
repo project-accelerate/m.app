@@ -226,6 +226,14 @@ export function givenThatAPersonExists(props: Partial<PersonProps> = {}) {
   return Container.get(PersonRepository).insert(somePersonProps(props))
 }
 
+export async function givenThatAnEventAndSpeakerExists(personProps: Partial<PersonProps> = {},eventProps: Partial<EventProps> = {}) {
+  var person = await givenThatAPersonExists(personProps)
+  var event = await givenThatAnEventExists(eventProps)
+
+  return Container.get(EventRepository).speakers.add(event.id,[person.id])
+
+}
+
 export async function givenThatAnEventExists(props: Partial<EventProps> = {}) {
   const venue = props.venue || (await givenThatAVenueExists().then(v => v.id))
 

@@ -8,7 +8,7 @@ import { EventListItemFragment } from '../../../queries'
 import { EventListItem, EventListItemPressedEvent } from './EventListItem'
 import { longDateOf } from '../../common/date-formats'
 
-interface EventListProps {
+export interface EventListProps {
   onEventPress: (event: EventListItemPressedEvent) => void
   data: Connection<EventListItemFragment>
 }

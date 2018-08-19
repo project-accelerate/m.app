@@ -1,0 +1,8 @@
+fragment SpeakerDetail on Person {
+  id
+  name
+  bio
+  photo {
+    sourceUrl
+  }
+}

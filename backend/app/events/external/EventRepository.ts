@@ -25,6 +25,15 @@ export class EventRepository extends CrudRepository<Event>(config) {
     destRef: 'speaker',
   })
 
+  async findEventsbySpeaker(speaker: string) {
+    return this.db.knex
+      .select('*', ...this.customQueryFields)
+      .from('event')
+      .innerJoin('event_speakers', 'event.id', '=', 'event_speakers.event')
+      .where('event_speakers.speaker', speaker)
+      .then(res => this.decodeAll(res))
+  }
+
   async findByTimeAndLocation(q: {
     location: Point
     distance: Distance
@@ -47,4 +56,5 @@ export class EventRepository extends CrudRepository<Event>(config) {
       .orderBy('startTime')
       .then(res => this.decodeAll(res))
   }
+
 }
