@@ -8,11 +8,12 @@ export async function up(db: Knex) {
       .dateTime('timeSent')
       .notNullable()
       .index()
+    table.string('title').notNullable()
     table.string('message').notNullable()
-    table
-      .string('scope')
-      .notNullable()
-      .index()
+    table.boolean('urgent').notNullable()
+    table.string('link')
+    table.string('associatedEventId')
+    table.string('scope').notNullable()
   })
 }
 

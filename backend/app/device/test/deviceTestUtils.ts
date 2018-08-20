@@ -1,7 +1,7 @@
-import { Container } from 'typedi';
-import { someUuid, someString } from 'common/test/testUtils';
+import { Container } from 'typedi'
+import { someUuid, someString } from 'common/test/testUtils'
 import { WithoutId } from 'backend/app/common/WithoutId'
-import { givenThatAUserExists } from 'backend/app/user/test/userTestUtils';
+import { givenThatAUserExists } from 'backend/app/user/test/userTestUtils'
 import { Device, DeviceType } from '../domain/Device'
 import { DeviceRepository } from '../external/DeviceRepository'
 
@@ -24,7 +24,7 @@ export function someDeviceProps(props: Partial<DeviceProps> = {}): DeviceProps {
   }
 }
 
-export function someDevice(props: Partial<Device>): Device {
+export function someDevice(props: Partial<Device> = {}): Device {
   return Object.assign(new Device(), { id: someUuid() }, props)
 }
 
