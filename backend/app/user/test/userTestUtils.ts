@@ -11,7 +11,7 @@ export function someUserProps(props: Partial<UserProps> = {}): UserProps {
   }
 }
 
-export function someUser(props: Partial<User>): User {
+export function someUser(props: Partial<User> = {}): User {
   return Object.assign(new User(), { id: someUuid() }, props)
 }
 

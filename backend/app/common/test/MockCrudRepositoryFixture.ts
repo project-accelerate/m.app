@@ -54,6 +54,13 @@ export class MockCrudRepositoryFixture<
     when(repository.findAll()).thenResolve(objects as any)
   }
 
+  givenObjectsReturnedFromFind(objects: Props[], criteria?: Props) {
+    const repository = this.mock
+    when(
+      repository.find(criteria ? deepEqual(criteria) : anything()),
+    ).thenResolve(objects as any)
+  }
+
   verifyInserted(props: Props | Props[]) {
     if (Array.isArray(props)) {
       verify(this.mock.bulkInsert(deepEqual(props))).called()
