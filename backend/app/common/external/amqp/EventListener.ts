@@ -1,16 +1,34 @@
 import { Container } from 'typedi'
-import { AMQPConnection } from './AMQPConnection'
+import { Message } from 'amqplib'
+
+const LISTENERS = Symbol('LISTENERS')
+
+interface Listener {
+  id: string
+  event: string
+  handler: (message: Message) => Promise<void>
+}
 
 export function EventListener(type: Function): MethodDecorator {
-  const connection = Container.get<AMQPConnection>(AMQPConnection)
-
   return (proto: any, key) => {
-    const subscriber = Container.get<any>(proto.constructor)
-    const subscriptionKey = [proto.constructor.name, key].join('.')
-
-    connection.subscribe(type.name, subscriptionKey, message => {
-      const decodedMessage = JSON.parse(message.content.toString())
-      subscriber[key](decodedMessage)
+    getEventListeners(proto.constructor).push({
+      id: [proto.constructor.name, key].join('.'),
+      event: type.name,
+      handler: (msg: Message) => {
+        const handler = Container.get<any>(proto.constructor)
+        return handler[key](JSON.parse(msg.content.toString()))
+      },
     })
   }
+}
+
+export function getEventListeners(constructor: any): Listener[] {
+  if (typeof constructor !== 'function') {
+    return []
+  }
+
+  const listeners = constructor[LISTENERS] || []
+  constructor[LISTENERS] = listeners
+
+  return listeners
 }

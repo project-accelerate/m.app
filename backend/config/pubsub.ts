@@ -10,7 +10,7 @@ export async function configurePubsub(opts: { disable?: boolean } = {}) {
   const config = Container.get<ConfigService>(ConfigService)
 
   await initEventListeners({
-    searchPath: `${__dirname}/../app/*/external/*.ts`,
+    searchPath: `${__dirname}/../app/*/*/*.ts`,
     url: config.get('CLOUDAMQP_URL'),
   })
 }

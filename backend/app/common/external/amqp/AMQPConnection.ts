@@ -2,23 +2,25 @@ import { connect, Connection, Channel, Message } from 'amqplib'
 import { delay } from 'bluebird'
 import { Service } from 'typedi'
 import log from 'winston'
-
+import { getEventListeners } from 'backend/app/common/external/amqp/EventListener'
 @Service()
 export class AMQPConnection {
   private connection!: Connection
   private channel!: Channel
   private registeredSubscribers = new Set<string>()
   private knownExchanges = new Set<string>()
-  private onInit: Array<() => Promise<void>> = []
 
-  async init(url: string) {
+  async init(url: string, listenerExports: unknown[]) {
     await this.connect(url)
-
     this.channel = await this.connection.createChannel()
-    for (const cb of this.onInit) {
-      await cb()
-    }
-    this.onInit = []
+
+    await Promise.all(
+      listenerExports.flatMap(cls =>
+        getEventListeners(cls).flatMap(({ id, event, handler }) =>
+          this.subscribe(event, id, handler),
+        ),
+      ),
+    )
 
     log.info('[AMQP] initialization completed')
   }
@@ -43,48 +45,50 @@ export class AMQPConnection {
   }
 
   async publish(event: string, message: Buffer) {
+    if (!this.channel) {
+      throw Error(`[AMQP] cannot publish before initialization`)
+    }
+
     log.info(`[AMQP] publish ${event}`)
 
     this.assertPubSubExchange(event)
     this.channel.publish(event, '', message)
   }
 
-  subscribe(event: string, listenerKey: string, cb: (mesage: Message) => void) {
-    const subscribe = async () => {
-      log.info(`[AMQP] Subscribe ${listenerKey} to ${event}`)
+  async subscribe(
+    event: string,
+    listenerKey: string,
+    cb: (mesage: Message) => void,
+  ) {
+    if (!this.channel) {
+      throw Error(`[AMQP] cannot subscribe before initialization`)
+    }
 
-      this.assertPubSubExchange(event)
-      await this.channel.assertQueue(listenerKey)
-      await this.channel.bindQueue(listenerKey, event, '')
+    log.info(`[AMQP] Subscribe ${listenerKey} to ${event}`)
 
-      const subscriptionKey = [event, listenerKey].join(':')
+    this.assertPubSubExchange(event)
+    await this.channel.assertQueue(listenerKey)
+    await this.channel.bindQueue(listenerKey, event, '')
 
-      if (this.registeredSubscribers.has(subscriptionKey)) {
-        throw Error(
-          `[AMQP] ${listenerKey} already registered for event ${event}`,
-        )
+    const subscriptionKey = [event, listenerKey].join(':')
+
+    if (this.registeredSubscribers.has(subscriptionKey)) {
+      throw Error(`[AMQP] ${listenerKey} already registered for event ${event}`)
+    }
+
+    this.channel.consume(listenerKey, async message => {
+      log.info(`[AMQP] ${listenerKey} handling ${event}`)
+
+      if (!message) {
+        return
       }
 
-      this.channel.consume(listenerKey, message => {
-        log.info(`[AMQP] ${listenerKey} handling ${event}`)
-
-        if (!message) {
-          return
-        }
-
-        try {
-          cb(message)
-        } finally {
-          this.channel.ack(message)
-        }
-      })
-    }
-
-    if (this.channel) {
-      subscribe()
-    } else {
-      this.onInit.push(subscribe)
-    }
+      try {
+        cb(message)
+      } finally {
+        this.channel.ack(message)
+      }
+    })
   }
 
   private async assertPubSubExchange(event: string) {
