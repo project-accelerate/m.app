@@ -54,5 +54,5 @@ describe('amqp', () => {
 })
 
 function waitForMessage() {
-  return delay(800)
+  return delay(2_000)
 }
