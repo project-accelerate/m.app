@@ -254,7 +254,7 @@ export function CrudRepository<T extends { id: string }, Props = WithoutId<T>>(
       await this.db.knex
         .delete()
         .from(this.tableName)
-        .where(clauses)
+        .where(this.encodeClauses(clauses))
     }
   }
 
