@@ -6,8 +6,10 @@ import './config/environment'
 import { configureWeb } from './config/web'
 import { configurePubsub } from './config/pubsub'
 
-const { USES_WORKERS } = process.env
+const separateWorkerDynos = JSON.parse(
+  process.env.SEPARATE_WORKER_DYNOS || 'false',
+)
 
-configurePubsub({ disable: USES_WORKERS === 'true' }).then(() =>
+configurePubsub({ subscribeWorkers: !separateWorkerDynos }).then(() =>
   configureWeb({ serveUI: true }),
 )

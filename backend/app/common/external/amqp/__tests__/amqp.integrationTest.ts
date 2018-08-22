@@ -16,6 +16,7 @@ describe('amqp', () => {
     await initEventListeners({
       searchPath: `${__dirname}/examples/*.ts`,
       url: config.get('CLOUDAMQP_URL'),
+      subscribeWorkers: true,
     })
   })
 
