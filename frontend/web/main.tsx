@@ -23,6 +23,7 @@ import { AuthCallback } from './app/common/authentication/AuthCallback'
 import { PersonAdminPage } from 'frontend.web/app/admin/Person/PersonAdminPage'
 import { VenueAdminPage } from 'frontend.web/app/admin/Venue/VenueAdminPage'
 import { EventAdminPage } from 'frontend.web/app/admin/Event/EventAdminPage'
+import { NotificationAdminPage } from 'frontend.web/app/admin/Notification/NotificationAdminPage'
 
 const App = () => (
   <AuthGuardProvider tokenManager={tokenManager}>
@@ -35,12 +36,13 @@ const App = () => (
                 <AppWrapper>
                   <CssBaseline />
                   <Switch>
-                    <Route
-                      path="/admin/speakers"
-                      component={PersonAdminPage}
-                    />
+                    <Route path="/admin/speakers" component={PersonAdminPage} />
                     <Route path="/admin/venues" component={VenueAdminPage} />
                     <Route path="/admin/events" component={EventAdminPage} />
+                    <Route
+                      path="/admin/notifications"
+                      component={NotificationAdminPage}
+                    />
                     <Redirect to="/admin/speakers" />
                   </Switch>
                 </AppWrapper>

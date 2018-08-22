@@ -1,5 +1,13 @@
 import React from 'react'
-import { TextField, Grid } from '@material-ui/core'
+import {
+  TextField,
+  Grid,
+  Checkbox,
+  FormControl,
+  FormLabel,
+  FormHelperText,
+  FormControlLabel,
+} from '@material-ui/core'
 import { Field } from 'formik'
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider'
 import DateFnsUtils from 'material-ui-pickers/utils/moment-utils'
@@ -103,6 +111,32 @@ export function FormMultiPicker({
           value={field.value || []}
           onChange={value => form.setFieldValue(name, value)}
         />
+      )}
+    />
+  )
+}
+
+interface FormCheckboxProps extends FormInputProps<boolean> {}
+
+export function FormCheckbox({ name, helperText, label }: FormCheckboxProps) {
+  return (
+    <Field
+      name={name}
+      render={({ form, field }) => (
+        <FormControl component="fieldset">
+          <FormControlLabel
+            control={
+              <Checkbox
+                value={field.value}
+                onChange={value => form.setFieldValue(name, value)}
+              />
+            }
+            label={label}
+          />
+          <FormHelperText error={Boolean(form.errors[name])}>
+            {form.errors[name] || helperText}
+          </FormHelperText>
+        </FormControl>
       )}
     />
   )

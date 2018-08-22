@@ -1,0 +1,19 @@
+#import "./NotificationAdminCard.graphql"
+
+query NotificationAdminPage {
+  events: allEvents {
+    edges {
+      node {
+        id
+        name
+      }
+    }
+  }
+  sentNotifications {
+    edges {
+      node {
+        ...NotificationAdminCard
+      }
+    }
+  }
+}

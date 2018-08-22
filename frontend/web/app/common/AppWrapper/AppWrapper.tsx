@@ -48,7 +48,7 @@ export const AppWrapper = withStyles(styles)(({ children, classes }) => (
           <PageTab path="/admin/speakers" label="Speakers" />
           <PageTab path="/admin/events" label="Events" />
           <PageTab path="/admin/venues" label="Venues" />
-          <PageTab path="/admin/updates" label="Notifications" />
+          <PageTab path="/admin/notifications" label="Notifications" />
         </PageTabs>
       </Toolbar>
     </AppBar>

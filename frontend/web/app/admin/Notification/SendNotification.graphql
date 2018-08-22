@@ -1,0 +1,3 @@
+mutation CreateNotification($req: ConferenceNotificationSendRequest!) {
+  sendConferenceNotification(request: $req)
+}

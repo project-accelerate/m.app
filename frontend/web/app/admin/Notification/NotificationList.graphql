@@ -1,0 +1,8 @@
+fragment NotificationList on AllPeopleConnection {
+  edges {
+    node {
+      id
+      name
+    }
+  }
+}

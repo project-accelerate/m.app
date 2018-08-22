@@ -1,6 +1,5 @@
 import { ObjectType, Field, registerEnumType, InputType } from 'type-graphql'
 import { ConferenceNotificationScope } from 'common/domain/ConferenceNotificationScope'
-import { DeviceType } from 'backend/app/device/domain/Device'
 
 @InputType()
 export class ConferenceNotificationSendRequest {
