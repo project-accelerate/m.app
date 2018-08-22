@@ -9,7 +9,7 @@ import { ExpoPushClient } from '../external/ExpoPushClient'
 import { PendingNotificationRepository } from '../external/PendingNotificationRepository'
 import { PushNotificationRequest } from '../domain/PushNotificationRequest'
 import { DeviceAdminService } from './DeviceAdminService'
-import { PendingNotification } from '../../../../node_modules/backend/app/device/domain/PendingNotification'
+import { PendingNotification } from '../domain/PendingNotification'
 
 @Service()
 export class PushNotificationService {
@@ -72,19 +72,16 @@ class NotificationDeliveryReceipts {
     this.pendingNotificationsByTicketId = keyBy(notifications, n => n.ticketId)
   }
 
-  @Memoize
   get completedNotificationIds() {
     return this.receivedTicketIds.map(
       ticketId => this.pendingNotificationsByTicketId[ticketId].id,
     )
   }
 
-  @Memoize
   get receivedTicketIds() {
     return Object.keys(this.receipts)
   }
 
-  @Memoize
   get unregisteredDeviceIds() {
     return this.receivedTicketIds
       .filter(ticketId =>
