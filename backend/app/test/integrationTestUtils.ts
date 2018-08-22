@@ -1,3 +1,4 @@
+import { delay } from 'bluebird'
 import { execute, parse } from 'graphql'
 import Container from 'typedi'
 import { AuthToken } from 'common/AuthToken'
@@ -68,5 +69,18 @@ export function withDb(block: () => Promise<void>) {
     } finally {
       db.knex = knex
     }
+  }
+}
+
+export async function waitUntil<T>(condition: () => Promise<T>) {
+  while (true) {
+    try {
+      const result = await condition()
+      if (result) {
+        return result
+      }
+    } catch {}
+
+    await delay(200)
   }
 }

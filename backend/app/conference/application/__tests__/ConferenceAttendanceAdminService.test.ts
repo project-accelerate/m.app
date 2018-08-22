@@ -24,11 +24,6 @@ describe(ConferenceAttendanceAdminService, () => {
       },
     })
 
-    fixture.conferenceAttendance.verifyInserted({
-      attendee: 'my-user-id',
-      conference: EventFamily.LABOUR_2018,
-    })
-
     fixture.deviceAdminService.verifyDeviceRegisteredToOwner({
       device: {
         deviceToken: 'my-device-token',
