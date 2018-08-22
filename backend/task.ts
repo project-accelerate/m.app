@@ -7,7 +7,7 @@ if (!type) {
   throw Error(`No task type provided`)
 }
 
-configurePubsub({ disable: false }).then(() =>
+configurePubsub({ subscribeWorkers: false }).then(() =>
   runScheduledTasks({
     searchPath: './app/*/application/*.ts?(x)',
     type: type,

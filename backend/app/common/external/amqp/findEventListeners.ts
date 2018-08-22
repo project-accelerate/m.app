@@ -5,12 +5,17 @@ import { scanPaths } from 'backend/util/scanPaths'
 interface FindEventListenerProps {
   searchPath: string
   url: string
+  subscribeWorkers: boolean
 }
 
 export async function initEventListeners({
   searchPath,
   url,
+  subscribeWorkers,
 }: FindEventListenerProps) {
-  const appObjects = scanPaths(searchPath)
-  await Container.get<AMQPConnection>(AMQPConnection).init(url, appObjects)
+  const potentialWorkerClasses = subscribeWorkers ? scanPaths(searchPath) : []
+  await Container.get<AMQPConnection>(AMQPConnection).init(
+    url,
+    potentialWorkerClasses,
+  )
 }

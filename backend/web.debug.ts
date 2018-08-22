@@ -10,5 +10,5 @@ import { configurePubsub } from 'backend/config/pubsub'
 
 configureDb()
   .then(() => configureTestData())
-  .then(() => configurePubsub())
+  .then(() => configurePubsub({ subscribeWorkers: true }))
   .then(() => configureWeb({ serveUI: false }))

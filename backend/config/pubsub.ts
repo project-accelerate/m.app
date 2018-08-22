@@ -2,15 +2,12 @@ import { initEventListeners } from 'backend/app/common/external/amqp/findEventLi
 import { Container } from 'typedi'
 import { ConfigService } from 'backend/app/common/ConfigService'
 
-export async function configurePubsub(opts: { disable?: boolean } = {}) {
-  if (opts.disable) {
-    return
-  }
-
+export async function configurePubsub(opts: { subscribeWorkers: boolean }) {
   const config = Container.get<ConfigService>(ConfigService)
 
   await initEventListeners({
     searchPath: `${__dirname}/../app/*/*/*.ts`,
     url: config.get('CLOUDAMQP_URL'),
+    ...opts,
   })
 }

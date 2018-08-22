@@ -13,5 +13,5 @@ dotenv.config({ path: join(__dirname, '..', 'config', '.env') })
 beforeAll(async () => {
   Container.set(ExpoPushClient, new FakeExpoPushClient())
   await configureDb()
-  await configurePubsub()
+  await configurePubsub({ subscribeWorkers: true })
 })
