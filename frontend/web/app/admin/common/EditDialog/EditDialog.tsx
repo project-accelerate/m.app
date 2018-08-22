@@ -35,7 +35,8 @@ const styles = () =>
 interface EditDialogProps<T> {
   title: string
   initial: T
-  validate: { [P in keyof T]: Validator<T[P]> }
+  validate: { [P in keyof Partial<T>]: Validator<T[P]> }
+  submitLabel?: string
   onSubmit: (value: T) => Promise<void>
   onCancel: () => void
 }
@@ -100,7 +101,7 @@ export const EditDialog = withStyles(styles)(
                   variant="raised"
                   color="primary"
                 >
-                  Save
+                  {this.props.submitLabel || 'Save'}
                 </Button>
               </DialogActions>
 

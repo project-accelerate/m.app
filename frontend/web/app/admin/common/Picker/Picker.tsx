@@ -32,7 +32,7 @@ interface MultiPickerProps {
 }
 
 export interface PickerOption {
-  id: string
+  id: string | undefined
   name: string
 }
 
@@ -148,7 +148,9 @@ export const MultiPicker = styles<MultiPickerProps>(function MultiPicker({
             key={option.id}
             value={option.id}
             className={
-              option.id in selection ? classes.selectedItem : classes.item
+              option.id && option.id in selection
+                ? classes.selectedItem
+                : classes.item
             }
           >
             {option.name}

@@ -15,13 +15,13 @@ export interface AdminCrudViewProps<
   items: T[]
 
   renderListItem: (props: AdminCrudViewListProps<T>) => React.ReactNode
-  renderEditItem: (
+  renderEditItem?: (
     props: AdminCrudViewEditProps<T, EditProps>,
   ) => React.ReactNode
   renderAddItem: (props: AdminCrudViewAddProps<AddProps>) => React.ReactNode
 
   onAddItem: (item: AddProps) => Promise<void>
-  onEditItem: (item: EditProps) => Promise<void>
+  onEditItem?: (item: EditProps) => Promise<void>
 
   saveSuccessMessage?: React.ReactNode
   addSuccessMessage?: React.ReactNode
@@ -75,6 +75,10 @@ export class AdminCrudView<
 
   showNotification!: (notification: Notification) => void
 
+  get canEdit() {
+    return this.props.onEditItem && this.props.renderEditItem
+  }
+
   handleCancel = () => {
     this.setState({ mode: { type: 'list' } })
   }
@@ -84,6 +88,10 @@ export class AdminCrudView<
   }
 
   handleEdit = (item: Item) => {
+    if (!this.canEdit) {
+      throw Error(`Should not allow editing uneditable items`)
+    }
+
     this.setState({ mode: { type: 'edit', item } })
   }
 
@@ -108,6 +116,10 @@ export class AdminCrudView<
   }
 
   handleSaveEdit = async (item: SavedItem) => {
+    if (!this.props.onEditItem) {
+      throw Error(`Should not allow editing uneditable items`)
+    }
+
     try {
       await this.props.onEditItem(item)
 
@@ -147,15 +159,16 @@ export class AdminCrudView<
                     })}
                   </Grid>
                 )}
-                {mode.type === 'edit' && (
-                  <Grid item>
-                    {renderEditItem({
-                      onCancel: this.handleCancel,
-                      onSave: this.handleSaveEdit,
-                      value: mode.item,
-                    })}
-                  </Grid>
-                )}
+                {mode.type === 'edit' &&
+                  renderEditItem && (
+                    <Grid item>
+                      {renderEditItem({
+                        onCancel: this.handleCancel,
+                        onSave: this.handleSaveEdit,
+                        value: mode.item,
+                      })}
+                    </Grid>
+                  )}
                 {items.map(item => (
                   <Grid key={item.id} item xs={12} md={6}>
                     {renderListItem({

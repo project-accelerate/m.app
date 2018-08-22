@@ -1,4 +1,5 @@
 import { isFullPostcode } from 'common/domain/postcode'
+import isUrl from 'is-url'
 
 export type Validator<T> = (value: T) => true | string
 
@@ -14,6 +15,28 @@ export namespace Validator {
       }
 
       return message
+    }
+  }
+
+  export function optional<T>(
+    validator: Validator<T>,
+  ): Validator<T | undefined> {
+    return value => {
+      if (value) {
+        return validator(value)
+      }
+
+      return true
+    }
+  }
+
+  export function validUrl(message: string): Validator<string> {
+    return value => {
+      if (!isUrl(value)) {
+        return message
+      }
+
+      return true
     }
   }
 

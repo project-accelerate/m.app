@@ -1,0 +1,7 @@
+fragment NotificationAdminCard on ConferenceNotification {
+  id
+  timeSent
+  title
+  message
+  scope
+}
