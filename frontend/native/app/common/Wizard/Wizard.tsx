@@ -24,8 +24,9 @@ export function createWizard<T>(config: WizardConfig<T>) {
     transitioner = createTransition()
 
     handleSubmit = (value: Partial<T>) => {
-      this.setState(value)
-      this.advance()
+      this.setState(value, () => {
+        this.advance()
+      })
     }
 
     handleSkip = () => {
