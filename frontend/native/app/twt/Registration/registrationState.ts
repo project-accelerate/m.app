@@ -10,8 +10,11 @@ import {
 import RegisterDeviceMutationQueryDocument from './RegisterDeviceMutation.graphql'
 import { graphQlClient } from '../../../config/graphql'
 import { Platform } from 'react-native'
+import { createLogger } from '../../common/logger'
 
 export namespace registration {
+  const log = createLogger('registration')
+
   export interface State {
     userId: string
     deviceId: string
@@ -29,6 +32,7 @@ export namespace registration {
     register: (props: RegistrationRequestProps) => async (
       dispatch: Dispatch<Action>,
     ) => {
+      log('Registering with', props)
       const { device, user } = await getUserDeviceRegistrationRequest(props)
 
       const registration = await registerDevice({
@@ -106,6 +110,7 @@ export namespace registration {
       Permissions.NOTIFICATIONS,
     )
 
+    log('Existing status is', existingStatus)
     let finalStatus = existingStatus
 
     // only ask if permissions have not already been determined, because
@@ -116,6 +121,8 @@ export namespace registration {
       const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS)
       finalStatus = status
     }
+
+    log('Final status is', existingStatus)
 
     return finalStatus === 'granted'
   }

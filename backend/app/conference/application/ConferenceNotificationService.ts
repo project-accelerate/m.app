@@ -1,4 +1,5 @@
 import { Service } from 'typedi'
+import log from 'winston'
 import { ConferenceNotificationRepository } from 'backend/app/conference/external/ConferenceNotificationRepository'
 import { PushNotificationService } from 'backend/app/device/application/PushNotificationService'
 import { EventListener } from 'backend/app/common/external/amqp/EventListener'
@@ -27,9 +28,13 @@ export class ConferenceNotificationService {
   async handleSendNotificationsRequest(
     request: ConferenceNotificationSendRequest,
   ) {
-    const devices = await this.getDevicesForTarget(
-      this.notificationTargeter.getTargetsForNotification(request),
-    )
+    log.debug('[ConferenceNotificationService] Sending notification', request)
+
+    const target = this.notificationTargeter.getTargetsForNotification(request)
+    log.debug('[ConferenceNotificationService] Targeting notification', target)
+
+    const devices = await this.getDevicesForTarget(target)
+    log.debug('[ConferenceNotificationService] Matched devices', devices)
 
     await this.sendNotificationsToDevices(request, devices)
     await this.recordNotificationSent(request)
@@ -58,6 +63,8 @@ export class ConferenceNotificationService {
       optedIntoNotifications: true,
       ...target.user,
     })
+
+    log.debug('[ConferenceNotificationService] Matched users', users)
 
     return this.deviceRepository.find({
       owner: oneOf(...users.map(u => u.id)),
