@@ -33,19 +33,38 @@ export function NotificationAdminCard({
         <Grid container direction="row" wrap="wrap" spacing={8}>
           <Grid item xs={12}>
             <Typography>
-              <strong>Sent at {format(notification.timeSent, 'h:mma ')}</strong>
+              <strong>Sent at:</strong>{' '}
+              {format(notification.timeSent, 'h:mma ')}
               {format(notification.timeSent, 'dddd Do MMMM')}
-              to{' '}
-              <strong>
-                {getConferenceNotificationScopeLabel(notification.scope)}
-              </strong>
+              <br />
+              <strong>To:</strong>{' '}
+              {getConferenceNotificationScopeLabel(notification.scope)}
             </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="body2">{notification.message}</Typography>
           </Grid>
         </Grid>
       </CardContent>
+
+      <Toggle>
+        {({ active: detailVisible, toggle: toggleDetail }) => (
+          <>
+            <CardActions>
+              <DiscloseButton
+                disclosed={detailVisible}
+                onClick={toggleDetail}
+              />
+            </CardActions>
+            {notification.message && (
+              <Collapse in={detailVisible}>
+                <CardContent>
+                  <Typography variant="body1">
+                    {notification.message}
+                  </Typography>
+                </CardContent>
+              </Collapse>
+            )}
+          </>
+        )}
+      </Toggle>
     </Card>
   )
 }
