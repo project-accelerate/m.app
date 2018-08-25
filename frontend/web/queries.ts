@@ -15,6 +15,7 @@ export interface CreateEventRequest {
 
 export enum EventFamily {
   LABOUR_2018 = 'LABOUR_2018',
+  LABOUR_2018_VOTE = 'LABOUR_2018_VOTE',
   TWT_2018 = 'TWT_2018',
 }
 
