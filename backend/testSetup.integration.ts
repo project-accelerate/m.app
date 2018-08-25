@@ -14,4 +14,4 @@ beforeAll(async () => {
   Container.set(ExpoPushClient, new FakeExpoPushClient())
   await configureDb()
   await configurePubsub({ subscribeWorkers: true })
-})
+}, 30000)
