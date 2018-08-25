@@ -1106,6 +1106,12 @@
               "deprecationReason": null
             },
             {
+              "name": "LABOUR_2018_VOTE",
+              "description": "",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "LABOUR_2018",
               "description": "",
               "isDeprecated": false,
