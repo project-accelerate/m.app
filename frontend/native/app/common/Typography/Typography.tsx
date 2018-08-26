@@ -12,9 +12,8 @@ import { theme } from '../../../theme'
 
 const TypographyVariants = StyleSheet.create({
   display: {
-    fontSize: 24,
-    // color: theme.pallete.accent,
-    fontWeight: '500',
+    fontSize: 20,
+    fontWeight: '300',
   },
   cardTitle: {
     fontWeight: '500',

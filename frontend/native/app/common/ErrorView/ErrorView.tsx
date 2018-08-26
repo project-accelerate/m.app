@@ -1,119 +1,96 @@
 import React from 'react'
-import { View, StyleSheet, NetInfo } from 'react-native'
-import { FontAwesome } from '@expo/vector-icons'
+import { View, StyleSheet } from 'react-native'
 import { ApolloError } from 'apollo-client'
 import { Typography } from '../Typography/Typography'
 import { Button } from '../Butttons/Buttons'
+import { NetworkStatusListener } from './NetworkStatusListener'
+import { OfflineErrorView } from './OfflineErrorView'
 import { theme } from '../../../theme'
 import { LoadingOverlay } from '../Widgets/Widgets'
 
-interface ErrorViewProps {
+export interface ErrorViewProps {
   isRetrying: boolean
-  onRetry: () => void
+  onRetry: (event: RetryErrorEvent) => void
   error: Partial<ApolloError>
 }
 
 interface ErrorViewState {
-  online?: boolean
+  online: boolean
+  attempt: number
+}
+
+export interface RetryErrorEvent {
+  attempt: number
+  networkError: boolean
 }
 
 const style = StyleSheet.create({
   root: {
     height: '100%',
     alignItems: 'center',
-    justifyContent: 'center',
-  },
-  wrapper: {
-    paddingBottom: theme.spacing.level(4),
+    paddingTop: theme.spacing.level(6),
   },
   item: {
     textAlign: 'center',
-    margin: theme.spacing.level(1),
+    margin: theme.spacing.level(2),
     marginHorizontal: theme.spacing.level(3),
   },
 })
 
-export class ErrorView extends React.Component<ErrorViewProps> {
-  static assumeOnline?: boolean
-
-  static initialStateSubscriber(online: boolean) {
-    ErrorView.assumeOnline = online
-  }
-
+export class ErrorView extends React.Component<ErrorViewProps, ErrorViewState> {
   state: ErrorViewState = {
-    online: ErrorView.assumeOnline,
+    online: NetworkStatusListener.currentStatus,
+    attempt: 0,
   }
 
-  componentDidMount() {
-    console.log(this.props.error.message)
-
-    NetInfo.isConnected.addEventListener(
-      'connectionChange',
-      this.handleNetworkStatusChange,
-    )
-  }
-
-  componentWillUnmount() {
-    NetInfo.isConnected.removeEventListener(
-      'connectionChange',
-      this.handleNetworkStatusChange,
-    )
-  }
-
-  handleNetworkStatusChange = (online: boolean) => {
-    if (!this.state.online && online && !this.props.isRetrying) {
-      this.props.onRetry()
+  componentWillReceiveProps(newProps: ErrorViewProps) {
+    if (newProps.error !== this.props.error) {
+      this.setState({
+        online: NetworkStatusListener.currentStatus,
+      })
     }
-
-    this.setState({ online })
   }
 
-  get explanation() {
-    return 'Please try again'
+  handleRetry = () => {
+    this.props.onRetry({
+      attempt: this.state.attempt,
+      networkError: false,
+    })
+
+    this.setState({
+      attempt: this.state.attempt + 1,
+    })
   }
 
-  get errorType() {
-    if (this.props.error.networkError) {
-      return 'network'
-    }
-
-    if (this.props.error.graphQLErrors) {
-      return 'remote'
-    }
-
-    return 'application'
+  get helpText() {
+    return 'It looks like a problem at our end. Wait a few minutes and try again.'
   }
 
   render() {
+    if (!this.state.online) {
+      return <OfflineErrorView {...this.props} />
+    }
+
     if (this.props.isRetrying) {
       return <LoadingOverlay />
     }
 
     return (
       <View style={style.root}>
-        <View style={style.wrapper}>
-          <Typography style={style.item} variant="cardTitle">
+        <View>
+          <Typography style={style.item} variant="display">
             Sorry, something went wrong
           </Typography>
 
-          <Typography style={style.item} variant="body">
-            {this.explanation}
-            {!this.state.online && '\nYour phone seems to be offline'}
+          <Typography style={style.item} variant="caption">
+            {this.helpText}
           </Typography>
 
-          <Button variant="inline" onPress={this.props.onRetry}>
-            Retry
+          <Button variant="inline" onPress={this.handleRetry}>
+            Try again
           </Button>
         </View>
       </View>
     )
   }
 }
-
-NetInfo.isConnected.fetch().then(online => {
-  ErrorView.assumeOnline = online
-  NetInfo.isConnected.addEventListener(
-    'connectionChange',
-    ErrorView.initialStateSubscriber,
-  )
-})

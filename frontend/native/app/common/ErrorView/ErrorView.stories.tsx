@@ -1,18 +1,16 @@
 import React from 'react'
 import { ErrorView } from './ErrorView'
+import { OfflineErrorView } from './OfflineErrorView'
+import { ErrorGuard } from './ErrorGuard'
 
 const action = () => console.log('pressed')
 
 export const stories = {
-  Network: () => (
-    <ErrorView
-      error={{ networkError: Error() }}
-      onRetry={action}
-      isRetrying={false}
-    />
-  ),
+  Network: () => <OfflineErrorView onRetry={action} isRetrying={false} />,
   'Application Error': () => (
-    <ErrorView error={Error()} onRetry={action} isRetrying={false} />
+    <ErrorGuard>
+      <Throw />
+    </ErrorGuard>
   ),
   'Server Error': () => (
     <ErrorView
@@ -24,4 +22,9 @@ export const stories = {
   Retrying: () => (
     <ErrorView error={Error('nah')} onRetry={action} isRetrying={true} />
   ),
+}
+
+function Throw(props: {}) {
+  throw Error()
+  return null
 }
