@@ -1,6 +1,7 @@
 import { createDockerUp, createDockerRun } from './utils/docker'
 import { createShellCmd } from './utils/shell'
 import { join } from 'path'
+import { statSync, writeFileSync } from 'fs'
 
 const baseDockerfile = 'backend/docker/docker-compose.yml'
 const devDockerfile = 'backend/docker/docker-compose.development.yml'
@@ -38,6 +39,10 @@ export function developFrontendNative(channel?: 'local') {
     cwd: 'frontend/native',
   })
 
+  // Ensure that google-services.json exists
+  // If it doesn't, exp will behave unpredictably...
+  ensureGoogleServicesConfigExists()
+
   if (channel === 'local') {
     expo('start', { lan: true, dev: true, config: 'app.localdev.json' })
   } else {
@@ -70,4 +75,14 @@ export function emulator(platform: string) {
   })
 
   expo(platform)
+}
+
+function ensureGoogleServicesConfigExists() {
+  const googleServices = join('frontend', 'native', 'google-services.json')
+
+  try {
+    statSync(googleServices)
+  } catch {
+    writeFileSync(googleServices, '{}')
+  }
 }
