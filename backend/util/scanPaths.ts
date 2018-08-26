@@ -1,5 +1,5 @@
 import glob from 'glob'
-import { resolve, delimiter } from 'path'
+import { resolve, sep } from 'path'
 
 export function scanPaths(...patterns: string[]): unknown[] {
   return patterns.flatMap(pattern =>
@@ -14,6 +14,6 @@ export function scanPaths(...patterns: string[]): unknown[] {
 }
 
 function isTestFile(path: string) {
-  const components = path.split(delimiter)
+  const components = path.split(sep)
   return components.includes('test') || components.includes('__tests__')
 }
