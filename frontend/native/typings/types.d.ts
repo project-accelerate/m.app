@@ -1,5 +1,6 @@
 declare module '*.png'
 declare module '*.jpg'
+declare module '*.svg'
 declare module '*.graphql'
 
 declare module 'react-native-markdown-view' {

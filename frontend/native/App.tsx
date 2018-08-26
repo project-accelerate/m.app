@@ -11,6 +11,7 @@ import { ReduxProvider } from './config/redux'
 import { createNotificationHandler } from './app/common/Notification/NotificationHandler'
 import { notificationHandlers } from './notifications'
 import { createLogger } from './app/common/logger'
+import { ErrorGuard } from './app/common/ErrorView/ErrorGuard'
 
 interface ApplicationState {
   loading?: boolean
@@ -64,13 +65,15 @@ export default class App extends React.Component<AppProps> {
     }
 
     return (
-      <ApolloProvider client={graphQlClient}>
-        <ReduxProvider>
-          <RegistrationContainer>
-            <this.navigator />
-          </RegistrationContainer>
-        </ReduxProvider>
-      </ApolloProvider>
+      <ErrorGuard>
+        <ApolloProvider client={graphQlClient}>
+          <ReduxProvider>
+            <RegistrationContainer>
+              <this.navigator />
+            </RegistrationContainer>
+          </ReduxProvider>
+        </ApolloProvider>
+      </ErrorGuard>
     )
   }
 }

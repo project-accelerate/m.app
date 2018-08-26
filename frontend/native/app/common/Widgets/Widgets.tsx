@@ -32,6 +32,7 @@ import { HomeScreen } from '../../twt/Home/HomeScreen'
 import { getStatusBarHeight } from '../platform'
 import { Constants } from 'expo'
 import { NotificationListener } from '../Notification/NotificationListener'
+import { ErrorGuard } from '../ErrorView/ErrorGuard'
 
 const FieldStyle = StyleSheet.create({
   field: {
@@ -62,12 +63,22 @@ const LoadingOverlayStyle = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  message: {
+    margin: theme.spacing.level(2),
+  },
 })
 
-export function LoadingOverlay() {
+export function LoadingOverlay(props: {
+  message?: string
+  children?: React.ReactNode
+}) {
   return (
     <View style={LoadingOverlayStyle.container}>
       <LoadingIndicator />
+      <Typography style={LoadingOverlayStyle.message} variant="caption">
+        {props.message || ' '}
+      </Typography>
+      {props.children}
     </View>
   )
 }
@@ -242,38 +253,40 @@ export const Screen = withNavigation(function MenuBar({
     : [{ paddingTop: getStatusBarHeight() }, ScreenStyles.notFloating]
 
   return (
-    <View style={ScreenStyles.screen}>
-      <NotificationListener />
-      <SafeAreaView style={[ScreenStyles.menu, floatStyle]}>
-        <TouchableOpacity style={ScreenStyles.button} onPress={goBack}>
-          {!noBackButton && (
+    <ErrorGuard>
+      <View style={ScreenStyles.screen}>
+        <NotificationListener />
+        <SafeAreaView style={[ScreenStyles.menu, floatStyle]}>
+          <TouchableOpacity style={ScreenStyles.button} onPress={goBack}>
+            {!noBackButton && (
+              <FontAwesome
+                style={ScreenStyles.buttonIcon}
+                name="chevron-left"
+                color="white"
+                size={26}
+              />
+            )}
+          </TouchableOpacity>
+          <View>
+            {(title && (
+              <Typography variant="cardTitle" darkBg>
+                {title}
+              </Typography>
+            )) ||
+              undefined}
+          </View>
+          <TouchableOpacity style={ScreenStyles.button} onPress={openDrawer}>
             <FontAwesome
               style={ScreenStyles.buttonIcon}
-              name="chevron-left"
+              name="bars"
               color="white"
               size={26}
             />
-          )}
-        </TouchableOpacity>
-        <View>
-          {(title && (
-            <Typography variant="cardTitle" darkBg>
-              {title}
-            </Typography>
-          )) ||
-            undefined}
-        </View>
-        <TouchableOpacity style={ScreenStyles.button} onPress={openDrawer}>
-          <FontAwesome
-            style={ScreenStyles.buttonIcon}
-            name="bars"
-            color="white"
-            size={26}
-          />
-        </TouchableOpacity>
-      </SafeAreaView>
-      {children}
-    </View>
+          </TouchableOpacity>
+        </SafeAreaView>
+        {children}
+      </View>
+    </ErrorGuard>
   )
 })
 
