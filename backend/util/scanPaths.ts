@@ -1,14 +1,19 @@
 import glob from 'glob'
-import { resolve } from 'path'
+import { resolve, delimiter } from 'path'
 
 export function scanPaths(...patterns: string[]): unknown[] {
   return patterns.flatMap(pattern =>
     glob.sync(pattern).flatMap(file => {
-      if (file.includes('.test.') || file.includes('.integrationTest.')) {
+      if (isTestFile(file)) {
         return []
       }
 
       return Object.values(require(resolve(file)))
     }),
   )
+}
+
+function isTestFile(path: string) {
+  const components = path.split(delimiter)
+  return components.includes('test') || components.includes('__tests__')
 }
