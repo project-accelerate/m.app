@@ -19,7 +19,7 @@
     "babel-plugin-import-graphql": "^2.6.2",
     "collisions": "^2.0.13",
     "date-fns": "^1.29.0",
-    "exp": "^55.0.4",
+    "exp": "^57.0.0",
     "expo": "^28.0.0",
     "formik": "^1.0.2",
     "graphql": "^0.13.2",

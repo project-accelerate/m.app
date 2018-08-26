@@ -27,6 +27,10 @@ const storyFiles = [
     name: 'common > Widgets',
     source: require('./app/common/Widgets/Widgets.stories'),
   },
+  {
+    name: 'common > ErrorView',
+    source: require('./app/common/ErrorView/ErrorView.stories'),
+  },
 ]
 
 const expobook = createExpo()

@@ -1,6 +1,6 @@
 import React from 'react'
 import { createTransition } from '../Layouts/Transitioner'
-import { LoadingOverlay } from '../Widgets/Widgets'
+import { RetryableAction } from '../RetryableAction/RetryableAction'
 
 interface WizardConfig<T> {
   stages: Array<(props: WizardStageProps<T>) => JSX.Element>
@@ -13,7 +13,7 @@ export interface WizardStageProps<T> {
 
 interface WizardProps<T> {
   initialState: T
-  onCompleted: (value: T) => void
+  onCompleted: (value: T) => Promise<any>
 }
 
 export function createWizard<T>(config: WizardConfig<T>) {
@@ -39,8 +39,14 @@ export function createWizard<T>(config: WizardConfig<T>) {
       if (nextStage) {
         this.transitioner.transitionTo(this.renderStage(nextStage as any))
       } else {
-        this.transitioner.transitionTo(<LoadingOverlay />)
-        await this.props.onCompleted(this.state)
+        this.transitioner.transitionTo(
+          <RetryableAction
+            fullscreen
+            preserve
+            action={this.props.onCompleted}
+            params={this.state}
+          />,
+        )
       }
     }
 

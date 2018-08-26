@@ -6,6 +6,7 @@ import {
   View,
   TouchableHighlight,
   Text,
+  TouchableOpacity,
 } from 'react-native'
 import { theme } from '../../../theme'
 
@@ -26,6 +27,12 @@ const buttonStyle = StyleSheet.create({
   small: {
     padding: theme.spacing.level(2),
   },
+  inline: {
+    padding: theme.spacing.level(2),
+    backgroundColor: theme.pallete.transparent,
+    borderWidth: 0,
+    opacity: 1
+  },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -44,6 +51,11 @@ const textStyle = StyleSheet.create({
   small: {
     fontSize: 20,
     fontWeight: '700',
+  },
+  inline: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: theme.pallete.accent
   },
 })
 
@@ -67,21 +79,23 @@ export function ButtonGrid({ children, ...props }: ButtonGridProps) {
 
 interface ButtonProps extends TouchableHighlightProps {
   children?: React.ReactNode
-  size?: 'large' | 'small'
+  variant?: 'large' | 'small' | 'inline'
 }
 
 export function Button({
   children,
   style,
-  size = 'large',
+  variant = 'large',
   ...props
 }: ButtonProps) {
+  const ButtonType = variant === 'inline' ? TouchableOpacity : TouchableHighlight
+  
   return (
-    <TouchableHighlight
-      style={[buttonStyle.button, buttonStyle[size], style]}
+    <ButtonType
+      style={[buttonStyle.button, buttonStyle[variant], style]}
       {...props}
     >
-      <Text style={[buttonStyle.text, textStyle[size]]}>{children}</Text>
-    </TouchableHighlight>
+      <Text style={[buttonStyle.text, textStyle[variant]]}>{children}</Text>
+    </ButtonType>
   )
 }

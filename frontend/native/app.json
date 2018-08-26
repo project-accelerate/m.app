@@ -19,6 +19,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
+    "entryPoint": "./main.js",
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
