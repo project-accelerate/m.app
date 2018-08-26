@@ -2,7 +2,7 @@
   "expo": {
     "name": "Momentum",
     "description": "Platform Socialism",
-    "slug": "momentum-app",
+    "slug": "momentum-app-localdev",
     "primaryColor": "#ec0000",
     "privacy": "unlisted",
     "sdkVersion": "28.0.0",

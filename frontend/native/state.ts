@@ -32,6 +32,24 @@ export type AppState = {
     | undefined
 }
 
+type AppActionDefs = typeof AppActions
+
+type ComponentActions = {
+  [NS in keyof AppActionDefs]: {
+    [P in keyof AppActionDefs[NS]]: BoundActionCreator<AppActionDefs[NS][P]>
+  }
+}
+
+type BoundActionCreator<Fn> = Fn extends (...args: any[]) => any
+  ? (ReturnType<Fn> extends Function
+      ? (params: FirstArgument<Fn>) => ReturnType<ReturnType<Fn>>
+      : (params: FirstArgument<Fn>) => void)
+  : never
+
+type FirstArgument<T> = T extends (arg1: infer U, ...args: any[]) => any
+  ? U
+  : any
+
 /** Wrap an known action type with a placeholder for other action types */
 export type ReducerAction<T> = T | { type: '@other' }
 
@@ -81,7 +99,7 @@ export function createParametricStateConnector<Props>() {
 
 export const WithActions = createStateConnector({})
 
-type SelectorRenderProps<T> = T & { actions: typeof AppActions }
+type SelectorRenderProps<T> = T & { actions: ComponentActions }
 
 type StateConnectorProps<Props, T> = Props & {
   children: (renderProps: SelectorRenderProps<T>) => React.ReactNode

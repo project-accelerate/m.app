@@ -67,9 +67,13 @@ const LoadingOverlayStyle = StyleSheet.create({
 export function LoadingOverlay() {
   return (
     <View style={LoadingOverlayStyle.container}>
-      <ActivityIndicator size="large" color={theme.pallete.accent} />
+      <LoadingIndicator />
     </View>
   )
+}
+
+export function LoadingIndicator() {
+  return <ActivityIndicator size="large" color={theme.pallete.accent} />
 }
 
 const ProfileImageStyle = StyleSheet.create({
