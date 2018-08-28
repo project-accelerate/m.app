@@ -42,6 +42,10 @@ export class ErrorView extends React.Component<ErrorViewProps, ErrorViewState> {
     online: NetworkStatusListener.currentStatus,
     attempt: 0,
   }
+  
+  componentDidMount() {
+    console.warn(this.props.error.message)
+  }
 
   componentWillReceiveProps(newProps: ErrorViewProps) {
     if (newProps.error !== this.props.error) {
