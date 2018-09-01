@@ -11,6 +11,7 @@ import { SpeakerDetailScreen } from './app/twt/Speaker/SpeakerDetailScreen'
 import { CalendarScreen } from './app/twt/Calendar/CalendarScreen'
 import { theme } from './theme'
 import { DevPanel } from './devtool/DevPanel'
+import { SubmitMeetupScreen } from './app/twt/SubmitMeetup/SubmitMeetupScreen'
 
 export interface RouteComponent extends React.ComponentClass<any> {
   navigationOptions:
@@ -53,6 +54,7 @@ export class Routes {
     HomeScreen: this.createRootNavigator(HomeScreen),
     TimetableScreen: this.createRootNavigator(TimetableScreen),
     CalendarScreen: this.createRootNavigator(CalendarScreen),
+    SubmitMeetup: this.createRootNavigator(SubmitMeetupScreen),
     ...this.devOnlyRoutes,
   }
 
