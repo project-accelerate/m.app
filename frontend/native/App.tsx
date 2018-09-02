@@ -12,6 +12,7 @@ import { createNotificationHandler } from './app/common/Notification/Notificatio
 import { notificationHandlers } from './notifications'
 import { createLogger } from './app/common/logger'
 import { ErrorGuard } from './app/common/ErrorView/ErrorGuard'
+import { VoteFetcher } from './app/twt/Event/VoteFetcher'
 
 interface ApplicationState {
   loading?: boolean
@@ -69,6 +70,7 @@ export default class App extends React.Component<AppProps> {
         <ApolloProvider client={graphQlClient}>
           <ReduxProvider>
             <RegistrationContainer>
+              <VoteFetcher />
               <this.navigator />
             </RegistrationContainer>
           </ReduxProvider>

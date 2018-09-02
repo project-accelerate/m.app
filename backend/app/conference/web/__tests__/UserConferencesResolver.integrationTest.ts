@@ -43,6 +43,28 @@ describe('User.conferenceEvents', () => {
       })
     }),
   )
+
+  it(
+    'returns votes (and only votes) for the user when votes requested',
+    withDb(async () => {
+      const vote = await givenThatAnEventExists({
+        family: EventFamily.LABOUR_2018_VOTE,
+      })
+      await givenThatAnEventExists({
+        family: EventFamily.LABOUR_2018,
+      })
+      await givenThatAnEventExists({
+        family: EventFamily.TWT_2018,
+      })
+
+      const attendance = await givenThatAConferenceAttendanceExists()
+      const { user } = await userConferenceVotes(attendance.attendee)
+
+      expect(user).toMatchObject({
+        eventsAttending: [{ id: vote.id }],
+      })
+    }),
+  )
 })
 
 async function userConferenceEvents(userId: string) {
@@ -51,6 +73,25 @@ async function userConferenceEvents(userId: string) {
       query($id: String!) {
         user(id: $id) {
           conferenceEvents {
+            edges {
+              node {
+                id
+              }
+            }
+          }
+        }
+      }
+    `,
+    variables: { id: userId },
+  })
+}
+
+async function userConferenceVotes(userId: string) {
+  return execQuery({
+    body: `
+      query($id: String!) {
+        user(id: $id) {
+          conferenceVotes {
             edges {
               node {
                 id

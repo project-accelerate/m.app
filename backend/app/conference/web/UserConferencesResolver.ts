@@ -34,6 +34,24 @@ export class UserConferencesResolver {
     )
   }
 
+  @FieldResolver(() => UserConferenceEventsConnection)
+  async conferenceVotes(@Root() user: User) {
+    const isDelegate = await this.conferenceAttendanceRepository.findOne({
+      attendee: user.id,
+      conference: EventFamily.LABOUR_2018,
+    })
+
+    if (!isDelegate) {
+      return new UserConferenceEventsConnection([])
+    }
+
+    return new UserConferenceEventsConnection(
+      await this.eventRepository.find({
+        family: EventFamily.LABOUR_2018_VOTE,
+      }),
+    )
+  }
+
   @FieldResolver(() => [EventFamily])
   async conferences(@Root() user: User) {
     const attendances = await this.conferenceAttendanceRepository.find({
