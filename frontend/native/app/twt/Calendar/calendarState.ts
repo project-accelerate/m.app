@@ -20,6 +20,7 @@ import { graphQlClient } from '../../../config/graphql'
 import AttendEvent from './AttendEvent.graphql'
 import FetchNewVotes from './FetchNewVotes.graphql'
 import CancelEventAttendance from './CancelEventAttendance.graphql'
+import { isEqual } from 'lodash'
 import { createLogger } from '../../common/logger'
 import { createEventReminderNotification } from './EventReminderNotification'
 import { registration } from '../Registration/registrationState'
@@ -146,20 +147,39 @@ export namespace calendar {
         )
       })
     },
+
     saveEvent: ({
       event,
       userId,
       alertMinutesBefore,
       recordAttendance = true,
-    }: SaveEventProps) => async (dispatch: Dispatch<Action>) => {
-      log('Request save notification')
-
+    }: SaveEventProps) => async (
+      dispatch: Dispatch<Action>,
+      getState: () => AppState,
+    ) => {
       const details = {
         id: event.id,
         name: event.name,
         venueName: event.venue.name,
         startTime: event.startTime,
         endTime: event.endTime,
+      }
+
+      let prevSavedEvent = selectors.savedEvent(getState(), {
+        eventId: event.id,
+      })
+
+      if (isEqual(details, prevSavedEvent.details)) {
+        return
+      }
+
+      if (prevSavedEvent) {
+        log('Updating scheduled event', details)
+        await Notifications.cancelScheduledNotificationAsync(
+          prevSavedEvent.notificationToken,
+        )
+      } else {
+        log('Adding new saved event', details)
       }
 
       const notificationTime = subHours(event.startTime, alertMinutesBefore)
