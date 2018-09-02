@@ -1,6 +1,6 @@
 import React from 'react'
 import { AsyncStorage } from 'react-native'
-import { Notifications } from 'expo'
+import { Notifications, Updates } from 'expo'
 import { Button } from '../app/common/Butttons/Buttons'
 import { NavigationScreenOptions } from 'react-navigation'
 import { Screen } from '../app/common/Widgets/Widgets'
@@ -16,6 +16,7 @@ export class DevPanel extends React.Component {
   resetEverything = () => {
     AsyncStorage.clear()
     Notifications.cancelAllScheduledNotificationsAsync()
+    Updates.reload()
   }
 
   render() {
