@@ -103,6 +103,34 @@ export interface EventDetailScreenQuery {
   } | null
 }
 
+export interface FetchNewVotesQueryVariables {
+  userId: string
+}
+
+export interface FetchNewVotesQuery {
+  user: {
+    votes: {
+      edges: Array<{
+        node: {
+          id: string
+          name: string
+          family: EventFamily
+          // Return the event venue
+          venue: {
+            id: string
+            name: string
+          }
+          startTime: string
+          endTime: string
+          photo: {
+            sourceUrl: string
+          } | null
+        }
+      }>
+    }
+  }
+}
+
 export interface TimetableScreenQueryVariables {
   userId: string
 }
@@ -110,6 +138,34 @@ export interface TimetableScreenQueryVariables {
 export interface TimetableScreenQuery {
   user: {
     events: {
+      edges: Array<{
+        node: {
+          id: string
+          name: string
+          family: EventFamily
+          // Return the event venue
+          venue: {
+            id: string
+            name: string
+          }
+          startTime: string
+          endTime: string
+          photo: {
+            sourceUrl: string
+          } | null
+        }
+      }>
+    }
+  }
+}
+
+export interface VotesScreenQueryVariables {
+  userId: string
+}
+
+export interface VotesScreenQuery {
+  user: {
+    votes: {
       edges: Array<{
         node: {
           id: string

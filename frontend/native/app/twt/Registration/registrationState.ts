@@ -79,7 +79,7 @@ export namespace registration {
     optionalRegistration: ({ registration }: AppState) => {
       return registration
     },
-    userId: (state: AppState, props: any) => {
+    userId: (state: AppState) => {
       return selectors.registration(state).userId
     },
   }

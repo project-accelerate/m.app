@@ -721,6 +721,22 @@
               "deprecationReason": null
             },
             {
+              "name": "conferenceVotes",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "UserEventsConnectionConnection",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "conferences",
               "description": "",
               "args": [],

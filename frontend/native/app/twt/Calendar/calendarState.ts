@@ -7,6 +7,8 @@ import {
   CalendarEventFragment,
   AttendEventMutationVariables,
   CancelEventAttendanceMutationVariables,
+  FetchNewVotesQueryVariables,
+  FetchNewVotesQuery,
 } from '../../../queries'
 import {
   ReducerAction,
@@ -16,9 +18,11 @@ import {
 } from '../../../state'
 import { graphQlClient } from '../../../config/graphql'
 import AttendEvent from './AttendEvent.graphql'
+import FetchNewVotes from './FetchNewVotes.graphql'
 import CancelEventAttendance from './CancelEventAttendance.graphql'
 import { createLogger } from '../../common/logger'
 import { createEventReminderNotification } from './EventReminderNotification'
+import { registration } from '../Registration/registrationState'
 
 /**
  * IMPORTANT!
@@ -109,6 +113,7 @@ export namespace calendar {
     event: CalendarEventFragment
     alertMinutesBefore: number
     userId: string
+    recordAttendance?: boolean
   }
 
   interface RemoveSavedEventProps {
@@ -117,23 +122,47 @@ export namespace calendar {
   }
 
   export const actions = {
-    saveEvent: (props: SaveEventProps) => async (
-      dispatch: Dispatch<Action>,
+    fetchVotes: () => async (
+      dispatch: AppDispatch<Action>,
+      getState: () => AppState,
     ) => {
+      log('Fetch votes')
+
+      const userId = registration.selectors.userId(getState())
+      const {
+        user: { votes },
+      } = await fetchNewVotes({
+        userId,
+      })
+
+      votes.edges.forEach(({ node: vote }) => {
+        dispatch(
+          actions.saveEvent({
+            alertMinutesBefore: 30,
+            event: vote,
+            recordAttendance: false,
+            userId,
+          }),
+        )
+      })
+    },
+    saveEvent: ({
+      event,
+      userId,
+      alertMinutesBefore,
+      recordAttendance = true,
+    }: SaveEventProps) => async (dispatch: Dispatch<Action>) => {
       log('Request save notification')
 
       const details = {
-        id: props.event.id,
-        name: props.event.name,
-        venueName: props.event.venue.name,
-        startTime: props.event.startTime,
-        endTime: props.event.endTime,
+        id: event.id,
+        name: event.name,
+        venueName: event.venue.name,
+        startTime: event.startTime,
+        endTime: event.endTime,
       }
 
-      const notificationTime = subHours(
-        props.event.startTime,
-        props.alertMinutesBefore,
-      )
+      const notificationTime = subHours(event.startTime, alertMinutesBefore)
 
       const notificationToken = await Notifications.scheduleLocalNotificationAsync(
         createEventReminderNotification(details),
@@ -148,10 +177,12 @@ export namespace calendar {
         notificationToken,
       })
 
-      await submitEventAdded({
-        event: props.event.id,
-        user: props.userId,
-      })
+      if (recordAttendance) {
+        await submitEventAdded({
+          event: event.id,
+          user: userId,
+        })
+      }
     },
 
     removeSavedEvent: (props: RemoveSavedEventProps) => async (
@@ -231,6 +262,16 @@ export namespace calendar {
   }
 
   const log = createLogger('Calendar')
+
+  async function fetchNewVotes(variables: FetchNewVotesQueryVariables) {
+    const result = await graphQlClient.query<FetchNewVotesQuery>({
+      fetchPolicy: 'network-only',
+      query: FetchNewVotes,
+      variables,
+    })
+
+    return result.data
+  }
 
   async function submitEventAdded(variables: AttendEventMutationVariables) {
     try {

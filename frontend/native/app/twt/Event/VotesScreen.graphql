@@ -1,0 +1,13 @@
+#import "./EventListItem.graphql"
+
+query VotesScreen($userId: String!) {
+  user(id: $userId) {
+    votes: conferenceVotes {
+      edges {
+        node {
+          ...EventListItem
+        }
+      }
+    }
+  }
+}
