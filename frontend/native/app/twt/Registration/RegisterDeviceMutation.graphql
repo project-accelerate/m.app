@@ -6,9 +6,5 @@ mutation RegisterDevice($request: RegisterConferenceAttendanceRequest!) {
     device {
       id
     }
-    attendances {
-      id
-      conference
-    }
   }
 }

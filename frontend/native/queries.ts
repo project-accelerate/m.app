@@ -10,11 +10,11 @@ export enum EventFamily {
 export interface RegisterConferenceAttendanceRequest {
   user: CreateUserRequest
   device: RegisterDeviceRequest
-  attendances: Array<EventFamily>
 }
 
 export interface CreateUserRequest {
   optedIntoNotifications: boolean
+  isDelegate: boolean
   email?: string | null
 }
 
@@ -62,6 +62,32 @@ export interface CancelEventAttendanceMutation {
   }
 }
 
+export interface FetchNewVotesQueryVariables {
+  userId: string
+}
+
+export interface FetchNewVotesQuery {
+  user: {
+    votes: {
+      edges: Array<{
+        node: {
+          id: string
+          name: string
+          startTime: string
+          endTime: string
+          photo: {
+            sourceUrl: string
+          } | null
+          // Return the event venue
+          venue: {
+            name: string
+          }
+        }
+      }>
+    }
+  }
+}
+
 export interface EventDetailScreenQueryVariables {
   id: string
 }
@@ -101,34 +127,6 @@ export interface EventDetailScreenQuery {
       sourceUrl: string
     } | null
   } | null
-}
-
-export interface FetchNewVotesQueryVariables {
-  userId: string
-}
-
-export interface FetchNewVotesQuery {
-  user: {
-    votes: {
-      edges: Array<{
-        node: {
-          id: string
-          name: string
-          family: EventFamily
-          // Return the event venue
-          venue: {
-            id: string
-            name: string
-          }
-          startTime: string
-          endTime: string
-          photo: {
-            sourceUrl: string
-          } | null
-        }
-      }>
-    }
-  }
 }
 
 export interface TimetableScreenQueryVariables {
@@ -199,10 +197,6 @@ export interface RegisterDeviceMutation {
     device: {
       id: string
     }
-    attendances: Array<{
-      id: string
-      conference: EventFamily
-    }>
   }
 }
 

@@ -37,9 +37,6 @@ export namespace registration {
 
       const registration = await registerDevice({
         request: {
-          attendances: props.isConferenceDelegate
-            ? [EventFamily.LABOUR_2018, EventFamily.TWT_2018]
-            : [EventFamily.TWT_2018],
           device,
           user,
         },
@@ -87,6 +84,7 @@ export namespace registration {
   async function getUserDeviceRegistrationRequest({
     optedIntoNotifications,
     email,
+    isConferenceDelegate,
   }: RegistrationRequestProps) {
     const deviceToken =
       optedIntoNotifications && (await requestNotificationPermission())
@@ -97,6 +95,7 @@ export namespace registration {
       user: {
         optedIntoNotifications,
         email,
+        isDelegate: isConferenceDelegate,
       },
       device: {
         deviceToken,
