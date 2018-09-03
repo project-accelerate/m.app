@@ -1,5 +1,9 @@
 import * as Knex from 'knex'
-import { uuidPrimaryKey, uuidForeignKey } from 'backend/db/migrationUtils'
+import {
+  uuidPrimaryKey,
+  uuidForeignKey,
+  dropTableForRollback,
+} from 'backend/db/migrationUtils'
 
 export async function up(db: Knex) {
   await db.schema.createTable('EventAttendance', table => {
@@ -18,5 +22,5 @@ export async function up(db: Knex) {
 }
 
 export async function down(db: Knex) {
-  db.schema.dropTable('EventAttendance')
+  await dropTableForRollback(db, 'EventAttendance')
 }

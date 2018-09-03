@@ -62,3 +62,7 @@ export function createOneToManyRelation(
       .index()
   })
 }
+
+export function dropTableForRollback(db: Knex, name: string) {
+  return db.raw(`drop table if exists "${name}" cascade`)
+}

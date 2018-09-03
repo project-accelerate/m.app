@@ -3,6 +3,7 @@ import {
   uuidPrimaryKey,
   uuidForeignKey,
   createOneToManyRelation,
+  dropTableForRollback,
 } from '../migrationUtils'
 
 export async function up(knex: Knex) {
@@ -48,9 +49,10 @@ export async function up(knex: Knex) {
 }
 
 export async function down(knex: Knex) {
-  await knex.schema.dropTable('event')
-  await knex.schema.dropTable('person')
-  await knex.schema.dropTable('venue')
+  await dropTableForRollback(knex, 'venue')
+  await dropTableForRollback(knex, 'person')
+  await dropTableForRollback(knex, 'event')
+  await dropTableForRollback(knex, 'event_speakers')
 }
 
 function address(table: Knex.CreateTableBuilder) {

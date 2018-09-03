@@ -1,4 +1,4 @@
-import { delay } from 'bluebird'
+import { delay, try as tryPromise } from 'bluebird'
 import { execute, parse } from 'graphql'
 import Container from 'typedi'
 import { AuthToken } from 'common/AuthToken'
@@ -51,24 +51,10 @@ export function withDb(block: () => Promise<void>) {
     const db = Container.get(DatabaseConnection)
     const knex = db.knex
 
-    let succeeded = false
+    await rollbackAll()
+    await knex.migrate.latest()
 
-    try {
-      await knex.transaction(async transaction => {
-        db.knex = transaction
-
-        await block()
-
-        succeeded = true
-        await transaction.rollback()
-      })
-    } catch (err) {
-      if (!succeeded) {
-        throw err
-      }
-    } finally {
-      db.knex = knex
-    }
+    await block()
   }
 }
 
@@ -82,5 +68,21 @@ export async function waitUntil<T>(condition: () => Promise<T>) {
     } catch {}
 
     await delay(200)
+  }
+}
+
+async function rollbackAll() {
+  const db = Container.get(DatabaseConnection)
+  const knex = db.knex
+
+  try {
+    const current = await knex.migrate.currentVersion()
+
+    if (current !== 'none') {
+      await knex.migrate.rollback()
+      await rollbackAll()
+    }
+  } catch (err) {
+    console.error(err)
   }
 }
