@@ -42,7 +42,7 @@ export function unitTest(dir: string, ...jestArgs: string[]) {
   )
 }
 
-export function integrationTest(dir: string) {
+export function integrationTest(dir: string, ...opts: string[]) {
   const jestInDocker = createDockerRun(
     jestDockerConfigs,
     'web',
@@ -50,10 +50,13 @@ export function integrationTest(dir: string) {
     { workdir: `/app/${dir}` },
   )
 
-  const jestCmd = jestInDocker({
-    config: 'jest.integration.config.json',
-    watchman: false,
-    forceExit: true,
-    runInBand: true,
-  })
+  const jestCmd = jestInDocker(
+    {
+      config: 'jest.integration.config.json',
+      watchman: false,
+      forceExit: true,
+      runInBand: true,
+    },
+    ...opts,
+  )
 }

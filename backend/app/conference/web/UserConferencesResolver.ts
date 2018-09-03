@@ -1,12 +1,11 @@
 import { Resolver, Root, FieldResolver, Arg } from 'type-graphql'
 import { User } from 'backend/app/user/domain/User'
 import { EventRepository } from 'backend/app/events/external/EventRepository'
-import { EventFamily } from 'common/domain/EventFamily'
 import { createSimpleConnection } from 'backend/app/common/Connection'
 import { Event } from 'backend/app/events/domain/Event'
-import { ConferenceAttendanceRepository } from '../external/ConferenceAttendanceRepository'
 import { oneOf } from 'backend/app/common/CrudRepository'
 import { EventAttendanceRepository } from 'backend/app/conference/external/EventAttedanceRepository'
+import { ConferenceEventService } from 'backend/app/conference/application/ConferenceEventService'
 
 const UserConferenceEventsConnection = createSimpleConnection({
   name: 'UserEventsConnection',
@@ -17,48 +16,22 @@ const UserConferenceEventsConnection = createSimpleConnection({
 export class UserConferencesResolver {
   constructor(
     private eventRepository: EventRepository,
-    private conferenceAttendanceRepository: ConferenceAttendanceRepository,
     private eventAttendanceReposity: EventAttendanceRepository,
+    private conferenceEventService: ConferenceEventService,
   ) {}
 
   @FieldResolver(() => UserConferenceEventsConnection)
   async conferenceEvents(@Root() user: User) {
-    const attendances = await this.conferenceAttendanceRepository.find({
-      attendee: user.id,
-    })
-
     return new UserConferenceEventsConnection(
-      await this.eventRepository.find({
-        family: oneOf(...attendances.map(a => a.conference)),
-      }),
+      await this.conferenceEventService.relevantEvents(user),
     )
   }
 
   @FieldResolver(() => UserConferenceEventsConnection)
   async conferenceVotes(@Root() user: User) {
-    const isDelegate = await this.conferenceAttendanceRepository.findOne({
-      attendee: user.id,
-      conference: EventFamily.LABOUR_2018,
-    })
-
-    if (!isDelegate) {
-      return new UserConferenceEventsConnection([])
-    }
-
     return new UserConferenceEventsConnection(
-      await this.eventRepository.find({
-        family: EventFamily.LABOUR_2018_VOTE,
-      }),
+      await this.conferenceEventService.relevantVotes(user),
     )
-  }
-
-  @FieldResolver(() => [EventFamily])
-  async conferences(@Root() user: User) {
-    const attendances = await this.conferenceAttendanceRepository.find({
-      attendee: user.id,
-    })
-
-    return attendances.map(attendance => attendance.conference)
   }
 
   @FieldResolver(() => [Event])

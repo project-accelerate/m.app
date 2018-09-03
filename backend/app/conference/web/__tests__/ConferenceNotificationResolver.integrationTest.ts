@@ -1,8 +1,5 @@
 import { withDb, execQuery } from 'backend/app/test/integrationTestUtils'
-import {
-  givenThatAConferenceAttendanceExists,
-  givenThatAnEventAttendanceExists,
-} from 'backend/app/conference/test/conferenceTestUtils'
+import { givenThatAnEventAttendanceExists } from 'backend/app/conference/test/conferenceTestUtils'
 import { givenThatAConferenceNotificationHasBeenSent } from 'backend/app/conference/test/conferenceNotificationTestUtils'
 import { AuthToken } from 'common/AuthToken'
 import { someAdminUser, someOrdinaryUser } from 'common/test/testUtils'
