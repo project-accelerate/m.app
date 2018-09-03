@@ -1,5 +1,5 @@
 import * as Knex from 'knex'
-import { uuidPrimaryKey } from 'backend/db/migrationUtils'
+import { uuidPrimaryKey, dropTableForRollback } from 'backend/db/migrationUtils'
 
 export async function up(db: Knex) {
   await db.schema.createTable('PendingNotification', table => {
@@ -17,5 +17,5 @@ export async function up(db: Knex) {
 }
 
 export async function down(db: Knex) {
-  db.schema.dropTable('PendingNotification')
+  await dropTableForRollback(db, 'PendingNotification')
 }

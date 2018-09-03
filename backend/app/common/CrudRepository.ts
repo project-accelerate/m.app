@@ -246,7 +246,8 @@ export function CrudRepository<T extends { id: string }, Props = WithoutId<T>>(
 
     async update(id: string, data: any): Promise<void> {
       await this.db.knex
-        .update({ ...this.encode(data), id })
+        .update({ ...this.encode(data) })
+        .where({ id })
         .into(opts.tableName)
     }
 
