@@ -1,5 +1,4 @@
 import { Service } from 'typedi'
-import { ConferenceAttendanceRepository } from '../external/ConferenceAttendanceRepository'
 import {
   RegisterConferenceAttendanceRequest,
   RegisterConferenceAttendanceResponse,
@@ -10,7 +9,6 @@ import { DeviceAdminService } from 'backend/app/device/application/DeviceAdminSe
 @Service()
 export class ConferenceAttendanceAdminService {
   constructor(
-    private conferenceAttendanceRepository: ConferenceAttendanceRepository,
     private deviceAdminService: DeviceAdminService,
     private userAdminService: UserAdminService,
   ) {}
@@ -28,14 +26,6 @@ export class ConferenceAttendanceAdminService {
     return {
       user,
       device,
-      attendances: await Promise.all(
-        request.attendances.map(conference =>
-          this.conferenceAttendanceRepository.insert({
-            attendee: user.id,
-            conference,
-          }),
-        ),
-      ),
     }
   }
 }

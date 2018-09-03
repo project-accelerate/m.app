@@ -76,7 +76,6 @@ export function shouldSupportStandardCrudFunctions<
     `should update inserted entites`,
     withDb(async () => {
       const fixture = new Fixture()
-
       const exampleUpdateProps = (await opts.updateExample()) as any
       const entity = await fixture.givenThatAnEntityHasBeenInserted()
 

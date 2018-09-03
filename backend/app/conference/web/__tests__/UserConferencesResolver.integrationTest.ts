@@ -1,23 +1,19 @@
 import { withDb, execQuery } from 'backend/app/test/integrationTestUtils'
-import { RegisterConferenceAttendanceRequest } from 'backend/app/conference/domain/ConferenceAttendance'
-import { DeviceType } from 'backend/app/device/domain/Device'
 import { EventFamily } from 'common/domain/EventFamily'
-import {
-  givenThatAConferenceAttendanceExists,
-  givenThatAnEventAttendanceExists,
-} from 'backend/app/conference/test/conferenceTestUtils'
+import { givenThatAnEventAttendanceExists } from 'backend/app/conference/test/conferenceTestUtils'
 import { givenThatAnEventExists } from 'backend/app/events/test/eventTestUtils'
+import { givenThatAUserExists } from 'backend/app/user/test/userTestUtils'
 
 describe('User.conferenceEvents', () => {
   it(
     'returns events for the user',
     withDb(async () => {
-      const attendance = await givenThatAConferenceAttendanceExists()
+      const userId = (await givenThatAUserExists()).id
       const event = await givenThatAnEventExists({
-        family: attendance.conference,
+        family: EventFamily.TWT_2018,
       })
 
-      const { user } = await userConferenceEvents(attendance.attendee)
+      const { user } = await userConferenceEvents(userId)
 
       expect(user).toMatchObject({
         conferenceEvents: {
@@ -57,11 +53,17 @@ describe('User.conferenceEvents', () => {
         family: EventFamily.TWT_2018,
       })
 
-      const attendance = await givenThatAConferenceAttendanceExists()
-      const { user } = await userConferenceVotes(attendance.attendee)
+      const userId = (await givenThatAUserExists({ isDelegate: true })).id
+      const { user } = await userConferenceVotes(userId)
 
       expect(user).toMatchObject({
-        eventsAttending: [{ id: vote.id }],
+        conferenceVotes: {
+          edges: [
+            {
+              node: { id: vote.id },
+            },
+          ],
+        },
       })
     }),
   )

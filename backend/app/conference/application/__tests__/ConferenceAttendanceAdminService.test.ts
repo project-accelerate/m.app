@@ -3,7 +3,6 @@ import { DeviceType } from 'backend/app/device/domain/Device'
 import { MockCrudRepositoryFixture } from 'backend/app/common/test/MockCrudRepositoryFixture'
 import { MockUserAdminServiceFixture } from 'backend/app/user/test/MockUserAdminServiceFixture'
 import { MockDeviceAdminServiceFixture } from 'backend/app/device/test/MockDeviceAdminServiceFixture'
-import { ConferenceAttendanceRepository } from '../../external/ConferenceAttendanceRepository'
 import { ConferenceAttendanceAdminService } from '../ConferenceAttendanceAdminService'
 
 describe(ConferenceAttendanceAdminService, () => {
@@ -14,12 +13,12 @@ describe(ConferenceAttendanceAdminService, () => {
     fixture.userAdminService.givenThatUserRegistersWithId('my-user-id')
 
     await fixture.service.registerConferenceAttendances({
-      attendances: [EventFamily.LABOUR_2018],
       device: {
         deviceType: DeviceType.ANDROID,
         deviceToken: 'my-device-token',
       },
       user: {
+        isDelegate: true,
         optedIntoNotifications: true,
       },
     })
@@ -34,19 +33,16 @@ describe(ConferenceAttendanceAdminService, () => {
 
     fixture.userAdminService.verifyUserCreated({
       optedIntoNotifications: true,
+      isDelegate: true,
     })
   })
 })
 
 class Fixture {
-  conferenceAttendance = new MockCrudRepositoryFixture(
-    ConferenceAttendanceRepository,
-  )
   userAdminService = new MockUserAdminServiceFixture()
   deviceAdminService = new MockDeviceAdminServiceFixture()
 
   service = new ConferenceAttendanceAdminService(
-    this.conferenceAttendance.instance,
     this.deviceAdminService.instance,
     this.userAdminService.instance,
   )
