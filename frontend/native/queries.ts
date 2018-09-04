@@ -215,6 +215,7 @@ export interface SpeakerDetailScreenQuery {
     photo:  {
       sourceUrl: string,
     } | null,
+    twitterHandle: string | null,
   } | null,
   // Get events a person speaks at
   eventsForSpeaker:  Array< {
@@ -280,6 +281,7 @@ export interface EventDetailFragment {
   photo:  {
     sourceUrl: string,
   } | null,
+  twitterHandle: string | null,
 };
 
 export interface EventListItemFragment {

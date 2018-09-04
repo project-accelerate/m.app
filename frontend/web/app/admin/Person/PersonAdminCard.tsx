@@ -40,7 +40,7 @@ export function PersonAdminCard({
             {person.bio && (
               <Collapse in={bioVisible}>
                 <CardContent>
-                  <MarkdownView value={person.bio} />
+                  <MarkdownView value={"Bio: "+person.bio +  (person.twitterHandle && "\n\n" + "Twitter: " + person.twitterHandle)} />
                 </CardContent>
               </Collapse>
             )}

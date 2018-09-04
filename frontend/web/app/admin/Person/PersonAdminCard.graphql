@@ -5,4 +5,5 @@ fragment PersonAdminCard on Person {
   photo {
     sourceUrl
   }
+  twitterHandle
 }

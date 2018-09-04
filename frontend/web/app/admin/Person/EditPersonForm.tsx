@@ -18,12 +18,14 @@ interface EditPersonFormValue {
   name: string
   bio: string
   profilePic?: string | File
+  twitterHandle: string
 }
 
 interface EditPersonFormChange {
   name: string
   bio: string
   photoUpload?: File
+  twitterHandle: string
 }
 
 export class EditPersonForm extends React.Component<EditPersonFormProps> {
@@ -38,6 +40,7 @@ export class EditPersonForm extends React.Component<EditPersonFormProps> {
     return {
       bio: '',
       name: '',
+      twitterHandle: '',
       ...this.props.initial,
     }
   }
@@ -53,6 +56,7 @@ export class EditPersonForm extends React.Component<EditPersonFormProps> {
           name: Validator.notEmpty('You must provide a name for the speaker'),
           bio: Validator.anything(),
           profilePic: Validator.anything(),
+          twitterHandle: Validator.anything(),
         }}
       >
         <FormGrid>
@@ -65,6 +69,12 @@ export class EditPersonForm extends React.Component<EditPersonFormProps> {
             name="name"
             label="Name"
             helperText="Name of the speaker"
+          />
+          <FormText
+            fullWidth
+            name="twitterHandle"
+            label="Twitter Handle"
+            helperText="Twitter Handle of Speaker, if they have one"
           />
           <FormText
             fullWidth

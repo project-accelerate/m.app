@@ -15,6 +15,7 @@ export async function up(knex: Knex) {
     table.text('name').notNullable()
     table.text('photo')
     table.text('bio')
+    table.text('twitterHandle')
   })
 
   await knex.schema.createTable('venue', table => {

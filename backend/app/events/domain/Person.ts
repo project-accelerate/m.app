@@ -8,6 +8,9 @@ export class CreatePersonRequest {
   @Field({ nullable: true })
   bio?: string
 
+  @Field({ nullable: true })
+  twitterHandle?: string
+
   @Field(() => GraphQLUpload, { nullable: true })
   photoUpload?: FileUpload
 }
@@ -22,4 +25,7 @@ export class Person {
   bio?: string
 
   photo?: string
+
+  @Field({ nullable: true })
+  twitterHandle?: string
 }

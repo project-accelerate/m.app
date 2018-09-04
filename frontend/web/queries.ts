@@ -37,6 +37,7 @@ export interface ConferenceNotificationSendRequest {
 export interface CreatePersonRequest {
   name: string,
   bio?: string | null,
+  twitterHandle?: string | null,
   photoUpload?: string | null,
 };
 
@@ -162,6 +163,7 @@ export interface PersonAdminPageQuery {
         photo:  {
           sourceUrl: string,
         } | null,
+        twitterHandle: string | null,
       },
     } >,
   },
@@ -272,6 +274,7 @@ export interface PersonAdminCardFragment {
   photo:  {
     sourceUrl: string,
   } | null,
+  twitterHandle: string | null,
 };
 
 export interface PersonListFragment {
