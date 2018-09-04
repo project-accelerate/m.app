@@ -5,4 +5,5 @@ fragment SpeakerDetail on Person {
   photo {
     sourceUrl
   }
+  twitterHandle
 }

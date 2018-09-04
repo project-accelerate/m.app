@@ -8,12 +8,13 @@ import {
   SpeakerDetailScreenQueryVariables,
 } from '../../../queries'
 import { createFetchData } from '../../common/FetchData/FetchData'
-import { SpeakerDetail } from './SpeakerDetail'
+import { SpeakerDetail, TwitterHandlePressedEvent } from './SpeakerDetail'
 import { Background } from '../../common/Layouts/Layouts'
 import SpeakerDetailScreenQueryDocument from './SpeakerDetailScreen.graphql'
 import { Screen } from '../../common/Widgets/Widgets'
 import { EventListItemPressedEvent } from '../Event/EventListItem';
 import { Routes } from '../../../routes';
+import { Linking } from 'react-native';
 
 export interface SpeakerDetailScreenParams {
   id: string
@@ -57,6 +58,10 @@ export class SpeakerDetailScreen extends React.Component<
     })
   }
 
+  handleTwitterPressed = ({ handle }: TwitterHandlePressedEvent) => {
+    Linking.openURL("https://twitter.com/" + handle)
+  }
+
   render() 
   {
     return (
@@ -68,6 +73,7 @@ export class SpeakerDetailScreen extends React.Component<
             speaker={FetchSpeaker.required(data.person)}
             events= {FetchSpeaker.required(data.eventsForSpeaker)}
             onEventPress={this.handleEventPressed}
+            onTwitterPress={this.handleTwitterPressed}
             />
             )}
           </FetchSpeaker>

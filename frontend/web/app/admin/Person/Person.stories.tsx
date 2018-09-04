@@ -25,6 +25,7 @@ storiesOf('Person Admin', module)
         name: `${faker.name.firstName()} ${faker.name.lastName()}`,
         bio: faker.lorem.paragraphs(4),
         photo: null,
+        twitterHandle: "@mrtestguy"
       }}
       onEdit={action('edit')}
     />
@@ -38,6 +39,7 @@ storiesOf('Person Admin', module)
         photo: {
           sourceUrl: somePhoto,
         },
+        twitterHandle: "@mrtestguy"
       }}
       onEdit={action('edit')}
     />

@@ -1,15 +1,23 @@
 import React from 'react'
-import { StyleSheet, ScrollView } from 'react-native'
+import { StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
 import { ProfileImage, Banner, Grid } from '../../common/Widgets/Widgets'
 import { Typography } from '../../common/Typography/Typography'
 import { SpeakerDetailFragment, EventListItemFragment } from '../../../queries'
 import { theme } from '../../../theme'
 import { EventListItem, EventListItemPressedEvent } from '../Event/EventListItem';
+import { FontAwesome } from '@expo/vector-icons';
+import { Button } from '../../common/Butttons/Buttons'
+import { Linking } from 'react-native';
 
 interface SpeakerDetailPageProps {
   speaker: SpeakerDetailFragment
   events: EventListItemFragment []
   onEventPress:(event: EventListItemPressedEvent) => void
+  onTwitterPress:(handle: TwitterHandlePressedEvent) => void
+}
+
+export interface TwitterHandlePressedEvent {
+  handle: string | null
 }
 
 export interface SpeakerDetailSpeakerPressEvent {
@@ -61,7 +69,7 @@ const style = StyleSheet.create({
 })
 
 export function SpeakerDetail({
-  speaker, events, onEventPress
+  speaker, events, onEventPress, onTwitterPress
 }: SpeakerDetailPageProps) {
   return (
     <ScrollView>
@@ -78,6 +86,22 @@ export function SpeakerDetail({
       <Typography style={style.content} variant="display">
       {speaker.bio}
       </Typography>
+      {speaker.twitterHandle != null &&
+      <TouchableOpacity onPress={()=>onTwitterPress({handle:speaker.twitterHandle})}>
+        <Typography style={style.heading} variant="display">
+         <FontAwesome
+      name="twitter"
+      color="blue"
+      size={26}
+      />
+        {speaker.twitterHandle}
+        </Typography>
+        </TouchableOpacity>
+        
+      }
+      
+              
+          
       <Typography style={style.heading} variant="display">
       Events
       </Typography>

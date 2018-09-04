@@ -16,6 +16,7 @@ export const stories = {
       speaker={speakerDetail()}
       events= {times(4, createEvent)}
       onEventPress ={(x)=>console.log("Event Pressed: " + x.event.name)}
+      onTwitterPress = {(x)=>console.log("Twitter Handle Pressed: " + x.handle)}
     />
   </Background>
   )
@@ -27,6 +28,7 @@ function speakerDetail() : SpeakerDetailFragment {
     name: faker.name.findName(),
     bio: faker.lorem.lines(3),
     photo: null,
+    twitterHandle: '@mrtestguy'
   }
 }
 

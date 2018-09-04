@@ -17,11 +17,11 @@ async function testEventAndSpeaker()
   return await givenThatAnEventAndSpeakerExists(personProps,eventProps)
 }
 
-export function createTestPersonProps()
+function createTestPersonProps()
 {
   const props = {
     name: faker.lorem.words(2),
-    photo:"http://bucketeer_bucket_name.s3-test:4569/public/32ac9bd6-050f-4da1-9305-4ba58dcdd94a.jpeg"
+    photo:"http://bucketeer_bucket_name.s3-test:4569/public/32ac9bd6-050f-4da1-9305-4ba58dcdd94a.jpeg",
   }
   return props
 }
