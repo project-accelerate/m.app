@@ -33,14 +33,14 @@ import { getStatusBarHeight } from '../platform'
 import { Constants } from 'expo'
 import { NotificationListener } from '../Notification/NotificationListener'
 import { ErrorGuard } from '../ErrorView/ErrorGuard'
-import { HeaderBar } from '../Screen/HeaderBar';
+import { HeaderBar } from '../Screen/HeaderBar'
 
 const FieldStyle = StyleSheet.create({
   field: {
     width: '100%',
     fontSize: 15,
     padding: theme.spacing.level(1),
-    borderColor: theme.pallete.controlBorder,
+    borderColor: theme.pallete.borderLight,
     backgroundColor: theme.pallete.control,
     borderWidth: 1,
   },
@@ -56,8 +56,9 @@ export function Field({ style, ...props }: TextInputProps) {
   )
 }
 
-export const FormField: React.ComponentType<makeInputGreatAgainProps & TextInputProps>
-  = formInput(Field as any)
+export const FormField: React.ComponentType<
+  makeInputGreatAgainProps & TextInputProps
+> = formInput(Field as any)
 
 const LoadingOverlayStyle = StyleSheet.create({
   container: {
@@ -183,39 +184,6 @@ export function Grid({
         </View>
       ))}
     </View>
-  )
-}
-
-interface ScreenProps extends React.Props<{}> {
-  floatMenu?: boolean
-  noBackButton?: boolean
-}
-
-const ScreenStyles = StyleSheet.create({
-  screen: {
-    width: '100%',
-    height: '100%',
-    position: 'relative',
-  },
-  content: {
-    flexGrow: 1,
-    position: 'relative',
-  },
-})
-
-export function Screen({
-  children,
-  floatMenu,
-  noBackButton,
-}: ScreenProps) {
-  return (
-    <ErrorGuard>
-      <View style={ScreenStyles.screen}>
-        <NotificationListener />
-        <HeaderBar floatMenu={floatMenu} noBackButton={noBackButton} />
-        {children}
-      </View>
-    </ErrorGuard>
   )
 }
 

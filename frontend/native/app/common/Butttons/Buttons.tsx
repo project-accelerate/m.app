@@ -15,8 +15,8 @@ const buttonStyle = StyleSheet.create({
   header: {},
   button: {
     backgroundColor: theme.pallete.accent,
-    borderColor: theme.pallete.controlBorder,
-    borderBottomColor: theme.pallete.controlBorderBottom,
+    borderColor: theme.pallete.borderLight,
+    borderBottomColor: theme.pallete.borderDark,
     borderWidth: 0.5,
     borderRadius: 4,
     alignItems: 'center',

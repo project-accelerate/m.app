@@ -7,19 +7,19 @@ import { TimetableScreenQuery } from '../../../queries'
 import { Routes } from '../../../routes'
 import { createStateConnector } from '../../../state'
 import { createFetchData } from '../../common/FetchData/FetchData'
-import { Screen } from '../../common/Widgets/Widgets'
 import { registration } from '../Registration/registrationState'
 import TimetableScreenQueryDocument from './TimetableScreen.graphql'
 import { EventListItemPressedEvent } from './EventListItem'
 import { EventList } from './EventList'
+import { BasicScreen } from '../../common/Screen/BasicScreen'
 
 const FetchEvents = createFetchData<TimetableScreenQuery, {}>({
   query: TimetableScreenQueryDocument,
 })
 
-const Connect = createStateConnector({
+const Connect = createStateConnector(() => ({
   userId: registration.selectors.userId,
-})
+}))
 
 export class TimetableScreen extends React.Component<NavigationScreenProps> {
   static navigationOptions: NavigationScreenOptions = {
@@ -31,12 +31,13 @@ export class TimetableScreen extends React.Component<NavigationScreenProps> {
     this.props.navigation.push(Routes.get().getRoutename('EventDetailScreen'), {
       id: event.id,
       title: event.name,
+      image: event.photo && event.photo.sourceUrl,
     })
   }
 
   render() {
     return (
-      <Screen>
+      <BasicScreen>
         <Connect>
           {({ userId }) => (
             <FetchEvents variables={{ userId }}>
@@ -49,7 +50,7 @@ export class TimetableScreen extends React.Component<NavigationScreenProps> {
             </FetchEvents>
           )}
         </Connect>
-      </Screen>
+      </BasicScreen>
     )
   }
 }

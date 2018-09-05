@@ -68,10 +68,15 @@ export type AppDispatch<A extends Action = AnyAction> = ThunkDispatch<
  * client-side state and passes it through to a render function.
  */
 export function createStateConnector<Props, T>(
-  selectors: { [P in keyof T]: ParametricSelector<AppState, Props, T[P]> },
+  selectorsFactory: () => {
+    [P in keyof T]: ParametricSelector<AppState, Props, T[P]>
+  },
 ): React.ComponentType<StateConnectorProps<Props, T>> {
   const connectComponent = connect(
-    createStructuredSelector(selectors),
+    () => {
+      const selectors = selectorsFactory()
+      return createStructuredSelector(selectors)
+    },
     dispatch => ({
       actions: mapValues(AppActions, (actionNamespace: any) =>
         mapValues(actionNamespace, (actionCreator: any) =>
@@ -93,11 +98,13 @@ export function createStateConnector<Props, T>(
  **/
 export function createParametricStateConnector<Props>() {
   return <T>(
-    selectors: { [P in keyof T]: ParametricSelector<AppState, Props, T[P]> },
+    selectors: () => {
+      [P in keyof T]: ParametricSelector<AppState, Props, T[P]>
+    },
   ) => createStateConnector<Props, T>(selectors)
 }
 
-export const WithActions = createStateConnector({})
+export const WithActions = createStateConnector(() => ({}))
 
 type SelectorRenderProps<T> = T & { actions: ComponentActions }
 

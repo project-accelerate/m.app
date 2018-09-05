@@ -7,19 +7,19 @@ import { VotesScreenQuery } from '../../../queries'
 import { Routes } from '../../../routes'
 import { createStateConnector } from '../../../state'
 import { createFetchData } from '../../common/FetchData/FetchData'
-import { Screen } from '../../common/Widgets/Widgets'
 import { registration } from '../Registration/registrationState'
 import VotesScreenQueryDocument from './VotesScreen.graphql'
 import { EventListItemPressedEvent } from './EventListItem'
 import { EventList } from './EventList'
+import { BasicScreen } from '../../common/Screen/BasicScreen'
 
 const FetchEvents = createFetchData<VotesScreenQuery, {}>({
   query: VotesScreenQueryDocument,
 })
 
-const Connect = createStateConnector({
+const Connect = createStateConnector(() => ({
   userId: registration.selectors.userId,
-})
+}))
 
 export class VotesScreen extends React.Component<NavigationScreenProps> {
   static navigationOptions: NavigationScreenOptions = {
@@ -36,7 +36,7 @@ export class VotesScreen extends React.Component<NavigationScreenProps> {
 
   render() {
     return (
-      <Screen>
+      <BasicScreen>
         <Connect>
           {({ userId }) => (
             <FetchEvents variables={{ userId }}>
@@ -49,7 +49,7 @@ export class VotesScreen extends React.Component<NavigationScreenProps> {
             </FetchEvents>
           )}
         </Connect>
-      </Screen>
+      </BasicScreen>
     )
   }
 }

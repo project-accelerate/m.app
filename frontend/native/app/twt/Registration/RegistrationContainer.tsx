@@ -17,9 +17,9 @@ interface RegistrationWizardData {
 
 export type RegistrationStageProps = WizardStageProps<RegistrationWizardData>
 
-const Connect = createStateConnector({
+const Connect = createStateConnector(() => ({
   registration: registration.selectors.optionalRegistration,
-})
+}))
 
 const RegistrationWizard = createWizard<RegistrationWizardData>({
   stages: [
