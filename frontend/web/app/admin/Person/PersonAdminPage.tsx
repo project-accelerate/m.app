@@ -1,10 +1,7 @@
 import React from 'react'
 import { AdminCrudView } from 'frontend.web/app/admin/common/AdminCrudView/AdminCrudView'
 import { createDataLoader } from 'frontend.web/app/common/LoadData/LoadData'
-import {
-  PersonAdminPageQuery,
-  CreatePersonRequest,
-} from 'frontend.web/queries'
+import { PersonAdminPageQuery, CreatePersonRequest } from 'frontend.web/queries'
 import { withApollo } from 'react-apollo'
 import ApolloClient from 'apollo-client'
 import { PersonAdminCard } from './PersonAdminCard'
@@ -57,6 +54,7 @@ export const PersonAdminPage = withApollo(
                     initial={{
                       name: value.name || '',
                       bio: value.bio || '',
+                      twitterHandle: value.twitterHandle || '',
                       profilePic: value.photo
                         ? value.photo.sourceUrl
                         : undefined,
