@@ -6,7 +6,7 @@ import {
   NavigationScreenOptions,
 } from 'react-navigation'
 import { Screen, ProfileImage } from '../../common/Widgets/Widgets'
-import twt from './twt.png'
+import twt from './TWTa_hdr.jpg'
 import { theme } from '../../../theme'
 import { Typography, Br } from '../../common/Typography/Typography'
 
@@ -26,59 +26,13 @@ const style = StyleSheet.create({
   },
 })
 
-export class HomeScreen extends React.Component<NavigationScreenProps> {
+export class HomeScreen extends React.Component {
   static navigationOptions: NavigationScreenOptions = {}
 
   render() {
     return (
       <Screen floatMenu noBackButton>
-        <View style={style.container}>
-          <ProfileImage style={style.logo} size="small" image={twt} />
-        </View>
-        <ScrollView
-          flex={1}
-          padding={theme.spacing.level(1)}
-          backgroundColor={theme.pallete.accent}
-        >
-          <View
-            borderWidth={2}
-            borderColor="white"
-            style={{ marginBottom: theme.spacing.level(1) }}
-            padding={theme.spacing.level(1)}
-          >
-            <Typography darkBg variant="cardTitle">
-              Upcoming:
-            </Typography>
-            <Typography
-              darkBg
-              style={{ lineHeight: 25, marginTop: theme.spacing.level(1) }}
-            >
-              <Typography darkBg variant="accent2">
-                Vote:
-              </Typography>{' '}
-              11:30am Conference Center<Br />
-              <Typography darkBg variant="accent2">
-                Talk:
-              </Typography>{' '}
-              1pm In and Aganst the State
-            </Typography>
-          </View>
-          <View
-            borderWidth={2}
-            borderColor="white"
-            padding={theme.spacing.level(1)}
-          >
-            <Typography darkBg variant="cardTitle">
-              News:
-            </Typography>
-            <Typography
-              darkBg
-              style={{ lineHeight: 18, marginTop: theme.spacing.level(1) }}
-            >
-              {faker.lorem.sentences(5)}
-            </Typography>
-          </View>
-        </ScrollView>
+        <ProfileImage size="halfScreen" image={twt} />
       </Screen>
     )
   }

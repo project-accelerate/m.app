@@ -18,7 +18,7 @@ import {
   TouchableNativeFeedback,
   TouchableWithoutFeedback,
 } from 'react-native'
-import formInput from 'react-native-formik'
+import formInput, { makeInputGreatAgainProps } from 'react-native-formik'
 import { FontAwesome } from '@expo/vector-icons'
 import { theme } from '../../../theme'
 import {
@@ -33,6 +33,7 @@ import { getStatusBarHeight } from '../platform'
 import { Constants } from 'expo'
 import { NotificationListener } from '../Notification/NotificationListener'
 import { ErrorGuard } from '../ErrorView/ErrorGuard'
+import { HeaderBar } from '../Screen/HeaderBar';
 
 const FieldStyle = StyleSheet.create({
   field: {
@@ -55,7 +56,8 @@ export function Field({ style, ...props }: TextInputProps) {
   )
 }
 
-export const FormField = formInput(Field)
+export const FormField: React.ComponentType<makeInputGreatAgainProps & TextInputProps>
+  = formInput(Field as any)
 
 const LoadingOverlayStyle = StyleSheet.create({
   container: {
@@ -170,7 +172,7 @@ export function Grid({
   children,
   style,
 }: {
-  children: React.ReactElement<{}>[]
+  children: JSX.Element[]
   style?: StyleProp<ViewStyle>
 }) {
   return (
@@ -184,9 +186,7 @@ export function Grid({
   )
 }
 
-interface MenuBarProps
-  extends Partial<NavigationInjectedProps>,
-    React.Props<{}> {
+interface ScreenProps extends React.Props<{}> {
   floatMenu?: boolean
   noBackButton?: boolean
 }
@@ -197,98 +197,27 @@ const ScreenStyles = StyleSheet.create({
     height: '100%',
     position: 'relative',
   },
-  floating: {
-    position: 'absolute',
-    zIndex: theme.zIndex.menu,
-  },
-  notFloating: {
-    backgroundColor: theme.pallete.accent,
-  },
-  menu: {
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-    width: '100%',
-  },
-  button: {
-    padding: 14,
-  },
-  buttonIcon: {
-    textShadowColor: theme.pallete.black,
-    textShadowRadius: 10,
-  },
   content: {
     flexGrow: 1,
     position: 'relative',
   },
 })
 
-export const Screen = withNavigation(function MenuBar({
-  navigation,
+export function Screen({
   children,
   floatMenu,
   noBackButton,
-}: MenuBarProps): React.ReactElement<{}> {
-  const openDrawer = () => navigation!.openDrawer()
-  const goBack = () => {
-    if (isTopLevel) {
-      navigation!.navigate({
-        routeName: HomeScreen.name,
-      })
-    } else {
-      navigation!.goBack()
-    }
-  }
-  const state = navigation!.state as NavigationRoute
-  const route = Routes.get().resolve(state.routeName)
-  const getOptions = route && route.navigationOptions
-  const navigationOptions =
-    typeof getOptions === 'function'
-      ? getOptions({ navigation } as any)
-      : getOptions
-  const title = navigationOptions && navigationOptions.headerTitle
-  const isTopLevel = Routes.get().isTopLevel(state.routeName)
-  const floatStyle = floatMenu
-    ? [{ top: getStatusBarHeight() }, ScreenStyles.floating]
-    : [{ paddingTop: getStatusBarHeight() }, ScreenStyles.notFloating]
-
+}: ScreenProps) {
   return (
     <ErrorGuard>
       <View style={ScreenStyles.screen}>
         <NotificationListener />
-        <SafeAreaView style={[ScreenStyles.menu, floatStyle]}>
-          <TouchableOpacity style={ScreenStyles.button} onPress={goBack}>
-            {!noBackButton && (
-              <FontAwesome
-                style={ScreenStyles.buttonIcon}
-                name="chevron-left"
-                color="white"
-                size={26}
-              />
-            )}
-          </TouchableOpacity>
-          <View>
-            {(title && (
-              <Typography variant="cardTitle" darkBg>
-                {title}
-              </Typography>
-            )) ||
-              undefined}
-          </View>
-          <TouchableOpacity style={ScreenStyles.button} onPress={openDrawer}>
-            <FontAwesome
-              style={ScreenStyles.buttonIcon}
-              name="bars"
-              color="white"
-              size={26}
-            />
-          </TouchableOpacity>
-        </SafeAreaView>
+        <HeaderBar floatMenu={floatMenu} noBackButton={noBackButton} />
         {children}
       </View>
     </ErrorGuard>
   )
-})
+}
 
 interface ToolbarProps {
   children?: React.ReactNode

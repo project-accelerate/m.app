@@ -8,12 +8,15 @@ import {
 export const stories = {
   RegistrationIsDelegateQuestion: () => (
     <RegistrationBg>
-      <RegistrationIsDelegateQuestion onSubmit={console.log} />
+      <RegistrationIsDelegateQuestion
+        onSkip={console.log}
+        onSubmit={console.log}
+      />
     </RegistrationBg>
   ),
   RegistrationAskEmailPanel: () => (
     <RegistrationBg>
-      <RegistrationAskEmailPanel onSubmit={console.log} />
+      <RegistrationAskEmailPanel onSkip={console.log} onSubmit={console.log} />
     </RegistrationBg>
   ),
 }

@@ -136,7 +136,7 @@ const markdownStyles = {
 export function Markdown({ value, style }: MarkdownProps) {
   return (
     <View style={style}>
-      <MarkdownView style={TypographyStyles.markdown} styles={markdownStyles}>
+      <MarkdownView styles={markdownStyles}>
         {value}
       </MarkdownView>
     </View>

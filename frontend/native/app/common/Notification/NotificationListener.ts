@@ -44,5 +44,5 @@ export const NotificationListener = withNavigation(
     render() {
       return null
     }
-  },
-)
+  }
+) as any as React.ComponentClass<{}>

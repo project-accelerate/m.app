@@ -31,42 +31,48 @@ export const stories = {
       onDayChanged={console.log}
     />
   ),
-  empty: () => <CalendarView now={now} />,
+  empty: () => <CalendarView {...defaultTimes} events={[]} />,
   'with events': () => (
-    <CalendarView now={now} {...defaultTimes}>
-      <CalendarEvent
-        id="a"
-        title="Utopia Now!"
-        start={time(14, 30)}
-        end={time(17)}
-        onPress={console.log}
-      />
-      <CalendarEvent
-        id="b"
-        title="Eat the Rich"
-        start={time(12)}
-        end={time(13)}
-        onPress={console.log}
-      />
-    </CalendarView>
+    <CalendarView
+      {...defaultTimes}
+      events={[
+        {
+          id: 'a',
+          title: 'Utopia Now!',
+          start: time(14, 30),
+          end: time(17),
+          onPress: console.log,
+        },
+        {
+          id: 'a',
+          title: 'Eat the Rich',
+          start: time(12),
+          end: time(13),
+          onPress: console.log,
+        },
+      ]}
+    />
   ),
   'with clashing events': () => (
-    <CalendarView now={now} {...defaultTimes}>
-      <CalendarEvent
-        id="a"
-        title="Utopia Now!"
-        start={time(12.3)}
-        end={time(15)}
-        onPress={console.log}
-      />
-      <CalendarEvent
-        id="b"
-        title="Utopia Now!"
-        start={time(12)}
-        end={time(13)}
-        onPress={console.log}
-      />
-    </CalendarView>
+    <CalendarView
+      {...defaultTimes}
+      events={[
+        {
+          id: 'a',
+          title: 'Utopia Now!',
+          start: time(12, 30),
+          end: time(15),
+          onPress: console.log,
+        },
+        {
+          id: 'a',
+          title: 'Eat the Rich',
+          start: time(12),
+          end: time(13),
+          onPress: console.log,
+        },
+      ]}
+    />
   ),
 }
 

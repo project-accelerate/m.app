@@ -1,5 +1,4 @@
 import React from 'react'
-import { MapView } from 'expo'
 import { TouchableOpacity, StyleSheet, ScrollView, View } from 'react-native'
 import { ProfileImage, Banner, Grid } from '../../common/Widgets/Widgets'
 import { Typography, Markdown, Br } from '../../common/Typography/Typography'
@@ -7,6 +6,7 @@ import { EventDetailFragment } from '../../../queries'
 import { theme } from '../../../theme'
 import { timeOf, longDateOf } from '../../common/date-formats'
 import { Button } from '../../common/Butttons/Buttons'
+import { MapView } from '../../common/MapView/MapView'
 
 interface EventDetailPageProps {
   event: EventDetailFragment
@@ -80,12 +80,12 @@ export function EventDetail({
       </ProfileImage>
 
       <Grid style={style.header}>
-        <Typography darkBg variant="accent2">
+        <Typography darkBg accent variant="body">
           {longDateOf(event.startTime)} {timeOf(event.startTime)} -{' '}
           {timeOf(event.endTime)}
         </Typography>
 
-        <Typography darkBg variant="accent">
+        <Typography darkBg variant="body">
           {event.venue.name}
         </Typography>
       </Grid>

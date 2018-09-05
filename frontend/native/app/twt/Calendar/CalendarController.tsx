@@ -57,21 +57,16 @@ export class SavedEventCalendar extends React.Component<
         </Toolbar>
 
         <CalendarView
-          now={this.initialTime}
           startTime={this.startTime}
           endTime={this.endTime}
-        >
-          {this.props.events.map(event => (
-            <CalendarEvent
-              key={event.id}
-              id={event.id}
-              title={event.name}
-              start={new Date(event.startTime)}
-              end={new Date(event.endTime)}
-              onPress={this.props.onEventPress}
-            />
-          ))}
-        </CalendarView>
+          events={this.props.events.map(event => ({
+            id: event.id,
+            title: event.name,
+            start: new Date(event.startTime),
+            end: new Date(event.endTime),
+            onPress: this.props.onEventPress,
+          }))}
+        />
       </View>
     )
   }

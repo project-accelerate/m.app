@@ -42,7 +42,7 @@ export class VotesScreen extends React.Component<NavigationScreenProps> {
             <FetchEvents variables={{ userId }}>
               {({ data }) => (
                 <EventList
-                  data={data.user.events}
+                  data={data.user.votes}
                   onEventPress={this.handleEventPressed}
                 />
               )}
