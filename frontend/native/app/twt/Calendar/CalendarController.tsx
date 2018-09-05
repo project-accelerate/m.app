@@ -1,17 +1,15 @@
 import React from 'react'
 import { View } from 'react-native'
-import { Toolbar, ToolbarRadio } from '../../common/Widgets/Widgets'
+import {
+  Toolbar,
+  ToolbarRadio,
+  Rows,
+  Spacing,
+} from '../../common/Widgets/Widgets'
 import { CalendarView, CalendarEvent } from './Calendar'
 import { calendar } from './calendarState'
-import {
-  isSameDay,
-  format,
-  addHours,
-  startOfDay,
-  addDays,
-  max,
-  min,
-} from 'date-fns'
+import { isSameDay, format, addHours, startOfDay, addDays, min } from 'date-fns'
+import { Typography } from '../../common/Typography/Typography'
 
 interface SavedEventCalendarProps {
   activeDay: Date
@@ -56,7 +54,18 @@ export class SavedEventCalendar extends React.Component<
           ))}
         </Toolbar>
 
+        <Spacing level={2} />
+
+        <Rows center>
+          <Typography variant="body" accent>
+            {format(this.props.activeDay, 'dddd Mo MMMM')}
+          </Typography>
+        </Rows>
+
+        <Spacing level={2} />
+
         <CalendarView
+          key={this.props.activeDay.toString()}
           startTime={this.startTime}
           endTime={this.endTime}
           events={this.props.events.map(event => ({

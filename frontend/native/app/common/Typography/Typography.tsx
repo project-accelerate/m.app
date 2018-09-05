@@ -31,6 +31,10 @@ const TypographyVariants = StyleSheet.create({
     fontFamily: 'open-sans-light',
     fontSize: 15,
   },
+  tiny: {
+    fontFamily: 'open-sans-light',
+    fontSize: 11,
+  },
   subtitle: {
     fontFamily: 'patua-one',
   },
@@ -51,6 +55,11 @@ const TypographyVariants = StyleSheet.create({
   caption: {
     fontSize: 15,
     lineHeight: 21,
+    fontFamily: 'open-sans-semibold',
+  },
+  captionSmall: {
+    fontSize: 13,
+    lineHeight: 16,
     fontFamily: 'open-sans-semibold',
   },
 })
