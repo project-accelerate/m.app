@@ -5,7 +5,7 @@ declare module '*.graphql'
 
 declare module 'react-native-markdown-view' {
   import React from 'react'
-  import { StyleProp, TextStyle } from 'react-native'
+  import { StyleProp, TextStyle, ViewProps } from 'react-native'
 
   interface MarkdownViewProps {
     children: string
@@ -14,3 +14,6 @@ declare module 'react-native-markdown-view' {
 
   export const MarkdownView: React.ComponentType<MarkdownViewProps>
 }
+
+
+declare module "react-native-parallax-header"

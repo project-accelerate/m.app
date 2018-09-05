@@ -95,7 +95,7 @@ export class Drawer extends React.Component<DrawerProps> {
               style={style.item}
               onPress={this.navigateToScreen(item)}
             >
-              <Typography variant="accent2">
+              <Typography accent variant="body">
                 {this.getNavigationOptions(item).drawerLabel}
               </Typography>
             </TouchableHighlight>

@@ -33,6 +33,7 @@
     "react-native-formik": "^1.5.4",
     "react-native-markdown-view": "^1.1.4",
     "react-native-paper": "^2.0.0-alpha.7",
+    "react-native-parallax-header": "^1.0.6",
     "react-native-snap-carousel": "^3.7.2",
     "react-native-typescript-transformer": "^1.2.10",
     "react-navigation": "^2.5.5",
@@ -44,7 +45,7 @@
     "yup": "^0.26.3"
   },
   "devDependencies": {
-    "@types/expo": "^27.0.2",
+    "@types/expo": "^27.0.8",
     "@types/faker": "^4.1.2",
     "@types/node": "^10.3.3",
     "@types/react-native": "^0.55.21",

@@ -44,7 +44,7 @@ export function EventListItem({ event, onPress }: EventListItemProps) {
             {event.venue.name}
           </Typography>
 
-          <Typography variant="accent" style={EventListItemStyle.text}>
+          <Typography accent variant="body" style={EventListItemStyle.text}>
             {timeOf(event.startTime)} - {timeOf(event.endTime)}
           </Typography>
         </View>

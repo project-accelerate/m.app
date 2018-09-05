@@ -18,6 +18,7 @@ export function runAllTests() {
 export function typecheckAll() {
   const { workspaces } = require('../package.json')
   workspaces.forEach(typecheck)
+  typecheck('frontend/native')
 }
 
 export function typecheck(dir: string) {

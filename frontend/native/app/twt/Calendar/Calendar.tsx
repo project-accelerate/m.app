@@ -4,16 +4,16 @@ import { differenceInHours, min, max, addHours, format } from 'date-fns'
 import { times } from 'lodash'
 import { Typography } from '../../common/Typography/Typography'
 import { theme } from '../../../theme'
-import { layoutCalendar, CalendarLayoutItem } from './layoutCalendar'
+import { layoutCalendar, LayoutItem } from './layoutCalendar'
 
 export interface CalendarViewProps {
   startTime: Date
   endTime: Date
-  children?: CalendarItemElement[]
+  events: CalendarEventProps[]
 }
 
 interface CalendarViewState {
-  items: CalendarLayoutItem<CalendarItemElement>[]
+  items: LayoutItem<CalendarItemElement>[]
 }
 
 export type CalendarItemElement = React.ReactElement<CalendarEventProps>
@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
     width: '100%',
     borderColor: theme.pallete.black,
     borderWidth: 2,
-    // marginHorizontal: theme.spacing.level(1)
   },
   item: {
     height: '100%',
@@ -65,11 +64,11 @@ export class CalendarView extends React.Component<
   CalendarViewProps,
   CalendarViewState
 > {
-  static getDerivedStateFromProps({ children = [] }: CalendarViewProps) {
-    const items = children.map(child => ({
-      startTime: child.props.start,
-      endTime: child.props.end,
-      value: child,
+  static getDerivedStateFromProps({ events = [] }: CalendarViewProps) {
+    const items = events.map(child => ({
+      startTime: child.start,
+      endTime: child.end,
+      value: <CalendarEvent {...child} />,
       left: 0,
       width: 0,
     }))
