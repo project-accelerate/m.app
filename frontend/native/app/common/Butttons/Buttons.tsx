@@ -110,7 +110,7 @@ export function Button({
         ) : (
           undefined
         )}
-        <Typography variant="action" accent={inline} center>
+        <Typography variant="action" darkBg={!inline} accent={inline} center>
           {children}
         </Typography>
       </View>
