@@ -12,29 +12,36 @@ import { theme } from '../../../theme'
 
 const TypographyVariants = StyleSheet.create({
   display: {
+    fontFamily: 'patua-one',
+    fontSize: 24,
+  },
+  wizardTitle: {
+    fontFamily: 'patua-one',
     fontSize: 20,
-    fontWeight: '300',
   },
   cardTitle: {
-    fontWeight: '500',
-    fontSize: 18,
+    fontFamily: 'open-sans-bold',
+    fontSize: 15,
+  },
+  cardTitleVariant: {
+    fontFamily: 'open-sans-light',
+    fontSize: 15,
   },
   subtitle: {
-    fontWeight: '500',
-  },
-  accent: {
-    color: theme.pallete.accent,
-  },
-  accent2: {
-    color: theme.pallete.accent,
-    fontWeight: '500',
+    fontFamily: 'patua-one',
   },
   body: {
-    fontSize: 16,
+    fontSize: 13,
+    fontFamily: 'open-sans-light',
+  },
+  action: {
+    fontSize: 15,
+    fontFamily: 'oswald-bold',
   },
   caption: {
-    fontSize: 13,
+    fontSize: 15,
     lineHeight: 21,
+    fontFamily: 'open-sans-light',
   },
 })
 
@@ -48,11 +55,15 @@ const TypographyStyles = StyleSheet.create({
   darkBg: {
     color: theme.pallete.white,
   },
+  accent: {
+    color: theme.pallete.accent,
+  },
 })
 
 interface TypographyProps {
   variant?: keyof typeof TypographyVariants
   darkBg?: boolean
+  accent?: boolean
   children?: React.ReactNode
   style?: StyleProp<TextStyle>
 }
@@ -62,6 +73,7 @@ export function Typography({
   children,
   style,
   darkBg,
+  accent,
 }: TypographyProps) {
   return (
     <Text
@@ -69,6 +81,7 @@ export function Typography({
         style,
         variant && TypographyVariants[variant],
         darkBg && TypographyStyles.darkBg,
+        accent && TypographyStyles.accent,
       ]}
     >
       {children}

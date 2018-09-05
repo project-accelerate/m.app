@@ -6,13 +6,14 @@ import { createStackNavigator } from 'react-navigation'
 import StateRestore from './components/state-restore'
 import StateSync from './components/state-sync'
 import ComponentList from './components/component-list'
+import { loadFonts } from '../config/loadFonts'
 
 export const ROUTE_NAME_KEY = 'ROUTE_NAME'
 
 const NEED_SAVE_STATE = __DEV__
 
-const App = props => {
-  const Navigator = createStackNavigator({
+export class App extends React.Component {
+  Navigator = createStackNavigator({
     Home: {
       screen: screenProps => {
         if (NEED_SAVE_STATE) {
@@ -24,7 +25,7 @@ const App = props => {
               <StateSync addListener={screenProps.navigation.addListener}>
                 <ComponentList
                   navigate={screenProps.navigation.navigate}
-                  {...props}
+                  {...this.props}
                 />
               </StateSync>
             </StateRestore>
@@ -34,7 +35,7 @@ const App = props => {
         return (
           <ComponentList
             navigate={screenProps.navigation.navigate}
-            {...props}
+            {...this.props}
           />
         )
       },
@@ -42,17 +43,17 @@ const App = props => {
         title: '📚',
       }),
     },
-    ...Object.keys(props.components).reduce(
+    ...Object.keys(this.props.components).reduce(
       (cur, next) => ({
         ...cur,
         [`Component:${next}`]: {
           screen: NEED_SAVE_STATE
             ? screenProps => (
                 <StateSync addListener={screenProps.navigation.addListener}>
-                  {React.createElement(props.components[next])}
+                  {React.createElement(this.props.components[next])}
                 </StateSync>
               )
-            : props.components[next],
+            : this.props.components[next],
 
           navigationOptions: () => ({
             title: `${next}`,
@@ -62,8 +63,23 @@ const App = props => {
       {},
     ),
   })
-  StatusBar.setBarStyle('dark-content')
-  return <Navigator />
+
+  state = { loaded: false }
+
+  async componentDidMount() {
+    StatusBar.setBarStyle('dark-content')
+    await loadFonts()
+
+    this.setState({ loaded: true })
+  }
+
+  render() {
+    if (!this.state.loaded) {
+      return null
+    }
+
+    return <this.Navigator />
+  }
 }
 
 App.propTypes = {
