@@ -39,28 +39,10 @@ export function EventAdminCard({ event, onEdit }: EventAdminCardProps) {
               {format(event.startTime, 'dddd Do MMMM')}
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="subheading">Speakers:</Typography>
-            {event.speakers.edges.map(({ node: { name } }) => (
-              <Typography variant="body2">{name}</Typography>
-            ))}
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="subheading">Speakers:</Typography>
-            {event.speakers.edges.map(({ node: { name } }) => (
-              <Typography variant="body2">{name}</Typography>
-            ))}
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="subheading">Venue:</Typography>
-            <Typography variant="body2">{event.venue.name}</Typography>
-          </Grid>
         </Grid>
       </CardContent>
 
-      <CardContent>
-        <MarkdownView value={event.introduction} />
-      </CardContent>
+      
 
       <Toggle>
         {({ active: detailVisible, toggle: toggleDetail }) => (
@@ -73,8 +55,26 @@ export function EventAdminCard({ event, onEdit }: EventAdminCardProps) {
             </CardActions>
             {event.detail && (
               <Collapse in={detailVisible}>
+              <CardContent>
+                <Typography variant="subheading">Intro:</Typography>
+        <MarkdownView value={event.introduction} />
+      </CardContent>
                 <CardContent>
+                  <Typography variant="subheading">Detail:</Typography>
                   <MarkdownView value={event.detail} />
+                  <Grid container direction="row" wrap="wrap" spacing={8}>
+
+                  <Grid item xs={12} sm={6}>
+            <Typography variant="subheading">Speakers:</Typography>
+            {event.speakers.edges.map(({ node: { name } }) => (
+              <Typography variant="body2">{name}</Typography>
+            ))}
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="subheading">Venue:</Typography>
+            <Typography variant="body2">{event.venue.name}</Typography>
+          </Grid>
+          </Grid>
                 </CardContent>
               </Collapse>
             )}

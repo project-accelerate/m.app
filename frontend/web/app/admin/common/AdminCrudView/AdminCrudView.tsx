@@ -153,6 +153,7 @@ export class AdminCrudView<
               <Grid direction="row" wrap="wrap" spacing={16} container>
                 {mode.type === 'add' && (
                   <Grid item>
+                  Hello
                     {renderAddItem({
                       onCancel: this.handleCancel,
                       onSave: this.handleSaveAdd,

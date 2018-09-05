@@ -3,6 +3,7 @@ import { ObjectType, Field, InputType } from 'type-graphql'
 
 @InputType()
 export class CreatePersonRequest {
+  @Field() id!: string
   @Field() name!: string
 
   @Field({ nullable: true })
@@ -16,6 +17,23 @@ export class CreatePersonRequest {
 
   importRef?: string
 }
+
+@InputType()
+export class EditPersonRequest {
+  @Field() id!: string
+  @Field() name!: string
+
+  @Field({ nullable: true })
+  bio?: string
+
+  @Field({ nullable: true })
+  twitterHandle?: string
+
+  @Field(() => GraphQLUpload, { nullable: true })
+  photoUpload?: FileUpload
+}
+
+
 
 @ObjectType()
 export class Person {

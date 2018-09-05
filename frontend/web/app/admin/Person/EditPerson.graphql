@@ -1,0 +1,3 @@
+mutation EditPerson($req: EditPersonRequest!) {
+  editPerson(request: $req)
+}

@@ -11,6 +11,8 @@ import { EventAdminService } from 'backend/app/events/application/EventAdminServ
 import { EventRepository } from 'backend/app/events/external/EventRepository'
 import { Event, EditEventRequest } from 'backend/app/events/domain/Event'
 import { Role } from 'common/domain/Role'
+import { GraphQLObjectType, GraphQLNonNull, GraphQLBoolean } from 'graphql';
+
 
 @Resolver()
 class EditEventResolver {
@@ -20,14 +22,14 @@ class EditEventResolver {
   ) {}
 
   @Authorized(Role.ADMIN)
-  @Mutation(() => Event, {
+  @Mutation(() => GraphQLBoolean, {
     description: 'Edit an event',
   })
   async editEvent(
     @MutationRequest(() => EditEventRequest)
     request: EditEventRequest,
   ) {
-    console.log("EDITING EVENT")
-    return this.eventAdminService.editEvent(request)
+    this.eventAdminService.editEvent(request)
+    return true
   }
 }

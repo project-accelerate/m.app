@@ -1,7 +1,11 @@
 import React from 'react'
 import { AdminCrudView } from 'frontend.web/app/admin/common/AdminCrudView/AdminCrudView'
 import { createDataLoader } from 'frontend.web/app/common/LoadData/LoadData'
-import { PersonAdminPageQuery, CreatePersonRequest } from 'frontend.web/queries'
+import {
+  PersonAdminPageQuery,
+  CreatePersonRequest,
+  EditPersonRequest,
+} from 'frontend.web/queries'
 import { withApollo } from 'react-apollo'
 import ApolloClient from 'apollo-client'
 import { PersonAdminCard } from './PersonAdminCard'
@@ -17,6 +21,14 @@ interface RequestAddProps extends CreatePersonRequest {
   photoUpload?: any
 }
 
+interface RequestEditProps extends EditPersonRequest {
+  // Workaround for Apollo incorectly treating Upload as string
+  photoUpload?: any
+  
+}
+
+
+
 export const PersonAdminPage = withApollo(
   class PersonAdminPage extends React.Component<PersonAdminPageProps> {
     handleRequestAdd = async (req: RequestAddProps) => {
@@ -30,8 +42,15 @@ export const PersonAdminPage = withApollo(
       await this.props.client.resetStore()
     }
 
-    handleRequestEdit = async (req: RequestAddProps) => {
-      console.log('save', req)
+    handleRequestEdit = async (req: RequestEditProps) => {
+      await this.props.client.mutate({
+        mutation: require('./EditPerson.graphql'),
+        variables: {
+          req,
+        },
+      })
+
+      await this.props.client.resetStore()
     }
 
     render() {
@@ -52,12 +71,14 @@ export const PersonAdminPage = withApollo(
                   <EditPersonForm
                     title="Edit Speaker"
                     initial={{
+                      id: value.id || '',
                       name: value.name || '',
                       bio: value.bio || '',
                       twitterHandle: value.twitterHandle || '',
                       profilePic: value.photo
                         ? value.photo.sourceUrl
                         : undefined,
+                      twitterHandle : value.twitterHandle || ''
                     }}
                     onCancel={onCancel}
                     onSave={onSave}
