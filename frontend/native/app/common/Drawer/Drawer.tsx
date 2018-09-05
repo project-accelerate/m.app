@@ -6,15 +6,16 @@ import {
   TouchableHighlight,
   ScrollView,
   TouchableOpacity,
+  Image,
 } from 'react-native'
 import { NavigationInjectedProps } from 'react-navigation'
 import { Routes } from '../../../routes'
 import { theme } from '../../../theme'
 import { Typography } from '../Typography/Typography'
-import twt from '../twt.png'
 import { ProfileImage } from '../Widgets/Widgets'
 import { HomeScreen } from '../../twt/Home/HomeScreen'
 import { getStatusBarHeight } from '../platform'
+import Logo from '../../../assets/mlogo.png'
 
 const style = StyleSheet.create({
   root: {
@@ -28,13 +29,15 @@ const style = StyleSheet.create({
     flex: 1,
   },
   item: {
-    backgroundColor: theme.pallete.white,
-    padding: theme.spacing.level(2),
+    padding: theme.spacing.level(1),
+    paddingVertical: theme.spacing.level(3),
     flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: theme.pallete.white,
   },
   footer: {
+    marginBottom: theme.spacing.level(3),
     alignItems: 'center',
   },
 })
@@ -91,11 +94,11 @@ export class Drawer extends React.Component<DrawerProps> {
           {this.items.map(item => (
             <TouchableHighlight
               key={item.routeName}
-              underlayColor={theme.pallete.accent}
+              underlayColor={theme.pallete.white}
               style={style.item}
               onPress={this.navigateToScreen(item)}
             >
-              <Typography accent variant="body">
+              <Typography darkBg variant="screenHeader">
                 {this.getNavigationOptions(item).drawerLabel}
               </Typography>
             </TouchableHighlight>
@@ -105,7 +108,7 @@ export class Drawer extends React.Component<DrawerProps> {
           onPress={this.navigateToScreen(this.home)}
           style={style.footer}
         >
-          <ProfileImage size="small" image={twt} />
+          <Image source={Logo} />
         </TouchableOpacity>
       </View>
     )
