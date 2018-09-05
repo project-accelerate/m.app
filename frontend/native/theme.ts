@@ -24,10 +24,12 @@ export namespace theme {
     export const white = '#fff'
     export const transparent = 'rgba(255,255,255,0)'
 
-    export const accent = '#ff2c63'
+    export const accent = 'rgb(236,0,0)'
+    export const box = 'rgb(240,240,240)'
+    export const separator = 'rgb(155,155,155)'
     export const contrast = 'rgba(60,60,60,0.9)'
-    export const control = 'rgba(60,60,60,0.7)'
-    export const red = 'rgba(255,20,20,1)'
+    export const control = white
+    export const red = 'rgba(236,0,0,1)'
     export const black = 'rgba(0,0,0,1)'
     export const imageOverlay = 'rgba(0,0,0,0.5)'
 

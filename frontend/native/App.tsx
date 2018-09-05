@@ -13,6 +13,7 @@ import { notificationHandlers } from './notifications'
 import { createLogger } from './app/common/logger'
 import { ErrorGuard } from './app/common/ErrorView/ErrorGuard'
 import { VoteFetcher } from './app/twt/Event/VoteFetcher'
+import { loadFonts } from './config/loadFonts'
 
 interface ApplicationState {
   loading?: boolean
@@ -54,7 +55,7 @@ export default class App extends React.Component<AppProps> {
   }
 
   async componentDidMount() {
-    await Promise.all([setupAppUpdates(), ReduxProvider.setup()])
+    await Promise.all([setupAppUpdates(), loadFonts(), ReduxProvider.setup()])
     this.setState({ loading: false })
   }
 
