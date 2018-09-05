@@ -94,7 +94,7 @@ export class CalendarView extends React.Component<
             { top: i * PIXELS_PER_HOUR - PIXELS_PER_HOUR },
           ]}
         >
-          <Typography variant="caption">
+          <Typography variant="body">
             {format(addHours(this.props.startTime, i), 'ha')}
           </Typography>
         </View>

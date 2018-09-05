@@ -10,6 +10,7 @@ import {
 } from 'react-native'
 import { theme } from '../../../theme'
 import { Typography } from '../Typography/Typography'
+import { FontAwesome } from '@expo/vector-icons'
 
 const buttonStyle = StyleSheet.create({
   header: {},
@@ -19,6 +20,7 @@ const buttonStyle = StyleSheet.create({
     borderBottomColor: theme.pallete.borderDark,
     borderWidth: 0.5,
     borderRadius: 4,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -47,6 +49,9 @@ const buttonStyle = StyleSheet.create({
   disabled: {
     opacity: 0.5,
   },
+  icon: {
+    marginRight: theme.spacing.level(1),
+  },
 })
 
 interface ButtonGridProps extends ViewProps {
@@ -70,6 +75,7 @@ export function ButtonGrid({ children, ...props }: ButtonGridProps) {
 interface ButtonProps extends TouchableHighlightProps {
   children?: React.ReactNode
   variant?: 'large' | 'small' | 'inline'
+  icon?: string
 }
 
 export function Button({
@@ -77,10 +83,11 @@ export function Button({
   style,
   variant = 'large',
   disabled,
+  icon,
   ...props
 }: ButtonProps) {
-  const ButtonType =
-    variant === 'inline' ? TouchableOpacity : TouchableHighlight
+  const inline = variant === 'inline'
+  const ButtonType = inline ? TouchableOpacity : TouchableHighlight
 
   return (
     <ButtonType
@@ -92,7 +99,17 @@ export function Button({
       ]}
       {...props}
     >
-      <Typography variant="action" darkBg center>
+      {icon ? (
+        <FontAwesome
+          name={icon}
+          style={buttonStyle.icon}
+          size={variant === 'large' ? 24 : 18}
+          color={inline ? theme.pallete.accent : theme.pallete.white}
+        />
+      ) : (
+        undefined
+      )}
+      <Typography variant="action" accent={inline} center>
         {children}
       </Typography>
     </ButtonType>
