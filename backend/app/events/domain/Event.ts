@@ -46,6 +46,37 @@ export class CreateEventRequest {
   importRef?: string
 }
 
+@InputType({
+  description: 'Request properties to edit an event',
+})
+export class EditEventRequest {
+  @Field() id!:string
+  @Field() name!: string
+
+  @Field(() => [GraphQLString])
+  speakers!: string[]
+
+  @Field() venue!: string
+
+  @Field(() => GraphQLISODateTime)
+  startTime!: Date
+
+  @Field(() => GraphQLISODateTime)
+  endTime!: Date
+
+  @Field() introduction!: string
+
+  @Field() detail!: string
+
+  @Field(() => EventFamily)
+  family!: EventFamily
+
+  @Field(() => GraphQLUpload, {
+    nullable: true,
+  })
+  photoUpload?: FileUpload
+}
+
 @ObjectType()
 export class Event {
   @Field() id!: string

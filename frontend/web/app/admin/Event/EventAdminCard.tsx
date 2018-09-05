@@ -7,6 +7,7 @@ import {
   CardActions,
   Collapse,
   Grid,
+  Button,
 } from '@material-ui/core'
 import {
   MarkdownView,
@@ -80,6 +81,7 @@ export function EventAdminCard({ event, onEdit }: EventAdminCardProps) {
           </>
         )}
       </Toggle>
+      <Button onClick={()=>onEdit(event)}>Edit</Button>
     </Card>
   )
 }
