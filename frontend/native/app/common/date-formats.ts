@@ -7,3 +7,7 @@ export function timeOf(time: string) {
 export function longDateOf(time: string) {
   return format(time, 'Do MMM')
 }
+
+export function weekdayOf(time: string) {
+  return format(time, 'dddd')
+}

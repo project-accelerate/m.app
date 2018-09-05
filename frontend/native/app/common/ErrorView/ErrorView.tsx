@@ -42,7 +42,7 @@ export class ErrorView extends React.Component<ErrorViewProps, ErrorViewState> {
     online: NetworkStatusListener.currentStatus,
     attempt: 0,
   }
-  
+
   componentDidMount() {
     console.warn(this.props.error.message)
   }
@@ -86,7 +86,7 @@ export class ErrorView extends React.Component<ErrorViewProps, ErrorViewState> {
             Sorry, something went wrong
           </Typography>
 
-          <Typography style={style.item} variant="caption">
+          <Typography style={style.item} variant="body">
             {this.helpText}
           </Typography>
 

@@ -36,16 +36,19 @@ export function EventListItem({ event, onPress }: EventListItemProps) {
         <ProfileImage style={EventListItemStyle.image} image={event.photo} />
 
         <View style={EventListItemStyle.text}>
+          <Typography accent variant="body" style={EventListItemStyle.text}>
+            {timeOf(event.startTime)} - {timeOf(event.endTime)}
+          </Typography>
+
           <Typography variant="cardTitle" style={EventListItemStyle.text}>
             {event.name}
           </Typography>
 
-          <Typography style={EventListItemStyle.text}>
+          <Typography
+            variant="cardTitleVariant"
+            style={EventListItemStyle.text}
+          >
             {event.venue.name}
-          </Typography>
-
-          <Typography accent variant="body" style={EventListItemStyle.text}>
-            {timeOf(event.startTime)} - {timeOf(event.endTime)}
           </Typography>
         </View>
       </View>

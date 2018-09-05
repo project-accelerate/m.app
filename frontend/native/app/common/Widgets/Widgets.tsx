@@ -78,7 +78,7 @@ export function LoadingOverlay(props: {
   return (
     <View style={LoadingOverlayStyle.container}>
       <LoadingIndicator />
-      <Typography style={LoadingOverlayStyle.message} variant="caption">
+      <Typography style={LoadingOverlayStyle.message} variant="body">
         {props.message || ' '}
       </Typography>
       {props.children}
@@ -229,7 +229,7 @@ export function ToolbarRadio(props: ToolbarRadioProps) {
       onPress={() => props.onPress(props.id)}
       style={[ToolbarStyles.radio, props.active && ToolbarStyles.radioActive]}
     >
-      <Typography variant="caption">{props.children}</Typography>
+      <Typography variant="body">{props.children}</Typography>
     </TouchableOpacity>
   )
 }
@@ -256,6 +256,10 @@ const gridStyles = StyleSheet.create({
   rows: {
     flexDirection: 'column',
   },
+  columns: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
   center: {
     alignItems: 'center',
   },
@@ -264,6 +268,14 @@ const gridStyles = StyleSheet.create({
 export function Rows({ style, center, children }: GridProps) {
   return (
     <View style={[style, center && gridStyles.center, gridStyles.rows]}>
+      {children}
+    </View>
+  )
+}
+
+export function Columns({ style, center, children }: GridProps) {
+  return (
+    <View style={[style, center && gridStyles.center, gridStyles.columns]}>
       {children}
     </View>
   )

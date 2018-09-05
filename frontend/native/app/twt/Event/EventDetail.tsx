@@ -1,10 +1,16 @@
 import React from 'react'
 import { TouchableOpacity, StyleSheet, ScrollView, View } from 'react-native'
-import { ProfileImage, Banner, Grid } from '../../common/Widgets/Widgets'
+import {
+  ProfileImage,
+  Banner,
+  Grid,
+  Spacing,
+  Columns,
+} from '../../common/Widgets/Widgets'
 import { Typography, Markdown, Br } from '../../common/Typography/Typography'
 import { EventDetailFragment } from '../../../queries'
 import { theme } from '../../../theme'
-import { timeOf, longDateOf } from '../../common/date-formats'
+import { timeOf, longDateOf, weekdayOf } from '../../common/date-formats'
 import { Button } from '../../common/Butttons/Buttons'
 import { MapView } from '../../common/MapView/MapView'
 
@@ -30,7 +36,8 @@ const style = StyleSheet.create({
     backgroundColor: theme.pallete.accent,
   },
   header: {
-    marginBottom: theme.spacing.level(2),
+    padding: theme.spacing.level(1),
+    marginBottom: theme.spacing.level(1),
     backgroundColor: theme.pallete.accent,
   },
   content: {
@@ -53,11 +60,14 @@ const style = StyleSheet.create({
     padding: theme.spacing.level(1),
     marginBottom: theme.spacing.level(2),
     color: theme.pallete.white,
-    backgroundColor: theme.pallete.contrast,
+    backgroundColor: theme.pallete.accent,
   },
   divider: {
     borderColor: theme.pallete.accent,
     borderWidth: 1,
+  },
+  block: {
+    marginHorizontal: theme.spacing.level(1),
   },
   last: {
     marginBottom: theme.spacing.level(3),
@@ -72,30 +82,33 @@ export function EventDetail({
 }: EventDetailPageProps) {
   return (
     <ScrollView>
-      <ProfileImage image={event.photo} size="halfScreen">
-        <Banner>
-          <Typography style={style.speakerName} variant="cardTitle">
-            {event.name}
-          </Typography>
-        </Banner>
-      </ProfileImage>
-
-      <Grid style={style.header}>
-        <Typography darkBg accent variant="body">
-          {longDateOf(event.startTime)} {timeOf(event.startTime)} -{' '}
-          {timeOf(event.endTime)}
-        </Typography>
-
-        <Typography darkBg variant="body">
+      <View style={style.header}>
+        <Typography darkBg variant="caption">
           {event.venue.name}
         </Typography>
-      </Grid>
+      </View>
 
-      <Button onPress={onToggleFavourited}>
-        {favourited ? 'Saved' : 'Save'}
-      </Button>
+      <View style={style.block}>
+        <Columns center>
+          <Typography accent variant="primary">
+            {weekdayOf(event.startTime)} {timeOf(event.startTime)}
+          </Typography>
 
-      <Markdown style={style.content} value={event.introduction} />
+          <Button
+            variant="inline"
+            icon={favourited ? 'check' : 'star'}
+            onPress={onToggleFavourited}
+          >
+            {favourited ? 'Saved' : 'Save to Calendar'}
+          </Button>
+        </Columns>
+
+        <Typography variant="primary">{event.introduction}</Typography>
+
+        <Spacing level={2} />
+
+        <Typography variant="body">{event.detail}</Typography>
+      </View>
 
       <Typography style={style.heading} variant="display">
         Speakers
@@ -142,12 +155,6 @@ export function EventDetail({
         <Br />
         {event.venue.address.streetAddress}, {event.venue.address.postcode}
       </Typography>
-
-      <Typography style={style.heading} variant="display">
-        About The Event
-      </Typography>
-
-      <Markdown style={[style.content, style.last]} value={event.detail} />
     </ScrollView>
   )
 }

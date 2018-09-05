@@ -34,18 +34,24 @@ const TypographyVariants = StyleSheet.create({
   subtitle: {
     fontFamily: 'patua-one',
   },
-  body: {
-    fontSize: 13,
-    fontFamily: 'open-sans-light',
-  },
   action: {
     fontSize: 15,
     fontFamily: 'oswald-bold',
   },
-  caption: {
+  body: {
     fontSize: 15,
     lineHeight: 21,
     fontFamily: 'open-sans-light',
+  },
+  primary: {
+    fontSize: 15,
+    lineHeight: 21,
+    fontFamily: 'open-sans-bold',
+  },
+  caption: {
+    fontSize: 15,
+    lineHeight: 21,
+    fontFamily: 'open-sans-semibold',
   },
 })
 

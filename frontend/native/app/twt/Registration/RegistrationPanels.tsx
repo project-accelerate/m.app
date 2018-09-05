@@ -164,7 +164,7 @@ function RegistrationPrompt({ children }: React.Props<{}>) {
 }
 
 function RegistrationHelpText({ children }: React.Props<{}>) {
-  return <Typography variant="caption">{children}</Typography>
+  return <Typography variant="body">{children}</Typography>
 }
 
 function RegistrationActions({ children }: React.Props<{}>) {
