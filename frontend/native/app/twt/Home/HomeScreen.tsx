@@ -4,7 +4,7 @@ import * as faker from 'faker'
 import { NavigationScreenOptions } from 'react-navigation'
 import twt from './TWTa_hdr.jpg'
 import { theme } from '../../../theme'
-import Logo from './mlogo.png'
+import Logo from '../../../assets/mlogo.png'
 import { ImageHeaderScreen } from '../../common/Screen/ImageHeaderScreen'
 import {
   Card,

@@ -99,19 +99,21 @@ export function Button({
       ]}
       {...props}
     >
-      {icon ? (
-        <FontAwesome
-          name={icon}
-          style={buttonStyle.icon}
-          size={variant === 'large' ? 24 : 18}
-          color={inline ? theme.pallete.accent : theme.pallete.white}
-        />
-      ) : (
-        undefined
-      )}
-      <Typography variant="action" accent={inline} center>
-        {children}
-      </Typography>
+      <View>
+        {icon ? (
+          <FontAwesome
+            name={icon}
+            style={buttonStyle.icon}
+            size={variant === 'large' ? 24 : 18}
+            color={inline ? theme.pallete.accent : theme.pallete.white}
+          />
+        ) : (
+          undefined
+        )}
+        <Typography variant="action" accent={inline} center>
+          {children}
+        </Typography>
+      </View>
     </ButtonType>
   )
 }
