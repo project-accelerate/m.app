@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     height: '100%',
-    flex: 1,
+    width: '100%',
   },
   container: {
     paddingHorizontal: theme.spacing.level(2),

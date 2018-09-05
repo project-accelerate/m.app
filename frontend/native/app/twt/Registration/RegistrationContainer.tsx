@@ -4,6 +4,7 @@ import {
   RegistrationIsDelegateQuestion,
   AcceptNotificationsPanel,
   RegistrationAskEmailPanel,
+  RegistrationBg,
 } from './RegistrationPanels'
 import { registration } from './registrationState'
 import { createStateConnector } from '../../../state'
@@ -38,14 +39,16 @@ export function RegistrationContainer(props: React.Props<{}>) {
         }
 
         return (
-          <RegistrationWizard
-            initialState={{
-              email: '',
-              isConferenceDelegate: false,
-              optedIntoNotifications: false,
-            }}
-            onCompleted={actions.registration.register}
-          />
+          <RegistrationBg>
+            <RegistrationWizard
+              initialState={{
+                email: '',
+                isConferenceDelegate: false,
+                optedIntoNotifications: false,
+              }}
+              onCompleted={actions.registration.register}
+            />
+          </RegistrationBg>
         )
       }}
     </Connect>
