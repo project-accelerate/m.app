@@ -195,16 +195,11 @@ const ToolbarStyles = StyleSheet.create({
   wrapper: {
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: theme.pallete.contrast,
     paddingHorizontal: theme.spacing.level(1),
   },
   radio: {
-    backgroundColor: theme.pallete.white,
     paddingHorizontal: theme.spacing.level(2),
     paddingVertical: theme.spacing.level(1),
-    borderColor: theme.pallete.black,
-    borderWidth: 2,
-    flexGrow: 1,
     alignItems: 'center',
   },
   radioActive: {
@@ -229,7 +224,9 @@ export function ToolbarRadio(props: ToolbarRadioProps) {
       onPress={() => props.onPress(props.id)}
       style={[ToolbarStyles.radio, props.active && ToolbarStyles.radioActive]}
     >
-      <Typography variant="body">{props.children}</Typography>
+      <Typography darkBg={props.active} variant="caption">
+        {props.children}
+      </Typography>
     </TouchableOpacity>
   )
 }

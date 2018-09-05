@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   root: {
     position: 'relative',
     width: '100%',
-    marginVertical: theme.spacing.level(5),
+    backgroundColor: theme.pallete.white,
   },
   content: {
     position: 'relative',
@@ -42,18 +42,19 @@ const styles = StyleSheet.create({
   itemWrapper: {
     position: 'absolute',
     width: '100%',
-    borderColor: theme.pallete.black,
-    borderWidth: 2,
   },
   item: {
     height: '100%',
-    backgroundColor: theme.pallete.accent,
+    backgroundColor: theme.pallete.box,
     padding: theme.spacing.level(1),
+    borderLeftColor: theme.pallete.accent,
+    borderLeftWidth: 3,
+    marginRight: theme.spacing.level(1),
   },
   hourMark: {
     position: 'absolute',
     width: '100%',
-    borderColor: theme.pallete.white,
+    borderColor: theme.pallete.borderLight,
     borderBottomWidth: 1,
     height: PIXELS_PER_HOUR,
     justifyContent: 'flex-end',
@@ -84,19 +85,21 @@ export class CalendarView extends React.Component<
     items: [],
   }
 
-  get hourMarks() {
-    return times(this.totalHours + 1, i => {
+  get quarterHourMarks() {
+    return times((this.totalHours + 1) * 2, i => {
       return (
         <View
           key={i}
           style={[
             styles.hourMark,
-            { top: i * PIXELS_PER_HOUR - PIXELS_PER_HOUR },
+            { top: i * PIXELS_PER_HOUR * 0.5 - PIXELS_PER_HOUR },
           ]}
         >
-          <Typography variant="body">
-            {format(addHours(this.props.startTime, i), 'ha')}
-          </Typography>
+          {i % 2 == 0 && (
+            <Typography variant="tiny">
+              {format(addHours(this.props.startTime, i / 2), 'ha')}
+            </Typography>
+          )}
         </View>
       )
     })
@@ -146,7 +149,7 @@ export class CalendarView extends React.Component<
     return (
       <ScrollView>
         <View style={[styles.root, this.viewBounds]}>
-          {this.hourMarks}
+          {this.quarterHourMarks}
           <View style={styles.content}>{this.renderItems()}</View>
         </View>
       </ScrollView>
@@ -159,7 +162,7 @@ export class CalendarEvent extends React.Component<CalendarEventProps> {
     return (
       <TouchableOpacity onPress={() => this.props.onPress(this.props.id)}>
         <View style={styles.item}>
-          <Typography>{this.props.title}</Typography>
+          <Typography variant="captionSmall">{this.props.title}</Typography>
         </View>
       </TouchableOpacity>
     )
