@@ -1,6 +1,6 @@
 import { Service } from 'typedi'
 import { EventRepository } from '../external/EventRepository'
-import { CreateEventRequest, Event } from '../domain/Event'
+import { CreateEventRequest, Event, EditEventRequest } from '../domain/Event'
 import { PhotoStorageService } from './PhotoStorageService'
 import { VenueRepository } from '../external/VenueRepository'
 
@@ -44,22 +44,26 @@ export class EventAdminService {
     return event
   }
 
-  private async updateImportedEvent(
-    { id, ...existingProps }: Event,
-    { speakers, photoUpload, ...updatedProps }: CreateEventRequest,
-  ): Promise<Event> {
-    const venue = await this.venueRepository.findOneRequired({
-      id: updatedProps.venue,
-    })
-    const update = {
-      ...existingProps,
-      ...updatedProps,
+  async editEvent ({
+    id,
+    speakers,
+    photoUpload,
+    venue: venueId,
+    ...props
+  }: EditEventRequest) {
+    const [photoId, venue] = await Promise.all([
+      PhotoStorageService.saveUploadedPhoto(
+        this.photoStorageService,
+        photoUpload,
+      ),
+      this.venueRepository.findOneRequired({ id: venueId }),
+    ])
+
+    const event = await this.eventRepository.update(id,{
+      ...props,
+      venue: venueId,
+      photo: photoId,
       location: venue.location,
-    }
-
-    this.eventRepository.update(id, update)
-    await this.eventRepository.speakers.replace(id, speakers)
-
-    return { id, ...update }
+    })
   }
 }

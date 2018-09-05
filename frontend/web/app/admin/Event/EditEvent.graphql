@@ -1,0 +1,5 @@
+mutation EditEvent($req: EditEventRequest!) {
+  editEvent(request: $req) {
+    id
+  }
+}

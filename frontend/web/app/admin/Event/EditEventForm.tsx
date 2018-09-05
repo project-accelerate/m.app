@@ -26,6 +26,7 @@ interface EditEventFormProps {
 }
 
 export interface EditEventFormValue {
+  id: string
   name: string
   venue: string
   startTime: string
@@ -38,6 +39,7 @@ export interface EditEventFormValue {
 }
 
 export interface EditEventFormChange {
+  id: string
   name: string
   venue: string
   speakers: string[]
@@ -52,6 +54,7 @@ export interface EditEventFormChange {
 export class EditEventForm extends React.Component<EditEventFormProps> {
   get initialValues(): EditEventFormValue {
     return {
+      id: '',
       name: '',
       venue: '',
       startTime: '',
