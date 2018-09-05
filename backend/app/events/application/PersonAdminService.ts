@@ -1,7 +1,7 @@
 import { Service } from 'typedi'
 import { PersonRepository } from '../external/PersonRepository'
 import { PhotoStorageService } from './PhotoStorageService'
-import { CreatePersonRequest } from '../domain/Person'
+import { CreatePersonRequest, EditPersonRequest } from '../domain/Person'
 
 @Service()
 export class PersonAdminService {
@@ -30,4 +30,20 @@ export class PersonAdminService {
       ...props,
     })
   }
+
+  async editPerson({ photoUpload, ...props }: EditPersonRequest) {
+    const photoId = await PhotoStorageService.saveUploadedPhoto(
+      this.photoStorageService,
+      photoUpload,
+    )
+
+     this.personRepository.update(props.id,{
+      photo: photoId,
+      name: props.name,
+      twitterHandle: props.twitterHandle,
+      bio: props.bio,
+    })
+  }
+
+
 }

@@ -49,6 +49,15 @@ export interface ConferenceNotificationSendRequest {
 };
 
 export interface CreatePersonRequest {
+  id: string,
+  name: string,
+  bio?: string | null,
+  twitterHandle?: string | null,
+  photoUpload?: string | null,
+};
+
+export interface EditPersonRequest {
+  id: string,
   name: string,
   bio?: string | null,
   twitterHandle?: string | null,
@@ -85,9 +94,7 @@ export interface EditEventMutationVariables {
 
 export interface EditEventMutation {
   // Edit an event
-  editEvent:  {
-    id: string,
-  },
+  editEvent: boolean,
 };
 
 export interface EventAdminPageQuery {
@@ -176,6 +183,15 @@ export interface CreatePersonMutation {
   createPerson:  {
     id: string,
   },
+};
+
+export interface EditPersonMutationVariables {
+  req: EditPersonRequest,
+};
+
+export interface EditPersonMutation {
+  // Edit an event
+  editPerson: boolean,
 };
 
 export interface PersonAdminPageQuery {

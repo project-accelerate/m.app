@@ -87,6 +87,7 @@ storiesOf('Event Admin', module)
     <EditEventForm
       title="Do Something"
       initial={{
+        id: faker.random.uuid(),
         name: faker.lorem.words(3),
         venue: '1',
         speakers: ['1', '2'],

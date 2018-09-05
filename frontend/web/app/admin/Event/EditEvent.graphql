@@ -1,5 +1,3 @@
 mutation EditEvent($req: EditEventRequest!) {
-  editEvent(request: $req) {
-    id
-  }
+  editEvent(request: $req)
 }

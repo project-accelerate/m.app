@@ -6,6 +6,7 @@ import {
   Typography,
   CardActions,
   Collapse,
+  Button,
 } from '@material-ui/core'
 import {
   MarkdownView,
@@ -47,6 +48,7 @@ export function PersonAdminCard({
           </>
         )}
       </Toggle>
+      <Button onClick={()=>onEdit(person)}>Edit</Button>
     </Card>
   )
 }

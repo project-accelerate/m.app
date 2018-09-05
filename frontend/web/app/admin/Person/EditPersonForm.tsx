@@ -15,6 +15,7 @@ interface EditPersonFormProps {
 }
 
 interface EditPersonFormValue {
+  id: string
   name: string
   bio: string
   profilePic?: string | File
@@ -22,6 +23,7 @@ interface EditPersonFormValue {
 }
 
 interface EditPersonFormChange {
+  id : string,
   name: string
   bio: string
   photoUpload?: File
@@ -38,6 +40,7 @@ export class EditPersonForm extends React.Component<EditPersonFormProps> {
 
   get initialValues(): EditPersonFormValue {
     return {
+      id: '',
       bio: '',
       name: '',
       twitterHandle: '',

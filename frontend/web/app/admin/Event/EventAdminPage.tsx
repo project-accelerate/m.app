@@ -90,7 +90,7 @@ export const EventAdminPage = withApollo(
           <LoadData variables={{}}>
             {({ data }) => (
               <AdminCrudView<EventAdminCardFragment, EditEventFormChange>
-                items={data.allEvents.edges.map(e => e.node)}
+                items={data.allEvents.edges.map(e => e.node).sort((a,b)=> new Date(a.startTime).getTime()-new Date(b.startTime).getTime())}
                 renderAddItem={({ onSave, onCancel }) => (
                   <EditEventForm
                     title="New Event"

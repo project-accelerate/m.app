@@ -58,12 +58,13 @@ export class EventAdminService {
       ),
       this.venueRepository.findOneRequired({ id: venueId }),
     ])
-
-    const event = await this.eventRepository.update(id,{
+    await this.eventRepository.update(id,{
       ...props,
       venue: venueId,
       photo: photoId,
       location: venue.location,
     })
+
+    return true
   }
 }
