@@ -11,15 +11,16 @@ import { createFetchData } from '../../common/FetchData/FetchData'
 import { EventDetail, EventDetailSpeakerPressEvent } from './EventDetail'
 import { Background } from '../../common/Layouts/Layouts'
 import EventDetailScreenQueryDocument from './EventDetailScreen.graphql'
-import { Screen } from '../../common/Widgets/Widgets'
 import { registration } from '../Registration/registrationState'
 import { createParametricStateConnector } from '../../../state'
 import { calendar } from '../Calendar/calendarState'
 import { Routes } from '../../../routes'
+import { ImageHeaderScreen } from '../../common/Screen/ImageHeaderScreen'
 
 export interface EventDetailScreenParams {
   id: string
   title: string
+  image: string
 }
 
 const FetchEvent = createFetchData<
@@ -29,10 +30,10 @@ const FetchEvent = createFetchData<
   query: EventDetailScreenQueryDocument,
 })
 
-const Connect = createParametricStateConnector<{ eventId: string }>()({
+const Connect = createParametricStateConnector<{ eventId: string }>()(() => ({
   userId: registration.selectors.userId,
   isSaved: calendar.selectors.isSaved,
-})
+}))
 
 export class EventDetailScreen extends React.Component<
   NavigationScreenProps<EventDetailScreenParams>
@@ -41,7 +42,6 @@ export class EventDetailScreen extends React.Component<
     navigation,
   }: NavigationScreenProps): NavigationScreenOptions => ({
     title: navigation.getParam('title'),
-    // headerTransparent: true
   })
 
   get eventId() {
@@ -60,13 +60,14 @@ export class EventDetailScreen extends React.Component<
       {
         id: speaker.id,
         name: speaker.name,
+        photo: speaker.photo && speaker.photo.sourceUrl,
       },
     )
   }
 
   render() {
     return (
-      <Screen floatMenu>
+      <ImageHeaderScreen image={this.props.navigation.getParam('image')}>
         <Connect eventId={this.eventId}>
           {({ userId, isSaved, actions }) => (
             <Background solid>
@@ -89,7 +90,7 @@ export class EventDetailScreen extends React.Component<
             </Background>
           )}
         </Connect>
-      </Screen>
+      </ImageHeaderScreen>
     )
   }
 }

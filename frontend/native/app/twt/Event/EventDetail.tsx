@@ -19,6 +19,7 @@ export interface EventDetailSpeakerPressEvent {
   speaker: {
     id: string
     name: string
+    photo: { sourceUrl: string } | null
   }
 }
 

@@ -3,9 +3,8 @@ import { AsyncStorage } from 'react-native'
 import { Notifications, Updates } from 'expo'
 import { Button } from '../app/common/Butttons/Buttons'
 import { NavigationScreenOptions } from 'react-navigation'
-import { Screen } from '../app/common/Widgets/Widgets'
-import { addSeconds } from 'date-fns'
 import { WithActions } from '../state'
+import { BasicScreen } from '../app/common/Screen/BasicScreen'
 
 export class DevPanel extends React.Component {
   static navigationOptions: NavigationScreenOptions = {
@@ -23,12 +22,12 @@ export class DevPanel extends React.Component {
     return (
       <WithActions>
         {({ actions }) => (
-          <Screen>
+          <BasicScreen>
             <Button onPress={this.resetEverything}>Reset Everything</Button>
             <Button onPress={actions.calendar.showTestEventNotification}>
               Show Event Notification
             </Button>
-          </Screen>
+          </BasicScreen>
         )}
       </WithActions>
     )

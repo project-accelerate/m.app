@@ -1,14 +1,25 @@
 import * as React from 'react'
-import faker from 'faker'
-import { View, StyleSheet, ScrollView } from 'react-native'
-import {
-  NavigationScreenProps,
-  NavigationScreenOptions,
-} from 'react-navigation'
-import { Screen, ProfileImage } from '../../common/Widgets/Widgets'
+import { StyleSheet, Image, View } from 'react-native'
+import * as faker from 'faker'
+import { NavigationScreenOptions } from 'react-navigation'
 import twt from './TWTa_hdr.jpg'
 import { theme } from '../../../theme'
-import { Typography, Br } from '../../common/Typography/Typography'
+import Logo from './mlogo.png'
+import { ImageHeaderScreen } from '../../common/Screen/ImageHeaderScreen'
+import {
+  Card,
+  CardHeader,
+  CardSubheader,
+  CardContainer,
+  CardGroupHeader,
+  CardContent,
+} from '../../common/Widgets/Card'
+import { times } from 'lodash'
+import {
+  HEADER_HEIGHT,
+  HEADER_CONTENT_HEIGHT,
+} from '../../common/Screen/HeaderBar'
+import { getStatusBarHeight } from '../../common/platform'
 
 const style = StyleSheet.create({
   logo: {
@@ -31,9 +42,35 @@ export class HomeScreen extends React.Component {
 
   render() {
     return (
-      <Screen floatMenu noBackButton>
-        <ProfileImage size="halfScreen" image={twt} />
-      </Screen>
+      <ImageHeaderScreen
+        noBackButton
+        image={twt}
+        title={
+          <View
+            style={{
+              height: HEADER_HEIGHT - theme.spacing.level(1) * 2,
+              paddingTop: getStatusBarHeight(),
+            }}
+          >
+            <Image flex={1} resizeMode="contain" source={Logo} />
+          </View>
+        }
+      >
+        <CardContainer>
+          <CardGroupHeader>Upcoming</CardGroupHeader>
+          <Card>
+            <CardSubheader>Today 11:00</CardSubheader>
+            <CardHeader>{faker.lorem.words(3)}</CardHeader>
+          </Card>
+          <CardGroupHeader>News</CardGroupHeader>
+          {times(10, i => (
+            <Card key={i}>
+              <CardHeader>{faker.lorem.words(4)}</CardHeader>
+              <CardContent>{faker.lorem.sentences(3)}</CardContent>
+            </Card>
+          ))}
+        </CardContainer>
+      </ImageHeaderScreen>
     )
   }
 }

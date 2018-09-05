@@ -3,20 +3,20 @@ import {
   NavigationScreenOptions,
   NavigationScreenProps,
 } from 'react-navigation'
-import { Screen } from '../../common/Widgets/Widgets'
 import { SavedEventCalendar } from './CalendarController'
 import { isSameDay } from 'date-fns'
 import { createParametricStateConnector } from '../../../state'
 import { calendar } from './calendarState'
 import { EventDetailScreen } from '../Event/EventDetailScreen'
+import { BasicScreen } from '../../common/Screen/BasicScreen'
 
 interface CalendarScreenState {
   selectedDate: Date
 }
 
-const Connect = createParametricStateConnector<{ day: Date }>()({
+const Connect = createParametricStateConnector<{ day: Date }>()(() => ({
   events: calendar.selectors.eventsInDay,
-})
+}))
 
 export class CalendarScreen extends React.Component<
   NavigationScreenProps,
@@ -53,7 +53,7 @@ export class CalendarScreen extends React.Component<
   render() {
     console.log('render', this.state)
     return (
-      <Screen>
+      <BasicScreen>
         <Connect day={this.state.selectedDate}>
           {({ events }) => (
             <SavedEventCalendar
@@ -65,7 +65,7 @@ export class CalendarScreen extends React.Component<
             />
           )}
         </Connect>
-      </Screen>
+      </BasicScreen>
     )
   }
 }

@@ -15,6 +15,10 @@ const TypographyVariants = StyleSheet.create({
     fontFamily: 'patua-one',
     fontSize: 24,
   },
+  screenHeader: {
+    fontFamily: 'patua-one',
+    fontSize: 17,
+  },
   wizardTitle: {
     fontFamily: 'patua-one',
     fontSize: 20,
@@ -63,7 +67,7 @@ const TypographyStyles = StyleSheet.create({
   },
 })
 
-interface TypographyProps {
+export interface TypographyProps {
   variant?: keyof typeof TypographyVariants
   darkBg?: boolean
   accent?: boolean
@@ -136,9 +140,7 @@ const markdownStyles = {
 export function Markdown({ value, style }: MarkdownProps) {
   return (
     <View style={style}>
-      <MarkdownView styles={markdownStyles}>
-        {value}
-      </MarkdownView>
+      <MarkdownView styles={markdownStyles}>{value}</MarkdownView>
     </View>
   )
 }

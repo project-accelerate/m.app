@@ -29,8 +29,8 @@ export namespace theme {
     export const separator = 'rgb(155,155,155)'
     export const contrast = 'rgba(60,60,60,0.9)'
     export const control = white
-    export const controlBorder = 'rgb(227,227,227)'
-    export const controlBorderBottom = 'rgb(122,122,122)'
+    export const borderLight = 'rgb(227,227,227)'
+    export const borderDark = 'rgb(122,122,122)'
     export const red = 'rgba(236,0,0,1)'
     export const black = 'rgba(15,15,15,1)'
     export const imageOverlay = 'rgba(0,0,0,0.5)'
