@@ -58,12 +58,16 @@ const TypographyStyles = StyleSheet.create({
   accent: {
     color: theme.pallete.accent,
   },
+  center: {
+    textAlign: 'center',
+  },
 })
 
 interface TypographyProps {
   variant?: keyof typeof TypographyVariants
   darkBg?: boolean
   accent?: boolean
+  center?: boolean
   children?: React.ReactNode
   style?: StyleProp<TextStyle>
 }
@@ -74,6 +78,7 @@ export function Typography({
   style,
   darkBg,
   accent,
+  center,
 }: TypographyProps) {
   return (
     <Text
@@ -82,6 +87,7 @@ export function Typography({
         variant && TypographyVariants[variant],
         darkBg && TypographyStyles.darkBg,
         accent && TypographyStyles.accent,
+        center && TypographyStyles.center,
       ]}
     >
       {children}

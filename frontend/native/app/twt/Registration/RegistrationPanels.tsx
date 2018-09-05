@@ -1,48 +1,42 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
-import { Formik, FormikHandlers } from 'formik'
+import { View, StyleSheet, Image } from 'react-native'
+import { Formik, FormikHandlers, FormikProps } from 'formik'
+import * as Yup from 'yup'
 import { Button } from '../../common/Butttons/Buttons'
 import { Typography } from '../../common/Typography/Typography'
 import { Background } from '../../common/Layouts/Layouts'
 import { theme } from '../../../theme'
-import { FormField } from '../../common/Widgets/Widgets'
+import { FormField, Spacing, Rows } from '../../common/Widgets/Widgets'
 import { RegistrationStageProps } from './RegistrationContainer'
 
 const styles = StyleSheet.create({
   bg: {
+    backgroundColor: theme.pallete.accent,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
     height: '100%',
     flex: 1,
   },
   container: {
-    paddingHorizontal: theme.spacing.level(1),
-    paddingVertical: theme.spacing.level(2),
-    backgroundColor: theme.pallete.white,
+    paddingHorizontal: theme.spacing.level(2),
+    paddingVertical: theme.spacing.level(3),
+    backgroundColor: theme.pallete.box,
   },
   actions: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  prompt: {
-    marginBottom: theme.spacing.level(3),
-    color: theme.pallete.accent,
+    marginVertical: theme.spacing.level(2),
   },
   button: {
     flex: 1,
-  },
-  helpText: {
-    marginTop: theme.spacing.level(2),
+    margin: theme.spacing.level(1),
   },
 })
 
 export function RegistrationIsDelegateQuestion(props: RegistrationStageProps) {
   return (
     <RegistrationPanel>
-      <RegistrationPrompt>
-        Are you a Labour conference delegate?
-      </RegistrationPrompt>
+      <RegistrationPrompt>Are you a Momentum delegate?</RegistrationPrompt>
 
       <RegistrationActions>
         <Button
@@ -62,7 +56,7 @@ export function RegistrationIsDelegateQuestion(props: RegistrationStageProps) {
       </RegistrationActions>
 
       <RegistrationHelpText>
-        We will use this information to notify you about relevant updates.
+        We'll only send you delegate information if you say yes.
       </RegistrationHelpText>
     </RegistrationPanel>
   )
@@ -72,24 +66,24 @@ export function AcceptNotificationsPanel(props: RegistrationStageProps) {
   return (
     <RegistrationPanel>
       <RegistrationPrompt>
-        Do you want to receive mobile notifications about changes to events,
-        updates and conference news?
+        Do you want to receive mobile notifications about event updates and
+        conference news?
       </RegistrationPrompt>
 
       <RegistrationActions>
         <Button
           variant="small"
           style={styles.button}
-          onPress={() => props.onSubmit({ optedIntoNotifications: true })}
+          onPress={() => props.onSubmit({ optedIntoNotifications: false })}
         >
-          Yes
+          No Thanks
         </Button>
         <Button
           variant="small"
           style={styles.button}
-          onPress={() => props.onSubmit({ optedIntoNotifications: false })}
+          onPress={() => props.onSubmit({ optedIntoNotifications: true })}
         >
-          No
+          Yes Please!
         </Button>
       </RegistrationActions>
 
@@ -106,26 +100,40 @@ export function RegistrationAskEmailPanel(props: RegistrationStageProps) {
       onSubmit={(value: { email: string }) =>
         props.onSubmit({ email: value.email })
       }
+      validationSchema={Yup.object().shape({
+        email: Yup.string()
+          .email()
+          .required(),
+      })}
       initialValues={{ email: '' }}
-      render={({ handleSubmit }: FormikHandlers) => (
+      render={({ handleSubmit, isValid }: FormikProps<{}>) => (
         <RegistrationPanel>
-          <RegistrationPrompt>Give us your email please?</RegistrationPrompt>
+          <RegistrationPrompt>May we have your email?</RegistrationPrompt>
 
           <RegistrationActions>
-            <FormField name="email" type="email" />
+            <FormField name="email" type="email" placeholder="Email address" />
           </RegistrationActions>
 
           <RegistrationActions>
-            <Button variant="small" style={styles.button} onPress={props.onSkip}>
-              Skip
+            <Button
+              variant="small"
+              style={styles.button}
+              onPress={props.onSkip}
+            >
+              Skip this time
             </Button>
-            <Button variant="small" style={styles.button} onPress={handleSubmit}>
-              Ok
+            <Button
+              disabled={!isValid}
+              variant="small"
+              style={styles.button}
+              onPress={handleSubmit}
+            >
+              Sure, let's go!
             </Button>
           </RegistrationActions>
 
           <RegistrationHelpText>
-            This is useful because blah blah. Some explanatory text here.
+            We'll use this to respond to feedback you give about the conference.
           </RegistrationHelpText>
         </RegistrationPanel>
       )}
@@ -134,11 +142,7 @@ export function RegistrationAskEmailPanel(props: RegistrationStageProps) {
 }
 
 export function RegistrationBg({ children }: React.Props<{}>) {
-  return (
-    <Background>
-      <View style={styles.bg}>{children}</View>
-    </Background>
-  )
+  return <View style={styles.bg}>{children}</View>
 }
 
 function RegistrationPanel({ children }: React.Props<{}>) {
@@ -147,18 +151,20 @@ function RegistrationPanel({ children }: React.Props<{}>) {
 
 function RegistrationPrompt({ children }: React.Props<{}>) {
   return (
-    <Typography style={styles.prompt} variant="display">
-      {children}
-    </Typography>
+    <Rows center>
+      <Image source={require('./check.png')} />
+
+      <Spacing level={2} />
+
+      <Typography center variant="wizardTitle">
+        {children}
+      </Typography>
+    </Rows>
   )
 }
 
 function RegistrationHelpText({ children }: React.Props<{}>) {
-  return (
-    <Typography style={styles.helpText} variant="caption">
-      {children}
-    </Typography>
-  )
+  return <Typography variant="caption">{children}</Typography>
 }
 
 function RegistrationActions({ children }: React.Props<{}>) {

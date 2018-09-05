@@ -9,29 +9,32 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import { theme } from '../../../theme'
+import { Typography } from '../Typography/Typography'
 
 const buttonStyle = StyleSheet.create({
+  header: {},
   button: {
     backgroundColor: theme.pallete.accent,
-    borderColor: theme.pallete.white,
-    borderWidth: 1,
-    opacity: 0.9,
-  },
-  text: {
-    color: theme.pallete.white,
-    textAlign: 'center',
+    borderColor: theme.pallete.controlBorder,
+    borderBottomColor: theme.pallete.controlBorderBottom,
+    borderWidth: 0.5,
+    borderRadius: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   large: {
-    padding: theme.spacing.level(3),
+    paddingVertical: theme.spacing.level(1),
+    paddingHorizontal: theme.spacing.level(2),
   },
   small: {
-    padding: theme.spacing.level(2),
+    height: 35,
+    paddingHorizontal: theme.spacing.level(2),
   },
   inline: {
     padding: theme.spacing.level(2),
     backgroundColor: theme.pallete.transparent,
     borderWidth: 0,
-    opacity: 1
+    opacity: 1,
   },
   grid: {
     flexDirection: 'row',
@@ -41,21 +44,8 @@ const buttonStyle = StyleSheet.create({
     width: '50%',
     paddingVertical: theme.spacing.level(2),
   },
-})
-
-const textStyle = StyleSheet.create({
-  large: {
-    fontSize: 24,
-    fontWeight: '700',
-  },
-  small: {
-    fontSize: 20,
-    fontWeight: '700',
-  },
-  inline: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: theme.pallete.accent
+  disabled: {
+    opacity: 0.5,
   },
 })
 
@@ -86,16 +76,25 @@ export function Button({
   children,
   style,
   variant = 'large',
+  disabled,
   ...props
 }: ButtonProps) {
-  const ButtonType = variant === 'inline' ? TouchableOpacity : TouchableHighlight
-  
+  const ButtonType =
+    variant === 'inline' ? TouchableOpacity : TouchableHighlight
+
   return (
     <ButtonType
-      style={[buttonStyle.button, buttonStyle[variant], style]}
+      style={[
+        buttonStyle.button,
+        buttonStyle[variant],
+        disabled && buttonStyle.disabled,
+        style,
+      ]}
       {...props}
     >
-      <Text style={[buttonStyle.text, textStyle[variant]]}>{children}</Text>
+      <Typography variant="action" darkBg center>
+        {children}
+      </Typography>
     </ButtonType>
   )
 }

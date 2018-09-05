@@ -37,10 +37,10 @@ import { ErrorGuard } from '../ErrorView/ErrorGuard'
 const FieldStyle = StyleSheet.create({
   field: {
     width: '100%',
-    fontSize: 18,
+    fontSize: 15,
     padding: theme.spacing.level(1),
-    marginBottom: theme.spacing.level(2),
-    borderColor: theme.pallete.control,
+    borderColor: theme.pallete.controlBorder,
+    backgroundColor: theme.pallete.control,
     borderWidth: 1,
   },
 })
@@ -343,4 +343,31 @@ export function Touchable(props: TouchableWithoutFeedbackProps) {
   }
 
   return <TouchableWithoutFeedback {...props} />
+}
+
+export function Spacing(props: { level?: number }) {
+  return <View style={{ height: theme.spacing.level(props.level || 1) }} />
+}
+
+interface GridProps {
+  style?: StyleProp<ViewStyle>
+  center?: boolean
+  children?: React.ReactNode
+}
+
+const gridStyles = StyleSheet.create({
+  rows: {
+    flexDirection: 'column',
+  },
+  center: {
+    alignItems: 'center',
+  },
+})
+
+export function Rows({ style, center, children }: GridProps) {
+  return (
+    <View style={[style, center && gridStyles.center, gridStyles.rows]}>
+      {children}
+    </View>
+  )
 }
