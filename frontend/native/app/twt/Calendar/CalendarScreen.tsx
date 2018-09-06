@@ -51,7 +51,6 @@ export class CalendarScreen extends React.Component<
   }
 
   render() {
-    console.log('render', this.state)
     return (
       <BasicScreen>
         <Connect day={this.state.selectedDate}>
