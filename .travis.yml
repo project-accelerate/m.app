@@ -3,6 +3,6 @@ node_js:
   - "10"
 sudo: required
 cache: yarn
-install: yarn --frozen-lockfile
+install: yarn --frozen-lockfile && (cd frontend/native && yarn --frozen-lockfile)
 services:
   - docker
