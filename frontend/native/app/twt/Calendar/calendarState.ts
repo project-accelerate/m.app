@@ -165,11 +165,14 @@ export namespace calendar {
         endTime: event.endTime,
       }
 
-      let prevSavedEvent = selectors.savedEvent(getState(), {
-        eventId: event.id,
-      })
+      const selectProps = { eventId: details.id }
 
-      if (isEqual(details, prevSavedEvent.details)) {
+      let prevSavedEvent =
+        (selectors.isSaved(getState(), selectProps) &&
+          selectors.savedEvent(getState(), selectProps)) ||
+        undefined
+
+      if (prevSavedEvent && isEqual(details, prevSavedEvent.details)) {
         return
       }
 
