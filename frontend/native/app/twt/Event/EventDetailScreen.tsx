@@ -72,7 +72,7 @@ export class EventDetailScreen extends React.Component<
           {({ userId, isSaved, actions }) => (
             <Background solid>
               <FetchEvent variables={this.queryVariables}>
-                {({ data, client }) => (
+                {({ data }) => (
                   <EventDetail
                     event={FetchEvent.required(data.event)}
                     favourited={isSaved}
