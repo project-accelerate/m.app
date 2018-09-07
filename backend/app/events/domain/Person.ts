@@ -3,7 +3,6 @@ import { ObjectType, Field, InputType } from 'type-graphql'
 
 @InputType()
 export class CreatePersonRequest {
-  @Field() id!: string
   @Field() name!: string
 
   @Field({ nullable: true })
