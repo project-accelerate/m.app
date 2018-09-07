@@ -16,6 +16,7 @@ import { ProfileImage } from '../Widgets/Widgets'
 import { HomeScreen } from '../../twt/Home/HomeScreen'
 import { getStatusBarHeight } from '../platform'
 import Logo from '../../../assets/mlogo.png'
+import Arrow from '../../../assets/Arrow'
 
 const style = StyleSheet.create({
   root: {
@@ -91,6 +92,17 @@ export class Drawer extends React.Component<DrawerProps> {
       <View style={style.root}>
         <View style={style.header} />
         <ScrollView style={style.items}>
+          <TouchableHighlight
+            key="<"
+            underlayColor={theme.pallete.white}
+            style={style.item}
+            onPress={() => {
+              this.props.navigation!.closeDrawer()
+            }}
+          >
+            <Arrow />
+          </TouchableHighlight>
+
           {this.items.map(item => (
             <TouchableHighlight
               key={item.routeName}
