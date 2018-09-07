@@ -1,5 +1,5 @@
 import { EventRepository } from '../external/EventRepository'
-import { Event, CreateEventRequest } from '../domain/Event'
+import { Event, CreateEventRequest, EditEventRequest } from '../domain/Event'
 import {
   someString,
   someDate,
@@ -116,6 +116,28 @@ export function someEventProps(props: Partial<EventProps> = {}): EventProps {
     startTime: someDate(),
     endTime: someDate(),
     location: someGeoPoint(),
+    ...props,
+  }
+}
+
+export function someEditEventRequest(): EditEventRequest
+export function someEditEventRequest<
+  Props extends Partial<EditEventRequest>
+>(props: Props): Props & EditEventRequest
+export function someEditEventRequest(
+  props: Partial<EditEventRequest> = {},
+): EditEventRequest {
+  return {
+    id:someString(),
+    name: someString(),
+    introduction: someString(),
+    detail: someString(),
+    family: someEventFamily(),
+    venue: someUuid(),
+    startTime: someDate(),
+    endTime: someDate(),
+    photoUpload: someImageUpload(),
+    speakers: [],
     ...props,
   }
 }

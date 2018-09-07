@@ -49,7 +49,6 @@ export interface ConferenceNotificationSendRequest {
 };
 
 export interface CreatePersonRequest {
-  id: string,
   name: string,
   bio?: string | null,
   twitterHandle?: string | null,

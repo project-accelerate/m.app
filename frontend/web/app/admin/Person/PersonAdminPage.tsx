@@ -78,7 +78,6 @@ export const PersonAdminPage = withApollo(
                       profilePic: value.photo
                         ? value.photo.sourceUrl
                         : undefined,
-                      twitterHandle : value.twitterHandle || ''
                     }}
                     onCancel={onCancel}
                     onSave={onSave}
