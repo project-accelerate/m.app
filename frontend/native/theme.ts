@@ -37,5 +37,7 @@ export namespace theme {
 
     export const header = accent
     export const cardBg = 'rgba(255,255,255,0.9)'
+
+    export const errorColor = 'rgba(236,0,0,1)'
   }
 }

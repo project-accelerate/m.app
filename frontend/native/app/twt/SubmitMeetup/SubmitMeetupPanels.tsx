@@ -2,7 +2,7 @@ import React from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import * as Yup from 'yup'
 
-import { Formik } from 'formik'
+import { Formik, FormikProps, FormikErrors } from 'formik'
 
 import { theme } from '../../../theme'
 
@@ -22,6 +22,9 @@ const styles = StyleSheet.create({
   },
   container: {
     margin: theme.spacing.level(2),
+  },
+  formError: {
+    color: theme.pallete.errorColor,
   },
   heading: {
     color: theme.pallete.header,
@@ -62,17 +65,52 @@ export function SubmitMeetupInstructionsPanel(props: any) {
   )
 }
 
+interface SubmitMeetupPersonalDetailsValues {
+  firstName: string
+  lastName: string
+  email: string
+  telephoneNumber: string
+}
+
 export function SubmitMeetupPersonalDetailsPanel(props: any) {
   return (
     <Formik
-      onSubmit={(value: any) => {
+      onSubmit={(values: SubmitMeetupPersonalDetailsValues) => {
         props.onSubmit({
-          firstName: value.firstName,
-          lastName: value.lastName,
-          email: value.email,
-          telephoneNumber: value.telephoneNumber,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          telephoneNumber: values.telephoneNumber,
         })
       }}
+      validationSchema={Yup.object().shape({
+        firstName: Yup.string()
+          .trim()
+          .required('Your first name is required'),
+        lastName: Yup.string()
+          .trim()
+          .required('Your last name is required'),
+        email: Yup.string()
+          .trim()
+          .email(
+            "That doesn't look like a valid email address - emails typically take the format someone@example.com",
+          )
+          .required(
+            'Email is required. We need this to contact you about the meetup and tell you when the meetup is approved',
+          ),
+        // TODO: This isn't genuinely enough to validate a telephone number
+        telephoneNumber: Yup.number()
+          .typeError(
+            "That doesn't look like a valid phone number, can you try again?",
+          )
+          .min(
+            7,
+            "That doesn't look like a valid phone number, it's too short, can you try again?",
+          )
+          .required(
+            'A telephone number is required. We need this to contact you about the meetup and tell you when the meetup is approved',
+          ),
+      })}
       style={styles.container}
       initialValues={{
         firstName: '',
@@ -80,7 +118,12 @@ export function SubmitMeetupPersonalDetailsPanel(props: any) {
         email: '',
         telephoneNumber: '',
       }}
-      render={({ handleSubmit, isValid }: FormikProps<{}>) => (
+      render={({
+        handleSubmit,
+        isValid,
+        errors,
+        touched,
+      }: FormikProps<SubmitMeetupPersonalDetailsValues>) => (
         <SubmitMeetupPanel>
           <SubmitMeetupHeading>Your Details</SubmitMeetupHeading>
 
@@ -101,32 +144,57 @@ export function SubmitMeetupPersonalDetailsPanel(props: any) {
           </Paragraphs>
 
           <Typography>First Name</Typography>
-          <FormField name="firstName" type="text" textContentType="givenName" />
+          <FormField
+            autoCorrect={false}
+            name="firstName"
+            textContentType="givenName"
+            type="text"
+          />
+          <SubmitMeetupFormError>
+            {touched.firstName && errors.firstName && errors.firstName}
+          </SubmitMeetupFormError>
 
           <Spacing level={2} />
 
           <Typography>Last Name</Typography>
-          <FormField name="lastName" type="text" textContentType="familyName" />
+          <FormField
+            autoCorrect={false}
+            name="lastName"
+            textContentType="familyName"
+            type="text"
+          />
+          <SubmitMeetupFormError>
+            {touched.lastName && errors.lastName && errors.lastName}
+          </SubmitMeetupFormError>
 
           <Spacing level={2} />
 
           <Typography>Email</Typography>
           <FormField
+            autoCorrect={false}
             keyboardType="email-address"
             name="email"
             textContentType="emailAddress"
             type="email"
           />
+          <SubmitMeetupFormError>
+            {touched.email && errors.email && errors.email}
+          </SubmitMeetupFormError>
 
           <Spacing level={2} />
 
           <Typography>Your telephone number</Typography>
           <FormField
-            name="telephoneNumber"
-            type="number"
             keyboardType="phone-pad"
+            name="telephoneNumber"
             textContentType="telephoneNumber"
+            type="number"
           />
+          <SubmitMeetupFormError>
+            {touched.telephoneNumber &&
+              errors.telephoneNumber &&
+              errors.telephoneNumber}
+          </SubmitMeetupFormError>
 
           <SubmitMeetupActions>
             <Button variant="small" onPress={handleSubmit} disabled={!isValid}>
@@ -237,4 +305,8 @@ function SubmitMeetupPanel({ children }: React.Props<{}>) {
 
 function SubmitMeetupActions({ children }: React.Props<{}>) {
   return <View style={styles.actions}>{children}</View>
+}
+
+function SubmitMeetupFormError({ children }: React.Props<{}>) {
+  return <Typography style={styles.formError}>{children}</Typography>
 }
