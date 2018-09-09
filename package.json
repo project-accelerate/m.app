@@ -50,6 +50,7 @@
   "lint-staged": {
     "*.(js|ts|tsx|jsx|graphql|json)": [
       "yarn pretty",
+      "yarn typecheck",
       "git add"
     ]
   },
