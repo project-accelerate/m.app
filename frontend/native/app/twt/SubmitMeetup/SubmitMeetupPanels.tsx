@@ -1,5 +1,6 @@
 import React from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
+import DateTimePicker from 'react-native-modal-datetime-picker'
 import * as Yup from 'yup'
 
 import { Formik, FormikProps, FormikErrors } from 'formik'
@@ -9,6 +10,7 @@ import { theme } from '../../../theme'
 import { Button } from '../../common/Butttons/Buttons'
 import { FormField, Spacing } from '../../common/Widgets/Widgets'
 import { Typography, Paragraphs } from '../../common/Typography/Typography'
+import { extendSchema } from 'graphql'
 
 const styles = StyleSheet.create({
   actions: {
@@ -25,6 +27,9 @@ const styles = StyleSheet.create({
   },
   formError: {
     color: theme.pallete.errorColor,
+  },
+  eventDescription: {
+    height: 150,
   },
   heading: {
     color: theme.pallete.header,
@@ -102,10 +107,6 @@ export function SubmitMeetupPersonalDetailsPanel(props: any) {
         telephoneNumber: Yup.number()
           .typeError(
             "That doesn't look like a valid phone number, can you try again?",
-          )
-          .min(
-            7,
-            "That doesn't look like a valid phone number, it's too short, can you try again?",
           )
           .required(
             'A telephone number is required. We need this to contact you about the meetup and tell you when the meetup is approved',
@@ -207,65 +208,145 @@ export function SubmitMeetupPersonalDetailsPanel(props: any) {
   )
 }
 
-export function SubmitMeetupMeetupDetailsPanel(props: any) {
-  return (
-    <Formik>
-      <SubmitMeetupPanel>
-        <SubmitMeetupHeading>Meetup Details</SubmitMeetupHeading>
+interface SubmitMeetupMeetupDetailsPanelValues {
+  eventName: string
+  eventHost: string
+  eventDescription: string
+  eventStartDateTime: string
+  eventEndDateTime: string
+  eventLocation: string
+}
 
-        <Paragraphs>
-          <Typography>Now enter the details of your meetup.</Typography>
+export class SubmitMeetupMeetupDetailsPanel extends React.Component<any> {
+  state = {
+    eventStartDateTimePickerOpen: false,
+    eventEndDateTimePickerOpen: false,
+  }
 
-          <Typography>
-            These details will be displayed publicly so people can find you.
-          </Typography>
-        </Paragraphs>
+  showStartDateTimePicker = () =>
+    this.setState({
+      eventStartDateTimePickerOpen: true,
+    })
 
-        <Typography>Name Of Event</Typography>
-        <FormField name="email" type="text" placeholder="John" />
+  showEndDateTimePicker = () =>
+    this.setState({
+      eventStartDateTimePickerOpen: true,
+    })
 
-        <Spacing level={2} />
+  hideDateTimePicker = () =>
+    this.setState({
+      eventStartDateTimePickerOpen: false,
+      eventEndDateTimePickerOpen: false,
+    })
 
-        <Typography>Who Is Hosting The Event?</Typography>
-        <FormField name="email" type="text" placeholder="McDonnell" />
+  handleDatePicked = date => {
+    console.log('A date has been picked: ', date)
+    this.hideDateTimePicker()
+  }
 
-        <Spacing level={2} />
+  render() {
+    return (
+      <Formik
+        onSubmit={(values: SubmitMeetupMeetupDetailsPanelValues) => {
+          this.props.onSubmit({ ...values })
+        }}
+        style={styles.container}
+        initialValues={{
+          eventName: '',
+          eventHost: '',
+          eventDescription: '',
+          eventStartDateTime: '',
+          eventEndDateTime: '',
+          eventLocation: '',
+        }}
+        render={({
+          handleSubmit,
+          isValid,
+          errors,
+          touched,
+        }: FormikProps<SubmitMeetupMeetupDetailsPanelValues>) => (
+          <SubmitMeetupPanel>
+            <SubmitMeetupHeading>Meetup Details</SubmitMeetupHeading>
 
-        <Typography>
-          If the event is being hosted by a specific group, for example, XYZ
-          Momentum then you can add it here. Otherwise it will be listed as
-          being hosted by your name.
-        </Typography>
+            <Paragraphs>
+              <Typography>Now enter the details of your meetup.</Typography>
 
-        <Spacing level={2} />
+              <Typography>
+                These details will be displayed publicly so people can find you.
+              </Typography>
+            </Paragraphs>
 
-        <Typography>Event Description</Typography>
-        <Typography>What is your event about?</Typography>
-        <FormField name="email" type="text" placeholder="McDonnell" />
+            <Typography>Name Of Event</Typography>
+            <FormField name="eventName" type="text" />
 
-        <Spacing level={2} />
+            <Spacing level={2} />
 
-        <Typography>Start Time</Typography>
-        <FormField name="email" type="text" placeholder="McDonnell" />
+            <Typography>Who Is Hosting The Event?</Typography>
+            <FormField name="eventHost" type="text" />
 
-        <Spacing level={2} />
+            <Typography>
+              If the event is being hosted by a specific group, for example, XYZ
+              Momentum then you can add it here. Otherwise it will be listed as
+              being hosted by your name.
+            </Typography>
 
-        <Typography>End Time</Typography>
-        <FormField name="email" type="text" placeholder="McDonnell" />
+            <Spacing level={2} />
 
-        <Spacing level={2} />
+            <Typography>Event Description</Typography>
+            <FormField
+              editable={true}
+              multiline={true}
+              name="eventDescription"
+              numberOfLines={4}
+              style={styles.eventDescription}
+              type="text"
+            />
 
-        <Typography>Location</Typography>
-        <FormField name="email" type="text" placeholder="McDonnell" />
+            <Spacing level={2} />
 
-        <SubmitMeetupActions>
-          <Button variant="small" onPress={() => props.onSubmit()}>
-            Next
-          </Button>
-        </SubmitMeetupActions>
-      </SubmitMeetupPanel>
-    </Formik>
-  )
+            <Button variant="small" onPress={this.showStartDateTimePicker}>
+              Set Start Time
+            </Button>
+            <DateTimePicker
+              isVisible={this.state.eventStartDateTimePickerOpen}
+              onConfirm={this.handleDatePicked}
+              onCancel={this.hideDateTimePicker}
+              mode="datetime"
+              titleIOS="Pick start day and time"
+            />
+
+            <Spacing level={4} />
+
+            <Button variant="small" onPress={this.showEndDateTimePicker}>
+              Set End Time
+            </Button>
+            <DateTimePicker
+              isVisible={this.state.eventEndDateTimePickerOpen}
+              onConfirm={this.handleDatePicked}
+              onCancel={this.hideDateTimePicker}
+              mode="datetime"
+              titleIOS="Pick end date and time"
+            />
+
+            <Spacing level={2} />
+
+            <Typography>Location</Typography>
+            <FormField name="eventLocation" type="text" />
+
+            <SubmitMeetupActions>
+              <Button
+                variant="small"
+                onPress={handleSubmit}
+                disabled={!isValid}
+              >
+                Next
+              </Button>
+            </SubmitMeetupActions>
+          </SubmitMeetupPanel>
+        )}
+      />
+    )
+  }
 }
 
 export function SubmitMeetupThanksPanel(props: any) {
