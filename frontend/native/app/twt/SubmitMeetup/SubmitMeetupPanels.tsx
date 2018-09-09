@@ -1,12 +1,14 @@
 import React from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
+import * as Yup from 'yup'
+
+import { Formik } from 'formik'
 
 import { theme } from '../../../theme'
-import { Typography, Paragraphs } from '../../common/Typography/Typography'
 
 import { Button } from '../../common/Butttons/Buttons'
-import { Formik } from 'formik'
 import { FormField, Spacing } from '../../common/Widgets/Widgets'
+import { Typography, Paragraphs } from '../../common/Typography/Typography'
 
 const styles = StyleSheet.create({
   actions: {
@@ -19,17 +21,15 @@ const styles = StyleSheet.create({
     margin: theme.spacing.level(1),
   },
   container: {
-    margin: theme.spacing.level(1),
+    margin: theme.spacing.level(2),
   },
   heading: {
     color: theme.pallete.header,
     width: '100%',
-    padding: theme.spacing.level(1),
     marginTop: theme.spacing.level(2),
   },
   introductionText: {
     width: '100%',
-    padding: theme.spacing.level(1),
     marginTop: theme.spacing.level(2),
   },
 })
@@ -39,7 +39,7 @@ export function SubmitMeetupInstructionsPanel(props: any) {
     <SubmitMeetupPanel>
       <SubmitMeetupHeading>Host A Meetup</SubmitMeetupHeading>
 
-      <Paragraphs style={styles.introductionText}>
+      <SubmitMeetupPanelIntroduction>
         <Typography>
           Meetups are great ways to get to know people from around the movement.
           It takes about ten minutes to set one up.
@@ -51,7 +51,7 @@ export function SubmitMeetupInstructionsPanel(props: any) {
         </Typography>
 
         <Typography>Stay safe and have fun!</Typography>
-      </Paragraphs>
+      </SubmitMeetupPanelIntroduction>
 
       <SubmitMeetupActions>
         <Button variant="small" onPress={() => props.onSubmit()}>
@@ -64,59 +64,78 @@ export function SubmitMeetupInstructionsPanel(props: any) {
 
 export function SubmitMeetupPersonalDetailsPanel(props: any) {
   return (
-    <Formik>
-      <SubmitMeetupPanel>
-        <SubmitMeetupHeading>Your Details</SubmitMeetupHeading>
+    <Formik
+      onSubmit={(value: any) => {
+        props.onSubmit({
+          firstName: value.firstName,
+          lastName: value.lastName,
+          email: value.email,
+          telephoneNumber: value.telephoneNumber,
+        })
+      }}
+      style={styles.container}
+      initialValues={{
+        firstName: '',
+        lastName: '',
+        email: '',
+        telephoneNumber: '',
+      }}
+      render={({ handleSubmit, isValid }: FormikProps<{}>) => (
+        <SubmitMeetupPanel>
+          <SubmitMeetupHeading>Your Details</SubmitMeetupHeading>
 
-        <Paragraphs>
-          <Typography>
-            We need a few details to verify you and your meetup.
-          </Typography>
+          <Paragraphs>
+            <Typography>
+              We need a few details to verify you and your meetup.
+            </Typography>
 
-          <Typography>
-            These won't be displayed publicly but will help out our moderation
-            team.
-          </Typography>
+            <Typography>
+              These won't be displayed publicly but will help out our moderation
+              team.
+            </Typography>
 
-          <Typography>
-            Moderation usually takes under an hour. Your meetup will then be
-            displayed on the event calendar for people to come along to.
-          </Typography>
-        </Paragraphs>
+            <Typography>
+              Moderation usually takes under an hour. Your meetup will then be
+              displayed on the event calendar for people to come along to.
+            </Typography>
+          </Paragraphs>
 
-        <Typography>First Name</Typography>
-        <FormField name="email" type="email" placeholder="John" />
+          <Typography>First Name</Typography>
+          <FormField name="firstName" type="text" textContentType="givenName" />
 
-        <Spacing level={2} />
+          <Spacing level={2} />
 
-        <Typography>Last Name</Typography>
-        <FormField name="email" type="email" placeholder="McDonnell" />
+          <Typography>Last Name</Typography>
+          <FormField name="lastName" type="text" textContentType="familyName" />
 
-        <Spacing level={2} />
+          <Spacing level={2} />
 
-        <Typography>Email</Typography>
-        <FormField
-          name="email"
-          type="email"
-          placeholder="j.mcdonnell@peoplesmomentum.com"
-        />
+          <Typography>Email</Typography>
+          <FormField
+            keyboardType="email-address"
+            name="email"
+            textContentType="emailAddress"
+            type="email"
+          />
 
-        <Spacing level={2} />
+          <Spacing level={2} />
 
-        <Typography>Your telephone number</Typography>
-        <FormField
-          name="email"
-          type="text"
-          placeholder="Your telephone number"
-        />
+          <Typography>Your telephone number</Typography>
+          <FormField
+            name="telephoneNumber"
+            type="number"
+            keyboardType="phone-pad"
+            textContentType="telephoneNumber"
+          />
 
-        <SubmitMeetupActions>
-          <Button variant="small" onPress={() => props.onSubmit()}>
-            Next
-          </Button>
-        </SubmitMeetupActions>
-      </SubmitMeetupPanel>
-    </Formik>
+          <SubmitMeetupActions>
+            <Button variant="small" onPress={handleSubmit} disabled={!isValid}>
+              Next
+            </Button>
+          </SubmitMeetupActions>
+        </SubmitMeetupPanel>
+      )}
+    />
   )
 }
 
@@ -177,7 +196,7 @@ export function SubmitMeetupThanksPanel(props: any) {
     <SubmitMeetupPanel>
       <SubmitMeetupHeading>Thanks!</SubmitMeetupHeading>
 
-      <Paragraphs>
+      <SubmitMeetupPanelIntroduction>
         <Typography>Thanks so much for adding a meetup!</Typography>
 
         <Typography>
@@ -189,7 +208,7 @@ export function SubmitMeetupThanksPanel(props: any) {
           Your meetup will be displayed on the event calendar for people to come
           along to.
         </Typography>
-      </Paragraphs>
+      </SubmitMeetupPanelIntroduction>
 
       <SubmitMeetupActions>
         <Button variant="small" onPress={() => props.onSubmit()}>
@@ -206,6 +225,10 @@ function SubmitMeetupHeading({ children }: React.Props<{}>) {
       {children}
     </Typography>
   )
+}
+
+function SubmitMeetupPanelIntroduction({ children }: React.Props<{}>) {
+  return <Paragraphs style={styles.introductionText}>{children}</Paragraphs>
 }
 
 function SubmitMeetupPanel({ children }: React.Props<{}>) {
