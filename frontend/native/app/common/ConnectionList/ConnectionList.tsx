@@ -34,7 +34,7 @@ interface ConnectionListProps<T> {
   data?: Connection<T>
   sortKey?: keyof T
   sectionBy?: (x: T) => string
-  renderItem: (value: T) => JSX.Element
+  renderItem: (value: T) => JSX.Element | null
   renderSection: (value: string) => React.ReactNode
 }
 

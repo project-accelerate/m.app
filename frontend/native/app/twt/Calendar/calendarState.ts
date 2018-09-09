@@ -49,6 +49,8 @@ import { registration } from '../Registration/registrationState'
 
 export namespace calendar {
   export const startHourOfDay = 4
+  export const morningEnd = 12
+  export const afternoonEnd = 15
 
   interface State {
     [eventId: string]: SavedEvent | undefined
@@ -320,11 +322,10 @@ export namespace calendar {
     }
   }
 
-  function isSameCalendarDay(lhs: Date | string, rhs: Date | string) {
+  export function isSameCalendarDay(lhs: Date | string, rhs: Date | string) {
     if (getHours(lhs) < startHourOfDay && getHours(rhs) >= startHourOfDay) {
       return getDate(rhs) === getDate(lhs) - 1
     }
-
     return getDate(lhs) === getDate(rhs)
   }
 }
