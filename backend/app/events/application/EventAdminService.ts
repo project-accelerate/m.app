@@ -52,18 +52,25 @@ export class EventAdminService {
     ...props
   }: EditEventRequest) {
     const [photoId, venue] = await Promise.all([
-      PhotoStorageService.saveUploadedPhoto(
+      photoUpload ? PhotoStorageService.saveUploadedPhoto(
         this.photoStorageService,
         photoUpload,
-      ),
-      this.venueRepository.findOneRequired({ id: venueId }),
+      ):Promise.resolve(undefined),
+      venueId ? this.venueRepository.findOneRequired({ id: venueId }):Promise.resolve(undefined),
     ])
+     
     await this.eventRepository.update(id,{
+      ...(photoId ? {photo: photoId} : {}),
+      ...(venueId ? {venue: venueId} : {}),
+      ...(venueId ? {venue: venueId} : {}),
+      ...(venue ? {location: venue.location} :{}),
       ...props,
-      venue: venueId,
-      photo: photoId,
-      location: venue.location,
     })
+  
+    if (speakers)
+    {
+      await this.eventRepository.speakers.add(id,<string[]>speakers)
+    }
 
     return true
   }

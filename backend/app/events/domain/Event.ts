@@ -51,30 +51,46 @@ export class CreateEventRequest {
 })
 export class EditEventRequest {
   @Field() id!:string
-  @Field() name!: string
+  @Field({
+    nullable: true,
+  }) name?: string 
 
-  @Field(() => [GraphQLString])
-  speakers!: string[]
+  @Field(() => [GraphQLString],{
+    nullable: true,
+  })
+  speakers?: string[]
 
-  @Field() venue!: string
+  @Field({
+    nullable: true,
+  }) venue?: string 
 
-  @Field(() => GraphQLISODateTime)
-  startTime!: Date
+  @Field(() => GraphQLISODateTime , {
+    nullable: true,
+  })
+  startTime?: Date
 
-  @Field(() => GraphQLISODateTime)
-  endTime!: Date
+  @Field(() => GraphQLISODateTime, {
+    nullable: true,
+  })
+  endTime?: Date
 
-  @Field() introduction!: string
+  @Field({
+    nullable: true,
+  }) introduction?: string
 
-  @Field() detail!: string
+  @Field({
+    nullable: true,
+  }) detail?: string
 
-  @Field(() => EventFamily)
-  family!: EventFamily
+  @Field(() => EventFamily,{
+    nullable: true,
+  })
+  family?: EventFamily
 
   @Field(() => GraphQLUpload, {
     nullable: true,
   })
-  photoUpload?: FileUpload
+  photoUpload?: FileUpload 
 }
 
 @ObjectType()

@@ -19,7 +19,7 @@ export class PersonMutations {
     @MutationRequest(() => CreatePersonRequest)
     request: CreatePersonRequest,
   ) {
-    return this.personAdminService.addPerson({name:request.name,bio:request.bio,twitterHandle:request.twitterHandle,photoUpload:request.photoUpload})
+    return this.personAdminService.addPerson(request)
   }
 
   @Authorized(Role.ADMIN)
