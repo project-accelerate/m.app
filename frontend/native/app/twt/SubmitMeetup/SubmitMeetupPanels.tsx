@@ -18,6 +18,9 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: theme.spacing.level(1),
   },
+  container: {
+    margin: theme.spacing.level(1),
+  },
   heading: {
     color: theme.pallete.header,
     width: '100%',
@@ -31,17 +34,9 @@ const styles = StyleSheet.create({
   },
 })
 
-function SubmitMeetupHeading({ children }: React.Props<{}>) {
-  return (
-    <Typography variant="display" style={styles.heading}>
-      {children}
-    </Typography>
-  )
-}
-
 export function SubmitMeetupInstructionsPanel(props: any) {
   return (
-    <ScrollView>
+    <SubmitMeetupPanel>
       <SubmitMeetupHeading>Host A Meetup</SubmitMeetupHeading>
 
       <Paragraphs style={styles.introductionText}>
@@ -63,14 +58,14 @@ export function SubmitMeetupInstructionsPanel(props: any) {
           Let's Go
         </Button>
       </SubmitMeetupActions>
-    </ScrollView>
+    </SubmitMeetupPanel>
   )
 }
 
 export function SubmitMeetupPersonalDetailsPanel(props: any) {
   return (
     <Formik>
-      <ScrollView>
+      <SubmitMeetupPanel>
         <SubmitMeetupHeading>Your Details</SubmitMeetupHeading>
 
         <Paragraphs>
@@ -120,7 +115,7 @@ export function SubmitMeetupPersonalDetailsPanel(props: any) {
             Next
           </Button>
         </SubmitMeetupActions>
-      </ScrollView>
+      </SubmitMeetupPanel>
     </Formik>
   )
 }
@@ -128,7 +123,7 @@ export function SubmitMeetupPersonalDetailsPanel(props: any) {
 export function SubmitMeetupMeetupDetailsPanel(props: any) {
   return (
     <Formik>
-      <ScrollView>
+      <SubmitMeetupPanel>
         <SubmitMeetupHeading>Meetup Details</SubmitMeetupHeading>
 
         <Paragraphs>
@@ -172,14 +167,14 @@ export function SubmitMeetupMeetupDetailsPanel(props: any) {
             Next
           </Button>
         </SubmitMeetupActions>
-      </ScrollView>
+      </SubmitMeetupPanel>
     </Formik>
   )
 }
 
 export function SubmitMeetupThanksPanel(props: any) {
   return (
-    <ScrollView>
+    <SubmitMeetupPanel>
       <SubmitMeetupHeading>Thanks!</SubmitMeetupHeading>
 
       <Paragraphs>
@@ -201,8 +196,20 @@ export function SubmitMeetupThanksPanel(props: any) {
           Great!
         </Button>
       </SubmitMeetupActions>
-    </ScrollView>
+    </SubmitMeetupPanel>
   )
+}
+
+function SubmitMeetupHeading({ children }: React.Props<{}>) {
+  return (
+    <Typography variant="display" style={styles.heading}>
+      {children}
+    </Typography>
+  )
+}
+
+function SubmitMeetupPanel({ children }: React.Props<{}>) {
+  return <ScrollView style={styles.container}>{children}</ScrollView>
 }
 
 function SubmitMeetupActions({ children }: React.Props<{}>) {
