@@ -229,22 +229,31 @@ export function SubmitMeetupMeetupDetailsPanel(props: any) {
         <Typography>Who Is Hosting The Event?</Typography>
         <FormField name="email" type="text" placeholder="McDonnell" />
 
+        <Spacing level={2} />
+
         <Typography>
           If the event is being hosted by a specific group, for example, XYZ
           Momentum then you can add it here. Otherwise it will be listed as
           being hosted by your name.
         </Typography>
+
         <Spacing level={2} />
 
         <Typography>Event Description</Typography>
         <Typography>What is your event about?</Typography>
         <FormField name="email" type="text" placeholder="McDonnell" />
 
+        <Spacing level={2} />
+
         <Typography>Start Time</Typography>
         <FormField name="email" type="text" placeholder="McDonnell" />
 
+        <Spacing level={2} />
+
         <Typography>End Time</Typography>
         <FormField name="email" type="text" placeholder="McDonnell" />
+
+        <Spacing level={2} />
 
         <Typography>Location</Typography>
         <FormField name="email" type="text" placeholder="McDonnell" />
