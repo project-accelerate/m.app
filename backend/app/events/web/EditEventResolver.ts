@@ -18,7 +18,6 @@ import { GraphQLObjectType, GraphQLNonNull, GraphQLBoolean } from 'graphql';
 class EditEventResolver {
   constructor(
     private eventAdminService: EventAdminService,
-    private eventRepository: EventRepository,
   ) {}
 
   @Authorized(Role.ADMIN)
@@ -29,7 +28,7 @@ class EditEventResolver {
     @MutationRequest(() => EditEventRequest)
     request: EditEventRequest,
   ) {
-    this.eventAdminService.editEvent(request)
+    await this.eventAdminService.editEvent(request)
     return true
   }
 }

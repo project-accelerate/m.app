@@ -120,27 +120,6 @@ export function someEventProps(props: Partial<EventProps> = {}): EventProps {
   }
 }
 
-export function someEditEventRequest(): EditEventRequest
-export function someEditEventRequest<
-  Props extends Partial<EditEventRequest>
->(props: Props): Props & EditEventRequest
-export function someEditEventRequest(
-  props: Partial<EditEventRequest> = {},
-): EditEventRequest {
-  return {
-    id:someString(),
-    name: someString(),
-    introduction: someString(),
-    detail: someString(),
-    family: someEventFamily(),
-    venue: someUuid(),
-    startTime: someDate(),
-    endTime: someDate(),
-    photoUpload: someImageUpload(),
-    speakers: [],
-    ...props,
-  }
-}
 
 export function someCreateEventRequest(): CreateEventRequest
 export function someCreateEventRequest<
@@ -162,6 +141,7 @@ export function someCreateEventRequest(
     ...props,
   }
 }
+
 
 export function someEvent(props: Partial<Event> = {}) {
   return Object.assign(new Event(), { id: someUuid() }, someEventProps(props))

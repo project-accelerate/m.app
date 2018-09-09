@@ -22,14 +22,14 @@ export enum EventFamily {
 
 export interface EditEventRequest {
   id: string,
-  name: string,
-  speakers: Array< string >,
-  venue: string,
-  startTime: string,
-  endTime: string,
-  introduction: string,
-  detail: string,
-  family: EventFamily,
+  name?: string | null,
+  speakers?: Array< string > | null,
+  venue?: string | null,
+  startTime?: string | null,
+  endTime?: string | null,
+  introduction?: string | null,
+  detail?: string | null,
+  family?: EventFamily | null,
   photoUpload?: string | null,
 };
 

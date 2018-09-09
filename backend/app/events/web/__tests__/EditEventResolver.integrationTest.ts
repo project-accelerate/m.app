@@ -1,51 +1,66 @@
 import { someAdminUser, someOrdinaryUser } from 'common/test/testUtils'
 import { withDb, execQuery } from 'backend/app/test/integrationTestUtils'
 import {
-  someEditEventRequest,
   givenThatAnEventExists,
   givenThatAVenueExists,
+  someCreateEventRequest,
 } from 'backend/app/events/test/eventTestUtils'
-import { EditEventRequest } from 'backend/app/events/domain/Event'
+import { EditEventRequest, CreateEventRequest } from 'backend/app/events/domain/Event'
 
 import { AuthToken } from 'common/AuthToken'
+import * as faker from 'faker'
 
 describe('editEvent mutation', () => {
   describe('as an admin user', () => {
     it(
-      'creates the event and returns it',
+      'modifies name, introduction, detail and venue of an event',
       withDb(async () => {
-        var introductionText = "TEST"
-        var editedText = introductionText + "1"
-        const venue = await givenThatAVenueExists()
-        const eventTest = await givenThatAnEventExists({venue:venue.id,introduction:editedText})
+
+        const venueOrig = await givenThatAVenueExists()
+        const eventOrig = await givenThatAnEventExists({venue: venueOrig.id})
+
+        const editedName = eventOrig.name + faker.lorem.words(1)
+        const editedIntroduction = eventOrig.introduction + faker.lorem.words(1)
+        const editedDetail = eventOrig.detail + faker.lorem.words(1)
+        
+        const venueEdit = await givenThatAVenueExists()
+        const eventEditReq = {name:editedName,introduction:editedIntroduction,detail:editedDetail,venue: venueEdit.id}
+        
         
         await editEvent({
           request: {
-            id: eventTest.id,
-            introduction: editedText
+            id: eventOrig.id,
+            ...eventEditReq
           },
           user: someAdminUser,
-        })
-        const result = await execQuery(`
+        },)
+        
+        const editedEvent = await execQuery(`
       {
-        event(id: "${eventTest.id}") {
+        event(id: "${eventOrig.id}") {
           id
+          name
           introduction
+          detail
           venue {
             id
           }
         }
       }`)
-     
-      expect(result.introduction).toMatch(editedText)
+      
+      expect(editedEvent.event).toEqual(expect.objectContaining({
+        name: eventEditReq.name,
+        introduction: eventEditReq.introduction,
+        detail: eventEditReq.detail,
+        venue: {id:eventEditReq.venue},
+      }));
+
     }),
     )
   })})
 
-
-
 async function editEvent(props: {
-  request: Partial<EditEventRequest>
+  request: EditEventRequest
   user?: AuthToken
 }) {
   return execQuery<{ request: EditEventRequest }>({
@@ -55,7 +70,7 @@ async function editEvent(props: {
     }
   `,
     variables: {
-      request: someEditEventRequest(props.request),
+      request: props.request,
     },
     user: props.user,
   })
