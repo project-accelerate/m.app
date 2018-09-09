@@ -1,13 +1,11 @@
 import React from 'react'
-import { ScrollView, StyleSheet } from 'react-native'
 import {
   NavigationScreenOptions,
   NavigationScreenProps,
 } from 'react-navigation'
 
 import { Background } from '../../common/Layouts/Layouts'
-import { Paragraphs, Typography } from '../../common/Typography/Typography'
-import { Screen } from '../../common/Widgets/Widgets'
+import { BasicScreen } from '../../common/Screen/BasicScreen'
 import { createWizard } from '../../common/Wizard/Wizard'
 
 import {
@@ -32,15 +30,15 @@ const SubmitMeetupWizard = createWizard<SubmitMeetupWizardData>({
 
 export class SubmitMeetupScreen extends React.Component<NavigationScreenProps> {
   static navigationOptions: NavigationScreenOptions = {
-    headerTitle: 'Submit Meetup',
-    title: 'Submit Meetup',
-    drawerLabel: 'Submit Meetup',
+    headerTitle: 'Host A Meetup',
+    title: 'Host A Meetup',
+    drawerLabel: 'Host A Meetup',
   }
 
   render() {
     return (
-      <Screen>
-        <Background solid>
+      <BasicScreen>
+        <Background solid style={{ flex: 1 }}>
           <SubmitMeetupWizard
             initialState={{
               email: '',
@@ -48,7 +46,7 @@ export class SubmitMeetupScreen extends React.Component<NavigationScreenProps> {
             onCompleted={() => console.log('Completed wizard')}
           />
         </Background>
-      </Screen>
+      </BasicScreen>
     )
   }
 }
