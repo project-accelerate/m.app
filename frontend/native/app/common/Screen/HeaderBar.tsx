@@ -22,11 +22,8 @@ export const HEADER_CONTENT_HEIGHT = 48
 export const HEADER_HEIGHT = HEADER_CONTENT_HEIGHT + getStatusBarHeight()
 
 const styles = StyleSheet.create({
-  notFloating: {
-    backgroundColor: theme.pallete.accent,
-  },
   menu: {
-    paddingTop: getStatusBarHeight(),
+    paddingTop: 0,
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
@@ -68,7 +65,7 @@ export const HeaderBar = withNavigation(function HeaderBar({
   const isTopLevel = Routes.get().isTopLevel(state.routeName)
 
   return (
-    <View style={[styles.menu, !floating && styles.notFloating]}>
+    <View style={styles.menu}>
       <TouchableOpacity style={styles.button} onPress={goBack}>
         {!noBackButton && (
           <FontAwesome
