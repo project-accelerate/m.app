@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native'
+import { FontAwesome } from '@expo/vector-icons'
 import { NavigationInjectedProps } from 'react-navigation'
 import { Routes } from '../../../routes'
 import { theme } from '../../../theme'
@@ -16,7 +17,6 @@ import { ProfileImage } from '../Widgets/Widgets'
 import { HomeScreen } from '../../twt/Home/HomeScreen'
 import { getStatusBarHeight } from '../platform'
 import Logo from '../../../assets/mlogo.png'
-import Arrow from '../../../assets/Arrow'
 
 const style = StyleSheet.create({
   root: {
@@ -100,7 +100,7 @@ export class Drawer extends React.Component<DrawerProps> {
               this.props.navigation!.closeDrawer()
             }}
           >
-            <Arrow />
+            <FontAwesome name="chevron-left" color={theme.pallete.white} size={26} />
           </TouchableHighlight>
 
           {this.items.map(item => (
