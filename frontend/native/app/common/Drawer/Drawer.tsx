@@ -13,12 +13,12 @@ import { NavigationInjectedProps } from 'react-navigation'
 import { Routes } from '../../../routes'
 import { theme } from '../../../theme'
 import { Typography } from '../Typography/Typography'
-import { ProfileImage } from '../Widgets/Widgets'
 import { HomeScreen } from '../../twt/Home/HomeScreen'
 import { getStatusBarHeight } from '../platform'
-import Logo from '../../../assets/mlogo.png'
 import { createStateConnector } from '../../../state'
 import { registration } from '../../twt/Registration/registrationState'
+import Logo from '../../../assets/Mlogo'
+import { Background } from '../Layouts/Layouts'
 
 const style = StyleSheet.create({
   root: {
@@ -134,7 +134,7 @@ export class Drawer extends React.Component<DrawerProps> {
               onPress={this.navigateToScreen(this.home)}
               style={style.footer}
             >
-              <Image source={Logo} />
+              <Logo fill={theme.pallete.white} width="100" height="20" />
             </TouchableOpacity>
           </View>
         )}

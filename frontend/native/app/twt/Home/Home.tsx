@@ -68,7 +68,7 @@ export function Home({ time, events, onEventPress }: HomeProps) {
             paddingTop: getStatusBarHeight(),
           }}
         >
-          <Image flex={1} resizeMode="contain" source={Logo} />
+          <Logo fill={theme.pallete.white} width="120" height="50" />
         </View>
       }
     >
