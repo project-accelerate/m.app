@@ -55,6 +55,7 @@ export class EventDetailScreen extends React.Component<
   }
 
   handleSpeakerPressed = ({ speaker }: EventDetailSpeakerPressEvent) => {
+    console.log(speaker)
     this.props.navigation.push(
       Routes.get().getRoutename('SpeakerDetailScreen'),
       {
@@ -67,9 +68,7 @@ export class EventDetailScreen extends React.Component<
 
   render() {
     return (
-      <ImageHeaderScreen
-        image={this.props.navigation.getParam('image')}
-      >
+      <ImageHeaderScreen image={this.props.navigation.getParam('image')}>
         <Connect eventId={this.eventId}>
           {({ userId, isSaved, actions }) => (
             <Background solid>

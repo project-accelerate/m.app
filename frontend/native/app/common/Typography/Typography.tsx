@@ -50,7 +50,7 @@ const TypographyVariants = StyleSheet.create({
   primary: {
     fontSize: 15,
     lineHeight: 21,
-    fontFamily: 'open-sans-bold',
+    fontFamily: 'open-sans-light',
   },
   caption: {
     fontSize: 15,
