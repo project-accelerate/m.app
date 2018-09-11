@@ -35,7 +35,7 @@ export class SpeakerDetailScreen extends React.Component<
   static navigationOptions = ({
     navigation,
   }: NavigationScreenProps): NavigationScreenOptions => ({
-    title: navigation.getParam('title'),
+    headerTitle: navigation.getParam('title'),
   })
 
   get speakerID() {

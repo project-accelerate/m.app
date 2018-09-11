@@ -41,7 +41,7 @@ export class EventDetailScreen extends React.Component<
   static navigationOptions = ({
     navigation,
   }: NavigationScreenProps): NavigationScreenOptions => ({
-    title: navigation.getParam('title'),
+    headerTitle: navigation.getParam('title'),
   })
 
   get eventId() {
@@ -67,7 +67,9 @@ export class EventDetailScreen extends React.Component<
 
   render() {
     return (
-      <ImageHeaderScreen image={this.props.navigation.getParam('image')}>
+      <ImageHeaderScreen
+        image={this.props.navigation.getParam('image')}
+      >
         <Connect eventId={this.eventId}>
           {({ userId, isSaved, actions }) => (
             <Background solid>
