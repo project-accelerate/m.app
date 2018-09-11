@@ -300,7 +300,7 @@ export class ParallaxScrollView extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, this.props.containerStyle]}>
         {this.renderScrollView()}
         {this.renderNavbarBackground()}
         {this.renderHeaderBackground()}
@@ -319,6 +319,7 @@ ParallaxScrollView.propTypes = {
   navbarColor: PropTypes.string,
   title: PropTypes.element,
   titleStyle: PropTypes.number,
+  containerStyle: PropTypes.any,
   headerMaxHeight: PropTypes.number,
   headerMinHeight: PropTypes.number,
   scrollEventThrottle: PropTypes.number,

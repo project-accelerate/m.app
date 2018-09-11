@@ -25,6 +25,9 @@ const style = StyleSheet.create({
   logo: {
     marginVertical: theme.spacing.level(5),
   },
+  parallaxContainer: {
+    backgroundColor: theme.pallete.box,
+  },
   container: {
     height: '50%',
     flexDirection: 'column',
@@ -44,6 +47,7 @@ export class HomeScreen extends React.Component {
     return (
       <ImageHeaderScreen
         noBackButton
+        containerStyle={style.parallaxContainer}
         image={twt}
         title={
           <View
