@@ -68,36 +68,33 @@ export const HeaderBar = withNavigation(function HeaderBar({
   const isTopLevel = Routes.get().isTopLevel(state.routeName)
 
   return (
-    <SafeAreaView>
-      <StatusBar />
-      <View style={[styles.menu, !floating && styles.notFloating]}>
-        <TouchableOpacity style={styles.button} onPress={goBack}>
-          {!noBackButton && (
-            <FontAwesome
-              style={styles.buttonIcon}
-              name="chevron-left"
-              color="white"
-              size={26}
-            />
-          )}
-        </TouchableOpacity>
-        <View>
-          {(title && (
-            <Typography variant="screenHeader" darkBg>
-              {title}
-            </Typography>
-          )) ||
-            undefined}
-        </View>
-        <TouchableOpacity style={styles.button} onPress={openDrawer}>
+    <View style={[styles.menu, !floating && styles.notFloating]}>
+      <TouchableOpacity style={styles.button} onPress={goBack}>
+        {!noBackButton && (
           <FontAwesome
             style={styles.buttonIcon}
-            name="bars"
+            name="chevron-left"
             color="white"
             size={26}
           />
-        </TouchableOpacity>
+        )}
+      </TouchableOpacity>
+      <View>
+        {(title && (
+          <Typography variant="screenHeader" darkBg>
+            {title}
+          </Typography>
+        )) ||
+          undefined}
       </View>
-    </SafeAreaView>
+      <TouchableOpacity style={styles.button} onPress={openDrawer}>
+        <FontAwesome
+          style={styles.buttonIcon}
+          name="bars"
+          color="white"
+          size={26}
+        />
+      </TouchableOpacity>
+    </View>
   )
 })
