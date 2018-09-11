@@ -18,7 +18,7 @@ interface HeaderBarProps extends Partial<NavigationInjectedProps> {
   noBackButton?: boolean
 }
 
-export const HEADER_CONTENT_HEIGHT = 40
+export const HEADER_CONTENT_HEIGHT = 48
 export const HEADER_HEIGHT = HEADER_CONTENT_HEIGHT + getStatusBarHeight()
 
 const styles = StyleSheet.create({
