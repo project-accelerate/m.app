@@ -18,8 +18,8 @@ import { ImageHeaderScreen } from '../../common/Screen/ImageHeaderScreen'
 
 export interface SpeakerDetailScreenParams {
   id: string
-  title: string
-  image: string
+  name: string
+  photo: string
 }
 
 const FetchSpeaker = createFetchData<
@@ -35,7 +35,7 @@ export class SpeakerDetailScreen extends React.Component<
   static navigationOptions = ({
     navigation,
   }: NavigationScreenProps): NavigationScreenOptions => ({
-    headerTitle: navigation.getParam('title'),
+    headerTitle: navigation.getParam('name'),
   })
 
   get speakerID() {
@@ -43,7 +43,7 @@ export class SpeakerDetailScreen extends React.Component<
   }
 
   get title() {
-    return this.props.navigation.getParam('title')
+    return this.props.navigation.getParam('name')
   }
 
   get queryVariables(): SpeakerDetailScreenQueryVariables {
@@ -65,7 +65,7 @@ export class SpeakerDetailScreen extends React.Component<
 
   render() {
     return (
-      <ImageHeaderScreen image={this.props.navigation.getParam('image')}>
+      <ImageHeaderScreen image={this.props.navigation.getParam('photo')}>
         <Background solid>
           <FetchSpeaker variables={this.queryVariables}>
             {({ data }) => (
