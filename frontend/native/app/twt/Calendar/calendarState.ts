@@ -1,6 +1,13 @@
 import { omit, sortBy, compact } from 'lodash'
 import { Dispatch } from 'redux'
-import { format, subHours, addSeconds, getHours, getDate } from 'date-fns'
+import {
+  format,
+  subHours,
+  addSeconds,
+  getHours,
+  getDate,
+  subMinutes,
+} from 'date-fns'
 import { Notifications } from 'expo'
 import { theme } from '../../../theme'
 import {
@@ -49,6 +56,7 @@ import { registration } from '../Registration/registrationState'
 
 export namespace calendar {
   export const startHourOfDay = 4
+  const alertMinutesBefore = 30
 
   interface State {
     [eventId: string]: SavedEvent | undefined
@@ -139,7 +147,7 @@ export namespace calendar {
       votes.edges.forEach(({ node: vote }) => {
         dispatch(
           actions.saveEvent({
-            alertMinutesBefore: 30,
+            alertMinutesBefore,
             event: vote,
             recordAttendance: false,
             userId,
@@ -326,5 +334,10 @@ export namespace calendar {
     }
 
     return getDate(lhs) === getDate(rhs)
+  }
+
+  export function canSave(event: { startTime: string }, currentTime: Date) {
+    const alertTime = subMinutes(event.startTime, alertMinutesBefore + 1)
+    return alertTime > currentTime
   }
 }

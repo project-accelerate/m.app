@@ -23,9 +23,10 @@ export const stories = {
   EventDetail: () => (
     <Background solid>
       <EventDetail
+        canSave
         event={eventDetail()}
         onSpeakerPress={event => console.log('press', event)}
-        onToggleFavourited = {() => console.log("Toggle favourited")}
+        onToggleFavourited={() => console.log('Toggle favourited')}
         favourited={false}
       />
     </Background>
