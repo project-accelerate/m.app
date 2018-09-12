@@ -56,7 +56,6 @@ export class EventDetailScreen extends React.Component<
   }
 
   handleSpeakerPressed = ({ speaker }: EventDetailSpeakerPressEvent) => {
-    console.log(speaker)
     this.props.navigation.push(
       Routes.get().getRoutename('SpeakerDetailScreen'),
       {

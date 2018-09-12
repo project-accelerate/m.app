@@ -1,7 +1,6 @@
-import { omit, sortBy, compact } from 'lodash'
+import { omit, sortBy, compact, take } from 'lodash'
 import { Dispatch } from 'redux'
 import {
-  format,
   subHours,
   addSeconds,
   getHours,
@@ -73,6 +72,7 @@ export namespace calendar {
     venueName: string
     startTime: string
     endTime: string
+    imageUrl?: string
   }
 
   type Action =
@@ -85,6 +85,12 @@ export namespace calendar {
 
   export const selectors = {
     allEvents: (state: AppState) => state.calendarEvents || {},
+
+    upcomingEvents: (state: AppState) => {
+      const events = compact(Object.values(selectors.allEvents(state)))
+      return take(sortBy(events, (e: SavedEvent) => e.details.startTime), 3)
+        .map(e => e.details)
+    },
 
     eventsInDay: (state: AppState, props: { day: Date }) => {
       const eventList = compact(Object.values(selectors.allEvents(state)))
@@ -171,6 +177,7 @@ export namespace calendar {
         venueName: event.venue.name,
         startTime: event.startTime,
         endTime: event.endTime,
+        image: event.photo && event.photo.sourceUrl
       }
 
       const selectProps = { eventId: details.id }
