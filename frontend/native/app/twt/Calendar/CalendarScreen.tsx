@@ -40,9 +40,14 @@ export class CalendarScreen extends React.Component<
       this.days.find(day => isSameDay(day, new Date())) || this.days[0],
   }
 
-  handlePress = (id: string) => {
+  handlePress = (event?: calendar.SavedEventDetails) => {
+    if (!event) {
+      return
+    }
     this.props.navigation.push(EventDetailScreen.name, {
-      id,
+      id: event.id,
+      title: event.name,
+      image: event.imageUrl,
     })
   }
 
@@ -60,7 +65,9 @@ export class CalendarScreen extends React.Component<
               activeDay={this.state.selectedDate}
               dayOptions={this.days}
               onDayChanged={this.handleDayChange}
-              onEventPress={this.handlePress}
+              onEventPress={id =>
+                this.handlePress(events.find(e => e.id === id))
+              }
             />
           )}
         </Connect>
