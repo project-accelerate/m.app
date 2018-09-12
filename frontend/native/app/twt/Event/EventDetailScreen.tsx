@@ -16,6 +16,7 @@ import { createParametricStateConnector } from '../../../state'
 import { calendar } from '../Calendar/calendarState'
 import { Routes } from '../../../routes'
 import { ImageHeaderScreen } from '../../common/Screen/ImageHeaderScreen'
+import { TimeProvider } from '../../common/Time/TimeProvider'
 
 export interface EventDetailScreenParams {
   id: string
@@ -77,18 +78,26 @@ export class EventDetailScreen extends React.Component<
             <Background solid>
               <FetchEvent variables={this.queryVariables}>
                 {({ data }) => (
-                  <EventDetail
-                    event={FetchEvent.required(data.event)}
-                    favourited={isSaved}
-                    onSpeakerPress={this.handleSpeakerPressed}
-                    onToggleFavourited={() => {
-                      actions.calendar.toggleEventSaved({
-                        event: FetchEvent.required(data.event),
-                        alertMinutesBefore: 30,
-                        userId,
-                      })
-                    }}
-                  />
+                  <TimeProvider granularity="minutes">
+                    {time => (
+                      <EventDetail
+                        event={FetchEvent.required(data.event)}
+                        favourited={isSaved}
+                        canSave={calendar.canSave(
+                          FetchEvent.required(data.event),
+                          time,
+                        )}
+                        onSpeakerPress={this.handleSpeakerPressed}
+                        onToggleFavourited={() => {
+                          actions.calendar.toggleEventSaved({
+                            event: FetchEvent.required(data.event),
+                            alertMinutesBefore: 30,
+                            userId,
+                          })
+                        }}
+                      />
+                    )}
+                  </TimeProvider>
                 )}
               </FetchEvent>
             </Background>

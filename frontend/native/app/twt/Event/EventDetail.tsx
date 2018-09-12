@@ -16,6 +16,7 @@ import { MapView } from '../../common/MapView/MapView'
 
 interface EventDetailPageProps {
   event: EventDetailFragment
+  canSave: boolean
   onSpeakerPress: (event: EventDetailSpeakerPressEvent) => void
   favourited: boolean
   onToggleFavourited: () => void
@@ -66,6 +67,9 @@ const style = StyleSheet.create({
     borderColor: theme.pallete.accent,
     borderWidth: 1,
   },
+  inset: {
+    marginVertical: theme.spacing.level(2),
+  },
   block: {
     marginHorizontal: theme.spacing.level(1),
   },
@@ -79,6 +83,7 @@ export function EventDetail({
   onSpeakerPress,
   favourited,
   onToggleFavourited,
+  canSave,
 }: EventDetailPageProps) {
   return (
     <ScrollView>
@@ -89,18 +94,20 @@ export function EventDetail({
       </View>
 
       <View style={style.block}>
-        <Columns center>
+        <Columns center style={style.inset}>
           <Typography accent variant="primary">
             {weekdayOf(event.startTime)} {timeOf(event.startTime)}
           </Typography>
 
-          <Button
-            variant="inline"
-            icon={favourited ? 'check' : 'star'}
-            onPress={onToggleFavourited}
-          >
-            {favourited ? 'Saved' : 'Save to Calendar'}
-          </Button>
+          {canSave && (
+            <Button
+              variant="inline"
+              icon={favourited ? 'check' : 'star'}
+              onPress={onToggleFavourited}
+            >
+              {favourited ? 'Saved' : 'Save to Calendar'}
+            </Button>
+          )}
         </Columns>
 
         <Typography variant="primary">{event.introduction}</Typography>
