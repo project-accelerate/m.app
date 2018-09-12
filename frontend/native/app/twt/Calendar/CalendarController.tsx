@@ -58,7 +58,7 @@ export class SavedEventCalendar extends React.Component<
 
         <Rows center>
           <Typography variant="body" accent>
-            {format(this.props.activeDay, 'dddd Mo MMMM')}
+            {format(this.props.activeDay, 'dddd Do MMMM')}
           </Typography>
         </Rows>
 
