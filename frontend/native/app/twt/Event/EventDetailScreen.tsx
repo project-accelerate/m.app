@@ -21,7 +21,7 @@ import { TimeProvider } from '../../common/Time/TimeProvider'
 export interface EventDetailScreenParams {
   id: string
   title: string
-  image: string
+  image?: string
 }
 
 const FetchEvent = createFetchData<

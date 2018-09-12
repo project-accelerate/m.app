@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
   },
   card: {
     padding: theme.spacing.level(2),
+    paddingTop: theme.spacing.level(1),
     borderRadius: 4,
     backgroundColor: theme.pallete.white,
     borderColor: theme.pallete.borderDark,
@@ -21,8 +22,12 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 2, height: 5 },
     marginBottom: theme.spacing.level(2),
   },
-  header: {},
-  subheader: {},
+  header: {
+    marginTop: theme.spacing.level(2),
+  },
+  subheader: {
+    marginTop: theme.spacing.level(2),
+  },
   content: {
     marginTop: theme.spacing.level(1),
   },
