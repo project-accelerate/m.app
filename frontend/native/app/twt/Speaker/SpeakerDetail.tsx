@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
+import { StyleSheet, ScrollView, TouchableOpacity, View } from 'react-native'
 import { ProfileImage, Banner, Grid } from '../../common/Widgets/Widgets'
 import { Typography } from '../../common/Typography/Typography'
 import { SpeakerDetailFragment, EventListItemFragment } from '../../../queries'
@@ -37,13 +37,17 @@ const style = StyleSheet.create({
     backgroundColor: theme.pallete.accent,
   },
   header: {
+    alignItems: 'flex-end',
     marginBottom: theme.spacing.level(2),
-    backgroundColor: theme.pallete.accent,
+    padding: theme.spacing.level(1),
+    borderTopColor: theme.pallete.accent,
+    borderTopWidth: 2,
   },
   content: {
     marginHorizontal: theme.spacing.level(1),
     marginBottom: theme.spacing.level(2),
   },
+  container: {},
   intro: {
     color: theme.pallete.black,
   },
@@ -78,16 +82,21 @@ export function SpeakerDetail({
   onTwitterPress,
 }: SpeakerDetailPageProps) {
   return (
-    <ScrollView>
-      {speaker.twitterHandle && (
-        <Button
-          variant="inline"
-          icon="twitter"
-          onPress={() => onTwitterPress({ handle: speaker.twitterHandle })}
-        >
-          {speaker.twitterHandle}
-        </Button>
-      )}
+    <View style={style.container}>
+      {
+        <View style={style.header}>
+          {speaker.twitterHandle && (
+            <Button
+              variant="inline"
+              icon="twitter"
+              onPress={() => onTwitterPress({ handle: speaker.twitterHandle })}
+            >
+              {speaker.twitterHandle}
+            </Button>
+          )}
+        </View>
+      }
+
       <Typography style={style.content} variant="primary">
         {speaker.bio}
       </Typography>
@@ -103,6 +112,6 @@ export function SpeakerDetail({
           onPress={() => onEventPress({ event: eventFrag })}
         />
       ))}
-    </ScrollView>
+    </View>
   )
 }
