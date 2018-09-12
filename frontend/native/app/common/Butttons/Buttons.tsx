@@ -13,16 +13,17 @@ import { Typography } from '../Typography/Typography'
 import { FontAwesome } from '@expo/vector-icons'
 
 const buttonStyle = StyleSheet.create({
-  header: {},
+  content: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   button: {
     backgroundColor: theme.pallete.accent,
     borderColor: theme.pallete.borderLight,
     borderBottomColor: theme.pallete.borderDark,
     borderWidth: 0.5,
     borderRadius: 4,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   large: {
     paddingVertical: theme.spacing.level(1),
@@ -99,7 +100,7 @@ export function Button({
       ]}
       {...props}
     >
-      <View>
+      <View style={buttonStyle.content}>
         {icon ? (
           <FontAwesome
             name={icon}
