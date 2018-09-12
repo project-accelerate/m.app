@@ -65,7 +65,10 @@ export class SpeakerDetailScreen extends React.Component<
 
   render() {
     return (
-      <ImageHeaderScreen image={this.props.navigation.getParam('photo')}>
+      <ImageHeaderScreen
+        tintHeader
+        image={this.props.navigation.getParam('photo')}
+      >
         <Background solid>
           <FetchSpeaker variables={this.queryVariables}>
             {({ data }) => (
