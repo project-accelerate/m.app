@@ -104,8 +104,8 @@ export function Typography({
       style={[
         style,
         variant && TypographyVariants[variant],
-        darkBg && TypographyStyles.darkBg,
         accent && TypographyStyles.accent,
+        darkBg && TypographyStyles.darkBg,
         center && TypographyStyles.center,
       ]}
     >

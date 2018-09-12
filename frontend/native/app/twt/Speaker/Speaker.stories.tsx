@@ -8,32 +8,50 @@ import {
 } from '../../../queries'
 import { Background } from '../../common/Layouts/Layouts'
 import { SpeakerDetail } from './SpeakerDetail'
+import { ImageHeaderScreen } from '../../common/Screen/ImageHeaderScreen'
 
 export const stories = {
-  SpeakerDetail: ()=> (
-    <Background solid>
-     <SpeakerDetail
-      speaker={speakerDetail()}
-      events= {times(4, createEvent)}
-      onEventPress ={(x)=>console.log("Event Pressed: " + x.event.name)}
-      onTwitterPress = {(x)=>console.log("Twitter Handle Pressed: " + x.handle)}
-    />
-  </Background>
-  )
+  SpeakerDetail: () => (
+    <ImageHeaderScreen image={require('../Home/TWTa_hdr.jpg')} tintHeader>
+      <Background solid>
+        <SpeakerDetail
+          speaker={speakerDetail()}
+          events={times(4, createEvent)}
+          onEventPress={x => console.log('Event Pressed: ' + x.event.name)}
+          onTwitterPress={x =>
+            console.log('Twitter Handle Pressed: ' + x.handle)
+          }
+        />
+      </Background>
+    </ImageHeaderScreen>
+  ),
+  'SpeakerDetail (no twitter)': () => (
+    <ImageHeaderScreen image={require('../Home/TWTa_hdr.jpg')} tintHeader>
+      <Background solid>
+        <SpeakerDetail
+          speaker={{ ...speakerDetail(), twitterHandle: null }}
+          events={times(4, createEvent)}
+          onEventPress={x => console.log('Event Pressed: ' + x.event.name)}
+          onTwitterPress={x =>
+            console.log('Twitter Handle Pressed: ' + x.handle)
+          }
+        />
+      </Background>
+    </ImageHeaderScreen>
+  ),
 }
 
-function speakerDetail() : SpeakerDetailFragment {
+function speakerDetail(): SpeakerDetailFragment {
   return {
     id: faker.random.uuid(),
     name: faker.name.findName(),
     bio: faker.lorem.lines(3),
     photo: null,
-    twitterHandle: '@mrtestguy'
+    twitterHandle: '@mrtestguy',
   }
 }
 
-function createEvent():EventListItemFragment
-{
+function createEvent(): EventListItemFragment {
   return {
     id: faker.random.uuid(),
     name: faker.lorem.words(2),
@@ -45,6 +63,5 @@ function createEvent():EventListItemFragment
     startTime: '2018-09-29T20:00:00.000Z',
     endTime: '2018-09-30T03:00:00.000Z',
     photo: require('../../../test/novaraLogo.png'),
-    
   }
 }

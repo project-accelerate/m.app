@@ -25,7 +25,7 @@ interface ImageHeaderScreenProps extends React.Props<{}> {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: theme.pallete.accent,
+    backgroundColor: theme.pallete.white,
   },
   screen: {
     width: '100%',

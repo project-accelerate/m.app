@@ -34,7 +34,7 @@ const buttonStyle = StyleSheet.create({
     paddingHorizontal: theme.spacing.level(2),
   },
   inline: {
-    padding: theme.spacing.level(2),
+    padding: 0,
     backgroundColor: theme.pallete.transparent,
     borderWidth: 0,
     opacity: 1,
@@ -51,6 +51,8 @@ const buttonStyle = StyleSheet.create({
     opacity: 0.5,
   },
   icon: {
+    position: 'relative',
+    top: 1,
     marginRight: theme.spacing.level(1),
   },
 })
@@ -76,6 +78,7 @@ export function ButtonGrid({ children, ...props }: ButtonGridProps) {
 interface ButtonProps extends TouchableHighlightProps {
   children?: React.ReactNode
   variant?: 'large' | 'small' | 'inline'
+  darkBg?: boolean
   icon?: string
 }
 
@@ -85,6 +88,7 @@ export function Button({
   variant = 'large',
   disabled,
   icon,
+  darkBg,
   ...props
 }: ButtonProps) {
   const inline = variant === 'inline'
@@ -106,12 +110,19 @@ export function Button({
             name={icon}
             style={buttonStyle.icon}
             size={variant === 'large' ? 24 : 18}
-            color={inline ? theme.pallete.accent : theme.pallete.white}
+            color={
+              inline && !darkBg ? theme.pallete.accent : theme.pallete.white
+            }
           />
         ) : (
           undefined
         )}
-        <Typography variant="action" darkBg={!inline} accent={inline} center>
+        <Typography
+          variant="action"
+          darkBg={!inline || darkBg}
+          accent={inline}
+          center
+        >
           {children}
         </Typography>
       </View>
