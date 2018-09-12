@@ -6,6 +6,7 @@ import {
   Dimensions,
   ViewStyle,
   StyleProp,
+  Animated,
 } from 'react-native'
 import { ErrorGuard } from '../ErrorView/ErrorGuard'
 import { NotificationListener } from '../Notification/NotificationListener'
@@ -19,6 +20,7 @@ interface ImageHeaderScreenProps extends React.Props<{}> {
   image?: ImageSourcePropType | string
   title?: React.ReactNode
   containerStyle?: StyleProp<ViewStyle>
+  tintHeader?: boolean
 }
 
 const styles = StyleSheet.create({
@@ -29,6 +31,14 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     position: 'relative',
+  },
+  tint: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: '100%',
+    height: HEADER_HEIGHT,
+    backgroundColor: theme.pallete.imageOverlay,
   },
   content: {
     flexGrow: 1,
@@ -42,6 +52,7 @@ export function ImageHeaderScreen({
   image,
   title,
   containerStyle,
+  tintHeader,
 }: ImageHeaderScreenProps) {
   if (!image) {
     return <BasicScreen noBackButton={noBackButton}>{children}</BasicScreen>
@@ -63,6 +74,12 @@ export function ImageHeaderScreen({
           renderNavBar={() => (
             <HeaderBar floating noBackButton={noBackButton} />
           )}
+          renderTint={
+            tintHeader &&
+            ((opacity: any) => (
+              <Animated.View style={[{ opacity }, styles.tint]} />
+            ))
+          }
           renderContent={() => children}
         />
       </View>

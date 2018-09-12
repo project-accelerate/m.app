@@ -196,6 +196,7 @@ export class ParallaxScrollView extends Component {
           },
         ]}
       >
+        {this.props.renderTint && this.props.renderTint(this.getImageOpacity())}
         {renderNavBar()}
       </Animated.View>
     )

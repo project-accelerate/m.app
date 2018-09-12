@@ -68,7 +68,10 @@ export class EventDetailScreen extends React.Component<
 
   render() {
     return (
-      <ImageHeaderScreen image={this.props.navigation.getParam('image')}>
+      <ImageHeaderScreen
+        tintHeader
+        image={this.props.navigation.getParam('image')}
+      >
         <Connect eventId={this.eventId}>
           {({ userId, isSaved, actions }) => (
             <Background solid>
