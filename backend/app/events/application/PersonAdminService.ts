@@ -26,10 +26,8 @@ export class PersonAdminService {
     )
 
     return this.personRepository.insert({
-      name: props.name,
-      bio: props.bio,
-      twitterHandle: props.twitterHandle,
       photo: photoId,
+      ...props,
     })
   }
 
