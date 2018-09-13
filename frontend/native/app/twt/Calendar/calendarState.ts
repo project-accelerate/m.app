@@ -1,6 +1,13 @@
 import { omit, sortBy, compact, take } from 'lodash'
 import { Dispatch } from 'redux'
-import { subHours, addSeconds, getHours, getDate, subMinutes } from 'date-fns'
+import {
+  subHours,
+  addSeconds,
+  getHours,
+  getDate,
+  subMinutes,
+  isBefore,
+} from 'date-fns'
 import { Notifications } from 'expo'
 import { theme } from '../../../theme'
 import {
@@ -80,8 +87,11 @@ export namespace calendar {
   export const selectors = {
     allEvents: (state: AppState) => state.calendarEvents || {},
 
-    upcomingEvents: (state: AppState) => {
-      const events = compact(Object.values(selectors.allEvents(state)))
+    upcomingEvents: (state: AppState, props: { now: Date }) => {
+      const events = compact(Object.values(selectors.allEvents(state))).filter(
+        e => isBefore(props.now, e.details.endTime),
+      )
+
       return take(
         sortBy(events, (e: SavedEvent) => e.details.startTime),
         3,
