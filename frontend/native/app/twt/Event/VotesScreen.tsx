@@ -23,6 +23,7 @@ import { longDateOf } from '../../common/date-formats'
 import { startOfDay } from 'date-fns'
 import { ConnectionList } from '../../common/ConnectionList/ConnectionList'
 import { theme } from '../../../theme'
+import { EventDetailScreen } from './EventDetailScreen'
 
 const FetchEvents = createFetchData<VotesScreenQuery, {}>({
   query: VotesScreenQueryDocument,
@@ -40,7 +41,7 @@ export class VotesScreen extends React.Component<NavigationScreenProps> {
   }
 
   handleEventPressed = ({ event }: EventListItemPressedEvent) => {
-    this.props.navigation.push(Routes.get().getRoutename('EventDetailScreen'), {
+    Routes.get().push(this.props.navigation, EventDetailScreen, {
       id: event.id,
       title: event.name,
     })

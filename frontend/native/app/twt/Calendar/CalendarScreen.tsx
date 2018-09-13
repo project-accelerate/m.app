@@ -9,6 +9,7 @@ import { createParametricStateConnector } from '../../../state'
 import { calendar } from './calendarState'
 import { EventDetailScreen } from '../Event/EventDetailScreen'
 import { BasicScreen } from '../../common/Screen/BasicScreen'
+import { Routes } from '../../../routes'
 
 interface CalendarScreenState {
   selectedDate: Date
@@ -44,7 +45,7 @@ export class CalendarScreen extends React.Component<
     if (!event) {
       return
     }
-    this.props.navigation.push(EventDetailScreen.name, {
+    Routes.get().push(this.props.navigation, EventDetailScreen, {
       id: event.id,
       title: event.name,
       image: event.imageUrl,
