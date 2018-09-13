@@ -15,11 +15,12 @@ import { EventListItemPressedEvent } from '../Event/EventListItem'
 import { Routes } from '../../../routes'
 import { Linking } from 'react-native'
 import { ImageHeaderScreen } from '../../common/Screen/ImageHeaderScreen'
+import { EventDetailScreen } from '../Event/EventDetailScreen'
 
 export interface SpeakerDetailScreenParams {
   id: string
   name: string
-  photo: string
+  photo?: string
 }
 
 const FetchSpeaker = createFetchData<
@@ -53,7 +54,7 @@ export class SpeakerDetailScreen extends React.Component<
   }
 
   handleEventPressed = ({ event }: EventListItemPressedEvent) => {
-    this.props.navigation.push(Routes.get().getRoutename('EventDetailScreen'), {
+    Routes.get().push(this.props.navigation, EventDetailScreen, {
       id: event.id,
       title: event.name,
     })

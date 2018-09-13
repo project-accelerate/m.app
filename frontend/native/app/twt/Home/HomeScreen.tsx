@@ -30,6 +30,7 @@ import { format, isSameDay } from 'date-fns'
 import { TimeProvider } from '../../common/Time/TimeProvider'
 import { Routes } from '../../../routes'
 import { Home } from './Home'
+import { EventDetailScreen } from '../Event/EventDetailScreen'
 
 const style = StyleSheet.create({
   logo: {
@@ -58,7 +59,7 @@ export class HomeScreen extends React.Component<NavigationInjectedProps> {
   static navigationOptions: NavigationScreenOptions = {}
 
   handleEventPress = (e: calendar.SavedEventDetails) => {
-    this.props.navigation.push(new Routes().getRoutename('EventDetailScreen'), {
+    Routes.get().push(this.props.navigation, EventDetailScreen, {
       id: e.id,
       title: e.name,
       image: e.imageUrl,

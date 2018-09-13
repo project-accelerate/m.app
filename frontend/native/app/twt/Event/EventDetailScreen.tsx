@@ -17,6 +17,7 @@ import { calendar } from '../Calendar/calendarState'
 import { Routes } from '../../../routes'
 import { ImageHeaderScreen } from '../../common/Screen/ImageHeaderScreen'
 import { TimeProvider } from '../../common/Time/TimeProvider'
+import { SpeakerDetailScreen } from '../Speaker/SpeakerDetailScreen'
 
 export interface EventDetailScreenParams {
   id: string
@@ -56,14 +57,11 @@ export class EventDetailScreen extends React.Component<
   }
 
   handleSpeakerPressed = ({ speaker }: EventDetailSpeakerPressEvent) => {
-    this.props.navigation.push(
-      Routes.get().getRoutename('SpeakerDetailScreen'),
-      {
-        id: speaker.id,
-        name: speaker.name,
-        photo: speaker.photo && speaker.photo.sourceUrl,
-      },
-    )
+    Routes.get().push(this.props.navigation, SpeakerDetailScreen, {
+      id: speaker.id,
+      name: speaker.name,
+      photo: (speaker.photo && speaker.photo.sourceUrl) || undefined,
+    })
   }
 
   render() {
