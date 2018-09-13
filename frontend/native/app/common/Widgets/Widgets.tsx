@@ -246,6 +246,7 @@ export function Spacing(props: { level?: number }) {
 interface GridProps {
   style?: StyleProp<ViewStyle>
   center?: boolean
+  flex?: boolean
   children?: React.ReactNode
 }
 
@@ -260,19 +261,36 @@ const gridStyles = StyleSheet.create({
   center: {
     alignItems: 'center',
   },
+  flex: {
+    flex: 1,
+  },
 })
 
-export function Rows({ style, center, children }: GridProps) {
+export function Rows({ style, flex, center, children }: GridProps) {
   return (
-    <View style={[style, center && gridStyles.center, gridStyles.rows]}>
+    <View
+      style={[
+        style,
+        center && gridStyles.center,
+        gridStyles.rows,
+        flex && gridStyles.flex,
+      ]}
+    >
       {children}
     </View>
   )
 }
 
-export function Columns({ style, center, children }: GridProps) {
+export function Columns({ style, center, children, flex }: GridProps) {
   return (
-    <View style={[style, center && gridStyles.center, gridStyles.columns]}>
+    <View
+      style={[
+        style,
+        center && gridStyles.center,
+        gridStyles.columns,
+        flex && gridStyles.flex,
+      ]}
+    >
       {children}
     </View>
   )

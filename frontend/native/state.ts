@@ -11,7 +11,7 @@ import { calendar } from './app/twt/Calendar/calendarState'
 import { ThunkDispatch } from 'redux-thunk'
 
 /** Bump this number to invalidate the persisted state */
-export const CLIENT_STATE_VERSION = '1'
+export const CLIENT_STATE_VERSION = '2'
 
 /** Object containing all action creators in the app */
 export const AppActions = {

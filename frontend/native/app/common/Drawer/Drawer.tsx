@@ -17,6 +17,8 @@ import { ProfileImage } from '../Widgets/Widgets'
 import { HomeScreen } from '../../twt/Home/HomeScreen'
 import { getStatusBarHeight } from '../platform'
 import Logo from '../../../assets/mlogo.png'
+import { createStateConnector } from '../../../state'
+import { registration } from '../../twt/Registration/registrationState'
 
 const style = StyleSheet.create({
   root: {
@@ -62,6 +64,10 @@ interface Scene {
   tintColor: string
 }
 
+const Connect = createStateConnector(() => ({
+  isDelegate: registration.selectors.isDelegate,
+}))
+
 export class Drawer extends React.Component<DrawerProps> {
   get items() {
     return this.props.items.filter(
@@ -89,40 +95,52 @@ export class Drawer extends React.Component<DrawerProps> {
 
   render() {
     return (
-      <View style={style.root}>
-        <View style={style.header} />
-        <ScrollView style={style.items}>
-          <TouchableHighlight
-            key="<"
-            underlayColor={theme.pallete.white}
-            style={style.item}
-            onPress={() => {
-              this.props.navigation!.closeDrawer()
-            }}
-          >
-            <FontAwesome name="chevron-left" color={theme.pallete.white} size={26} />
-          </TouchableHighlight>
+      <Connect>
+        {({ isDelegate }) => (
+          <View style={style.root}>
+            <View style={style.header} />
+            <ScrollView style={style.items}>
+              <TouchableHighlight
+                key="<"
+                underlayColor={theme.pallete.white}
+                style={style.item}
+                onPress={() => {
+                  this.props.navigation!.closeDrawer()
+                }}
+              >
+                <FontAwesome
+                  name="chevron-left"
+                  color={theme.pallete.white}
+                  size={26}
+                />
+              </TouchableHighlight>
 
-          {this.items.map(item => (
-            <TouchableHighlight
-              key={item.routeName}
-              underlayColor={theme.pallete.white}
-              style={style.item}
-              onPress={this.navigateToScreen(item)}
+              {this.items.map(
+                item =>
+                  (isDelegate ||
+                    !this.getNavigationOptions(item).delegateOnly) && (
+                    <TouchableHighlight
+                      key={item.routeName}
+                      underlayColor={theme.pallete.white}
+                      style={style.item}
+                      onPress={this.navigateToScreen(item)}
+                    >
+                      <Typography darkBg variant="screenHeader">
+                        {this.getNavigationOptions(item).drawerLabel}
+                      </Typography>
+                    </TouchableHighlight>
+                  ),
+              )}
+            </ScrollView>
+            <TouchableOpacity
+              onPress={this.navigateToScreen(this.home)}
+              style={style.footer}
             >
-              <Typography darkBg variant="screenHeader">
-                {this.getNavigationOptions(item).drawerLabel}
-              </Typography>
-            </TouchableHighlight>
-          ))}
-        </ScrollView>
-        <TouchableOpacity
-          onPress={this.navigateToScreen(this.home)}
-          style={style.footer}
-        >
-          <Image source={Logo} />
-        </TouchableOpacity>
-      </View>
+              <Image source={Logo} />
+            </TouchableOpacity>
+          </View>
+        )}
+      </Connect>
     )
   }
 }
