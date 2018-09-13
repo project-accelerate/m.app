@@ -42,7 +42,12 @@ export function createFetchData<Data, Params>({ query }: FetchDataOpts) {
     render() {
       const { variables, children } = this.props
       return (
-        <Query key={this.state.retry} query={query} variables={variables}>
+        <Query
+          fetchPolicy="cache-and-network"
+          key={this.state.retry}
+          query={query}
+          variables={variables}
+        >
           {({ data, loading, client, error }) => {
             if (error) {
               return (
@@ -53,7 +58,7 @@ export function createFetchData<Data, Params>({ query }: FetchDataOpts) {
                 />
               )
             }
-            if (!data || loading) {
+            if (!data || Object.keys(data).length === 0) {
               return <LoadingOverlay />
             }
 
