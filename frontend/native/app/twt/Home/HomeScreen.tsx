@@ -23,7 +23,10 @@ import {
   HEADER_CONTENT_HEIGHT,
 } from '../../common/Screen/HeaderBar'
 import { getStatusBarHeight } from '../../common/platform'
-import { createStateConnector } from '../../../state'
+import {
+  createStateConnector,
+  createParametricStateConnector,
+} from '../../../state'
 import { calendar } from '../Calendar/calendarState'
 import { Touchable } from '../../common/Widgets/Widgets'
 import { format, isSameDay } from 'date-fns'
@@ -51,7 +54,7 @@ const style = StyleSheet.create({
   },
 })
 
-const Connect = createStateConnector(() => ({
+const Connect = createParametricStateConnector<{ now: Date }>()(() => ({
   events: calendar.selectors.upcomingEvents,
 }))
 
@@ -68,19 +71,19 @@ export class HomeScreen extends React.Component<NavigationInjectedProps> {
 
   render() {
     return (
-      <Connect>
-        {({ events }) => (
-          <TimeProvider granularity="minutes">
-            {time => (
+      <TimeProvider granularity="minutes">
+        {time => (
+          <Connect now={time}>
+            {({ events }) => (
               <Home
                 events={events}
                 time={time}
                 onEventPress={this.handleEventPress}
               />
             )}
-          </TimeProvider>
+          </Connect>
         )}
-      </Connect>
+      </TimeProvider>
     )
   }
 }
