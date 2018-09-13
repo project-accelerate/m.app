@@ -3,14 +3,13 @@ import { StyleSheet, Animated, View, ViewStyle, StyleProp } from 'react-native'
 import { LayoutEvent } from 'react-navigation'
 
 interface TransitionerProps {
-  initialContent: React.ReactNode
+  initialContent: JSX.Element
   style?: StyleProp<ViewStyle>
 }
 
 interface TransitionerState {
-  current?: React.ReactNode
-  next?: React.ReactNode
-  activeTransition?: Transition
+  children: JSX.Element[]
+  indexState: Record<number, 'active' | 'in' | 'out' | undefined>
 }
 
 const style = StyleSheet.create({
@@ -37,30 +36,32 @@ interface TransitionContext {
     width: number
     height: number
   }
-  onCompleted: () => void
 }
 
 abstract class Transition {
   constructor(protected context: TransitionContext) {}
 
-  transitionDidStart() {}
+  abstract enter(): Animated.CompositeAnimation
+  abstract exit(): Animated.CompositeAnimation
 
   abstract getTransitionOutStyle(): StyleProp<ViewStyle>
   abstract getTransitionInStyle(): StyleProp<ViewStyle>
 }
 
 export class SlideRightToLeft extends Transition {
-  transformIn = new Animated.Value(this.context.layout.width)
+  transformIn = new Animated.Value(0)
   transformOut = new Animated.Value(0)
 
-  transitionDidStart() {
-    Animated.spring(this.transformIn, {
-      toValue: 0,
-    }).start(this.context.onCompleted)
-
-    Animated.spring(this.transformOut, {
+  enter() {
+    return Animated.spring(this.transformIn, {
       toValue: -this.context.layout.width,
-    }).start()
+    })
+  }
+
+  exit() {
+    return Animated.spring(this.transformOut, {
+      toValue: -this.context.layout.width,
+    })
   }
 
   getTransitionOutStyle() {
@@ -71,7 +72,10 @@ export class SlideRightToLeft extends Transition {
 
   getTransitionInStyle() {
     return {
-      transform: [{ translateX: this.transformIn as any }],
+      transform: [
+        { translateX: this.context.layout.width },
+        { translateX: this.transformIn as any },
+      ],
     }
   }
 }
@@ -91,7 +95,7 @@ export function createTransition(
       return <Transitioner {...props} />
     }
 
-    static transitionTo(el: React.ReactNode) {
+    static transitionTo(el: JSX.Element) {
       if (!instance) {
         throw Error('Cannot transition before render')
       }
@@ -100,8 +104,14 @@ export function createTransition(
     }
 
     state: TransitionerState = {
-      current: this.props.initialContent,
+      children: [this.props.initialContent],
+      indexState: {
+        0: 'active',
+      },
     }
+
+    transitions: Transition[] = []
+
     layout!: {
       x: number
       y: number
@@ -109,36 +119,53 @@ export function createTransition(
       height: number
     }
 
-    queue: React.ReactNode[] = []
-
     componentDidMount() {
       instance = this
     }
 
-    transitionTo(
-      el: React.ReactNode,
-      kind: TransitionKind = defaultTransition,
-    ) {
+    transitionTo(el: JSX.Element, kind: TransitionKind = defaultTransition) {
+      console.log('push')
       return new Promise(resolve => {
-        const context = {
-          layout: this.layout,
-          onCompleted: () => {
-            this.setState(
-              {
-                current: this.state.next,
-                next: undefined,
-                activeTransition: undefined,
-              },
-              resolve,
-            )
-          },
-        }
+        const incomingIndex = this.state.children.length
+        const outgoingIndex = incomingIndex - 1
 
-        this.setState({ next: el, activeTransition: new kind(context) }, () => {
-          if (this.state.activeTransition) {
-            this.state.activeTransition!.transitionDidStart()
-          }
-        })
+        const incomingTransition = new kind({ layout: this.layout })
+        const outgoingTransition = new kind({ layout: this.layout })
+
+        this.transitions[incomingIndex] = incomingTransition
+        this.transitions[outgoingIndex] = outgoingTransition
+
+        this.setState(
+          {
+            children: [...this.state.children, el],
+            indexState: {
+              ...this.state.indexState,
+              [incomingIndex]: 'in',
+              [outgoingIndex]: 'out',
+            },
+          },
+          () => {
+            if (outgoingTransition) {
+              outgoingTransition.exit().start(() => {
+                this.setState({
+                  indexState: {
+                    ...this.state.indexState,
+                    [outgoingIndex]: undefined,
+                  },
+                })
+              })
+            }
+
+            incomingTransition.enter().start(() => {
+              this.setState({
+                indexState: {
+                  ...this.state.indexState,
+                  [incomingIndex]: 'active',
+                },
+              })
+            })
+          },
+        )
       })
     }
 
@@ -146,45 +173,35 @@ export function createTransition(
       this.layout = event.nativeEvent.layout
     }
 
+    getActiveStyle(i: number) {
+      const transition = this.transitions[i]
+      const state = this.state.indexState[i]
+
+      if (state === 'in') {
+        return transition.getTransitionInStyle()
+      }
+
+      if (state === 'out') {
+        return transition.getTransitionOutStyle()
+      }
+
+      return undefined
+    }
+
     render() {
-      const { activeTransition, current, next } = this.state
-      const containerProps = {
-        style: style.container,
-        onLayout: this.handleLayout,
-      }
-
-      if (!activeTransition) {
-        return (
-          <View {...containerProps}>
-            <Animated.View style={style.item}>{current}</Animated.View>
-          </View>
-        )
-      }
-
+      console.log(this.state.indexState)
       return (
-        <View {...containerProps}>
-          {current && (
-            <Animated.View
-              style={[
-                style.item,
-                this.props.style,
-                activeTransition && activeTransition.getTransitionOutStyle(),
-              ]}
-            >
-              {current}
-            </Animated.View>
-          )}
-          {next && (
-            <Animated.View
-              style={[
-                style.item,
-                this.props.style,
-                activeTransition && activeTransition.getTransitionInStyle(),
-              ]}
-            >
-              {next}
-            </Animated.View>
-          )}
+        <View style={style.container} onLayout={this.handleLayout}>
+          {this.state.children
+            .map((el, i) => (
+              <Animated.View
+                key={i}
+                style={[style.item, this.props.style, this.getActiveStyle(i)]}
+              >
+                {el}
+              </Animated.View>
+            ))
+            .filter((el, i) => typeof this.state.indexState[i] !== 'undefined')}
         </View>
       )
     }
