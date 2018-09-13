@@ -18,6 +18,7 @@ export namespace registration {
   export interface State {
     userId: string
     deviceId: string
+    isDelegate: boolean
   }
 
   type Action = { type: 'DeviceRegistration.succeeded'; registration: State }
@@ -47,6 +48,7 @@ export namespace registration {
         registration: {
           deviceId: registration.device.id,
           userId: registration.user.id,
+          isDelegate: props.isConferenceDelegate,
         },
       })
     },
@@ -78,6 +80,9 @@ export namespace registration {
     },
     userId: (state: AppState) => {
       return selectors.registration(state).userId
+    },
+    isDelegate: (state: AppState) => {
+      return selectors.registration(state).isDelegate
     },
   }
 

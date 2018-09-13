@@ -18,7 +18,6 @@ const LayoutStyles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: theme.pallete.white,
-    minHeight: Dimensions.get('screen').height,
   },
   bgImage: {
     opacity: 0.3,

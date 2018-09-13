@@ -11,6 +11,7 @@ import { SpeakerDetailScreen } from './app/twt/Speaker/SpeakerDetailScreen'
 import { CalendarScreen } from './app/twt/Calendar/CalendarScreen'
 import { theme } from './theme'
 import { DevPanel } from './devtool/DevPanel'
+import { VotesScreen } from './app/twt/Event/VotesScreen'
 
 export interface RouteComponent extends React.ComponentClass<any> {
   navigationOptions:
@@ -35,7 +36,7 @@ export class Routes {
   getNavigationOptions(
     component: RouteComponent | undefined,
     navigation: NavigationScreenProp<{}>,
-  ) {
+  ): NavigationScreenOptions & { delegateOnly?: boolean } {
     if (!component) {
       return {}
     }
@@ -53,6 +54,7 @@ export class Routes {
     HomeScreen: this.createRootNavigator(HomeScreen),
     TimetableScreen: this.createRootNavigator(TimetableScreen),
     CalendarScreen: this.createRootNavigator(CalendarScreen),
+    VotesScreen: this.createRootNavigator(VotesScreen),
     ...this.devOnlyRoutes,
   }
 
