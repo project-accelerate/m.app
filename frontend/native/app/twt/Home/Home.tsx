@@ -73,22 +73,24 @@ export function Home({ time, events, onEventPress }: HomeProps) {
       }
     >
       <CardContainer>
-        <View>
-          <CardGroupHeader>Upcoming</CardGroupHeader>
-          {events.map(e => (
-            <TouchableOpacity key={e.id} onPress={() => onEventPress(e)}>
-              <Card>
-                <CardSubheader>
-                  {isSameDay(time, e.startTime)
-                    ? 'Today'
-                    : format(e.startTime, 'ddd')}{' '}
-                  {format(e.startTime, 'HH:MM')}
-                </CardSubheader>
-                <CardHeader>{e.name}</CardHeader>
-              </Card>
-            </TouchableOpacity>
-          ))}
-        </View>
+        {events.length > 0 && (
+          <View>
+            <CardGroupHeader>Upcoming</CardGroupHeader>
+            {events.map(e => (
+              <TouchableOpacity key={e.id} onPress={() => onEventPress(e)}>
+                <Card>
+                  <CardSubheader>
+                    {isSameDay(time, e.startTime)
+                      ? 'Today'
+                      : format(e.startTime, 'ddd')}{' '}
+                    {format(e.startTime, 'HH:MM')}
+                  </CardSubheader>
+                  <CardHeader>{e.name}</CardHeader>
+                </Card>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
         <CardGroupHeader>News</CardGroupHeader>
         {times(10, i => (
           <Card key={i}>
