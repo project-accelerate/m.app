@@ -10,21 +10,38 @@ import { longDateOf } from '../../common/date-formats'
 import { calendar } from '../Calendar/calendarState'
 import { Toolbar, ToolbarRadio } from '../../common/Widgets/Widgets'
 import { View } from 'react-native'
-import { TimeBlock } from './TimetableScreen'
+import { TimeBlock, EventType,  } from './TimetableScreen'
 
 export interface EventListProps {
   activeDay: Date
+  activeType: EventType
   onEventPress: (event: EventListItemPressedEvent) => void
   data: Connection<EventListItemFragment>
   dayOptions: Date[]
+  eventTypeOptions: EventType[]
   onDayChanged: (day: Date) => void
+  onTypeChanged: (eventType : EventType) => void
+  checkEventType: (activeType:string, eventType:string)=> boolean
   sectionBy: (startTime: string) => TimeBlock
 }
+
+
 
 export class DayEventList extends React.Component<EventListProps> {
   render() {
     return (
       <View>
+        <Toolbar>
+          {this.props.eventTypeOptions.map(eventType => (
+            <ToolbarRadio
+              active={this.props.activeType.enumKey == eventType.enumKey}
+              key={eventType.enumKey}
+              onPress={() => this.props.onTypeChanged(eventType)}
+            >
+              {eventType.readable}
+            </ToolbarRadio>
+          ))}
+        </Toolbar>
         <Toolbar>
           {this.props.dayOptions.map(day => (
             <ToolbarRadio
@@ -42,7 +59,7 @@ export class DayEventList extends React.Component<EventListProps> {
             calendar.isSameCalendarDay(
               event.startTime,
               this.props.activeDay,
-            ) ? (
+            )  && this.props.checkEventType(this.props.activeType.enumKey,event.family.toString()) ? (
               <EventListItem onPress={this.props.onEventPress} event={event} />
             ) : null
           }
@@ -52,4 +69,6 @@ export class DayEventList extends React.Component<EventListProps> {
       </View>
     )
   }
+
+
 }

@@ -16,8 +16,15 @@ import { isSameDay, getHours } from 'date-fns'
 import { Toolbar, ToolbarRadio } from '../../common/Widgets/Widgets'
 import { calendar } from '../Calendar/calendarState'
 
+
 interface TimetableScreenState {
   selectedDate: Date
+  selectedType : EventType
+}
+
+export interface EventType {
+  enumKey: string,
+  readable:string,
 }
 
 export interface TimeBlock {
@@ -34,6 +41,7 @@ const Connect = createStateConnector(() => ({
   userId: registration.selectors.userId,
 }))
 
+
 export class TimetableScreen extends React.Component<NavigationScreenProps> {
   static navigationOptions: NavigationScreenOptions = {
     headerTitle: 'Programme',
@@ -47,6 +55,24 @@ export class TimetableScreen extends React.Component<NavigationScreenProps> {
     new Date('2018-09-24'),
     new Date('2018-09-25'),
   ]
+  
+  eventTypes : EventType[] = [
+    {enumKey:"All",readable: 'All'},
+    {enumKey:"TWT_2018",readable : 'TWT'},
+    {enumKey:"LABOUR_2018",readable: 'LPC'},
+  ]
+
+ checkEventType = (activeType: string,eventType: string) : boolean => {
+  console.log("Type:" + activeType)
+  if (activeType == "All")
+  {
+    return true
+  }
+  else
+  {
+    return activeType == eventType
+  }
+ }
 
   getTimeBlock = (startTime: string) => {
     for (var i = 0; i < this.timeBlocks.length; i++) {
@@ -82,6 +108,8 @@ export class TimetableScreen extends React.Component<NavigationScreenProps> {
   state: TimetableScreenState = {
     selectedDate:
       this.days.find(day => isSameDay(day, new Date())) || this.days[0],
+    selectedType: this.eventTypes[0],
+
   }
 
   handleEventPressed = ({ event }: EventListItemPressedEvent) => {
@@ -96,6 +124,10 @@ export class TimetableScreen extends React.Component<NavigationScreenProps> {
     this.setState({ selectedDate })
   }
 
+  handleTypeChange = (selectedType: EventType) => {
+    this.setState({selectedType})
+  }
+
   render() {
     return (
       <BasicScreen>
@@ -108,8 +140,12 @@ export class TimetableScreen extends React.Component<NavigationScreenProps> {
                   data={data.user.events}
                   onEventPress={this.handleEventPressed}
                   dayOptions={this.days}
+                  eventTypeOptions = {this.eventTypes}
+                  onTypeChanged ={this.handleTypeChange}
                   onDayChanged={this.handleDayChange}
                   sectionBy={this.getTimeBlock}
+                  activeType={this.state.selectedType}
+                  checkEventType={this.checkEventType}
                 />
               )}
             </FetchEvents>
