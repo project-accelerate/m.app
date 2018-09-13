@@ -1,5 +1,11 @@
 import * as React from 'react'
-import { StyleSheet, Image, View, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  Image,
+  View,
+  TouchableOpacity,
+  Platform,
+} from 'react-native'
 import * as faker from 'faker'
 import {
   NavigationScreenOptions,
@@ -7,7 +13,6 @@ import {
 } from 'react-navigation'
 import twt from './TWTa_hdr.jpg'
 import { theme } from '../../../theme'
-import Logo from '../../../assets/mlogo.png'
 import { ImageHeaderScreen } from '../../common/Screen/ImageHeaderScreen'
 import {
   Card,
@@ -27,13 +32,9 @@ import { createStateConnector } from '../../../state'
 import { calendar } from '../Calendar/calendarState'
 import { Touchable } from '../../common/Widgets/Widgets'
 import { format, isSameDay } from 'date-fns'
-import { TimeProvider } from '../../common/Time/TimeProvider'
-import { Routes } from '../../../routes'
+import Logo from '../../../assets/Mlogo'
 
 const style = StyleSheet.create({
-  logo: {
-    marginVertical: theme.spacing.level(5),
-  },
   parallaxContainer: {
     backgroundColor: theme.pallete.box,
   },
@@ -43,9 +44,9 @@ const style = StyleSheet.create({
     backgroundColor: theme.pallete.black,
     alignItems: 'center',
   },
-  carousel: {
-    flex: 1,
-    position: 'relative',
+  logo: {
+    // No idea either...
+    paddingTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
   },
 })
 
@@ -62,12 +63,7 @@ export function Home({ time, events, onEventPress }: HomeProps) {
       containerStyle={style.parallaxContainer}
       image={twt}
       title={
-        <View
-          style={{
-            height: HEADER_HEIGHT - theme.spacing.level(1) * 2,
-            paddingTop: getStatusBarHeight(),
-          }}
-        >
+        <View style={style.logo}>
           <Logo fill={theme.pallete.white} width="120" height="50" />
         </View>
       }
