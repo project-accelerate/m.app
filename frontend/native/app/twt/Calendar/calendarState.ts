@@ -1,12 +1,6 @@
 import { omit, sortBy, compact, take } from 'lodash'
 import { Dispatch } from 'redux'
-import {
-  subHours,
-  addSeconds,
-  getHours,
-  getDate,
-  subMinutes,
-} from 'date-fns'
+import { subHours, addSeconds, getHours, getDate, subMinutes } from 'date-fns'
 import { Notifications } from 'expo'
 import { theme } from '../../../theme'
 import {
@@ -88,8 +82,10 @@ export namespace calendar {
 
     upcomingEvents: (state: AppState) => {
       const events = compact(Object.values(selectors.allEvents(state)))
-      return take(sortBy(events, (e: SavedEvent) => e.details.startTime), 3)
-        .map(e => e.details)
+      return take(
+        sortBy(events, (e: SavedEvent) => e.details.startTime),
+        3,
+      ).map(e => e.details)
     },
 
     eventsInDay: (state: AppState, props: { day: Date }) => {
@@ -177,7 +173,7 @@ export namespace calendar {
         venueName: event.venue.name,
         startTime: event.startTime,
         endTime: event.endTime,
-        image: event.photo && event.photo.sourceUrl
+        imageUrl: (event.photo && event.photo.sourceUrl) || undefined,
       }
 
       const selectProps = { eventId: details.id }
