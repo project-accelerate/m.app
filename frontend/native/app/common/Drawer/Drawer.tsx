@@ -100,9 +100,8 @@ export class Drawer extends React.Component<DrawerProps> {
           <View style={style.root}>
             <View style={style.header} />
             <ScrollView style={style.items}>
-              <TouchableHighlight
+              <TouchableOpacity
                 key="<"
-                underlayColor={theme.pallete.white}
                 style={style.item}
                 onPress={() => {
                   this.props.navigation!.closeDrawer()
@@ -113,22 +112,21 @@ export class Drawer extends React.Component<DrawerProps> {
                   color={theme.pallete.white}
                   size={26}
                 />
-              </TouchableHighlight>
+              </TouchableOpacity>
 
               {this.items.map(
                 item =>
                   (isDelegate ||
                     !this.getNavigationOptions(item).delegateOnly) && (
-                    <TouchableHighlight
+                    <TouchableOpacity
                       key={item.routeName}
-                      underlayColor={theme.pallete.white}
                       style={style.item}
                       onPress={this.navigateToScreen(item)}
                     >
                       <Typography darkBg variant="screenHeader">
                         {this.getNavigationOptions(item).drawerLabel}
                       </Typography>
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                   ),
               )}
             </ScrollView>
