@@ -6,6 +6,7 @@ import {
   TextStyle,
   View,
   ViewStyle,
+  TextProps,
 } from 'react-native'
 import { MarkdownView } from 'react-native-markdown-view'
 import { theme } from '../../../theme'
@@ -82,7 +83,7 @@ const TypographyStyles = StyleSheet.create({
   },
 })
 
-export interface TypographyProps {
+export interface TypographyProps extends TextProps {
   variant?: keyof typeof TypographyVariants
   darkBg?: boolean
   accent?: boolean
@@ -98,9 +99,11 @@ export function Typography({
   darkBg,
   accent,
   center,
+  ...props
 }: TypographyProps) {
   return (
     <Text
+      {...props}
       style={[
         style,
         variant && TypographyVariants[variant],

@@ -9,7 +9,13 @@ import { HomeScreen } from '../../twt/Home/HomeScreen'
 import { getStatusBarHeight } from '../platform'
 import { Routes } from '../../../routes'
 import { theme } from '../../../theme'
-import { TouchableOpacity, View, StyleSheet, StatusBar } from 'react-native'
+import {
+  TouchableOpacity,
+  View,
+  StyleSheet,
+  StatusBar,
+  Dimensions,
+} from 'react-native'
 import { FontAwesome } from '@expo/vector-icons'
 import { Typography } from '../Typography/Typography'
 
@@ -20,6 +26,8 @@ interface HeaderBarProps extends Partial<NavigationInjectedProps> {
 
 export const HEADER_CONTENT_HEIGHT = 48
 export const HEADER_HEIGHT = HEADER_CONTENT_HEIGHT + getStatusBarHeight()
+const PADDING = 10
+const ICONSIZE = 26
 
 const styles = StyleSheet.create({
   menu: {
@@ -27,11 +35,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    width: '100%',
     height: HEADER_HEIGHT,
+    maxWidth: Dimensions.get('screen').width,
+  },
+  header: {
+    maxWidth: Dimensions.get('screen').width - 2 * (2 * PADDING + ICONSIZE),
   },
   button: {
-    padding: 10,
+    padding: PADDING,
   },
   notFloating: {
     backgroundColor: theme.pallete.accent,
@@ -75,13 +86,18 @@ export const HeaderBar = withNavigation(function HeaderBar({
             style={styles.buttonIcon}
             name="chevron-left"
             color="white"
-            size={26}
+            size={ICONSIZE}
           />
         )}
       </TouchableOpacity>
       <View>
         {(title && (
-          <Typography variant="screenHeader" darkBg>
+          <Typography
+            center
+            style={styles.header}
+            variant="screenHeader"
+            darkBg
+          >
             {title}
           </Typography>
         )) ||
