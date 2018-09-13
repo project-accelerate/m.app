@@ -73,11 +73,12 @@ const LoadingOverlayStyle = StyleSheet.create({
 
 export function LoadingOverlay(props: {
   message?: string
+  darkBg?: boolean
   children?: React.ReactNode
 }) {
   return (
     <View style={LoadingOverlayStyle.container}>
-      <LoadingIndicator />
+      <LoadingIndicator darkBg={props.darkBg} />
       <Typography style={LoadingOverlayStyle.message} variant="body">
         {props.message || ' '}
       </Typography>
@@ -86,8 +87,13 @@ export function LoadingOverlay(props: {
   )
 }
 
-export function LoadingIndicator() {
-  return <ActivityIndicator size="large" color={theme.pallete.accent} />
+export function LoadingIndicator(props: { darkBg?: boolean }) {
+  return (
+    <ActivityIndicator
+      size="large"
+      color={props.darkBg ? theme.pallete.white : theme.pallete.accent}
+    />
+  )
 }
 
 const ProfileImageStyle = StyleSheet.create({

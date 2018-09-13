@@ -13,6 +13,7 @@ export interface WizardStageProps<T> {
 
 interface WizardProps<T> {
   initialState: T
+  darkBg?: boolean
   onCompleted: (value: T) => Promise<any>
 }
 
@@ -43,6 +44,7 @@ export function createWizard<T>(config: WizardConfig<T>) {
           <RetryableAction
             fullscreen
             preserve
+            darkBg={this.props.darkBg}
             action={this.props.onCompleted}
             params={this.state}
           />,

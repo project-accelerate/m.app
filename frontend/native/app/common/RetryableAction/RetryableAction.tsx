@@ -9,6 +9,7 @@ interface RetryableActionProps<Params> {
   params?: Params
   preserve?: boolean
   fullscreen?: boolean
+  darkBg?: boolean
   children?: (props: { pending: boolean }) => React.ReactNode
 }
 
@@ -71,7 +72,7 @@ export class RetryableAction<Params> extends React.Component<
     }
 
     if (this.state.pending && this.props.fullscreen) {
-      return <LoadingOverlay />
+      return <LoadingOverlay darkBg={this.props.darkBg} />
     }
 
     if (this.props.children) {
