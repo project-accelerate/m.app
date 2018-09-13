@@ -10,6 +10,7 @@ interface FetchDataOpts {
 }
 
 interface FetchDataProps<Data, Params> {
+  darkBg?: boolean
   variables: Params
   children: (props: { data: Data; client: ApolloClient<{}> }) => React.ReactNode
 }
@@ -59,7 +60,7 @@ export function createFetchData<Data, Params>({ query }: FetchDataOpts) {
               )
             }
             if (!data || Object.keys(data).length === 0) {
-              return <LoadingOverlay />
+              return <LoadingOverlay darkBg={this.props.darkBg} />
             }
 
             return children({ data, client })
