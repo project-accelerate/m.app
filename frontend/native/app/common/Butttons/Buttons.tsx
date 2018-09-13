@@ -25,12 +25,12 @@ const buttonStyle = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 4,
   },
-  large: {
+  standard: {
     paddingVertical: theme.spacing.level(1),
     paddingHorizontal: theme.spacing.level(2),
   },
   small: {
-    height: 35,
+    paddingVertical: theme.spacing.level(0.5),
     paddingHorizontal: theme.spacing.level(2),
   },
   inline: {
@@ -77,7 +77,7 @@ export function ButtonGrid({ children, ...props }: ButtonGridProps) {
 
 interface ButtonProps extends TouchableHighlightProps {
   children?: React.ReactNode
-  variant?: 'large' | 'small' | 'inline'
+  variant?: 'standard' | 'inline'
   darkBg?: boolean
   icon?: string
 }
@@ -85,7 +85,7 @@ interface ButtonProps extends TouchableHighlightProps {
 export function Button({
   children,
   style,
-  variant = 'large',
+  variant = 'standard',
   disabled,
   icon,
   darkBg,
@@ -109,7 +109,7 @@ export function Button({
           <FontAwesome
             name={icon}
             style={buttonStyle.icon}
-            size={variant === 'large' ? 24 : 18}
+            size={variant === 'standard' ? 24 : 18}
             color={
               inline && !darkBg ? theme.pallete.accent : theme.pallete.white
             }

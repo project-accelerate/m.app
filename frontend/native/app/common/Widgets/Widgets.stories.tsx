@@ -1,5 +1,5 @@
 import React from 'react'
-import { Toolbar, ToolbarRadio } from './Widgets'
+import { Toolbar, ToolbarRadio, Rows } from './Widgets'
 import { Button } from '../Butttons/Buttons'
 
 export const stories = {
@@ -13,5 +13,11 @@ export const stories = {
       </ToolbarRadio>
     </Toolbar>
   ),
-  'Icon Button': () => <Button icon="twitter">Tweet</Button>,
+  Buttons: () => (
+    <Rows>
+      <Button icon="twitter">Tweet</Button>
+      <Button>Tweet</Button>
+      <Button variant="inline">Tweet</Button>
+    </Rows>
+  ),
 }

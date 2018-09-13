@@ -40,14 +40,12 @@ export function RegistrationIsDelegateQuestion(props: RegistrationStageProps) {
 
       <RegistrationActions>
         <Button
-          variant="small"
           style={styles.button}
           onPress={() => props.onSubmit({ isConferenceDelegate: true })}
         >
           Yes
         </Button>
         <Button
-          variant="small"
           style={styles.button}
           onPress={() => props.onSubmit({ isConferenceDelegate: false })}
         >
@@ -72,14 +70,12 @@ export function AcceptNotificationsPanel(props: RegistrationStageProps) {
 
       <RegistrationActions>
         <Button
-          variant="small"
           style={styles.button}
           onPress={() => props.onSubmit({ optedIntoNotifications: false })}
         >
           No Thanks
         </Button>
         <Button
-          variant="small"
           style={styles.button}
           onPress={() => props.onSubmit({ optedIntoNotifications: true })}
         >
@@ -115,16 +111,11 @@ export function RegistrationAskEmailPanel(props: RegistrationStageProps) {
           </RegistrationActions>
 
           <RegistrationActions>
-            <Button
-              variant="small"
-              style={styles.button}
-              onPress={props.onSkip}
-            >
+            <Button style={styles.button} onPress={props.onSkip}>
               Skip this time
             </Button>
             <Button
               disabled={!isValid}
-              variant="small"
               style={styles.button}
               onPress={handleSubmit}
             >
