@@ -92,12 +92,14 @@ export class EditNotificationForm extends React.Component<
             fullWidth
             name="title"
             label="Headline"
+            inputProps={{ maxLength: 50 }}
             helperText="Headline of the notification"
           />
           <FormText
             fullWidth
             multiline
             rows={3}
+            inputProps={{ maxLength: 140 }}
             name="message"
             label="Body"
             helperText="Short message with more information"
