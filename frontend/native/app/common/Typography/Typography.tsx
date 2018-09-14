@@ -7,9 +7,11 @@ import {
   View,
   ViewStyle,
   TextProps,
+  TouchableOpacity,
 } from 'react-native'
 import { MarkdownView } from 'react-native-markdown-view'
 import { theme } from '../../../theme'
+import { Linking } from 'expo'
 
 const TypographyVariants = StyleSheet.create({
   display: {
@@ -81,6 +83,9 @@ const TypographyStyles = StyleSheet.create({
   center: {
     textAlign: 'center',
   },
+  link: {
+    textDecorationLine: 'underline',
+  },
 })
 
 export interface TypographyProps extends TextProps {
@@ -114,6 +119,24 @@ export function Typography({
     >
       {children}
     </Text>
+  )
+}
+
+export function Link({
+  href,
+  style,
+  ...typographyProps
+}: TypographyProps & { href: string }) {
+  const handlePress = () => {
+    Linking.openURL(href)
+  }
+
+  return (
+    <Typography
+      onPress={handlePress}
+      style={[style, TypographyStyles.link]}
+      {...typographyProps}
+    />
   )
 }
 
