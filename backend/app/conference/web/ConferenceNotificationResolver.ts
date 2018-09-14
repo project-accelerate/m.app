@@ -1,8 +1,11 @@
-import { Resolver, Query, Authorized } from 'type-graphql'
+import { Resolver, Query, Authorized, Arg } from 'type-graphql'
 import { createSimpleConnection } from 'backend/app/common/Connection'
 import { ConferenceNotification } from 'backend/app/conference/domain/ConferenceNotification'
 import { ConferenceNotificationRepository } from 'backend/app/conference/external/ConferenceNotificationRepository'
 import { Role } from 'common/domain/Role'
+import { ConferenceNotificationScope } from 'common/domain/ConferenceNotificationScope'
+import { oneOf } from 'backend/app/common/CrudRepository'
+import { ConferenceNotificationTargeter } from 'backend/app/conference/application/ConferenceNotificationTargeter'
 
 const SentNotificationsConnection = createSimpleConnection({
   name: 'SentNotificationsConnection',
@@ -13,13 +16,27 @@ const SentNotificationsConnection = createSimpleConnection({
 export class ConferenceNotificationResolver {
   constructor(
     private conferenceNotificationRepository: ConferenceNotificationRepository,
+    private notificationTargeter: ConferenceNotificationTargeter,
   ) {}
 
-  @Authorized([Role.ADMIN])
+  @Query(() => ConferenceNotification)
+  async notification(@Arg('id') id: string) {
+    return this.conferenceNotificationRepository.findOne({
+      id,
+    })
+  }
+
   @Query(() => SentNotificationsConnection)
-  async sentNotifications() {
+  async sentNotifications(
+    @Arg('user', { nullable: true })
+    user?: string,
+  ) {
     return new SentNotificationsConnection(
-      await this.conferenceNotificationRepository.findAll(),
+      await this.conferenceNotificationRepository.find({
+        scope: user
+          ? oneOf(...(await this.notificationTargeter.getScopesForUser(user)))
+          : undefined,
+      }),
     )
   }
 }

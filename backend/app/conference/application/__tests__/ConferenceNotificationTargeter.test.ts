@@ -1,6 +1,9 @@
 import { ConferenceNotificationTargeter } from 'backend/app/conference/application/ConferenceNotificationTargeter'
 import { ConferenceNotificationScope } from 'common/domain/ConferenceNotificationScope'
 import { someConferenceNotificationProps } from 'backend/app/conference/test/conferenceNotificationTestUtils'
+import { mock } from 'ts-mockito'
+import { MockCrudRepositoryFixture } from 'backend/app/common/test/MockCrudRepositoryFixture'
+import { UserRepository } from 'backend/app/user/external/UserRepository'
 
 describe(ConferenceNotificationTargeter, () => {
   describe('when event provided', () => {
@@ -46,5 +49,6 @@ describe(ConferenceNotificationTargeter, () => {
 })
 
 class Fixture {
-  service = new ConferenceNotificationTargeter()
+  userRepository = new MockCrudRepositoryFixture(UserRepository)
+  service = new ConferenceNotificationTargeter(this.userRepository.instance)
 }
