@@ -124,7 +124,6 @@ export function createTransition(
     }
 
     transitionTo(el: JSX.Element, kind: TransitionKind = defaultTransition) {
-      console.log('push')
       return new Promise(resolve => {
         const incomingIndex = this.state.children.length
         const outgoingIndex = incomingIndex - 1
@@ -189,7 +188,6 @@ export function createTransition(
     }
 
     render() {
-      console.log(this.state.indexState)
       return (
         <View style={style.container} onLayout={this.handleLayout}>
           {this.state.children
