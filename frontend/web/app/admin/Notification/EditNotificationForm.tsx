@@ -109,18 +109,6 @@ export class EditNotificationForm extends React.Component<
             label="Urgent"
             helperText="Should we make people's phones make a noise, etc?"
           />
-          <FormPicker
-            label="Associated Event"
-            name="associatedEventId"
-            options={this.associatedEventOptions}
-            helperText="Optional. Associated event to take people to when they click the notification"
-          />
-          <FormText
-            fullWidth
-            label="Associated Page"
-            name="link"
-            helperText="Optional. Associated url to take people to when they click the notification"
-          />
         </FormGrid>
       </EditDialog>
     )
