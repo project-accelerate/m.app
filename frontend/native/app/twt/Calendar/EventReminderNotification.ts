@@ -4,6 +4,7 @@ import { calendar } from './calendarState'
 import { theme } from '../../../theme'
 import { format } from 'date-fns'
 import { Routes } from '../../../routes'
+import { EventDetailScreenParams } from '../Event/EventDetailScreen'
 
 export function createEventReminderNotification(
   event: calendar.SavedEventDetails,
@@ -37,7 +38,11 @@ export class EventReminderNotificationHandler extends NotificationHandler<
   }
 
   routeName = Routes.get().getRoutename('EventDetailScreen')
-  routeParams = { id: this.data.id, title: this.data.name }
+  routeParams: EventDetailScreenParams = {
+    id: this.data.id,
+    title: this.data.name,
+    image: this.data.imageUrl,
+  }
 
   getInitialRoute() {
     return {
