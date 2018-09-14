@@ -7,7 +7,7 @@ import { createNotificationHandler } from './NotificationHandler'
 import { notificationHandlers } from '../../../notifications'
 import { Routes } from '../../../routes'
 
-export const NotificationListener = withNavigation(
+export const NotificationListener = (withNavigation(
   class NotificationListener extends React.Component<NavigationInjectedProps> {
     subscription!: EventSubscription
     logger = createLogger('Notifications')
@@ -20,7 +20,7 @@ export const NotificationListener = withNavigation(
       this.logger('Received notification', notification)
 
       const handler = createNotificationHandler(
-        notificationHandlers,
+        notificationHandlers(),
         notification,
         this.props.navigation,
       )
@@ -44,5 +44,5 @@ export const NotificationListener = withNavigation(
     render() {
       return null
     }
-  }
-) as any as React.ComponentClass<{}>
+  },
+) as any) as React.ComponentClass<{}>

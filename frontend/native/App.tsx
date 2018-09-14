@@ -46,7 +46,7 @@ export default class App extends React.Component<AppProps> {
     }
 
     const handler = createNotificationHandler(
-      notificationHandlers,
+      notificationHandlers(),
       this.props.exp.notification,
     )
     if (handler) {
