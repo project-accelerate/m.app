@@ -90,7 +90,7 @@ export function AcceptNotificationsPanel(props: RegistrationStageProps) {
       </RegistrationActions>
 
       <RegistrationHelpText>
-        You can change your notification settings later if you want.
+        We’ll only be able to send you updates about events if you answer ‘Yes’
       </RegistrationHelpText>
     </RegistrationPanel>
   )
