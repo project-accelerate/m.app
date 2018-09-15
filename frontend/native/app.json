@@ -10,7 +10,6 @@
     "platforms": ["ios", "android"],
     "version": "1.0.3",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splashlogo.png",
       "resizeMode": "contain",
@@ -24,7 +23,8 @@
     "ios": {
       "supportsTablet": true,
       "buildNumber": "4",
-      "bundleIdentifier": "com.peoplesmomentum.app"
+      "bundleIdentifier": "com.peoplesmomentum.app",
+      "icon": "./assets/icon.ios.png"
     },
     "android": {
       "package": "com.peoplesmomentum.app",
@@ -34,6 +34,10 @@
         "googleMaps": {
           "apiKey": "AIzaSyC89f_jlusXaC_HGA3u3Qeiqr84GQPQLyI"
         }
+      },
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.android.png",
+        "backgroundImage": "./assets/icon.android.bg.png"
       }
     },
     "packagerOpts": {
