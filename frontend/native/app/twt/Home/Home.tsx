@@ -33,6 +33,8 @@ import { calendar } from '../Calendar/calendarState'
 import { Touchable } from '../../common/Widgets/Widgets'
 import { format, isSameDay } from 'date-fns'
 import Logo from '../../../assets/Mlogo'
+import { Br, Markdown } from '../../common/Typography/Typography'
+import { MarkdownView } from 'react-native-markdown-view'
 
 const style = StyleSheet.create({
   parallaxContainer: {
@@ -88,13 +90,17 @@ export function Home({ time, events, onEventPress }: HomeProps) {
           </View>
         )}
         <CardGroupHeader>News</CardGroupHeader>
-        {times(10, i => (
-          <Card key={i}>
-            <CardHeader>{faker.lorem.words(4)}</CardHeader>
-            <CardContent>{faker.lorem.sentences(3)}</CardContent>
-          </Card>
-        ))}
+        <Card>
+          <CardHeader>TWT Programme is Live!</CardHeader>
+          <CardContent>
+            <Markdown value={firstItem} />
+          </CardContent>
+        </Card>
       </CardContainer>
     </ImageHeaderScreen>
   )
 }
+
+const firstItem = `The programme for TWT is out now. If you’re interested in a session or workshop, you can save it to your calendar. We’ll remind you about it half an hour before it starts.
+
+This year’s festival will double in size, platform voices from all over the world, and have a more innovative programme than ever before. TWT 2018 will create an open space for collective political education that will strengthen our entire movement.`
