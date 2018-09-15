@@ -5,21 +5,16 @@ import {
   StyleSheet,
   ImageStyle,
   StyleProp,
-  ImageBackground,
   Dimensions,
   ViewStyle,
   TouchableOpacity,
-  SafeAreaView,
-  StatusBar,
   TextInputProps,
   TextInput,
-  TouchableNativeFeedbackProps,
   TouchableWithoutFeedbackProps,
   TouchableNativeFeedback,
   TouchableWithoutFeedback,
 } from 'react-native'
 import formInput, { makeInputGreatAgainProps } from 'react-native-formik'
-import { FontAwesome } from '@expo/vector-icons'
 import { theme } from '../../../theme'
 import {
   withNavigation,
@@ -27,13 +22,8 @@ import {
   NavigationRoute,
 } from 'react-navigation'
 import { Typography } from '../Typography/Typography'
-import { Routes } from '../../../routes'
-import { HomeScreen } from '../../twt/Home/HomeScreen'
-import { getStatusBarHeight } from '../platform'
 import { Constants } from 'expo'
-import { NotificationListener } from '../Notification/NotificationListener'
-import { ErrorGuard } from '../ErrorView/ErrorGuard'
-import { HeaderBar } from '../Screen/HeaderBar'
+import { CachedImage } from './CachedImage'
 
 const FieldStyle = StyleSheet.create({
   field: {
@@ -96,7 +86,7 @@ export function LoadingIndicator(props: { darkBg?: boolean }) {
   )
 }
 
-const ProfileImageStyle = StyleSheet.create({
+const ProfileImageSize = StyleSheet.create({
   small: {
     width: 96,
     height: 96,
@@ -118,9 +108,22 @@ const ProfileImageStyle = StyleSheet.create({
   },
 })
 
+const ProfileImageStyle = StyleSheet.create({
+  container: {
+    position: 'relative',
+  },
+  content: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: '100%',
+    height: '100%',
+  },
+})
+
 interface ProfileImageProps {
   style?: StyleProp<ImageStyle>
-  size?: keyof typeof ProfileImageStyle
+  size?: keyof typeof ProfileImageSize
   image: { sourceUrl: string } | number | null
   children?: React.ReactNode
 }
@@ -136,16 +139,17 @@ export function ProfileImage({
   }
 
   return (
-    <ImageBackground
-      style={[style, ProfileImageStyle[size]]}
-      source={
-        typeof image === 'number'
-          ? image
-          : { cache: 'force-cache', uri: image.sourceUrl }
-      }
-    >
-      {children}
-    </ImageBackground>
+    <View style={[style, ProfileImageStyle.container, ProfileImageSize[size]]}>
+      <CachedImage
+        style={ProfileImageStyle.content}
+        source={
+          typeof image === 'number'
+            ? image
+            : { cache: 'force-cache', uri: image.sourceUrl }
+        }
+      />
+      {children && <View style={ProfileImageStyle.content}>{children}</View>}
+    </View>
   )
 }
 

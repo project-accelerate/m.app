@@ -33,7 +33,10 @@ export function EventListItem({ event, onPress }: EventListItemProps) {
   return (
     <Touchable onPress={() => onPress({ event })}>
       <View style={EventListItemStyle.container}>
-        <ProfileImage style={EventListItemStyle.image} image={event.photo} />
+        <ProfileImage
+          style={EventListItemStyle.image}
+          image={event.photo || require('../../../assets/default.jpg')}
+        />
 
         <View style={EventListItemStyle.text}>
           <Typography accent variant="body" style={EventListItemStyle.text}>

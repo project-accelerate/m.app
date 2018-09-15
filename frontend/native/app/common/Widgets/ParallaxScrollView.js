@@ -11,6 +11,7 @@ import {
   View,
   Dimensions,
 } from 'react-native'
+import { AnimatedCachedImage } from './CachedImage'
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window')
 
@@ -209,7 +210,7 @@ export class ParallaxScrollView extends Component {
     const imageScale = this.getImageScale()
 
     return (
-      <Animated.Image
+      <AnimatedCachedImage
         style={[
           styles.backgroundImage,
           {

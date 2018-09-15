@@ -68,7 +68,10 @@ export class EventDetailScreen extends React.Component<
     return (
       <ImageHeaderScreen
         tintHeader
-        image={this.props.navigation.getParam('image')}
+        image={
+          this.props.navigation.getParam('image') ||
+          require('../../../assets/default.jpg')
+        }
       >
         <Connect eventId={this.eventId}>
           {({ userId, isSaved, actions }) => (
