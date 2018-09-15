@@ -2,7 +2,6 @@ import React from 'react'
 import {
   ActivityIndicator,
   View,
-  StyleSheet,
   ImageStyle,
   StyleProp,
   Dimensions,
@@ -13,6 +12,7 @@ import {
   TouchableWithoutFeedbackProps,
   TouchableNativeFeedback,
   TouchableWithoutFeedback,
+  StyleSheet,
 } from 'react-native'
 import formInput, { makeInputGreatAgainProps } from 'react-native-formik'
 import { theme } from '../../../theme'
@@ -24,11 +24,12 @@ import {
 import { Typography } from '../Typography/Typography'
 import { Constants } from 'expo'
 import { CachedImage } from './CachedImage'
+import { moderateScale } from 'react-native-size-matters'
 
 const FieldStyle = StyleSheet.create({
   field: {
     width: '100%',
-    fontSize: 15,
+    fontSize: moderateScale(15),
     padding: theme.spacing.level(1),
     borderColor: theme.pallete.borderLight,
     backgroundColor: theme.pallete.control,
@@ -88,8 +89,8 @@ export function LoadingIndicator(props: { darkBg?: boolean }) {
 
 const ProfileImageSize = StyleSheet.create({
   small: {
-    width: 96,
-    height: 96,
+    width: moderateScale(96),
+    height: moderateScale(96),
   },
   fullWidth: {
     width: '100%',

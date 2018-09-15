@@ -35,6 +35,7 @@ import { format, isSameDay } from 'date-fns'
 import Logo from '../../../assets/Mlogo'
 import { Br, Markdown } from '../../common/Typography/Typography'
 import { MarkdownView } from 'react-native-markdown-view'
+import { moderateScale } from 'react-native-size-matters'
 
 const style = StyleSheet.create({
   parallaxContainer: {
@@ -66,7 +67,11 @@ export function Home({ time, events, onEventPress }: HomeProps) {
       image={twt}
       title={
         <View style={style.logo}>
-          <Logo fill={theme.pallete.white} width="120" height="50" />
+          <Logo
+            fill={theme.pallete.white}
+            width={moderateScale(120)}
+            height={moderateScale(50)}
+          />
         </View>
       }
     >

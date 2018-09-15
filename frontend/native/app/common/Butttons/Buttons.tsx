@@ -11,8 +11,9 @@ import {
 import { theme } from '../../../theme'
 import { Typography } from '../Typography/Typography'
 import { FontAwesome } from '@expo/vector-icons'
+import { ScaledSheet } from 'react-native-size-matters'
 
-const buttonStyle = StyleSheet.create({
+const buttonStyle = ScaledSheet.create({
   content: {
     flexDirection: 'row',
     alignItems: 'center',
