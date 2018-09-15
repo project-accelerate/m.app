@@ -24,66 +24,83 @@ export async function pullDataFromTwt(...opts: string[]) {
     'https://github.com/dellsystem/the-world-transformed/raw/master/_data/programme/speakers.yml',
   )
 
-  for (const key of Object.keys(speakers)) {
-    const speaker = speakers[key]
-
-    const uploaded =
-      (await personAdmin.addPerson({
-        importRef: getImportRef(key),
-        bio: speaker.bio,
-        name: speaker.name,
-        photoUpload: speaker.photo
-          ? {
-              stream: await getImageStream(
-                `https://raw.githubusercontent.com/dellsystem/the-world-transformed/master/images/speakers/${key}.jpg`,
-              ),
-              filename: `${key}.jpg`,
-              mimetype: 'image/jpeg',
-              encoding: '',
-            }
-          : undefined,
-        twitterHandle: extractTwitterHandle(speaker.twitter),
-      })) || {}
-
-    speaker.id = uploaded.id
-  }
-
   const events = await loadYaml(
     'https://raw.githubusercontent.com/dellsystem/the-world-transformed/master/_data/programme/sessions.yml',
   )
 
   for (const key of Object.keys(events)) {
     const event = events[key]
+    console.log('processing', key)
+
+    const startTime = parseTimestamp(event.start_timestamp)
+    const endTime = parseTimestamp(event.end_timestamp)
+
+    if (!startTime || !endTime) {
+      console.log('Skipping event with no date', key)
+      continue
+    }
 
     eventAdmin.submitEvent({
       importRef: getImportRef(key),
       introduction: event.description.trim() || '',
       detail: '',
-      startTime: parseTimestamp(event.start_timestamp),
-      endTime: parseTimestamp(event.end_timestamp),
-      speakers: compact(event.speakers.split(' ')).map((s: any) => {
-        if (!speakers[s.trim()]) {
-          throw Error(`Not found: ${s}`)
-        }
-
-        return speakers[s.trim()].id
-      }),
+      speakers: await Promise.all(
+        compact(event.speakers.split(' ')).map((key: any) =>
+          acquirePerson(key.trim()),
+        ),
+      ),
+      startTime,
+      endTime,
       name: event.title,
-      venue: (await acquireVenue(event.venue, event.room)).id,
+      venue: await acquireVenue(event.venue, event.room),
       family: EventFamily.TWT_2018,
-      photoUpload: event.image
-        ? {
-            stream: await getImageStream(
-              `https://raw.githubusercontent.com/dellsystem/the-world-transformed/master/images/sessions/${
-                event.image
-              }.jpg`,
-            ),
-            filename: `${key}.jpg`,
-            mimetype: 'image/jpeg',
-            encoding: '',
-          }
-        : undefined,
+      photoUpload:
+        event.image && event.image !== 'default'
+          ? {
+              stream: await getImageStream(
+                `https://raw.githubusercontent.com/dellsystem/the-world-transformed/master/images/sessions/${
+                  event.image
+                }.jpg`,
+              ),
+              filename: `${key}.jpg`,
+              mimetype: 'image/jpeg',
+              encoding: '',
+            }
+          : undefined,
     })
+    console.log('added event', key)
+  }
+
+  async function acquirePerson(key: string) {
+    const speaker = speakers[key]
+    if (speaker.id) {
+      return speaker.id
+    }
+    console.log('processing', key)
+
+    const uploaded =
+      (await personAdmin.addPerson({
+        importRef: getImportRef(key),
+        bio: speaker.bio,
+        name: speaker.name,
+        photoUpload:
+          speaker.photo && speaker.photo !== 'default'
+            ? {
+                stream: await getImageStream(
+                  `https://raw.githubusercontent.com/dellsystem/the-world-transformed/master/images/speakers/${key}.jpg`,
+                ),
+                filename: `${key}.jpg`,
+                mimetype: 'image/jpeg',
+                encoding: 'identity',
+              }
+            : undefined,
+        twitterHandle: extractTwitterHandle(speaker.twitter),
+      })) || {}
+
+    speaker.id = uploaded.id
+    console.log('added speaker', key)
+
+    return speaker.id
   }
 
   async function acquireVenue(key: string, room: string) {
@@ -93,11 +110,14 @@ export async function pullDataFromTwt(...opts: string[]) {
     })
 
     if (venue) {
-      return venue
+      return venue.id
     }
 
-    return venueAdmin.addVenue({
+    console.log('processing', key)
+
+    const addedVenue = await venueAdmin.addVenue({
       name: [key.trim(), room.trim()].join(' '),
+      description: '',
       address: {
         city: 'Liverpool',
         postcode: 'L1 5EW',
@@ -105,6 +125,8 @@ export async function pullDataFromTwt(...opts: string[]) {
       },
       importRef,
     })
+    console.log('added venue', addedVenue.importRef)
+    return addedVenue.id
   }
 
   function getImportRef(key: string) {
@@ -116,13 +138,21 @@ export async function pullDataFromTwt(...opts: string[]) {
       try {
         return readFileSync(encodeURIComponent(src), 'utf8')
       } catch {
-        const data = await fetch(src).then(x => x.text())
+        const data = await fetch(src).then(getText)
         writeFileSync(encodeURIComponent(src), data)
 
         return data
       }
     } else {
-      return await fetch(src).then(x => x.text())
+      return await fetch(src).then(getText)
+    }
+
+    async function getText(res: any) {
+      if (!res.ok) {
+        throw Error(`Error fetching ${src}: ${await res.text()}`)
+      }
+
+      return res.text()
     }
   }
 
@@ -145,7 +175,8 @@ export async function pullDataFromTwt(...opts: string[]) {
       'T',
       [ts.substring(9, 11), ts.substring(11, 13), '00'].join(':'),
     ].join('')
-    return new Date(isoString)
+    const date = new Date(isoString)
+    return isNaN(date.getTime()) ? undefined : date
   }
 
   function extractDetail(description: string) {
@@ -169,6 +200,7 @@ export async function pullDataFromTwt(...opts: string[]) {
           return { id: props.importRef }
         },
       } as EventAdminService
+
       const venueAdmin = {
         async addVenue(props: any) {
           console.log('venue', props)
@@ -178,12 +210,14 @@ export async function pullDataFromTwt(...opts: string[]) {
           })
         },
       } as VenueAdminService
+
       const personAdmin = {
         async addPerson(props: any) {
           console.log('person', props)
           return { id: props.importRef }
         },
       } as PersonAdminService
+
       const venueRepository = ({
         venues: {} as any,
         async findOne({ importRef }: any) {
@@ -201,7 +235,13 @@ export async function pullDataFromTwt(...opts: string[]) {
         venueAdmin,
       }
     } else {
-      const getImageStream = (url: string) => fetch(url).then(res => res.body)
+      const getImageStream = (url: string) =>
+        fetch(url).then(async res => {
+          if (!res.ok) {
+            throw Error(`Failed fetching ${url}: ${await res.text()}}`)
+          }
+          return res.body
+        })
 
       const eventAdmin = Container.get<EventAdminService>(EventAdminService)
       const personAdmin = Container.get<PersonAdminService>(PersonAdminService)
