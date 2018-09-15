@@ -10,59 +10,60 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import { MarkdownView } from 'react-native-markdown-view'
+import { moderateScale } from 'react-native-size-matters'
 import { theme } from '../../../theme'
 import { Linking } from 'expo'
 
 const TypographyVariants = StyleSheet.create({
   display: {
     fontFamily: 'patua-one',
-    fontSize: 24,
+    fontSize: moderateScale(24),
   },
   screenHeader: {
     fontFamily: 'patua-one',
-    fontSize: 17,
+    fontSize: moderateScale(17),
   },
   wizardTitle: {
     fontFamily: 'patua-one',
-    fontSize: 20,
+    fontSize: moderateScale(20),
   },
   cardTitle: {
     fontFamily: 'open-sans-bold',
-    fontSize: 15,
+    fontSize: moderateScale(15),
   },
   cardTitleVariant: {
     fontFamily: 'open-sans-light',
-    fontSize: 15,
+    fontSize: moderateScale(15),
   },
   tiny: {
     fontFamily: 'open-sans-light',
-    fontSize: 11,
+    fontSize: moderateScale(11),
   },
   subtitle: {
     fontFamily: 'patua-one',
   },
   action: {
-    fontSize: 15,
+    fontSize: moderateScale(15),
     fontFamily: 'oswald-bold',
   },
   body: {
-    fontSize: 15,
-    lineHeight: 21,
+    fontSize: moderateScale(15),
+    lineHeight: moderateScale(21),
     fontFamily: 'open-sans-light',
   },
   primary: {
-    fontSize: 15,
-    lineHeight: 21,
+    fontSize: moderateScale(15),
+    lineHeight: moderateScale(21),
     fontFamily: 'open-sans-light',
   },
   caption: {
-    fontSize: 15,
-    lineHeight: 21,
+    fontSize: moderateScale(15),
+    lineHeight: moderateScale(21),
     fontFamily: 'open-sans-semibold',
   },
   captionSmall: {
-    fontSize: 13,
-    lineHeight: 16,
+    fontSize: moderateScale(13),
+    lineHeight: moderateScale(16),
     fontFamily: 'open-sans-semibold',
   },
 })
@@ -72,7 +73,7 @@ const TypographyStyles = StyleSheet.create({
     marginBottom: theme.spacing.level(1),
   },
   markdown: {
-    marginVertical: -10,
+    marginVertical: moderateScale(-10),
   },
   darkBg: {
     color: theme.pallete.white,
@@ -173,7 +174,7 @@ interface MarkdownProps {
 
 const markdownStyles = {
   paragraph: {
-    fontSize: 15,
+    fontSize: moderateScale(15),
     lineHeight: 21,
     fontFamily: 'open-sans-light',
   },

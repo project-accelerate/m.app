@@ -19,6 +19,7 @@ import { createStateConnector } from '../../../state'
 import { registration } from '../../twt/Registration/registrationState'
 import Logo from '../../../assets/Mlogo'
 import { Background } from '../Layouts/Layouts'
+import { moderateScale } from 'react-native-size-matters'
 
 const style = StyleSheet.create({
   root: {
@@ -135,7 +136,11 @@ export class Drawer extends React.Component<DrawerProps> {
               onPress={this.navigateToScreen(this.home)}
               style={style.footer}
             >
-              <Logo fill={theme.pallete.white} width="100" height="20" />
+              <Logo
+                fill={theme.pallete.white}
+                width={moderateScale(125)}
+                height={moderateScale(25)}
+              />
             </TouchableOpacity>
           </View>
         )}

@@ -18,16 +18,17 @@ import {
 } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons'
 import { Typography } from '../Typography/Typography'
+import { moderateScale } from 'react-native-size-matters'
 
 interface HeaderBarProps extends Partial<NavigationInjectedProps> {
   floating?: boolean
   noBackButton?: boolean
 }
 
-export const HEADER_CONTENT_HEIGHT = 48
+export const HEADER_CONTENT_HEIGHT = moderateScale(48, 0.25)
 export const HEADER_HEIGHT = HEADER_CONTENT_HEIGHT + getStatusBarHeight()
-const PADDING = 10
-const ICONSIZE = 26
+const PADDING = moderateScale(10, 0.25)
+const ICONSIZE = moderateScale(26, 0.25)
 
 const styles = StyleSheet.create({
   menu: {
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
   },
   buttonIcon: {
     textShadowColor: theme.pallete.black,
-    textShadowRadius: 10,
+    textShadowRadius: moderateScale(10),
   },
 })
 
@@ -108,7 +109,7 @@ export const HeaderBar = withNavigation(function HeaderBar({
           style={styles.buttonIcon}
           name="bars"
           color="white"
-          size={26}
+          size={ICONSIZE}
         />
       </TouchableOpacity>
     </View>
