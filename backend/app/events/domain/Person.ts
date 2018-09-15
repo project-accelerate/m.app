@@ -13,6 +13,8 @@ export class CreatePersonRequest {
 
   @Field(() => GraphQLUpload, { nullable: true })
   photoUpload?: FileUpload
+
+  importRef?: string
 }
 
 @ObjectType()
@@ -28,4 +30,6 @@ export class Person {
 
   @Field({ nullable: true })
   twitterHandle?: string
+
+  importRef?: string
 }
