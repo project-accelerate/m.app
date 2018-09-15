@@ -19,12 +19,12 @@
       "fallbackToCacheTimeout": 0
     },
     "entryPoint": "./main.js",
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": ["app/**", "assets/**"],
     "ios": {
       "supportsTablet": true,
       "buildNumber": "5",
       "bundleIdentifier": "com.peoplesmomentum.app",
-      "icon": "./assets/icon.ios.png"
+      "icon": "./icons/icon.ios.png"
     },
     "android": {
       "package": "com.peoplesmomentum.app",
@@ -36,8 +36,8 @@
         }
       },
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.android.png",
-        "backgroundImage": "./assets/icon.android.bg.png"
+        "foregroundImage": "./icons/icon.android.png",
+        "backgroundImage": "./icons/icon.android.bg.png"
       }
     },
     "packagerOpts": {
