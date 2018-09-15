@@ -7,7 +7,7 @@ import { Point } from 'geojson'
 export class CreateVenueRequest {
   @Field() name!: string
 
-  @Field() description?: string
+  @Field() description!: string
 
   @Field(() => GraphQLUpload, { nullable: true })
   photoUpload?: FileUpload
@@ -23,7 +23,7 @@ export class Venue {
 
   @Field() name!: string
 
-  @Field() description?: string
+  @Field() description!: string
 
   photo?: string
   streetAddress!: string
