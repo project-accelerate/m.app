@@ -17,6 +17,7 @@ const LayoutStyles = StyleSheet.create({
   bg: {
     width: '100%',
     height: '100%',
+    flex: 1,
     backgroundColor: theme.pallete.white,
   },
   bgImage: {
