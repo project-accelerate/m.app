@@ -9,7 +9,7 @@ import {
   Image,
 } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons'
-import { NavigationInjectedProps } from 'react-navigation'
+import { NavigationInjectedProps, NavigationActions } from 'react-navigation'
 import { Routes } from '../../../routes'
 import { theme } from '../../../theme'
 import { Typography } from '../Typography/Typography'
@@ -80,10 +80,8 @@ export class Drawer extends React.Component<DrawerProps> {
   home = this.props.items.find(x => x.routeName === HomeScreen.name)!
 
   navigateToScreen = (route: Route) => () => {
-    this.props.onItemPress({
-      route,
-      focused: route.key === this.props.activeItemKey,
-    })
+    this.props.navigation.closeDrawer()
+    this.props.navigation.navigate(route.routeName)
   }
 
   getRouteComponent(item: Route) {
