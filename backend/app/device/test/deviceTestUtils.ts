@@ -25,7 +25,7 @@ export function someDeviceProps(props: Partial<DeviceProps> = {}): DeviceProps {
 }
 
 export function someDevice(props: Partial<Device> = {}): Device {
-  return Object.assign(new Device(), { id: someUuid() }, props)
+  return Object.assign(new Device(), someDeviceProps(), props)
 }
 
 export async function givenThatADeviceExists({
