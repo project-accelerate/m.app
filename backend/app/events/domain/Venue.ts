@@ -13,6 +13,8 @@ export class CreateVenueRequest {
   photoUpload?: FileUpload
 
   @Field() address!: AddressInput
+
+  importRef?: string
 }
 
 @ObjectType()
@@ -28,4 +30,6 @@ export class Venue {
   city!: string
   postcode!: string
   location!: Point
+
+  importRef?: string
 }
