@@ -35,13 +35,7 @@ export class PhotoStorageService {
     const id = this.generateId(photo.mimetype)
     await this.s3.putObject(
       this.getS3Key(id),
-      photo.stream.pipe(
-        this.resize({
-          width: 1024,
-          height: 1024,
-          isPortrait: photo.isPortrait,
-        }),
-      ),
+      photo.stream.pipe(sharp()),
       photo,
     )
 
