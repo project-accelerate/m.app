@@ -111,10 +111,6 @@ export function EventDetail({
         </Columns>
 
         <Typography variant="primary">{event.introduction}</Typography>
-
-        <Spacing level={2} />
-
-        <Typography variant="body">{event.detail}</Typography>
       </View>
 
       <Typography style={style.heading} variant="display">
