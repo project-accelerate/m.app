@@ -168,13 +168,14 @@ export function Paragraphs({ textStyle, style, children }: ParagraphsProps) {
 
 interface MarkdownProps {
   value: string
-  style: StyleProp<ViewStyle>
+  style?: StyleProp<ViewStyle>
 }
 
 const markdownStyles = {
   paragraph: {
-    fontSize: 16,
-    lineHeight: 22,
+    fontSize: 15,
+    lineHeight: 21,
+    fontFamily: 'open-sans-light',
   },
 }
 

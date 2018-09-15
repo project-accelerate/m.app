@@ -24,6 +24,7 @@ import { startOfDay } from 'date-fns'
 import { ConnectionList } from '../../common/ConnectionList/ConnectionList'
 import { theme } from '../../../theme'
 import { EventDetailScreen } from './EventDetailScreen'
+import { Typography, Br, Paragraphs } from '../../common/Typography/Typography'
 
 const FetchEvents = createFetchData<VotesScreenQuery, {}>({
   query: VotesScreenQueryDocument,
@@ -59,10 +60,16 @@ export class VotesScreen extends React.Component<NavigationScreenProps> {
                   emptyMessage={
                     <CardContainer style={{ height: '100%' }}>
                       <Card style={{ marginTop: theme.spacing.level(4) }}>
-                        <CardHeader>We dont't have vote times yet</CardHeader>
+                        <CardHeader>
+                          We don’t have any information about votes yet
+                        </CardHeader>
                         <CardContent>
-                          Check back later for information about conference
-                          votes
+                          <Paragraphs>
+                            <Typography>
+                              We’ll add information about vote times here when
+                              it becomes available.
+                            </Typography>
+                          </Paragraphs>
                         </CardContent>
                       </Card>
                     </CardContainer>

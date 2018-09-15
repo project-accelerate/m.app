@@ -75,7 +75,5 @@ export function CardSubheader({ style, ...props }: TypographyProps) {
 }
 
 export function CardContent({ style, ...props }: TypographyProps) {
-  return (
-    <Typography variant="body" style={[style, styles.content]} {...props} />
-  )
+  return <View style={[style, styles.content]}>{props.children}</View>
 }
