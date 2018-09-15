@@ -36,8 +36,10 @@ const style = StyleSheet.create({
     paddingVertical: theme.spacing.level(3),
     flexDirection: 'row',
     justifyContent: 'center',
+  },
+  itemWrapper: {
     borderBottomWidth: 1,
-    borderBottomColor: theme.pallete.white,
+    borderColor: theme.pallete.white,
   },
   footer: {
     marginBottom: theme.spacing.level(3),
@@ -118,15 +120,16 @@ export class Drawer extends React.Component<DrawerProps> {
                 item =>
                   (isDelegate ||
                     !this.getNavigationOptions(item).delegateOnly) && (
-                    <TouchableOpacity
-                      key={item.routeName}
-                      style={style.item}
-                      onPress={this.navigateToScreen(item)}
-                    >
-                      <Typography darkBg variant="screenHeader">
-                        {this.getNavigationOptions(item).drawerLabel}
-                      </Typography>
-                    </TouchableOpacity>
+                    <View key={item.routeName} style={style.itemWrapper}>
+                      <TouchableOpacity
+                        style={style.item}
+                        onPress={this.navigateToScreen(item)}
+                      >
+                        <Typography darkBg variant="screenHeader">
+                          {this.getNavigationOptions(item).drawerLabel}
+                        </Typography>
+                      </TouchableOpacity>
+                    </View>
                   ),
               )}
             </ScrollView>
