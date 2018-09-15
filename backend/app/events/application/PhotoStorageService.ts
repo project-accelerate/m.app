@@ -5,11 +5,13 @@ import { S3Client } from '../../common/external/S3Client'
 import { UUIDProvider } from '../../common/UUIDProvider'
 import { Photo } from '../domain/Photo'
 import { FileUpload } from 'apollo-upload-server'
+import sharp from 'sharp'
 
 interface SavePhotoProps {
   stream: Readable
   mimetype: string
   encoding: string
+  isPortrait?: boolean
 }
 
 @Service()
@@ -18,10 +20,12 @@ export class PhotoStorageService {
 
   static async saveUploadedPhoto(
     service: PhotoStorageService,
-    photo?: FileUpload,
+    photoUpload?: FileUpload,
+    opts?: { isPortrait?: boolean },
   ) {
-    if (photo) {
-      return service.savePhoto(await photo)
+    if (photoUpload) {
+      const photo: SavePhotoProps = await photoUpload
+      return service.savePhoto({ ...photo, ...opts })
     }
 
     return undefined
@@ -29,7 +33,17 @@ export class PhotoStorageService {
 
   async savePhoto(photo: SavePhotoProps) {
     const id = this.generateId(photo.mimetype)
-    await this.s3.putObject(this.getS3Key(id), photo.stream, photo)
+    await this.s3.putObject(
+      this.getS3Key(id),
+      photo.stream.pipe(
+        this.resize({
+          width: 1024,
+          height: 1024,
+          isPortrait: photo.isPortrait,
+        }),
+      ),
+      photo,
+    )
 
     return id
   }
@@ -49,6 +63,17 @@ export class PhotoStorageService {
 
   getPhotoUrl(id: string) {
     return this.s3.objectUrl(this.getS3Key(id))
+  }
+
+  private resize(opts: {
+    width: number
+    height: number
+    isPortrait?: boolean
+  }) {
+    return sharp()
+      .resize(opts.width, opts.height)
+      .min()
+      .crop(opts.isPortrait ? sharp.strategy.attention : sharp.strategy.entropy)
   }
 
   private getS3Key(id: string) {
