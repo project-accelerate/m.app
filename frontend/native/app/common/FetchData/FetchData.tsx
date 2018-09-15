@@ -50,6 +50,10 @@ export function createFetchData<Data, Params>({ query }: FetchDataOpts) {
           variables={variables}
         >
           {({ data, loading, client, error }) => {
+            if (data && Object.keys(data).length > 0) {
+              return children({ data, client })
+            }
+
             if (error) {
               return (
                 <ErrorView
@@ -59,11 +63,8 @@ export function createFetchData<Data, Params>({ query }: FetchDataOpts) {
                 />
               )
             }
-            if (!data || Object.keys(data).length === 0) {
-              return <LoadingOverlay darkBg={this.props.darkBg} />
-            }
 
-            return children({ data, client })
+            return <LoadingOverlay darkBg={this.props.darkBg} />
           }}
         </Query>
       )
