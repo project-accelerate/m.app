@@ -35,6 +35,10 @@ const storyFiles = [
     name: 'common > ErrorView',
     source: require('./app/common/ErrorView/ErrorView.stories'),
   },
+  {
+    name: 'twt > Settings',
+    source: require('./app/twt/Settings/Settings.stories'),
+  },
 ]
 
 const expobook = createExpo()
