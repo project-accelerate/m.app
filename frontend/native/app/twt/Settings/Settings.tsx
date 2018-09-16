@@ -34,23 +34,20 @@ export class Settings extends React.Component<SettingsProps> {
       <Rows>
         <Header>Privacy</Header>
         <Description>
-          <Paragraphs>
-            <Typography>
-              Information that you provide to us will be used to communicate
-              with you about Momentum's campaigns, campaigns we support, and how
-              you can support and be part of them.
-            </Typography>
-            <Typography>
-              If you prefer, you can opt out and we’ll remove all data
-              associated with you in this app. For more information please see
-              our{' '}
-              <Link accent href="https://peoplesmomentum.com/privacy-policy/">
-                privacy policy
-              </Link>.
-            </Typography>
-            <Spacing />
-          </Paragraphs>
+          <Typography>
+            Information that you provide to us will be used to communicate with
+            you about Momentum's campaigns, campaigns we support, and how you
+            can support and be part of them.
+          </Typography>
+          <Typography>
+            If you prefer, you can opt out and we’ll remove all data associated
+            with you in this app. For more information please see our{' '}
+            <Link accent href="https://peoplesmomentum.com/privacy-policy/">
+              privacy policy
+            </Link>.
+          </Typography>
         </Description>
+        <Spacing />
         <Rows center>
           <ActionButton action={this.props.onOptOut}>Opt out</ActionButton>
         </Rows>
@@ -72,7 +69,7 @@ function Header(props: React.Props<{}>) {
 function Description(props: React.Props<{}>) {
   return (
     <View style={styles.description}>
-      <Typography variant="body">{props.children}</Typography>
+      <Paragraphs variant="body">{props.children}</Paragraphs>
     </View>
   )
 }
