@@ -1,6 +1,6 @@
 import React from 'react'
-import { SettingsScreen } from './SettingsScreen'
+import { Settings } from './Settings'
 
 export const stories = {
-  Screen: () => <SettingsScreen />,
+  Basic: () => <Settings onOptOut={async () => {}} />,
 }

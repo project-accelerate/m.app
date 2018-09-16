@@ -25,24 +25,15 @@ declare module 'react-native-expo-image-cache' {
   >
 }
 
-declare module 'react-native-size-matters' {
-  export function scale(size: number): number
-  export function verticalScale(size: number): number
-  export function moderateScale(size: number, factor?: number): number
-
-  type NamedStyles<T> = {
-    [P in keyof T]:
-      | ReactNative.ViewStyle
-      | ReactNative.TextStyle
-      | ReactNative.ImageStyle
-  }
-  type Scaled<T> = {
-    [P in keyof T]: T[P] extends number ? T[P] | string : T[P]
+declare module 'react-native-root-toast' {
+  interface ToastProps {
+    shadowColor?: string
+    textColor?: string
+    position?: number
+    backgroundColor?: string
   }
 
-  export namespace ScaledSheet {
-    export function create<T extends NamedStyles<T>>(
-      stylesObject: T,
-    ): { [P in keyof T]: Scaled<ReactNative.RegisteredStyle<T[P]>> }
+  export default class Toast {
+    static show(message: string, props?: ToastProps): void
   }
 }

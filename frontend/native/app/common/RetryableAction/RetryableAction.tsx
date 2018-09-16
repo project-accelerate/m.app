@@ -10,6 +10,7 @@ interface RetryableActionProps<Params> {
   preserve?: boolean
   fullscreen?: boolean
   darkBg?: boolean
+  onCompleted?: () => void
   children?: (props: { pending: boolean }) => React.ReactNode
 }
 
@@ -48,6 +49,10 @@ export class RetryableAction<Params> extends React.Component<
           pending: false,
           errorState: undefined,
         })
+      }
+
+      if (this.props.onCompleted) {
+        this.props.onCompleted()
       }
     } catch (error) {
       this.setState({

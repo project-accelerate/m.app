@@ -12,6 +12,7 @@ export interface ErrorViewProps {
   isRetrying: boolean
   onRetry: (event: RetryErrorEvent) => void
   error: Partial<ApolloError>
+  darkBg?: boolean
 }
 
 interface ErrorViewState {
@@ -76,21 +77,33 @@ export class ErrorView extends React.Component<ErrorViewProps, ErrorViewState> {
     }
 
     if (this.props.isRetrying) {
-      return <LoadingOverlay />
+      return <LoadingOverlay darkBg={this.props.darkBg} />
     }
 
     return (
       <View style={style.root}>
         <View>
-          <Typography style={style.item} variant="display">
+          <Typography
+            darkBg={this.props.darkBg}
+            style={style.item}
+            variant="display"
+          >
             Sorry, something went wrong
           </Typography>
 
-          <Typography style={style.item} variant="body">
+          <Typography
+            darkBg={this.props.darkBg}
+            style={style.item}
+            variant="body"
+          >
             {this.helpText}
           </Typography>
 
-          <Button variant="inline" onPress={this.handleRetry}>
+          <Button
+            darkBg={this.props.darkBg}
+            variant="inline"
+            onPress={this.handleRetry}
+          >
             Try again
           </Button>
         </View>

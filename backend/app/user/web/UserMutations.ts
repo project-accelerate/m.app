@@ -6,11 +6,11 @@ import {
   Arg,
   FieldResolver,
   Ctx,
+  Root,
 } from 'type-graphql'
 import { UserAdminService } from 'backend/app/user/application/UserAdminService'
-import { GraphQLBoolean } from 'graphql'
-import { MutationRequest } from 'backend/app/common/resolverUtils'
-import { CreateUserRequest, User } from 'backend/app/user/domain/User'
+import { UserRepository } from 'backend/app/user/external/UserRepository'
+import { User } from 'backend/app/user/domain/User'
 
 @ObjectType()
 export class UserMutation {
@@ -19,7 +19,10 @@ export class UserMutation {
 
 @Resolver(() => UserMutation)
 export class UserMutationResolver {
-  constructor(private userAdminService: UserAdminService) {}
+  constructor(
+    private userAdminService: UserAdminService,
+    private userRepository: UserRepository,
+  ) {}
 
   @Mutation()
   mutateUser(@Arg('id') id: string): UserMutation {
@@ -27,15 +30,8 @@ export class UserMutationResolver {
   }
 
   @FieldResolver(() => User)
-  async update(
-    @Ctx() user: UserMutation,
-    @MutationRequest(() => CreateUserRequest)
-    change: CreateUserRequest,
-  ): Promise<User> {
-    await this.userAdminService.update(user.id, change)
-    return {
-      id: user.id,
-      ...change,
-    }
+  async privacyOptOut(@Root() user: UserMutation): Promise<User> {
+    await this.userAdminService.update(user.id, { email: '' })
+    return this.userRepository.findOneRequired({ id: user.id })
   }
 }

@@ -7,11 +7,13 @@ import {
   TouchableHighlight,
   Text,
   TouchableOpacity,
+  ActivityIndicator,
+  GestureResponderEvent,
 } from 'react-native'
 import { theme } from '../../../theme'
 import { Typography } from '../Typography/Typography'
 import { FontAwesome } from '@expo/vector-icons'
-import { ScaledSheet } from 'react-native-size-matters'
+import { ScaledSheet, moderateScale } from 'react-native-size-matters'
 
 const buttonStyle = ScaledSheet.create({
   content: {
@@ -29,10 +31,7 @@ const buttonStyle = ScaledSheet.create({
   standard: {
     paddingVertical: theme.spacing.level(1),
     paddingHorizontal: theme.spacing.level(2),
-  },
-  small: {
-    paddingVertical: theme.spacing.level(0.5),
-    paddingHorizontal: theme.spacing.level(2),
+    minWidth: moderateScale(60),
   },
   inline: {
     padding: 0,
@@ -81,6 +80,7 @@ interface ButtonProps extends TouchableHighlightProps {
   variant?: 'standard' | 'inline'
   darkBg?: boolean
   icon?: string
+  pending?: boolean
 }
 
 export function Button({
@@ -90,6 +90,7 @@ export function Button({
   disabled,
   icon,
   darkBg,
+  pending,
   ...props
 }: ButtonProps) {
   const inline = variant === 'inline'
@@ -106,11 +107,11 @@ export function Button({
       {...props}
     >
       <View style={buttonStyle.content}>
-        {icon ? (
+        {!pending && icon ? (
           <FontAwesome
             name={icon}
             style={buttonStyle.icon}
-            size={variant === 'standard' ? 24 : 18}
+            size={moderateScale(24)}
             color={
               inline && !darkBg ? theme.pallete.accent : theme.pallete.white
             }
@@ -118,15 +119,78 @@ export function Button({
         ) : (
           undefined
         )}
-        <Typography
-          variant="action"
-          darkBg={!inline || darkBg}
-          accent={inline}
-          center
-        >
-          {children}
-        </Typography>
+        {!pending && (
+          <Typography
+            variant="action"
+            darkBg={!inline || darkBg}
+            accent={inline}
+            center
+          >
+            {children}
+          </Typography>
+        )}
+        {pending && (
+          <ActivityIndicator
+            size="small"
+            color={
+              (inline && !darkBg && theme.pallete.accent) || theme.pallete.white
+            }
+          />
+        )}
       </View>
     </ButtonType>
   )
+}
+
+interface ActionButtonProps extends ButtonProps {
+  action: () => Promise<any>
+}
+
+interface ActionButtonState {
+  pending: boolean
+}
+export class ActionButton extends React.Component<
+  ActionButtonProps,
+  ActionButtonState
+> {
+  state = { pending: false }
+  unmounted = false
+
+  handlePressed = async (event: GestureResponderEvent) => {
+    if (this.state.pending) {
+      return
+    }
+
+    if (this.props.onPress) {
+      this.props.onPress(event)
+    }
+
+    if (!event.defaultPrevented) {
+      this.setState({ pending: true })
+
+      try {
+        await this.props.action()
+      } finally {
+        if (!this.unmounted) {
+          this.setState({ pending: false })
+        }
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    this.unmounted = true
+  }
+
+  render() {
+    const { pending, action, onPress, ...props } = this.props
+
+    return (
+      <Button
+        {...props}
+        pending={this.state.pending || pending}
+        onPress={this.handlePressed}
+      />
+    )
+  }
 }
