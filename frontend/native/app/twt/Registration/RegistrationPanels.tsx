@@ -139,20 +139,7 @@ export function RegistrationAskEmailPanel(props: RegistrationStageProps) {
 }
 
 export function RegistrationBg({ children }: React.Props<{}>) {
-  return (
-    <View style={styles.bg}>
-      {children}
-
-      <SafeAreaView style={styles.privacy}>
-        <Typography variant="body" darkBg center>
-          By using this app you agree to our{' '}
-          <Link href="https://peoplesmomentum.com/privacy-policy/">
-            Privacy Policy
-          </Link>
-        </Typography>
-      </SafeAreaView>
-    </View>
-  )
+  return <View style={styles.bg}>{children}</View>
 }
 
 function RegistrationPanel({ children }: React.Props<{}>) {
