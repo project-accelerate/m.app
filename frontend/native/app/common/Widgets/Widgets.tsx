@@ -25,6 +25,8 @@ import { Typography } from '../Typography/Typography'
 import { Constants } from 'expo'
 import { CachedImage } from './CachedImage'
 import { moderateScale } from 'react-native-size-matters'
+import Toast from 'react-native-root-toast'
+import { HEADER_HEIGHT } from '../Screen/HeaderBar'
 
 const FieldStyle = StyleSheet.create({
   field: {
@@ -305,4 +307,12 @@ export function Columns({ style, center, children, flex }: GridProps) {
       {children}
     </View>
   )
+}
+
+export function notifyUser(message: string) {
+  Toast.show(message, {
+    textColor: theme.pallete.white,
+    backgroundColor: theme.pallete.accent,
+    position: HEADER_HEIGHT + theme.spacing.level(2),
+  })
 }

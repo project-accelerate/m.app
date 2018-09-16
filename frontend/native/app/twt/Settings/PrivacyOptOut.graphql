@@ -1,0 +1,8 @@
+mutation PrivacyOptOut($id: String!) {
+  mutateUser(id: $id) {
+    privacyOptOut {
+      id
+      email
+    }
+  }
+}

@@ -10,7 +10,7 @@ export class UserAdminService {
     return this.userRepository.insert(user)
   }
 
-  async update(id: string, change: CreateUserRequest) {
+  async update(id: string, change: Partial<CreateUserRequest>) {
     this.userRepository.update(id, change)
   }
 }

@@ -200,6 +200,30 @@ export interface RegisterDeviceMutation {
   }
 }
 
+export interface PrivacyOptOutMutationVariables {
+  id: string
+}
+
+export interface PrivacyOptOutMutation {
+  mutateUser: {
+    privacyOptOut: {
+      id: string
+      email: string | null
+    }
+  }
+}
+
+export interface UserSettingsQueryVariables {
+  id: string
+}
+
+export interface UserSettingsQuery {
+  user: {
+    id: string
+    email: string | null
+  }
+}
+
 export interface SpeakerDetailScreenQueryVariables {
   id: string
 }

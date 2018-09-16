@@ -37,6 +37,7 @@
     "react-native-markdown-view": "^1.1.4",
     "react-native-paper": "^2.0.0-alpha.7",
     "react-native-parallax-header": "^1.0.6",
+    "react-native-root-toast": "^3.0.1",
     "react-native-snap-carousel": "^3.7.2",
     "react-native-typescript-transformer": "^1.2.10",
     "react-navigation": "^2.5.5",

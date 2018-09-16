@@ -2,25 +2,26 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { NavigationScreenOptions } from 'react-navigation'
 import { BasicScreen } from '../../common/Screen/BasicScreen'
-import { Rows, Spacing, FormField, Columns } from '../../common/Widgets/Widgets'
+import {
+  LoadingOverlay,
+  notifyUser,
+  Spacing,
+} from '../../common/Widgets/Widgets'
 import {
   Typography,
   Paragraphs,
   Link,
 } from '../../common/Typography/Typography'
-import { theme } from '../../../theme'
-import { Formik } from 'formik'
-import { Button } from '../../common/Butttons/Buttons'
 import { Background } from '../../common/Layouts/Layouts'
+import { Settings } from './Settings'
+import { settings } from './settingsState'
+import { createStateConnector } from '../../../state'
+import { registration } from '../Registration/registrationState'
+import Toast from 'react-native-root-toast'
 
-const styles = StyleSheet.create({
-  header: {
-    padding: theme.spacing.level(1),
-  },
-  description: {
-    padding: theme.spacing.level(1),
-  },
-})
+const Connect = createStateConnector(() => ({
+  userId: registration.selectors.userId,
+}))
 
 export class SettingsScreen extends React.Component {
   static navigationOptions: NavigationScreenOptions = {
@@ -30,64 +31,23 @@ export class SettingsScreen extends React.Component {
 
   render() {
     return (
-      <BasicScreen>
-        <Background solid>
-          <Rows>
-            <Header>Privacy</Header>
-            <Description>
-              <Paragraphs>
-                <Typography>
-                  You gave us your email address when you started using the app.
-                </Typography>
-                <Typography>
-                  We’ll use this to communicate with you about Momentum's
-                  campaigns, campaigns we support, and how you can support and
-                  be part of them.
-                </Typography>
-                <Typography>
-                  If you prefer, you can opt out and we’ll remove this data. For
-                  more information please see our{' '}
-                  <Link accent href="">
-                    privacy policy
-                  </Link>.
-                </Typography>
-                <Spacing />
-              </Paragraphs>
-            </Description>
-            <Rows center>
-              <Button>Opt out</Button>
-            </Rows>
-          </Rows>
-        </Background>
-      </BasicScreen>
+      <Connect>
+        {({ userId }) => (
+          <BasicScreen>
+            <Background solid>
+              <Spacing level={2} />
+              <Settings
+                onOptOut={async () => {
+                  await settings.privacyOptOut({ id: userId })
+                  await new Promise(resolve => setTimeout(resolve, 2000))
+
+                  notifyUser('Your settings have been updated')
+                }}
+              />
+            </Background>
+          </BasicScreen>
+        )}
+      </Connect>
     )
   }
-}
-
-function Header(props: React.Props<{}>) {
-  return (
-    <View style={styles.header}>
-      <Typography accent variant="cardTitle">
-        {props.children}
-      </Typography>
-    </View>
-  )
-}
-
-function Description(props: React.Props<{}>) {
-  return (
-    <View style={styles.description}>
-      <Typography variant="body">{props.children}</Typography>
-    </View>
-  )
-}
-
-function Toggle(props: { value: true; children?: React.ReactNode }) {
-  return (
-    <View style={styles.header}>
-      <Typography darkBg variant="cardTitle">
-        {props.children}
-      </Typography>
-    </View>
-  )
 }

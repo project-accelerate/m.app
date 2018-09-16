@@ -13,6 +13,7 @@ import { CalendarScreen } from './app/twt/Calendar/CalendarScreen'
 import { theme } from './theme'
 import { DevPanel } from './devtool/DevPanel'
 import { VotesScreen } from './app/twt/Event/VotesScreen'
+import { SettingsScreen } from './app/twt/Settings/SettingsScreen'
 
 export interface RouteComponent extends React.ComponentClass<any> {
   navigationOptions:
@@ -78,6 +79,7 @@ export class Routes {
     ...this.createRootNavigator(TimetableScreen, 'TimetableScreen'),
     ...this.createRootNavigator(CalendarScreen, 'CalendarScreen'),
     ...this.createRootNavigator(VotesScreen, 'VotesScreen'),
+    ...this.createRootNavigator(SettingsScreen, 'SettingsScreen'),
     ...(__DEV__ ? this.createRootNavigator(DevPanel, 'DevPanel') : {}),
   }
 
