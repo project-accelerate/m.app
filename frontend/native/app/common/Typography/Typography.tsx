@@ -32,7 +32,7 @@ const TypographyVariants = StyleSheet.create({
     fontSize: moderateScale(15),
   },
   cardTitleVariant: {
-    fontFamily: 'open-sans-light',
+    fontFamily: 'open-sans-semibold',
     fontSize: moderateScale(15),
   },
   tiny: {
