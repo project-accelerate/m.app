@@ -86,7 +86,7 @@ export function EventDetail({
   canSave,
 }: EventDetailPageProps) {
   return (
-    <ScrollView>
+    <View>
       <View style={style.header}>
         <Typography darkBg variant="caption">
           {event.venue.name}
@@ -158,6 +158,6 @@ export function EventDetail({
         <Br />
         {event.venue.address.streetAddress}, {event.venue.address.postcode}
       </Typography>
-    </ScrollView>
+    </View>
   )
 }
