@@ -63,6 +63,7 @@ export function Home({ time, events, onEventPress }: HomeProps) {
   return (
     <ImageHeaderScreen
       noBackButton
+      parralax
       containerStyle={style.parallaxContainer}
       image={twt}
       title={

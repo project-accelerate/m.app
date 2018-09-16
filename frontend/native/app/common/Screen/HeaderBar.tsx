@@ -15,6 +15,8 @@ import {
   StyleSheet,
   StatusBar,
   Dimensions,
+  StyleProp,
+  ViewStyle,
 } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons'
 import { Typography } from '../Typography/Typography'
@@ -23,6 +25,7 @@ import { moderateScale } from 'react-native-size-matters'
 interface HeaderBarProps extends Partial<NavigationInjectedProps> {
   floating?: boolean
   noBackButton?: boolean
+  style?: StyleProp<ViewStyle>
 }
 
 export const HEADER_CONTENT_HEIGHT = moderateScale(48, 0.25)
@@ -38,15 +41,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: HEADER_HEIGHT,
     maxWidth: Dimensions.get('screen').width,
+    backgroundColor: theme.pallete.accent,
   },
   header: {
     maxWidth: Dimensions.get('screen').width - 2 * (2 * PADDING + ICONSIZE),
   },
   button: {
     padding: PADDING,
-  },
-  notFloating: {
-    backgroundColor: theme.pallete.accent,
   },
   buttonIcon: {
     textShadowColor: theme.pallete.black,
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
 export const HeaderBar = withNavigation(function HeaderBar({
   navigation,
   noBackButton,
-  floating,
+  style,
 }: HeaderBarProps) {
   const openDrawer = () => navigation!.openDrawer()
   const goBack = () => {
@@ -78,7 +79,7 @@ export const HeaderBar = withNavigation(function HeaderBar({
   const isTopLevel = Routes.get().isTopLevel(state.routeName)
 
   return (
-    <View style={[styles.menu, !floating && styles.notFloating]}>
+    <View style={[styles.menu, style]}>
       <TouchableOpacity style={styles.button} onPress={goBack}>
         {!noBackButton && (
           <FontAwesome
