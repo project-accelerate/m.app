@@ -33,9 +33,10 @@ import { calendar } from '../Calendar/calendarState'
 import { Touchable } from '../../common/Widgets/Widgets'
 import { format, isSameDay } from 'date-fns'
 import Logo from '../../../assets/Mlogo'
-import { Br, Markdown } from '../../common/Typography/Typography'
+import { Br, Markdown, Typography } from '../../common/Typography/Typography'
 import { MarkdownView } from 'react-native-markdown-view'
 import { moderateScale } from 'react-native-size-matters'
+import { timeOf, weekdayOf } from '../../common/date-formats'
 
 const style = StyleSheet.create({
   parallaxContainer: {
@@ -86,10 +87,13 @@ export function Home({ time, events, onEventPress }: HomeProps) {
                   <CardSubheader>
                     {isSameDay(time, e.startTime)
                       ? 'Today'
-                      : format(e.startTime, 'ddd')}{' '}
-                    {format(e.startTime, 'HH:MM')}
+                      : weekdayOf(e.startTime)}{' '}
+                    {timeOf(e.startTime)}
                   </CardSubheader>
                   <CardHeader>{e.name}</CardHeader>
+                  <CardContent>
+                    <Typography variant="body">{e.venueName}</Typography>
+                  </CardContent>
                 </Card>
               </TouchableOpacity>
             ))}
