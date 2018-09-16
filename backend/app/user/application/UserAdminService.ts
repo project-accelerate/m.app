@@ -9,4 +9,8 @@ export class UserAdminService {
   async addUser(user: CreateUserRequest): Promise<User> {
     return this.userRepository.insert(user)
   }
+
+  async update(id: string, change: CreateUserRequest) {
+    this.userRepository.update(id, change)
+  }
 }

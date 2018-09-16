@@ -24,13 +24,5 @@ export class User implements UserProps {
   @Field({ nullable: true })
   email?: string
 
-  @Field()
-  acceptsNotificationType(
-    @Arg('type', () => NotificationType)
-    notificationType: NotificationType,
-  ): boolean {
-    return this.optedIntoNotifications
-  }
-
   optedIntoNotifications!: boolean
 }
