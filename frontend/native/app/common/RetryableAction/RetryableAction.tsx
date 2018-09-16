@@ -70,6 +70,7 @@ export class RetryableAction<Params> extends React.Component<
       return (
         <ErrorView
           error={this.state.errorState.error}
+          darkBg={this.props.darkBg}
           isRetrying={this.state.pending}
           onRetry={this.state.errorState.retry}
         />
