@@ -62,9 +62,7 @@ export const HeaderBar = withNavigation(function HeaderBar({
   const openDrawer = () => navigation!.openDrawer()
   const goBack = () => {
     if (isTopLevel) {
-      navigation!.navigate({
-        routeName: HomeScreen.name,
-      })
+      Routes.get().goHome(navigation!)
     } else {
       navigation!.goBack()
     }
