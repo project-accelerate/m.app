@@ -12,6 +12,7 @@ import { theme } from '../../../theme'
 import { Typography } from '../Typography/Typography'
 import { Card, CardHeader, CardContent } from '../Widgets/Card'
 import { Background } from '../Layouts/Layouts'
+import { moderateScale } from 'react-native-size-matters'
 
 const ConnectionListStyle = StyleSheet.create({
   sectionSeparator: {},
@@ -29,6 +30,10 @@ const ConnectionListStyle = StyleSheet.create({
   },
   headerText: {
     color: theme.pallete.white,
+  },
+  list: {
+    // hack hack hack
+    marginBottom: moderateScale(100),
   },
 })
 
@@ -107,6 +112,7 @@ export class ConnectionList<T> extends React.Component<ConnectionListProps<T>> {
 
     return (
       <SectionList
+        style={ConnectionListStyle.list}
         sections={this.dataSections}
         renderItem={this.renderItem}
         keyExtractor={item => item.node.id}

@@ -111,7 +111,8 @@ export class CalendarView extends React.Component<
 
   get viewBounds() {
     return {
-      height: this.totalHours * PIXELS_PER_HOUR,
+      // hack hack hack
+      height: (this.totalHours + 2) * PIXELS_PER_HOUR,
     }
   }
 
