@@ -48,9 +48,7 @@ export class Routes {
     navigation.push(this.findKeyFor(screen), params)
   }
 
-  get home() {
-    return this.findKeyFor(HomeScreen)
-  }
+  home = 'HomeScreen'
 
   goHome(navigation: NavigationScreenProp<any, any>) {
     navigation.navigate(this.home)
@@ -75,7 +73,7 @@ export class Routes {
   }
 
   topLevelRoutes = {
-    ...this.createRootNavigator(HomeScreen, 'HomeScreen'),
+    ...this.createRootNavigator(HomeScreen, this.home),
     ...this.createRootNavigator(TimetableScreen, 'TimetableScreen'),
     ...this.createRootNavigator(CalendarScreen, 'CalendarScreen'),
     ...this.createRootNavigator(VotesScreen, 'VotesScreen'),
