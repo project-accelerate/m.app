@@ -28,17 +28,9 @@ export class CalendarScreen extends React.Component<
     headerTitle: 'Calendar',
   }
 
-  // HACK: Hardcoodeed yeah
-  days = [
-    new Date('2018-09-22'),
-    new Date('2018-09-23'),
-    new Date('2018-09-24'),
-    new Date('2018-09-25'),
-  ]
-
   state: CalendarScreenState = {
     selectedDate:
-      this.days.find(day => isSameDay(day, new Date())) || this.days[0],
+      calendar.days.find(day => isSameDay(day, new Date())) || calendar.days[0],
   }
 
   handlePress = (event?: calendar.SavedEventDetails) => {
@@ -64,7 +56,7 @@ export class CalendarScreen extends React.Component<
             <SavedEventCalendar
               events={events}
               activeDay={this.state.selectedDate}
-              dayOptions={this.days}
+              dayOptions={calendar.days}
               onDayChanged={this.handleDayChange}
               onEventPress={id =>
                 this.handlePress(events.find(e => e.id === id))

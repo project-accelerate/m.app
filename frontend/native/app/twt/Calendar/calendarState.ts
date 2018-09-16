@@ -58,6 +58,14 @@ export namespace calendar {
   export const startHourOfDay = 4
   const alertMinutesBefore = 30
 
+  // HACK: Hardcoodeed yeah
+  export const days = [
+    new Date('2018-09-22'),
+    new Date('2018-09-23'),
+    new Date('2018-09-24'),
+    new Date('2018-09-25'),
+  ]
+
   interface State {
     [eventId: string]: SavedEvent | undefined
   }
