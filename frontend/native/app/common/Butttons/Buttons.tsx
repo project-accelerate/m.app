@@ -14,6 +14,8 @@ import { theme } from '../../../theme'
 import { Typography } from '../Typography/Typography'
 import { FontAwesome } from '@expo/vector-icons'
 import { ScaledSheet, moderateScale } from 'react-native-size-matters'
+import { notifyUser } from '../Widgets/Widgets'
+import { ApolloError } from 'apollo-client'
 
 const buttonStyle = ScaledSheet.create({
   content: {
@@ -169,6 +171,14 @@ export class ActionButton extends React.Component<
 
       try {
         await this.props.action()
+      } catch (err) {
+        if (err.networkError) {
+          notifyUser('Couldn’t connect to the server. Please try again later.')
+        } else {
+          notifyUser(
+            'Sorry, that didn’t work. It looks like a problem on our end. Please try again later.',
+          )
+        }
       } finally {
         if (!this.unmounted) {
           this.setState({ pending: false })
