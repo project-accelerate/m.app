@@ -78,8 +78,6 @@ export class Drawer extends React.Component<DrawerProps> {
     )
   }
 
-  home = this.props.items.find(x => x.routeName === HomeScreen.name)!
-
   navigateToScreen = (route: Route) => () => {
     this.props.navigation.closeDrawer()
     this.props.navigation.navigate(route.routeName)
@@ -133,7 +131,7 @@ export class Drawer extends React.Component<DrawerProps> {
               )}
             </ScrollView>
             <TouchableOpacity
-              onPress={this.navigateToScreen(this.home)}
+              onPress={() => Routes.get().goHome(this.props.navigation)}
               style={style.footer}
             >
               <Logo

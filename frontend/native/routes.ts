@@ -3,6 +3,7 @@ import {
   NavigationScreenOptions,
   NavigationScreenProps,
   NavigationScreenProp,
+  NavigationProp,
 } from 'react-navigation'
 import { HomeScreen } from './app/twt/Home/HomeScreen'
 import { TimetableScreen } from './app/twt/Event/TimetableScreen'
@@ -44,6 +45,14 @@ export class Routes {
     params?: any,
   ): void {
     navigation.push(this.findKeyFor(screen), params)
+  }
+
+  get home() {
+    return this.findKeyFor(HomeScreen)
+  }
+
+  goHome(navigation: NavigationScreenProp<any, any>) {
+    navigation.navigate(this.home)
   }
 
   getNavigationOptions(
