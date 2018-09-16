@@ -113,26 +113,30 @@ export function EventDetail({
         <Typography variant="primary">{event.introduction}</Typography>
       </View>
 
-      <Typography style={style.heading} variant="display">
-        Speakers
-      </Typography>
+      {event.speakers.edges.length > 0 && (
+        <View>
+          <Typography style={style.heading} variant="display">
+            Speakers
+          </Typography>
 
-      <View style={{ flexWrap: 'wrap', flexDirection: 'row' }}>
-        {event.speakers.edges.map(speaker => (
-          <TouchableOpacity
-            key={speaker.node.id}
-            onPress={() => onSpeakerPress({ speaker: speaker.node })}
-          >
-            <ProfileImage size="halfSquare" image={speaker.node.photo}>
-              <Banner>
-                <Typography style={style.speakerName} variant="body">
-                  {speaker.node.name}
-                </Typography>
-              </Banner>
-            </ProfileImage>
-          </TouchableOpacity>
-        ))}
-      </View>
+          <View style={{ flexWrap: 'wrap', flexDirection: 'row' }}>
+            {event.speakers.edges.map(speaker => (
+              <TouchableOpacity
+                key={speaker.node.id}
+                onPress={() => onSpeakerPress({ speaker: speaker.node })}
+              >
+                <ProfileImage size="halfSquare" image={speaker.node.photo}>
+                  <Banner>
+                    <Typography style={style.speakerName} variant="body">
+                      {speaker.node.name}
+                    </Typography>
+                  </Banner>
+                </ProfileImage>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+      )}
 
       <Typography style={style.heading} variant="display">
         Venue
