@@ -3,6 +3,7 @@ import {
   RegistrationIsDelegateQuestion,
   RegistrationBg,
   RegistrationAskEmailPanel,
+  AcceptNotificationsPanel,
 } from './RegistrationPanels'
 
 export const stories = {
@@ -17,6 +18,11 @@ export const stories = {
   RegistrationAskEmailPanel: () => (
     <RegistrationBg>
       <RegistrationAskEmailPanel onSkip={console.log} onSubmit={console.log} />
+    </RegistrationBg>
+  ),
+  AcceptNotificationsPanel: () => (
+    <RegistrationBg>
+      <AcceptNotificationsPanel onSkip={console.log} onSubmit={console.log} />
     </RegistrationBg>
   ),
 }

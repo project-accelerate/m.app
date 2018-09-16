@@ -94,10 +94,9 @@ export function Button({
   ...props
 }: ButtonProps) {
   const inline = variant === 'inline'
-  const ButtonType = inline ? TouchableOpacity : TouchableHighlight
 
   return (
-    <ButtonType
+    <TouchableOpacity
       style={[
         buttonStyle.button,
         buttonStyle[variant],
@@ -138,7 +137,7 @@ export function Button({
           />
         )}
       </View>
-    </ButtonType>
+    </TouchableOpacity>
   )
 }
 

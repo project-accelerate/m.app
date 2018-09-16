@@ -17,7 +17,6 @@ import { Settings } from './Settings'
 import { settings } from './settingsState'
 import { createStateConnector } from '../../../state'
 import { registration } from '../Registration/registrationState'
-import Toast from 'react-native-root-toast'
 
 const Connect = createStateConnector(() => ({
   userId: registration.selectors.userId,

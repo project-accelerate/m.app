@@ -3,12 +3,14 @@ import { View, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { Formik, FormikHandlers, FormikProps } from 'formik'
 import * as Yup from 'yup'
 import { Button } from '../../common/Butttons/Buttons'
-import { Typography, Link } from '../../common/Typography/Typography'
-import { Background } from '../../common/Layouts/Layouts'
+import {
+  Typography,
+  Link,
+  Paragraphs,
+} from '../../common/Typography/Typography'
 import { theme } from '../../../theme'
 import { FormField, Spacing, Rows } from '../../common/Widgets/Widgets'
 import { RegistrationStageProps } from './RegistrationContainer'
-import { SafeAreaView } from 'react-navigation'
 
 const styles = StyleSheet.create({
   bg: {
@@ -42,25 +44,26 @@ const styles = StyleSheet.create({
 export function RegistrationIsDelegateQuestion(props: RegistrationStageProps) {
   return (
     <RegistrationPanel>
-      <RegistrationPrompt>Are you a Momentum delegate?</RegistrationPrompt>
+      <RegistrationPrompt>Are you a conference delegate?</RegistrationPrompt>
 
       <RegistrationActions>
         <Button
           style={styles.button}
-          onPress={() => props.onSubmit({ isConferenceDelegate: true })}
-        >
-          Yes
-        </Button>
-        <Button
-          style={styles.button}
           onPress={() => props.onSubmit({ isConferenceDelegate: false })}
         >
-          No
+          I’m not a delegate
+        </Button>
+
+        <Button
+          style={styles.button}
+          onPress={() => props.onSubmit({ isConferenceDelegate: true })}
+        >
+          I am a delegate
         </Button>
       </RegistrationActions>
 
       <RegistrationHelpText>
-        We'll only send you delegate information if you say yes.
+        We'll use this to keep the news and events we send you relevant.
       </RegistrationHelpText>
     </RegistrationPanel>
   )
@@ -70,8 +73,7 @@ export function AcceptNotificationsPanel(props: RegistrationStageProps) {
   return (
     <RegistrationPanel>
       <RegistrationPrompt>
-        Do you want to receive mobile notifications about event updates and
-        conference news?
+        Can we send you mobile notifications during conference?
       </RegistrationPrompt>
 
       <RegistrationActions>
@@ -79,18 +81,19 @@ export function AcceptNotificationsPanel(props: RegistrationStageProps) {
           style={styles.button}
           onPress={() => props.onSubmit({ optedIntoNotifications: false })}
         >
-          No Thanks
+          No
         </Button>
         <Button
           style={styles.button}
           onPress={() => props.onSubmit({ optedIntoNotifications: true })}
         >
-          Yes Please!
+          Yes
         </Button>
       </RegistrationActions>
 
       <RegistrationHelpText>
-        We’ll only be able to send you updates about events if you answer ‘Yes’
+        We’ll use this to keep you notified about important conference news and
+        events.
       </RegistrationHelpText>
     </RegistrationPanel>
   )
@@ -110,27 +113,43 @@ export function RegistrationAskEmailPanel(props: RegistrationStageProps) {
       initialValues={{ email: '' }}
       render={({ handleSubmit, isValid }: FormikProps<{}>) => (
         <RegistrationPanel>
-          <RegistrationPrompt>May we have your email?</RegistrationPrompt>
+          <RegistrationPrompt>
+            Keep in touch after conference
+          </RegistrationPrompt>
 
           <RegistrationActions>
-            <FormField name="email" type="email" placeholder="Email address" />
+            <FormField
+              name="email"
+              type="email"
+              placeholder="Enter your email address"
+            />
           </RegistrationActions>
 
           <RegistrationActions>
             <Button style={styles.button} onPress={props.onSkip}>
-              Skip this time
+              Skip
             </Button>
             <Button
               disabled={!isValid}
               style={styles.button}
               onPress={handleSubmit}
             >
-              Sure, let's go!
+              Keep me updated
             </Button>
           </RegistrationActions>
 
           <RegistrationHelpText>
-            We'll use this to respond to feedback you give about the conference.
+            <Typography>
+              By giving us your email address you are consenting to receive
+              communications about Momentum's campaigns, campaigns we support,
+              and how you can support and be part of them.
+            </Typography>
+            <Typography>
+              For more information please see our{' '}
+              <Link accent href="https://peoplesmomentum.com/privacy-policy/">
+                privacy policy
+              </Link>.
+            </Typography>
           </RegistrationHelpText>
         </RegistrationPanel>
       )}
@@ -161,7 +180,7 @@ function RegistrationPrompt({ children }: React.Props<{}>) {
 }
 
 function RegistrationHelpText({ children }: React.Props<{}>) {
-  return <Typography variant="body">{children}</Typography>
+  return <Paragraphs variant="small">{children}</Paragraphs>
 }
 
 function RegistrationActions({ children }: React.Props<{}>) {

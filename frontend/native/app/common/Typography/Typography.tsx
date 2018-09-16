@@ -66,6 +66,11 @@ const TypographyVariants = StyleSheet.create({
     lineHeight: moderateScale(16),
     fontFamily: 'open-sans-semibold',
   },
+  small: {
+    fontSize: moderateScale(13),
+    lineHeight: moderateScale(19),
+    fontFamily: 'open-sans-light',
+  },
 })
 
 const TypographyStyles = StyleSheet.create({
@@ -90,13 +95,15 @@ const TypographyStyles = StyleSheet.create({
 })
 
 export interface TypographyProps extends TextProps {
-  variant?: keyof typeof TypographyVariants
+  variant?: TypographyVariant
   darkBg?: boolean
   accent?: boolean
   center?: boolean
   children?: React.ReactNode
   style?: StyleProp<TextStyle>
 }
+
+export type TypographyVariant = keyof typeof TypographyVariants
 
 export function Typography({
   variant,
@@ -149,14 +156,20 @@ interface ParagraphsProps {
   style?: StyleProp<ViewStyle>
   textStyle?: StyleProp<TextStyle>
   children?: React.ReactNode
+  variant?: TypographyVariant
 }
 
-export function Paragraphs({ textStyle, style, children }: ParagraphsProps) {
+export function Paragraphs({
+  textStyle,
+  style,
+  children,
+  variant = 'body',
+}: ParagraphsProps) {
   return (
     <View style={style}>
       {React.Children.map(children, (child, i) => (
         <Typography
-          variant="body"
+          variant={variant}
           style={[textStyle, TypographyStyles.paragraph]}
           key={getKey(child) || i}
         >

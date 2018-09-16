@@ -24,9 +24,9 @@ const Connect = createStateConnector(() => ({
 
 const RegistrationWizard = createWizard<RegistrationWizardData>({
   stages: [
+    AcceptNotificationsPanel,
     RegistrationIsDelegateQuestion,
     RegistrationAskEmailPanel,
-    AcceptNotificationsPanel,
   ],
 })
 
