@@ -41,8 +41,9 @@ export class Settings extends React.Component<SettingsProps> {
               you can support and be part of them.
             </Typography>
             <Typography>
-              If you prefer, you can opt out and we’ll remove all data we hold
-              about you. For more information please see our{' '}
+              If you prefer, you can opt out and we’ll remove all data
+              associated with you in this app. For more information please see
+              our{' '}
               <Link accent href="https://peoplesmomentum.com/privacy-policy/">
                 privacy policy
               </Link>.
