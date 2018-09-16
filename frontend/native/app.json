@@ -16,7 +16,7 @@
       "backgroundColor": "#e60000"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 30
     },
     "entryPoint": "./main.js",
     "assetBundlePatterns": ["app/**", "assets/**"],
