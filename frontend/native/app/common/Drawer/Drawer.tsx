@@ -42,6 +42,11 @@ const style = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: theme.pallete.white,
   },
+  firstItemWrapper: {
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
+    borderColor: theme.pallete.white,
+  },
   footer: {
     marginBottom: theme.spacing.level(3),
     alignItems: 'center',
@@ -113,6 +118,20 @@ export class Drawer extends React.Component<DrawerProps> {
                 />
               </TouchableOpacity>
 
+              <View style={style.firstItemWrapper}>
+                <TouchableOpacity
+                  style={style.item}
+                  onPress={() => {
+                    Routes.get().goHome(this.props.navigation)
+                    this.props.navigation.closeDrawer()
+                  }}
+                >
+                  <Typography darkBg variant="screenHeader">
+                    Home
+                  </Typography>
+                </TouchableOpacity>
+              </View>
+
               {this.items.map(
                 item =>
                   (isDelegate ||
@@ -130,16 +149,13 @@ export class Drawer extends React.Component<DrawerProps> {
                   ),
               )}
             </ScrollView>
-            <TouchableOpacity
-              onPress={() => Routes.get().goHome(this.props.navigation)}
-              style={style.footer}
-            >
+            <View style={style.footer}>
               <Logo
                 fill={theme.pallete.white}
                 width={moderateScale(125)}
                 height={moderateScale(25)}
               />
-            </TouchableOpacity>
+            </View>
           </View>
         )}
       </Connect>
