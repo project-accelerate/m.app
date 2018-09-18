@@ -7,10 +7,11 @@ import {
   FieldResolver,
   Ctx,
   Root,
+  InputType,
 } from 'type-graphql'
 import { UserAdminService } from 'backend/app/user/application/UserAdminService'
 import { UserRepository } from 'backend/app/user/external/UserRepository'
-import { User } from 'backend/app/user/domain/User'
+import { User, CreateUserRequest } from 'backend/app/user/domain/User'
 
 @ObjectType()
 export class UserMutation {
@@ -31,7 +32,19 @@ export class UserMutationResolver {
 
   @FieldResolver(() => User)
   async privacyOptOut(@Root() user: UserMutation): Promise<User> {
-    await this.userAdminService.update(user.id, { email: '' })
+    await this.userAdminService.update(user.id, {
+      email: '',
+      consentToContact: false,
+    })
+    return this.userRepository.findOneRequired({ id: user.id })
+  }
+
+  @FieldResolver(() => User)
+  async update(
+    @Root() user: UserMutation,
+    settings: CreateUserRequest,
+  ): Promise<User> {
+    await this.userAdminService.update(user.id, settings)
     return this.userRepository.findOneRequired({ id: user.id })
   }
 }
