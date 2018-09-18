@@ -25,7 +25,7 @@ export namespace theme {
     export const white = '#fff'
     export const transparent = 'rgba(255,255,255,0)'
 
-    export const accent = 'rgb(236,0,0)'
+    export const accent = 'rgb(226,6,19)'
     export const box = 'rgb(240,240,240)'
     export const separator = 'rgb(155,155,155)'
     export const contrast = 'rgba(60,60,60,0.9)'
