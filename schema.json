@@ -717,6 +717,22 @@
               "deprecationReason": null
             },
             {
+              "name": "consentToContact",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "email",
               "description": "",
               "args": [],
@@ -2013,6 +2029,20 @@
               "defaultValue": null
             },
             {
+              "name": "consentToContact",
+              "description": "",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
               "name": "email",
               "description": "",
               "type": {
@@ -2211,6 +2241,22 @@
             },
             {
               "name": "privacyOptOut",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "User",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "update",
               "description": "",
               "args": [],
               "type": {
