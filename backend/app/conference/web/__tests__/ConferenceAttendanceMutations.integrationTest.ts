@@ -14,7 +14,6 @@ describe('registerConferenceAttendance mutation', () => {
         user: {
           optedIntoNotifications: true,
           isDelegate: true,
-          consentToContact: true,
         },
       })
 

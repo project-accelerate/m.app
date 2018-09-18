@@ -99,7 +99,6 @@ export namespace registration {
     return {
       user: {
         optedIntoNotifications,
-        consentToContact: Boolean(email),
         email,
         isDelegate: isConferenceDelegate,
       },

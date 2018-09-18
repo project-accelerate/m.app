@@ -5,7 +5,6 @@ import { NotificationType } from './NotificationType'
 export class CreateUserRequest {
   @Field() optedIntoNotifications!: boolean
   @Field() isDelegate!: boolean
-  @Field() consentToContact!: boolean
   @Field({ nullable: true })
   email?: string
 }
