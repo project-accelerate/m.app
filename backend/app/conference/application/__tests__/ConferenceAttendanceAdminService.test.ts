@@ -20,7 +20,7 @@ describe(ConferenceAttendanceAdminService, () => {
       user: {
         isDelegate: true,
         optedIntoNotifications: true,
-        consentToContact: true,
+        email: 'me@example.com',
       },
     })
 
@@ -36,6 +36,7 @@ describe(ConferenceAttendanceAdminService, () => {
       optedIntoNotifications: true,
       isDelegate: true,
       consentToContact: true,
+      email: 'me@example.com',
     })
   })
 })

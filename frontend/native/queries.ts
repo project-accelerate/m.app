@@ -15,7 +15,6 @@ export interface RegisterConferenceAttendanceRequest {
 export interface CreateUserRequest {
   optedIntoNotifications: boolean
   isDelegate: boolean
-  consentToContact: boolean
   email?: string | null
 }
 
