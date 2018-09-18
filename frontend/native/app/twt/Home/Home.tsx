@@ -11,7 +11,7 @@ import {
   NavigationScreenOptions,
   NavigationInjectedProps,
 } from 'react-navigation'
-import twt from './TWTa_hdr.jpg'
+import twt from '../../../assets/default.jpg'
 import { theme } from '../../../theme'
 import { ImageHeaderScreen } from '../../common/Screen/ImageHeaderScreen'
 import {
