@@ -9,9 +9,6 @@ import {
   Link,
 } from '../../common/Typography/Typography'
 import { theme } from '../../../theme'
-import { Formik } from 'formik'
-import { Button, ActionButton } from '../../common/Butttons/Buttons'
-import { Background } from '../../common/Layouts/Layouts'
 
 const styles = StyleSheet.create({
   header: {
@@ -25,7 +22,8 @@ const styles = StyleSheet.create({
 })
 
 interface SettingsProps {
-  onOptOut: () => Promise<void>
+  consentToContact: boolean
+  onOptOut: () => void
 }
 
 export class Settings extends React.Component<SettingsProps> {
@@ -33,25 +31,42 @@ export class Settings extends React.Component<SettingsProps> {
     return (
       <Rows>
         <Header>Privacy</Header>
+        <PrivacyPanel {...this.props} />
+      </Rows>
+    )
+  }
+}
+
+function PrivacyPanel(props: SettingsProps) {
+  if (props.consentToContact) {
+    return (
+      <Rows>
         <Description>
           <Typography>
             Information that you provide to us will be used to communicate with
             you about Momentum's campaigns, campaigns we support, and how you
             can support and be part of them.
           </Typography>
+
           <Typography>
-            If you prefer, you can opt out and we’ll remove all data associated
-            with you in this app. For more information please see our{' '}
+            If you prefer, you can{' '}
+            <Typography accent onPress={props.onOptOut}>
+              opt out
+            </Typography>{' '}
+            and we’ll remove all data associated with you in this app. For more
+            information please see our{' '}
             <Link accent href="https://peoplesmomentum.com/privacy-policy/">
               privacy policy
             </Link>.
           </Typography>
         </Description>
-        <Spacing />
-        <Rows center>
-          <ActionButton action={this.props.onOptOut}>Opt out</ActionButton>
-        </Rows>
       </Rows>
+    )
+  } else {
+    return (
+      <Description>
+        You have not opted in to being contacted by Momentum.
+      </Description>
     )
   }
 }
