@@ -49,6 +49,7 @@ const style = StyleSheet.create({
     borderColor: theme.pallete.white,
   },
   footer: {
+    marginTop: theme.spacing.level(3),
     marginBottom: theme.spacing.level(3),
     alignItems: 'center',
   },
