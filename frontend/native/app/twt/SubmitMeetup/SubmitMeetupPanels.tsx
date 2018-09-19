@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 export function SubmitMeetupInstructionsPanel(props: any) {
   return (
     <SubmitMeetupPanel>
-      <SubmitMeetupHeading>Host A Meetup</SubmitMeetupHeading>
+      <SubmitMeetupHeading>Host Meetup</SubmitMeetupHeading>
 
       <SubmitMeetupPanelIntroduction>
         <Typography>

@@ -30,9 +30,9 @@ const SubmitMeetupWizard = createWizard<SubmitMeetupWizardData>({
 
 export class SubmitMeetupScreen extends React.Component<NavigationScreenProps> {
   static navigationOptions: NavigationScreenOptions = {
-    headerTitle: 'Host A Meetup',
-    title: 'Host A Meetup',
-    drawerLabel: 'Host A Meetup',
+    headerTitle: 'Host Meetup',
+    title: 'Host Meetup',
+    drawerLabel: 'Host Meetup',
   }
 
   render() {
