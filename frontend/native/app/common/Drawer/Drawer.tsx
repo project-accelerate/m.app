@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  Linking,
 } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons'
 import { NavigationInjectedProps, NavigationActions } from 'react-navigation'
@@ -149,6 +150,7 @@ export class Drawer extends React.Component<DrawerProps> {
                   ),
               )}
             </ScrollView>
+
             <View style={style.footer}>
               <Logo
                 fill={theme.pallete.white}
