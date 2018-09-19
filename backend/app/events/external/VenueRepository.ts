@@ -11,6 +11,9 @@ const config: CrudRepositoryConfig<Venue> = {
   fieldConverters: {
     location: PointField,
   },
+  cache: {
+    ttl: 120_000,
+  },
 }
 
 @Service()

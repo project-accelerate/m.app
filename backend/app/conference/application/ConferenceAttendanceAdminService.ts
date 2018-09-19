@@ -21,11 +21,6 @@ export class ConferenceAttendanceAdminService {
       consentToContact: Boolean(request.user.email),
     })
 
-    console.log({
-      ...request.user,
-      consentToContact: Boolean(request.user.email),
-    })
-
     const device = await this.deviceAdminService.registerDeviceToOwner({
       device: request.device,
       owner: user.id,
