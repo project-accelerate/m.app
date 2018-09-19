@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, View } from 'react-native'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import * as Yup from 'yup'
 
-import { setHours, setMinutes } from 'date-fns'
+import { setHours, format, addHours } from 'date-fns'
 
 import { Formik, FormikProps, FormikErrors } from 'formik'
 
@@ -14,6 +14,7 @@ import { FormField, Spacing } from '../../common/Widgets/Widgets'
 import { Typography, Paragraphs } from '../../common/Typography/Typography'
 import { extendSchema } from 'graphql'
 import { calendar } from '../Calendar/calendarState'
+import { timeOf, longDateOf, weekdayOf } from '../../common/date-formats'
 
 const styles = StyleSheet.create({
   actions: {
@@ -256,7 +257,7 @@ export class SubmitMeetupMeetupDetailsPanel extends React.Component<
           eventDescription: '',
           // TODO: These should update intelligently as the festival goes on.
           eventStartDateTime: this.startDateTime,
-          eventEndDateTime: this.startDateTime,
+          eventEndDateTime: addHours(this.startDateTime, 1),
           eventLocation: '',
         }}
         validationSchema={Yup.object().shape({
@@ -306,10 +307,12 @@ export class SubmitMeetupMeetupDetailsPanel extends React.Component<
           touched,
           values,
           setFieldValue,
+          setFieldTouched,
         }: FormikProps<SubmitMeetupMeetupDetailsPanelValues>) => (
           <SubmitMeetupPanel>
             <SubmitMeetupHeading>Meetup Details</SubmitMeetupHeading>
             {console.log('FORM VALUES', values)}
+            {console.log('FORM TOUCHED', touched)}
             <Paragraphs>
               <Typography>Now enter the details of your meetup.</Typography>
 
@@ -345,14 +348,18 @@ export class SubmitMeetupMeetupDetailsPanel extends React.Component<
             />
 
             <Spacing level={2} />
-
+            <Typography>
+              {weekdayOf(values.eventStartDateTime)}{' '}
+              {timeOf(values.eventStartDateTime)}
+            </Typography>
             <Button variant="small" onPress={this.showStartDateTimePicker}>
               Set Start Time
             </Button>
             <DateTimePicker
               isVisible={this.state.eventStartDateTimePickerOpen}
-              onConfirm={(startDateTime: Date) => {
-                setFieldValue('eventStartDateTime', startDateTime)
+              onConfirm={(eventStartDateTime: Date) => {
+                setFieldTouched('eventStartDateTime', true)
+                setFieldValue('eventStartDateTime', eventStartDateTime)
                 this.hideDateTimePicker()
               }}
               onCancel={this.hideDateTimePicker}
@@ -372,13 +379,18 @@ export class SubmitMeetupMeetupDetailsPanel extends React.Component<
 
             <Spacing level={4} />
 
+            <Typography>
+              {weekdayOf(values.eventEndDateTime)}{' '}
+              {timeOf(values.eventEndDateTime)}
+            </Typography>
             <Button variant="small" onPress={this.showEndDateTimePicker}>
               Set End Time
             </Button>
             <DateTimePicker
               isVisible={this.state.eventEndDateTimePickerOpen}
-              onConfirm={(startDateTime: Date) => {
-                setFieldValue('eventEndDateTime', startDateTime)
+              onConfirm={(eventEndDateTime: Date) => {
+                setFieldTouched('eventEndDateTime', true, true)
+                setFieldValue('eventEndDateTime', eventEndDateTime)
                 this.hideDateTimePicker()
               }}
               onCancel={this.hideDateTimePicker}
