@@ -215,7 +215,7 @@ export namespace calendar {
         log('Adding new saved event', details)
       }
 
-      const notificationTime = subHours(event.startTime, alertMinutesBefore)
+      const notificationTime = subMinutes(event.startTime, alertMinutesBefore)
 
       const notificationToken = await Notifications.scheduleLocalNotificationAsync(
         createEventReminderNotification(details),
