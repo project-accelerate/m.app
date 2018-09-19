@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@types/amqplib": "^0.5.8",
+    "@types/json-stable-stringify": "^1.0.32",
     "@types/sharp": "^0.17.10",
     "amqplib": "^0.5.2",
     "aws-sdk": "^2.259.1",

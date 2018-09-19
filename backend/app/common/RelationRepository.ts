@@ -1,12 +1,17 @@
 import { Container } from 'typedi'
 import { CrudRepository, CrudRepositoryType } from './CrudRepository'
 import { DatabaseConnection } from './DatabaseConnection'
+import {
+  CacheConfig,
+  RepositoryCache,
+} from 'backend/app/common/RepositoryCache'
 
 export interface RelationRepositoryProps {
   sourceRef?: string
   destRef?: string
 
   name: string
+  cache?: CacheConfig
 }
 
 export class RelationRepository<T = {}> {
@@ -17,6 +22,7 @@ export class RelationRepository<T = {}> {
   ) {}
 
   db = Container.get(DatabaseConnection)
+  private cache = new RepositoryCache(this.props.cache)
 
   get relatedRepository() {
     return Container.get<any>(this.Dest)
@@ -61,19 +67,21 @@ export class RelationRepository<T = {}> {
       .andWhere(this.destIDCol, dest)
   }
 
-  async findFrom(source: string) {
-    const q = this.db.knex
-      .select(this.destField('*'))
-      .from(this.junctionTable)
-      .innerJoin(
-        this.destRepo.tableName,
-        this.junctionField(this.destIDCol),
-        '=',
-        this.destField('id'),
-      )
-      .where(this.junctionField(this.sourceIdCol), source)
+  findFrom(source: string) {
+    return this.cache.resolve('findFrom', source, async () => {
+      const q = this.db.knex
+        .select(this.destField('*'))
+        .from(this.junctionTable)
+        .innerJoin(
+          this.destRepo.tableName,
+          this.junctionField(this.destIDCol),
+          '=',
+          this.destField('id'),
+        )
+        .where(this.junctionField(this.sourceIdCol), source)
 
-    return q.then(rows => this.destRepo.decodeAll(rows))
+      return q.then(rows => this.destRepo.decodeAll(rows))
+    })
   }
 
   async findOneFrom(source: string) {
