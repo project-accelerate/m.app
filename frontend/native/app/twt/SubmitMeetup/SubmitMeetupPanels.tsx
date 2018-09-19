@@ -3,6 +3,8 @@ import { ScrollView, StyleSheet, View } from 'react-native'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import * as Yup from 'yup'
 
+import { setHours, setMinutes } from 'date-fns'
+
 import { Formik, FormikProps, FormikErrors } from 'formik'
 
 import { theme } from '../../../theme'
@@ -11,6 +13,7 @@ import { Button } from '../../common/Butttons/Buttons'
 import { FormField, Spacing } from '../../common/Widgets/Widgets'
 import { Typography, Paragraphs } from '../../common/Typography/Typography'
 import { extendSchema } from 'graphql'
+import { calendar } from '../Calendar/calendarState'
 
 const styles = StyleSheet.create({
   actions: {
@@ -145,12 +148,7 @@ export function SubmitMeetupPersonalDetailsPanel(props: any) {
           </Paragraphs>
 
           <Typography>First Name</Typography>
-          <FormField
-            autoCorrect={false}
-            name="firstName"
-            textContentType="givenName"
-            type="text"
-          />
+          <FormField autoCorrect={false} name="firstName" type="text" />
           <SubmitMeetupFormError>
             {touched.firstName && errors.firstName && errors.firstName}
           </SubmitMeetupFormError>
@@ -158,12 +156,7 @@ export function SubmitMeetupPersonalDetailsPanel(props: any) {
           <Spacing level={2} />
 
           <Typography>Last Name</Typography>
-          <FormField
-            autoCorrect={false}
-            name="lastName"
-            textContentType="familyName"
-            type="text"
-          />
+          <FormField autoCorrect={false} name="lastName" type="text" />
           <SubmitMeetupFormError>
             {touched.lastName && errors.lastName && errors.lastName}
           </SubmitMeetupFormError>
@@ -175,7 +168,6 @@ export function SubmitMeetupPersonalDetailsPanel(props: any) {
             autoCorrect={false}
             keyboardType="email-address"
             name="email"
-            textContentType="emailAddress"
             type="email"
           />
           <SubmitMeetupFormError>
@@ -188,7 +180,6 @@ export function SubmitMeetupPersonalDetailsPanel(props: any) {
           <FormField
             keyboardType="phone-pad"
             name="telephoneNumber"
-            textContentType="telephoneNumber"
             type="number"
           />
           <SubmitMeetupFormError>
@@ -212,13 +203,26 @@ interface SubmitMeetupMeetupDetailsPanelValues {
   eventName: string
   eventHost: string
   eventDescription: string
-  eventStartDateTime: string
-  eventEndDateTime: string
+  eventStartDateTime: Date
+  eventEndDateTime: Date
   eventLocation: string
 }
 
-export class SubmitMeetupMeetupDetailsPanel extends React.Component<any> {
-  state = {
+interface SubmitMeetupMeetupDetailsPanelProps {}
+
+interface SubmitMeetupMeetupDetailsPanelState {
+  eventStartDateTimePickerOpen: boolean
+  eventEndDateTimePickerOpen: boolean
+}
+
+export class SubmitMeetupMeetupDetailsPanel extends React.Component<
+  SubmitMeetupMeetupDetailsPanelProps,
+  SubmitMeetupMeetupDetailsPanelState
+> {
+  startDateTime: Date = setHours(calendar.firstDay, 9)
+  endDateTime: Date = setHours(calendar.lastDay, 21)
+
+  state: SubmitMeetupMeetupDetailsPanelState = {
     eventStartDateTimePickerOpen: false,
     eventEndDateTimePickerOpen: false,
   }
@@ -239,11 +243,6 @@ export class SubmitMeetupMeetupDetailsPanel extends React.Component<any> {
       eventEndDateTimePickerOpen: false,
     })
 
-  handleDatePicked = date => {
-    console.log('A date has been picked: ', date)
-    this.hideDateTimePicker()
-  }
-
   render() {
     return (
       <Formik
@@ -255,19 +254,62 @@ export class SubmitMeetupMeetupDetailsPanel extends React.Component<any> {
           eventName: '',
           eventHost: '',
           eventDescription: '',
-          eventStartDateTime: '',
-          eventEndDateTime: '',
+          // TODO: These should update intelligently as the festival goes on.
+          eventStartDateTime: this.startDateTime,
+          eventEndDateTime: this.startDateTime,
           eventLocation: '',
         }}
+        validationSchema={Yup.object().shape({
+          eventName: Yup.string()
+            .trim()
+            .required(
+              'A meetup name is needed so we can advertise it to others',
+            ),
+          eventHost: Yup.string().trim(),
+          eventDescription: Yup.string()
+            .trim()
+            .required(
+              'A short event description is needed to encourage people to come to your meetup',
+            ),
+          eventStartDateTime: Yup.mixed(),
+          // TODO: Implement these.
+          // Yup.date()
+          //   .min(
+          //     this.startDateTime,
+          //     'Your meetup needs to start after the beginning of conference',
+          //   )
+          //   .max(
+          //     this.endDateTime,
+          //     'Your meetup needs to start before the beginning of conference',
+          //   ).required(
+          //     'Your meetup needs a start time',
+          //   ),
+          eventEndDateTime: Yup.mixed(),
+          // TODO: Implement these.
+          // Yup.date()
+          //   .min(
+          //     this.startDateTime,
+          //     'Your meetup needs to end after the beginning of conference',
+          //   )
+          //   .max(
+          //     this.endDateTime,
+          //     'Your meetup needs to end before the end of conference',
+          //   ).required(
+          //     'Your meetup needs an end time',
+          //   ),
+          eventLocation: Yup.string().trim(),
+        })}
         render={({
           handleSubmit,
           isValid,
           errors,
           touched,
+          values,
+          setFieldValue,
         }: FormikProps<SubmitMeetupMeetupDetailsPanelValues>) => (
           <SubmitMeetupPanel>
             <SubmitMeetupHeading>Meetup Details</SubmitMeetupHeading>
-
+            {console.log('FORM VALUES', values)}
             <Paragraphs>
               <Typography>Now enter the details of your meetup.</Typography>
 
@@ -309,11 +351,24 @@ export class SubmitMeetupMeetupDetailsPanel extends React.Component<any> {
             </Button>
             <DateTimePicker
               isVisible={this.state.eventStartDateTimePickerOpen}
-              onConfirm={this.handleDatePicked}
+              onConfirm={(startDateTime: Date) => {
+                setFieldValue('eventStartDateTime', startDateTime)
+                this.hideDateTimePicker()
+              }}
               onCancel={this.hideDateTimePicker}
               mode="datetime"
               titleIOS="Pick start day and time"
+              date={values.eventStartDateTime}
+              minimumDate={this.startDateTime}
+              maximumDate={this.endDateTime}
+              datePickerModeAndroid="spinner"
+              is24Hour
             />
+            <SubmitMeetupFormError>
+              {touched.eventStartDateTime &&
+                errors.eventStartDateTime &&
+                errors.eventStartDateTime}
+            </SubmitMeetupFormError>
 
             <Spacing level={4} />
 
@@ -322,11 +377,24 @@ export class SubmitMeetupMeetupDetailsPanel extends React.Component<any> {
             </Button>
             <DateTimePicker
               isVisible={this.state.eventEndDateTimePickerOpen}
-              onConfirm={this.handleDatePicked}
+              onConfirm={(startDateTime: Date) => {
+                setFieldValue('eventEndDateTime', startDateTime)
+                this.hideDateTimePicker()
+              }}
               onCancel={this.hideDateTimePicker}
               mode="datetime"
               titleIOS="Pick end date and time"
+              date={values.eventEndDateTime}
+              minimumDate={this.startDateTime}
+              maximumDate={this.endDateTime}
+              datePickerModeAndroid="spinner"
+              is24Hour
             />
+            <SubmitMeetupFormError>
+              {touched.eventEndDateTime &&
+                errors.eventEndDateTime &&
+                errors.eventEndDateTime}
+            </SubmitMeetupFormError>
 
             <Spacing level={2} />
 

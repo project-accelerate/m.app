@@ -66,6 +66,9 @@ export namespace calendar {
     new Date('2018-09-25'),
   ]
 
+  export const firstDay = days[0]
+  export const lastDay = days[days.length]
+
   interface State {
     [eventId: string]: SavedEvent | undefined
   }
