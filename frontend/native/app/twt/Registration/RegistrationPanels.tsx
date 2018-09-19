@@ -73,7 +73,7 @@ export function AcceptNotificationsPanel(props: RegistrationStageProps) {
   return (
     <RegistrationPanel>
       <RegistrationPrompt>
-        Can we send you mobile notifications during conference?
+        Can we send you mobile notifications during and after the conference?
       </RegistrationPrompt>
 
       <RegistrationActions>
