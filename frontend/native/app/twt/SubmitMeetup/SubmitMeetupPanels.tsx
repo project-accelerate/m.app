@@ -66,9 +66,7 @@ export function SubmitMeetupInstructionsPanel(props: any) {
       </SubmitMeetupPanelIntroduction>
 
       <SubmitMeetupActions>
-        <Button variant="small" onPress={() => props.onSubmit()}>
-          Let's Go
-        </Button>
+        <Button onPress={() => props.onSubmit()}>Let's Go</Button>
       </SubmitMeetupActions>
     </SubmitMeetupPanel>
   )
@@ -190,7 +188,7 @@ export function SubmitMeetupPersonalDetailsPanel(props: any) {
           </SubmitMeetupFormError>
 
           <SubmitMeetupActions>
-            <Button variant="small" onPress={handleSubmit} disabled={!isValid}>
+            <Button onPress={handleSubmit} disabled={!isValid}>
               Next
             </Button>
           </SubmitMeetupActions>
@@ -246,6 +244,7 @@ export class SubmitMeetupMeetupDetailsPanel extends React.Component<
 
   render() {
     return (
+      // TODO: Inline buttons for times nicely.
       <Formik
         onSubmit={(values: SubmitMeetupMeetupDetailsPanelValues) => {
           this.props.onSubmit({ ...values })
@@ -352,7 +351,7 @@ export class SubmitMeetupMeetupDetailsPanel extends React.Component<
               {weekdayOf(values.eventStartDateTime)}{' '}
               {timeOf(values.eventStartDateTime)}
             </Typography>
-            <Button variant="small" onPress={this.showStartDateTimePicker}>
+            <Button onPress={this.showStartDateTimePicker}>
               Set Start Time
             </Button>
             <DateTimePicker
@@ -383,9 +382,7 @@ export class SubmitMeetupMeetupDetailsPanel extends React.Component<
               {weekdayOf(values.eventEndDateTime)}{' '}
               {timeOf(values.eventEndDateTime)}
             </Typography>
-            <Button variant="small" onPress={this.showEndDateTimePicker}>
-              Set End Time
-            </Button>
+            <Button onPress={this.showEndDateTimePicker}>Set End Time</Button>
             <DateTimePicker
               isVisible={this.state.eventEndDateTimePickerOpen}
               onConfirm={(eventEndDateTime: Date) => {
@@ -414,11 +411,7 @@ export class SubmitMeetupMeetupDetailsPanel extends React.Component<
             <FormField name="eventLocation" type="text" />
 
             <SubmitMeetupActions>
-              <Button
-                variant="small"
-                onPress={handleSubmit}
-                disabled={!isValid}
-              >
+              <Button onPress={handleSubmit} disabled={!isValid}>
                 Next
               </Button>
             </SubmitMeetupActions>
@@ -449,9 +442,7 @@ export function SubmitMeetupThanksPanel(props: any) {
       </SubmitMeetupPanelIntroduction>
 
       <SubmitMeetupActions>
-        <Button variant="small" onPress={() => props.onSubmit()}>
-          Great!
-        </Button>
+        <Button onPress={() => props.onSubmit()}>Great!</Button>
       </SubmitMeetupActions>
     </SubmitMeetupPanel>
   )
