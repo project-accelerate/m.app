@@ -64,6 +64,7 @@ export namespace calendar {
     new Date('2018-09-23'),
     new Date('2018-09-24'),
     new Date('2018-09-25'),
+    new Date('2018-09-26'),
   ]
 
   interface State {
