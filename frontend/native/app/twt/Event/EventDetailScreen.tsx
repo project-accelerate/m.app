@@ -16,11 +16,13 @@ import { createParametricStateConnector } from '../../../state'
 import { calendar } from '../Calendar/calendarState'
 import { Routes } from '../../../routes'
 import { ImageHeaderScreen } from '../../common/Screen/ImageHeaderScreen'
+import { TimeProvider } from '../../common/Time/TimeProvider'
+import { SpeakerDetailScreen } from '../Speaker/SpeakerDetailScreen'
 
 export interface EventDetailScreenParams {
   id: string
   title: string
-  image: string
+  image?: string
 }
 
 const FetchEvent = createFetchData<
@@ -41,7 +43,7 @@ export class EventDetailScreen extends React.Component<
   static navigationOptions = ({
     navigation,
   }: NavigationScreenProps): NavigationScreenOptions => ({
-    title: navigation.getParam('title'),
+    headerTitle: navigation.getParam('title'),
   })
 
   get eventId() {
@@ -55,36 +57,47 @@ export class EventDetailScreen extends React.Component<
   }
 
   handleSpeakerPressed = ({ speaker }: EventDetailSpeakerPressEvent) => {
-    this.props.navigation.push(
-      Routes.get().getRoutename('SpeakerDetailScreen'),
-      {
-        id: speaker.id,
-        name: speaker.name,
-        photo: speaker.photo && speaker.photo.sourceUrl,
-      },
-    )
+    Routes.get().push(this.props.navigation, SpeakerDetailScreen, {
+      id: speaker.id,
+      name: speaker.name,
+      photo: (speaker.photo && speaker.photo.sourceUrl) || undefined,
+    })
   }
 
   render() {
     return (
-      <ImageHeaderScreen image={this.props.navigation.getParam('image')}>
+      <ImageHeaderScreen
+        tintHeader
+        image={
+          this.props.navigation.getParam('image') ||
+          require('../../../assets/default.jpg')
+        }
+      >
         <Connect eventId={this.eventId}>
           {({ userId, isSaved, actions }) => (
             <Background solid>
               <FetchEvent variables={this.queryVariables}>
                 {({ data }) => (
-                  <EventDetail
-                    event={FetchEvent.required(data.event)}
-                    favourited={isSaved}
-                    onSpeakerPress={this.handleSpeakerPressed}
-                    onToggleFavourited={() => {
-                      actions.calendar.toggleEventSaved({
-                        event: FetchEvent.required(data.event),
-                        alertMinutesBefore: 30,
-                        userId,
-                      })
-                    }}
-                  />
+                  <TimeProvider granularity="minutes">
+                    {time => (
+                      <EventDetail
+                        event={FetchEvent.required(data.event)}
+                        favourited={isSaved}
+                        canSave={calendar.canSave(
+                          FetchEvent.required(data.event),
+                          time,
+                        )}
+                        onSpeakerPress={this.handleSpeakerPressed}
+                        onToggleFavourited={() => {
+                          actions.calendar.toggleEventSaved({
+                            event: FetchEvent.required(data.event),
+                            alertMinutesBefore: 30,
+                            userId,
+                          })
+                        }}
+                      />
+                    )}
+                  </TimeProvider>
                 )}
               </FetchEvent>
             </Background>

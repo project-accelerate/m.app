@@ -92,12 +92,14 @@ export class EditNotificationForm extends React.Component<
             fullWidth
             name="title"
             label="Headline"
+            inputProps={{ maxLength: 50 }}
             helperText="Headline of the notification"
           />
           <FormText
             fullWidth
             multiline
             rows={3}
+            inputProps={{ maxLength: 140 }}
             name="message"
             label="Body"
             helperText="Short message with more information"
@@ -106,18 +108,6 @@ export class EditNotificationForm extends React.Component<
             name="urgent"
             label="Urgent"
             helperText="Should we make people's phones make a noise, etc?"
-          />
-          <FormPicker
-            label="Associated Event"
-            name="associatedEventId"
-            options={this.associatedEventOptions}
-            helperText="Optional. Associated event to take people to when they click the notification"
-          />
-          <FormText
-            fullWidth
-            label="Associated Page"
-            name="link"
-            helperText="Optional. Associated url to take people to when they click the notification"
           />
         </FormGrid>
       </EditDialog>

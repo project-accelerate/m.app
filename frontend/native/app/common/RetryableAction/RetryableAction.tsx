@@ -9,6 +9,8 @@ interface RetryableActionProps<Params> {
   params?: Params
   preserve?: boolean
   fullscreen?: boolean
+  darkBg?: boolean
+  onCompleted?: () => void
   children?: (props: { pending: boolean }) => React.ReactNode
 }
 
@@ -48,6 +50,10 @@ export class RetryableAction<Params> extends React.Component<
           errorState: undefined,
         })
       }
+
+      if (this.props.onCompleted) {
+        this.props.onCompleted()
+      }
     } catch (error) {
       this.setState({
         pending: false,
@@ -64,6 +70,7 @@ export class RetryableAction<Params> extends React.Component<
       return (
         <ErrorView
           error={this.state.errorState.error}
+          darkBg={this.props.darkBg}
           isRetrying={this.state.pending}
           onRetry={this.state.errorState.retry}
         />
@@ -71,7 +78,7 @@ export class RetryableAction<Params> extends React.Component<
     }
 
     if (this.state.pending && this.props.fullscreen) {
-      return <LoadingOverlay />
+      return <LoadingOverlay darkBg={this.props.darkBg} />
     }
 
     if (this.props.children) {

@@ -1,5 +1,6 @@
 import React from 'react'
-import { Toolbar, ToolbarRadio } from './Widgets'
+import { Toolbar, ToolbarRadio, Rows } from './Widgets'
+import { Button } from '../Butttons/Buttons'
 
 export const stories = {
   'Toobar Radios': () => (
@@ -11,5 +12,12 @@ export const stories = {
         Option 2
       </ToolbarRadio>
     </Toolbar>
+  ),
+  Buttons: () => (
+    <Rows>
+      <Button icon="twitter">Tweet</Button>
+      <Button>Tweet</Button>
+      <Button variant="inline">Tweet</Button>
+    </Rows>
   ),
 }

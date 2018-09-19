@@ -7,9 +7,11 @@ import {
   SectionListData,
 } from 'react-native'
 import { groupBy, sortBy } from 'lodash'
-import { LoadingOverlay } from '../Widgets/Widgets'
+import { LoadingOverlay, Grid, Columns, Rows } from '../Widgets/Widgets'
 import { theme } from '../../../theme'
 import { Typography } from '../Typography/Typography'
+import { Card, CardHeader, CardContent } from '../Widgets/Card'
+import { Background } from '../Layouts/Layouts'
 
 const ConnectionListStyle = StyleSheet.create({
   sectionSeparator: {},
@@ -33,7 +35,9 @@ const ConnectionListStyle = StyleSheet.create({
 interface ConnectionListProps<T> {
   data?: Connection<T>
   sortKey?: keyof T
+  emptyMessage?: JSX.Element
   sectionBy?: (x: T) => string
+  filter?: (x: T) => any
   renderItem: (value: T) => JSX.Element
   renderSection: (value: string) => React.ReactNode
 }
@@ -58,7 +62,7 @@ export class ConnectionList<T> extends React.Component<ConnectionListProps<T>> {
   )
 
   get dataSections(): SectionListData<{ node: T }>[] {
-    const { data, sectionBy, sortKey } = this.props
+    const { data, sectionBy, sortKey, filter } = this.props
 
     if (!data) {
       return [{ key: '', data: [] }]
@@ -68,7 +72,9 @@ export class ConnectionList<T> extends React.Component<ConnectionListProps<T>> {
       return [{ key: '', data: data.edges }]
     }
 
-    const sectionMap = groupBy(data.edges, edge => sectionBy(edge.node))
+    const edges = data.edges.filter(filter ? e => filter(e.node) : () => true)
+
+    const sectionMap = groupBy(edges, edge => sectionBy(edge.node))
 
     const orderedSectionKeys = sortBy(Object.keys(sectionMap))
 
@@ -93,6 +99,10 @@ export class ConnectionList<T> extends React.Component<ConnectionListProps<T>> {
 
     if (!data) {
       return <LoadingOverlay />
+    }
+
+    if (data.edges.length === 0) {
+      return this.props.emptyMessage || null
     }
 
     return (

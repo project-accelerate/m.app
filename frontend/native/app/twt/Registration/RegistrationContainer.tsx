@@ -25,9 +25,9 @@ const Connect = createStateConnector(() => ({
 
 const RegistrationWizard = createWizard<RegistrationWizardData>({
   stages: [
+    AcceptNotificationsPanel,
     RegistrationIsDelegateQuestion,
     RegistrationAskEmailPanel,
-    AcceptNotificationsPanel,
   ],
 })
 
@@ -47,6 +47,7 @@ export function RegistrationContainer(props: React.Props<{}>) {
                 isConferenceDelegate: false,
                 optedIntoNotifications: false,
               }}
+              darkBg
               onCompleted={actions.registration.register}
             />
           </RegistrationBg>

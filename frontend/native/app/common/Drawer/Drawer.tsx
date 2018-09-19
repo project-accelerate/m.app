@@ -8,14 +8,18 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native'
-import { NavigationInjectedProps } from 'react-navigation'
+import { FontAwesome } from '@expo/vector-icons'
+import { NavigationInjectedProps, NavigationActions } from 'react-navigation'
 import { Routes } from '../../../routes'
 import { theme } from '../../../theme'
 import { Typography } from '../Typography/Typography'
-import { ProfileImage } from '../Widgets/Widgets'
 import { HomeScreen } from '../../twt/Home/HomeScreen'
 import { getStatusBarHeight } from '../platform'
-import Logo from '../../../assets/mlogo.png'
+import { createStateConnector } from '../../../state'
+import { registration } from '../../twt/Registration/registrationState'
+import Logo from '../../../assets/Mlogo'
+import { Background } from '../Layouts/Layouts'
+import { moderateScale } from 'react-native-size-matters'
 
 const style = StyleSheet.create({
   root: {
@@ -33,8 +37,10 @@ const style = StyleSheet.create({
     paddingVertical: theme.spacing.level(3),
     flexDirection: 'row',
     justifyContent: 'center',
+  },
+  itemWrapper: {
     borderBottomWidth: 1,
-    borderBottomColor: theme.pallete.white,
+    borderColor: theme.pallete.white,
   },
   footer: {
     marginBottom: theme.spacing.level(3),
@@ -61,6 +67,10 @@ interface Scene {
   tintColor: string
 }
 
+const Connect = createStateConnector(() => ({
+  isDelegate: registration.selectors.isDelegate,
+}))
+
 export class Drawer extends React.Component<DrawerProps> {
   get items() {
     return this.props.items.filter(
@@ -68,13 +78,9 @@ export class Drawer extends React.Component<DrawerProps> {
     )
   }
 
-  home = this.props.items.find(x => x.routeName === HomeScreen.name)!
-
   navigateToScreen = (route: Route) => () => {
-    this.props.onItemPress({
-      route,
-      focused: route.key === this.props.activeItemKey,
-    })
+    this.props.navigation.closeDrawer()
+    this.props.navigation.navigate(route.routeName)
   }
 
   getRouteComponent(item: Route) {
@@ -88,29 +94,55 @@ export class Drawer extends React.Component<DrawerProps> {
 
   render() {
     return (
-      <View style={style.root}>
-        <View style={style.header} />
-        <ScrollView style={style.items}>
-          {this.items.map(item => (
-            <TouchableHighlight
-              key={item.routeName}
-              underlayColor={theme.pallete.white}
-              style={style.item}
-              onPress={this.navigateToScreen(item)}
+      <Connect>
+        {({ isDelegate }) => (
+          <View style={style.root}>
+            <View style={style.header} />
+            <ScrollView style={style.items}>
+              <TouchableOpacity
+                key="<"
+                style={style.item}
+                onPress={() => {
+                  this.props.navigation!.closeDrawer()
+                }}
+              >
+                <FontAwesome
+                  name="chevron-left"
+                  color={theme.pallete.white}
+                  size={26}
+                />
+              </TouchableOpacity>
+
+              {this.items.map(
+                item =>
+                  (isDelegate ||
+                    !this.getNavigationOptions(item).delegateOnly) && (
+                    <View key={item.routeName} style={style.itemWrapper}>
+                      <TouchableOpacity
+                        style={style.item}
+                        onPress={this.navigateToScreen(item)}
+                      >
+                        <Typography darkBg variant="screenHeader">
+                          {this.getNavigationOptions(item).drawerLabel}
+                        </Typography>
+                      </TouchableOpacity>
+                    </View>
+                  ),
+              )}
+            </ScrollView>
+            <TouchableOpacity
+              onPress={() => Routes.get().goHome(this.props.navigation)}
+              style={style.footer}
             >
-              <Typography darkBg variant="screenHeader">
-                {this.getNavigationOptions(item).drawerLabel}
-              </Typography>
-            </TouchableHighlight>
-          ))}
-        </ScrollView>
-        <TouchableOpacity
-          onPress={this.navigateToScreen(this.home)}
-          style={style.footer}
-        >
-          <Image source={Logo} />
-        </TouchableOpacity>
-      </View>
+              <Logo
+                fill={theme.pallete.white}
+                width={moderateScale(125)}
+                height={moderateScale(25)}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
+      </Connect>
     )
   }
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Dimensions } from 'react-native'
 import { EventListItemFragment } from '../../../queries'
 import { theme } from '../../../theme'
 import { Typography } from '../../common/Typography/Typography'
@@ -12,10 +12,12 @@ const EventListItemStyle = StyleSheet.create({
     backgroundColor: theme.pallete.cardBg,
     flexDirection: 'row',
     padding: theme.spacing.level(1),
+    maxWidth: Dimensions.get('screen').width,
   },
   text: {
     paddingLeft: theme.spacing.unit * 0.5,
     paddingBottom: theme.spacing.unit * 0.33,
+    flex: 1,
   },
   image: {},
 })
@@ -33,7 +35,10 @@ export function EventListItem({ event, onPress }: EventListItemProps) {
   return (
     <Touchable onPress={() => onPress({ event })}>
       <View style={EventListItemStyle.container}>
-        <ProfileImage style={EventListItemStyle.image} image={event.photo} />
+        <ProfileImage
+          style={EventListItemStyle.image}
+          image={event.photo || require('../../../assets/default.jpg')}
+        />
 
         <View style={EventListItemStyle.text}>
           <Typography accent variant="body" style={EventListItemStyle.text}>

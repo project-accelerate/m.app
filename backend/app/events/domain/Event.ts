@@ -42,6 +42,8 @@ export class CreateEventRequest {
     nullable: true,
   })
   photoUpload?: FileUpload
+
+  importRef?: string
 }
 
 @ObjectType()
@@ -68,4 +70,6 @@ export class Event {
   photo?: string
 
   location!: Point
+
+  importRef?: string
 }

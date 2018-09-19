@@ -38,6 +38,7 @@ const commands = {
   ...require('./migrations'),
   ...require('./postinstall'),
   ...require('./release'),
+  ...require('./import'),
 }
 
 const [_, __, cmd, ...args] = process.argv

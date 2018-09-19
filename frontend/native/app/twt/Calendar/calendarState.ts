@@ -1,6 +1,13 @@
-import { omit, sortBy, compact } from 'lodash'
+import { omit, sortBy, compact, take } from 'lodash'
 import { Dispatch } from 'redux'
-import { format, subHours, addSeconds, getHours, getDate } from 'date-fns'
+import {
+  subHours,
+  addSeconds,
+  getHours,
+  getDate,
+  subMinutes,
+  isBefore,
+} from 'date-fns'
 import { Notifications } from 'expo'
 import { theme } from '../../../theme'
 import {
@@ -49,6 +56,15 @@ import { registration } from '../Registration/registrationState'
 
 export namespace calendar {
   export const startHourOfDay = 4
+  const alertMinutesBefore = 30
+
+  // HACK: Hardcoodeed yeah
+  export const days = [
+    new Date('2018-09-22'),
+    new Date('2018-09-23'),
+    new Date('2018-09-24'),
+    new Date('2018-09-25'),
+  ]
 
   interface State {
     [eventId: string]: SavedEvent | undefined
@@ -65,6 +81,7 @@ export namespace calendar {
     venueName: string
     startTime: string
     endTime: string
+    imageUrl?: string
   }
 
   type Action =
@@ -77,6 +94,17 @@ export namespace calendar {
 
   export const selectors = {
     allEvents: (state: AppState) => state.calendarEvents || {},
+
+    upcomingEvents: (state: AppState, props: { now: Date }) => {
+      const events = compact(Object.values(selectors.allEvents(state))).filter(
+        e => isBefore(props.now, e.details.endTime),
+      )
+
+      return take(
+        sortBy(events, (e: SavedEvent) => e.details.startTime),
+        3,
+      ).map(e => e.details)
+    },
 
     eventsInDay: (state: AppState, props: { day: Date }) => {
       const eventList = compact(Object.values(selectors.allEvents(state)))
@@ -139,7 +167,7 @@ export namespace calendar {
       votes.edges.forEach(({ node: vote }) => {
         dispatch(
           actions.saveEvent({
-            alertMinutesBefore: 30,
+            alertMinutesBefore,
             event: vote,
             recordAttendance: false,
             userId,
@@ -163,6 +191,7 @@ export namespace calendar {
         venueName: event.venue.name,
         startTime: event.startTime,
         endTime: event.endTime,
+        imageUrl: (event.photo && event.photo.sourceUrl) || undefined,
       }
 
       const selectProps = { eventId: details.id }
@@ -326,5 +355,10 @@ export namespace calendar {
     }
 
     return getDate(lhs) === getDate(rhs)
+  }
+
+  export function canSave(event: { startTime: string }, currentTime: Date) {
+    const alertTime = subMinutes(event.startTime, alertMinutesBefore + 1)
+    return alertTime > currentTime
   }
 }

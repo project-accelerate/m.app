@@ -16,6 +16,7 @@ import { MapView } from '../../common/MapView/MapView'
 
 interface EventDetailPageProps {
   event: EventDetailFragment
+  canSave: boolean
   onSpeakerPress: (event: EventDetailSpeakerPressEvent) => void
   favourited: boolean
   onToggleFavourited: () => void
@@ -66,6 +67,9 @@ const style = StyleSheet.create({
     borderColor: theme.pallete.accent,
     borderWidth: 1,
   },
+  inset: {
+    marginVertical: theme.spacing.level(2),
+  },
   block: {
     marginHorizontal: theme.spacing.level(1),
   },
@@ -79,9 +83,10 @@ export function EventDetail({
   onSpeakerPress,
   favourited,
   onToggleFavourited,
+  canSave,
 }: EventDetailPageProps) {
   return (
-    <ScrollView>
+    <View>
       <View style={style.header}>
         <Typography darkBg variant="caption">
           {event.venue.name}
@@ -89,47 +94,49 @@ export function EventDetail({
       </View>
 
       <View style={style.block}>
-        <Columns center>
+        <Columns center style={style.inset}>
           <Typography accent variant="primary">
             {weekdayOf(event.startTime)} {timeOf(event.startTime)}
           </Typography>
 
-          <Button
-            variant="inline"
-            icon={favourited ? 'check' : 'star'}
-            onPress={onToggleFavourited}
-          >
-            {favourited ? 'Saved' : 'Save to Calendar'}
-          </Button>
+          {canSave && (
+            <Button
+              variant="inline"
+              icon={favourited ? 'check' : 'star'}
+              onPress={onToggleFavourited}
+            >
+              {favourited ? 'Saved' : 'Save to Calendar'}
+            </Button>
+          )}
         </Columns>
 
         <Typography variant="primary">{event.introduction}</Typography>
-
-        <Spacing level={2} />
-
-        <Typography variant="body">{event.detail}</Typography>
       </View>
 
-      <Typography style={style.heading} variant="display">
-        Speakers
-      </Typography>
+      {event.speakers.edges.length > 0 && (
+        <View>
+          <Typography style={style.heading} variant="display">
+            Speakers
+          </Typography>
 
-      <View style={{ flexWrap: 'wrap', flexDirection: 'row' }}>
-        {event.speakers.edges.map(speaker => (
-          <TouchableOpacity
-            key={speaker.node.id}
-            onPress={() => onSpeakerPress({ speaker: speaker.node })}
-          >
-            <ProfileImage size="halfSquare" image={speaker.node.photo}>
-              <Banner>
-                <Typography style={style.speakerName} variant="body">
-                  {speaker.node.name}
-                </Typography>
-              </Banner>
-            </ProfileImage>
-          </TouchableOpacity>
-        ))}
-      </View>
+          <View style={{ flexWrap: 'wrap', flexDirection: 'row' }}>
+            {event.speakers.edges.map(speaker => (
+              <TouchableOpacity
+                key={speaker.node.id}
+                onPress={() => onSpeakerPress({ speaker: speaker.node })}
+              >
+                <ProfileImage size="halfSquare" image={speaker.node.photo}>
+                  <Banner>
+                    <Typography style={style.speakerName} variant="body">
+                      {speaker.node.name}
+                    </Typography>
+                  </Banner>
+                </ProfileImage>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+      )}
 
       <Typography style={style.heading} variant="display">
         Venue
@@ -155,6 +162,6 @@ export function EventDetail({
         <Br />
         {event.venue.address.streetAddress}, {event.venue.address.postcode}
       </Typography>
-    </ScrollView>
+    </View>
   )
 }

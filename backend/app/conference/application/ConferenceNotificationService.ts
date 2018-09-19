@@ -54,7 +54,7 @@ export class ConferenceNotificationService {
     devices: Device[],
   ) {
     await this.pushNotificationService.sendNotifications(
-      devices.map(device => this.createPushNotification(device, request)),
+      devices.flatMap(device => this.createPushNotifications(device, request)),
     )
   }
 
@@ -72,20 +72,25 @@ export class ConferenceNotificationService {
     })
   }
 
-  private createPushNotification(
+  private createPushNotifications(
     device: Device,
     request: ConferenceNotificationSendRequest,
-  ): PushNotificationRequest {
-    return {
-      deviceId: device.id,
-      payload: {
-        title: request.title,
-        to: device.deviceToken!,
-        body: request.message,
-        priority: request.urgent ? 'high' : 'normal',
-        data: this.notificationTargeter.getNotificationMetadata(request),
-        sound: request.urgent ? 'default' : null,
-      },
+  ): PushNotificationRequest[] {
+    if (!device.deviceToken) {
+      return []
     }
+    return [
+      {
+        deviceId: device.id,
+        payload: {
+          title: request.title,
+          to: device.deviceToken,
+          body: request.message,
+          priority: request.urgent ? 'high' : 'normal',
+          data: this.notificationTargeter.getNotificationMetadata(request),
+          sound: request.urgent ? 'default' : null,
+        },
+      },
+    ]
   }
 }

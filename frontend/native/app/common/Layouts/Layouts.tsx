@@ -7,6 +7,7 @@ import {
   StyleProp,
   ViewStyle,
   ViewProps,
+  Dimensions,
 } from 'react-native'
 
 import bg from './bg.jpg'
@@ -16,6 +17,7 @@ const LayoutStyles = StyleSheet.create({
   bg: {
     width: '100%',
     height: '100%',
+    flex: 1,
     backgroundColor: theme.pallete.white,
   },
   bgImage: {

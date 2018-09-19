@@ -6,7 +6,7 @@ interface TimeProviderProps {
 }
 
 export class TimeProvider extends React.Component<TimeProviderProps> {
-  timeout!: number
+  timeout!: any
   state = { time: new Date() }
 
   handleTick = () => {
@@ -14,16 +14,26 @@ export class TimeProvider extends React.Component<TimeProviderProps> {
     this.setState({ time })
 
     if (this.props.granularity === 'minutes') {
-      setTimeout(this.handleTick, (60 - time.getSeconds()) * 1_000)
+      this.timeout = setTimeout(
+        this.handleTick,
+        (60 - time.getSeconds()) * 1_000,
+      )
     }
 
     if (this.props.granularity === 'hours') {
-      setTimeout(this.handleTick, (60 - time.getMinutes()) * 60_000)
+      this.timeout = setTimeout(
+        this.handleTick,
+        (60 - time.getMinutes()) * 60_000,
+      )
     }
   }
 
   componentDidMount() {
     this.handleTick()
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timeout)
   }
 
   render() {

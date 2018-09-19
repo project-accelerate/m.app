@@ -7,33 +7,36 @@ import {
   TouchableHighlight,
   Text,
   TouchableOpacity,
+  ActivityIndicator,
+  GestureResponderEvent,
 } from 'react-native'
 import { theme } from '../../../theme'
 import { Typography } from '../Typography/Typography'
 import { FontAwesome } from '@expo/vector-icons'
+import { ScaledSheet, moderateScale } from 'react-native-size-matters'
+import { notifyUser } from '../Widgets/Widgets'
+import { ApolloError } from 'apollo-client'
 
-const buttonStyle = StyleSheet.create({
-  header: {},
+const buttonStyle = ScaledSheet.create({
+  content: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   button: {
     backgroundColor: theme.pallete.accent,
     borderColor: theme.pallete.borderLight,
     borderBottomColor: theme.pallete.borderDark,
     borderWidth: 0.5,
     borderRadius: 4,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
-  large: {
+  standard: {
     paddingVertical: theme.spacing.level(1),
     paddingHorizontal: theme.spacing.level(2),
-  },
-  small: {
-    height: 35,
-    paddingHorizontal: theme.spacing.level(2),
+    minWidth: moderateScale(60),
   },
   inline: {
-    padding: theme.spacing.level(2),
+    padding: 0,
     backgroundColor: theme.pallete.transparent,
     borderWidth: 0,
     opacity: 1,
@@ -50,6 +53,8 @@ const buttonStyle = StyleSheet.create({
     opacity: 0.5,
   },
   icon: {
+    position: 'relative',
+    top: 1,
     marginRight: theme.spacing.level(1),
   },
 })
@@ -74,23 +79,26 @@ export function ButtonGrid({ children, ...props }: ButtonGridProps) {
 
 interface ButtonProps extends TouchableHighlightProps {
   children?: React.ReactNode
-  variant?: 'large' | 'small' | 'inline'
+  variant?: 'standard' | 'inline'
+  darkBg?: boolean
   icon?: string
+  pending?: boolean
 }
 
 export function Button({
   children,
   style,
-  variant = 'large',
+  variant = 'standard',
   disabled,
   icon,
+  darkBg,
+  pending,
   ...props
 }: ButtonProps) {
   const inline = variant === 'inline'
-  const ButtonType = inline ? TouchableOpacity : TouchableHighlight
 
   return (
-    <ButtonType
+    <TouchableOpacity
       style={[
         buttonStyle.button,
         buttonStyle[variant],
@@ -99,21 +107,99 @@ export function Button({
       ]}
       {...props}
     >
-      <View>
-        {icon ? (
+      <View style={buttonStyle.content}>
+        {!pending && icon ? (
           <FontAwesome
             name={icon}
             style={buttonStyle.icon}
-            size={variant === 'large' ? 24 : 18}
-            color={inline ? theme.pallete.accent : theme.pallete.white}
+            size={moderateScale(24)}
+            color={
+              inline && !darkBg ? theme.pallete.accent : theme.pallete.white
+            }
           />
         ) : (
           undefined
         )}
-        <Typography variant="action" darkBg={!inline} accent={inline} center>
-          {children}
-        </Typography>
+        {!pending && (
+          <Typography
+            variant="action"
+            darkBg={!inline || darkBg}
+            accent={inline}
+            center
+          >
+            {children}
+          </Typography>
+        )}
+        {pending && (
+          <ActivityIndicator
+            size="small"
+            color={
+              (inline && !darkBg && theme.pallete.accent) || theme.pallete.white
+            }
+          />
+        )}
       </View>
-    </ButtonType>
+    </TouchableOpacity>
   )
+}
+
+interface ActionButtonProps extends ButtonProps {
+  action: () => Promise<any>
+}
+
+interface ActionButtonState {
+  pending: boolean
+}
+export class ActionButton extends React.Component<
+  ActionButtonProps,
+  ActionButtonState
+> {
+  state = { pending: false }
+  unmounted = false
+
+  handlePressed = async (event: GestureResponderEvent) => {
+    if (this.state.pending) {
+      return
+    }
+
+    if (this.props.onPress) {
+      this.props.onPress(event)
+    }
+
+    if (!event.defaultPrevented) {
+      this.setState({ pending: true })
+
+      try {
+        await this.props.action()
+      } catch (err) {
+        if (err.networkError) {
+          notifyUser('Couldn’t connect to the server. Please try again later.')
+        } else {
+          notifyUser(
+            'Sorry, that didn’t work. It looks like a problem on our end. Please try again later.',
+          )
+        }
+      } finally {
+        if (!this.unmounted) {
+          this.setState({ pending: false })
+        }
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    this.unmounted = true
+  }
+
+  render() {
+    const { pending, action, onPress, ...props } = this.props
+
+    return (
+      <Button
+        {...props}
+        pending={this.state.pending || pending}
+        onPress={this.handlePressed}
+      />
+    )
+  }
 }

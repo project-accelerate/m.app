@@ -13,6 +13,7 @@ export function buildFrontendWeb() {
 }
 
 export function buildFrontendNativeBinaries(releaseChannel = 'beta') {
+  validateChannel(releaseChannel)
   const exp = createShellCmd(join('node_modules', '.bin', 'exp'), {
     cwd: 'frontend/native',
   })
@@ -22,6 +23,7 @@ export function buildFrontendNativeBinaries(releaseChannel = 'beta') {
 }
 
 export function publishFrontendNative(releaseChannel = 'beta') {
+  validateChannel(releaseChannel)
   const exp = createShellCmd(join('node_modules', '.bin', 'exp'), {
     cwd: 'frontend/native',
   })
@@ -34,4 +36,11 @@ export function publishFrontendNative(releaseChannel = 'beta') {
   }
 
   exp('publish', { 'release-channel': releaseChannel })
+}
+
+function validateChannel(channel: string) {
+  const channelMap = require('../frontend/native/env.json')
+  if (!channelMap[channel]) {
+    throw Error(`invalid release channel: ${channel}`)
+  }
 }

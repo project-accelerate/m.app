@@ -14,6 +14,8 @@ import { createLogger } from './app/common/logger'
 import { ErrorGuard } from './app/common/ErrorView/ErrorGuard'
 import { VoteFetcher } from './app/twt/Event/VoteFetcher'
 import { loadFonts } from './config/loadFonts'
+import { StatusBar } from 'react-native'
+import { theme } from './theme'
 
 interface ApplicationState {
   loading?: boolean
@@ -44,7 +46,7 @@ export default class App extends React.Component<AppProps> {
     }
 
     const handler = createNotificationHandler(
-      notificationHandlers,
+      notificationHandlers(),
       this.props.exp.notification,
     )
     if (handler) {
@@ -72,6 +74,7 @@ export default class App extends React.Component<AppProps> {
           <ReduxProvider>
             <RegistrationContainer>
               <VoteFetcher />
+              <StatusBar translucent barStyle="light-content" />
               <this.navigator />
             </RegistrationContainer>
           </ReduxProvider>

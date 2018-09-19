@@ -1,9 +1,10 @@
 import { memoize } from 'lodash'
+import { moderateScale } from 'react-native-size-matters'
 
 export namespace theme {
   export namespace spacing {
-    export const unit = 6
-    export const border = 2
+    export const unit = moderateScale(6)
+    export const border = moderateScale(2)
 
     export const level = memoize(
       (i: number): number => {

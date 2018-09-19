@@ -20,6 +20,7 @@
     "develop:frontend:native": "ts-node --project tasks/tsconfig.json -T tasks developFrontendNative",
     "deploy:frontend:native": "ts-node --project tasks/tsconfig.json -T tasks publishFrontendNative",
     "build:frontend:native": "ts-node --project tasks/tsconfig.json -T tasks buildFrontendNativeBinaries",
+    "import:twt": "ts-node --project tasks/tsconfig.json -T tasks pullDataFromTwt",
     "emulator": "ts-node --project tasks/tsconfig.json -T tasks emulator",
     "storybook:web": "ts-node --project tasks/tsconfig.json -T tasks storybook web 6001",
     "storybook:native": "ts-node --project tasks/tsconfig.json -T tasks storybookExpo native",
@@ -40,7 +41,8 @@
     "@types/dotenv": "^4.0.3",
     "dotenv": "^6.0.0",
     "ts-node": "^6.1.1",
-    "typescript": "^3.0.1"
+    "typescript": "^3.0.1",
+    "yaml": "^1.0.0-rc.8"
   },
   "devDependencies": {
     "husky": "^0.14.3",
@@ -50,7 +52,6 @@
   "lint-staged": {
     "*.(js|ts|tsx|jsx|graphql|json)": [
       "yarn pretty",
-      "yarn typecheck",
       "git add"
     ]
   },

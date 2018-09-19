@@ -11,6 +11,7 @@ import {
   View,
   Dimensions,
 } from 'react-native'
+import { AnimatedCachedImage } from './CachedImage'
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window')
 
@@ -196,6 +197,7 @@ export class ParallaxScrollView extends Component {
           },
         ]}
       >
+        {this.props.renderTint && this.props.renderTint(this.getImageOpacity())}
         {renderNavBar()}
       </Animated.View>
     )
@@ -208,7 +210,7 @@ export class ParallaxScrollView extends Component {
     const imageScale = this.getImageScale()
 
     return (
-      <Animated.Image
+      <AnimatedCachedImage
         style={[
           styles.backgroundImage,
           {
@@ -300,7 +302,7 @@ export class ParallaxScrollView extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, this.props.containerStyle]}>
         {this.renderScrollView()}
         {this.renderNavbarBackground()}
         {this.renderHeaderBackground()}
@@ -319,6 +321,7 @@ ParallaxScrollView.propTypes = {
   navbarColor: PropTypes.string,
   title: PropTypes.element,
   titleStyle: PropTypes.number,
+  containerStyle: PropTypes.any,
   headerMaxHeight: PropTypes.number,
   headerMinHeight: PropTypes.number,
   scrollEventThrottle: PropTypes.number,

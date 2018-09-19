@@ -10,6 +10,7 @@ interface SavePhotoProps {
   stream: Readable
   mimetype: string
   encoding: string
+  isPortrait?: boolean
 }
 
 @Service()
@@ -18,10 +19,12 @@ export class PhotoStorageService {
 
   static async saveUploadedPhoto(
     service: PhotoStorageService,
-    photo?: FileUpload,
+    photoUpload?: FileUpload,
+    opts?: { isPortrait?: boolean },
   ) {
-    if (photo) {
-      return service.savePhoto(await photo)
+    if (photoUpload) {
+      const photo: SavePhotoProps = await photoUpload
+      return service.savePhoto({ ...photo, ...opts })
     }
 
     return undefined

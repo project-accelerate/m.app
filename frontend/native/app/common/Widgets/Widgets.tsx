@@ -2,24 +2,19 @@ import React from 'react'
 import {
   ActivityIndicator,
   View,
-  StyleSheet,
   ImageStyle,
   StyleProp,
-  ImageBackground,
   Dimensions,
   ViewStyle,
   TouchableOpacity,
-  SafeAreaView,
-  StatusBar,
   TextInputProps,
   TextInput,
-  TouchableNativeFeedbackProps,
   TouchableWithoutFeedbackProps,
   TouchableNativeFeedback,
   TouchableWithoutFeedback,
+  StyleSheet,
 } from 'react-native'
 import formInput, { makeInputGreatAgainProps } from 'react-native-formik'
-import { FontAwesome } from '@expo/vector-icons'
 import { theme } from '../../../theme'
 import {
   withNavigation,
@@ -27,18 +22,16 @@ import {
   NavigationRoute,
 } from 'react-navigation'
 import { Typography } from '../Typography/Typography'
-import { Routes } from '../../../routes'
-import { HomeScreen } from '../../twt/Home/HomeScreen'
-import { getStatusBarHeight } from '../platform'
 import { Constants } from 'expo'
-import { NotificationListener } from '../Notification/NotificationListener'
-import { ErrorGuard } from '../ErrorView/ErrorGuard'
-import { HeaderBar } from '../Screen/HeaderBar'
+import { CachedImage } from './CachedImage'
+import { moderateScale } from 'react-native-size-matters'
+import Toast from 'react-native-root-toast'
+import { HEADER_HEIGHT } from '../Screen/HeaderBar'
 
 const FieldStyle = StyleSheet.create({
   field: {
     width: '100%',
-    fontSize: 15,
+    fontSize: moderateScale(15),
     padding: theme.spacing.level(1),
     borderColor: theme.pallete.borderLight,
     backgroundColor: theme.pallete.control,
@@ -73,11 +66,12 @@ const LoadingOverlayStyle = StyleSheet.create({
 
 export function LoadingOverlay(props: {
   message?: string
+  darkBg?: boolean
   children?: React.ReactNode
 }) {
   return (
     <View style={LoadingOverlayStyle.container}>
-      <LoadingIndicator />
+      <LoadingIndicator darkBg={props.darkBg} />
       <Typography style={LoadingOverlayStyle.message} variant="body">
         {props.message || ' '}
       </Typography>
@@ -86,14 +80,19 @@ export function LoadingOverlay(props: {
   )
 }
 
-export function LoadingIndicator() {
-  return <ActivityIndicator size="large" color={theme.pallete.accent} />
+export function LoadingIndicator(props: { darkBg?: boolean }) {
+  return (
+    <ActivityIndicator
+      size="large"
+      color={props.darkBg ? theme.pallete.white : theme.pallete.accent}
+    />
+  )
 }
 
-const ProfileImageStyle = StyleSheet.create({
+const ProfileImageSize = StyleSheet.create({
   small: {
-    width: 96,
-    height: 96,
+    width: moderateScale(96),
+    height: moderateScale(96),
   },
   fullWidth: {
     width: '100%',
@@ -112,9 +111,22 @@ const ProfileImageStyle = StyleSheet.create({
   },
 })
 
+const ProfileImageStyle = StyleSheet.create({
+  container: {
+    position: 'relative',
+  },
+  content: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: '100%',
+    height: '100%',
+  },
+})
+
 interface ProfileImageProps {
   style?: StyleProp<ImageStyle>
-  size?: keyof typeof ProfileImageStyle
+  size?: keyof typeof ProfileImageSize
   image: { sourceUrl: string } | number | null
   children?: React.ReactNode
 }
@@ -130,16 +142,17 @@ export function ProfileImage({
   }
 
   return (
-    <ImageBackground
-      style={[style, ProfileImageStyle[size]]}
-      source={
-        typeof image === 'number'
-          ? image
-          : { cache: 'force-cache', uri: image.sourceUrl }
-      }
-    >
-      {children}
-    </ImageBackground>
+    <View style={[style, ProfileImageStyle.container, ProfileImageSize[size]]}>
+      <CachedImage
+        style={ProfileImageStyle.content}
+        source={
+          typeof image === 'number'
+            ? image
+            : { cache: 'force-cache', uri: image.sourceUrl }
+        }
+      />
+      {children && <View style={ProfileImageStyle.content}>{children}</View>}
+    </View>
   )
 }
 
@@ -246,6 +259,7 @@ export function Spacing(props: { level?: number }) {
 interface GridProps {
   style?: StyleProp<ViewStyle>
   center?: boolean
+  flex?: boolean
   children?: React.ReactNode
 }
 
@@ -260,20 +274,45 @@ const gridStyles = StyleSheet.create({
   center: {
     alignItems: 'center',
   },
+  flex: {
+    flex: 1,
+  },
 })
 
-export function Rows({ style, center, children }: GridProps) {
+export function Rows({ style, flex, center, children }: GridProps) {
   return (
-    <View style={[style, center && gridStyles.center, gridStyles.rows]}>
+    <View
+      style={[
+        style,
+        center && gridStyles.center,
+        gridStyles.rows,
+        flex && gridStyles.flex,
+      ]}
+    >
       {children}
     </View>
   )
 }
 
-export function Columns({ style, center, children }: GridProps) {
+export function Columns({ style, center, children, flex }: GridProps) {
   return (
-    <View style={[style, center && gridStyles.center, gridStyles.columns]}>
+    <View
+      style={[
+        style,
+        center && gridStyles.center,
+        gridStyles.columns,
+        flex && gridStyles.flex,
+      ]}
+    >
       {children}
     </View>
   )
+}
+
+export function notifyUser(message: string) {
+  Toast.show(message, {
+    textColor: theme.pallete.white,
+    backgroundColor: theme.pallete.accent,
+    position: HEADER_HEIGHT + theme.spacing.level(2),
+  })
 }

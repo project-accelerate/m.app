@@ -12,6 +12,7 @@ import TimetableScreenQueryDocument from './TimetableScreen.graphql'
 import { EventListItemPressedEvent } from './EventListItem'
 import { EventList } from './EventList'
 import { BasicScreen } from '../../common/Screen/BasicScreen'
+import { EventDetailScreen } from './EventDetailScreen'
 
 const FetchEvents = createFetchData<TimetableScreenQuery, {}>({
   query: TimetableScreenQueryDocument,
@@ -28,10 +29,10 @@ export class TimetableScreen extends React.Component<NavigationScreenProps> {
   }
 
   handleEventPressed = ({ event }: EventListItemPressedEvent) => {
-    this.props.navigation.push(Routes.get().getRoutename('EventDetailScreen'), {
+    Routes.get().push(this.props.navigation, EventDetailScreen, {
       id: event.id,
       title: event.name,
-      image: event.photo && event.photo.sourceUrl,
+      image: (event.photo && event.photo.sourceUrl) || undefined,
     })
   }
 

@@ -3,6 +3,7 @@ import {
   NavigationScreenOptions,
   NavigationScreenProps,
   NavigationScreenProp,
+  NavigationProp,
 } from 'react-navigation'
 import { HomeScreen } from './app/twt/Home/HomeScreen'
 import { TimetableScreen } from './app/twt/Event/TimetableScreen'
@@ -12,6 +13,8 @@ import { CalendarScreen } from './app/twt/Calendar/CalendarScreen'
 import { theme } from './theme'
 import { DevPanel } from './devtool/DevPanel'
 import { SubmitMeetupScreen } from './app/twt/SubmitMeetup/SubmitMeetupScreen'
+import { VotesScreen } from './app/twt/Event/VotesScreen'
+import { SettingsScreen } from './app/twt/Settings/SettingsScreen'
 
 export interface RouteComponent extends React.ComponentClass<any> {
   navigationOptions:
@@ -29,14 +32,33 @@ export class Routes {
     return Routes.instance
   }
 
-  private devOnlyRoutes = __DEV__
-    ? { DevPanel: this.createRootNavigator(DevPanel) }
-    : {}
+  push<Params>(
+    navigation: NavigationScreenProp<any, any>,
+    screen: React.ComponentType<NavigationScreenProps<Params>>,
+    params: Params,
+  ): void
+  push(
+    navigation: NavigationScreenProp<any, any>,
+    screen: React.ComponentType<NavigationScreenProps>,
+  ): void
+  push(
+    navigation: NavigationScreenProp<any, any>,
+    screen: React.ComponentType<NavigationScreenProps<any>>,
+    params?: any,
+  ): void {
+    navigation.push(this.findKeyFor(screen), params)
+  }
+
+  home = 'HomeScreen'
+
+  goHome(navigation: NavigationScreenProp<any, any>) {
+    navigation.navigate(this.home)
+  }
 
   getNavigationOptions(
     component: RouteComponent | undefined,
     navigation: NavigationScreenProp<{}>,
-  ) {
+  ): NavigationScreenOptions & { delegateOnly?: boolean } {
     if (!component) {
       return {}
     }
@@ -45,17 +67,20 @@ export class Routes {
       ? component.navigationOptions({ navigation } as any)
       : component.navigationOptions
   }
+
   nonTopLevelRoutes = {
     EventDetailScreen,
     SpeakerDetailScreen,
   }
 
   topLevelRoutes = {
-    HomeScreen: this.createRootNavigator(HomeScreen),
-    TimetableScreen: this.createRootNavigator(TimetableScreen),
-    CalendarScreen: this.createRootNavigator(CalendarScreen),
-    SubmitMeetup: this.createRootNavigator(SubmitMeetupScreen),
-    ...this.devOnlyRoutes,
+    ...this.createRootNavigator(HomeScreen, this.home),
+    ...this.createRootNavigator(TimetableScreen, 'TimetableScreen'),
+    ...this.createRootNavigator(CalendarScreen, 'CalendarScreen'),
+    ...this.createRootNavigator(VotesScreen, 'VotesScreen'),
+    ...this.createRootNavigator(SubmitMeetupScreen, 'SubmitMeetupScreen'),
+    ...this.createRootNavigator(SettingsScreen, 'SettingsScreen'),
+    ...(__DEV__ ? this.createRootNavigator(DevPanel, 'DevPanel') : {}),
   }
 
   allRoutes: Record<string, RouteComponent | undefined> = {
@@ -75,14 +100,26 @@ export class Routes {
     return key
   }
 
-  private createRootNavigator(parent: RouteComponent) {
+  private findKeyFor(screen: React.ComponentType<any>) {
+    const candidates: any = this.nonTopLevelRoutes
+    const key = Object.keys(this.nonTopLevelRoutes).find(
+      key => candidates[key] === screen,
+    )
+    if (!key) {
+      throw Error(`${screen.displayName} doesn't seem to be a pushable route`)
+    }
+
+    return key
+  }
+
+  private createRootNavigator(parent: RouteComponent, key: string) {
     const availableRoutes = {
-      [parent.name]: parent,
+      [key]: parent,
       ...this.nonTopLevelRoutes,
     }
 
     const navigator = createStackNavigator(availableRoutes, {
-      initialRouteName: parent.name,
+      initialRouteName: key,
       navigationOptions: {
         headerTintColor: theme.pallete.white,
         header: null,
@@ -90,6 +127,6 @@ export class Routes {
     })
 
     navigator.navigationOptions = parent.navigationOptions
-    return navigator
+    return { [key]: navigator }
   }
 }

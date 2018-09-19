@@ -9,50 +9,61 @@ import { HomeScreen } from '../../twt/Home/HomeScreen'
 import { getStatusBarHeight } from '../platform'
 import { Routes } from '../../../routes'
 import { theme } from '../../../theme'
-import { TouchableOpacity, View, StyleSheet, StatusBar } from 'react-native'
+import {
+  TouchableOpacity,
+  View,
+  StyleSheet,
+  StatusBar,
+  Dimensions,
+  StyleProp,
+  ViewStyle,
+} from 'react-native'
 import { FontAwesome } from '@expo/vector-icons'
 import { Typography } from '../Typography/Typography'
+import { moderateScale } from 'react-native-size-matters'
 
 interface HeaderBarProps extends Partial<NavigationInjectedProps> {
   floating?: boolean
   noBackButton?: boolean
+  style?: StyleProp<ViewStyle>
 }
 
-export const HEADER_CONTENT_HEIGHT = 40
+export const HEADER_CONTENT_HEIGHT = moderateScale(48, 0.25)
 export const HEADER_HEIGHT = HEADER_CONTENT_HEIGHT + getStatusBarHeight()
+const PADDING = moderateScale(10, 0.25)
+const ICONSIZE = moderateScale(26, 0.25)
 
 const styles = StyleSheet.create({
-  notFloating: {
-    backgroundColor: theme.pallete.accent,
-  },
   menu: {
     paddingTop: getStatusBarHeight(),
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    width: '100%',
     height: HEADER_HEIGHT,
+    maxWidth: Dimensions.get('screen').width,
+    backgroundColor: theme.pallete.accent,
+  },
+  header: {
+    maxWidth: Dimensions.get('screen').width - 2 * (2 * PADDING + ICONSIZE),
   },
   button: {
-    padding: 10,
+    padding: PADDING,
   },
   buttonIcon: {
     textShadowColor: theme.pallete.black,
-    textShadowRadius: 10,
+    textShadowRadius: moderateScale(10),
   },
 })
 
 export const HeaderBar = withNavigation(function HeaderBar({
   navigation,
   noBackButton,
-  floating,
+  style,
 }: HeaderBarProps) {
   const openDrawer = () => navigation!.openDrawer()
   const goBack = () => {
     if (isTopLevel) {
-      navigation!.navigate({
-        routeName: HomeScreen.name,
-      })
+      Routes.get().goHome(navigation!)
     } else {
       navigation!.goBack()
     }
@@ -68,36 +79,38 @@ export const HeaderBar = withNavigation(function HeaderBar({
   const isTopLevel = Routes.get().isTopLevel(state.routeName)
 
   return (
-    <SafeAreaView>
-      <StatusBar />
-      <View style={[styles.menu, !floating && styles.notFloating]}>
-        <TouchableOpacity style={styles.button} onPress={goBack}>
-          {!noBackButton && (
-            <FontAwesome
-              style={styles.buttonIcon}
-              name="chevron-left"
-              color="white"
-              size={26}
-            />
-          )}
-        </TouchableOpacity>
-        <View>
-          {(title && (
-            <Typography variant="screenHeader" darkBg>
-              {title}
-            </Typography>
-          )) ||
-            undefined}
-        </View>
-        <TouchableOpacity style={styles.button} onPress={openDrawer}>
+    <View style={[styles.menu, style]}>
+      <TouchableOpacity style={styles.button} onPress={goBack}>
+        {!noBackButton && (
           <FontAwesome
             style={styles.buttonIcon}
-            name="bars"
+            name="chevron-left"
             color="white"
-            size={26}
+            size={ICONSIZE}
           />
-        </TouchableOpacity>
+        )}
+      </TouchableOpacity>
+      <View>
+        {(title && (
+          <Typography
+            center
+            style={styles.header}
+            variant="screenHeader"
+            darkBg
+          >
+            {title}
+          </Typography>
+        )) ||
+          undefined}
       </View>
-    </SafeAreaView>
+      <TouchableOpacity style={styles.button} onPress={openDrawer}>
+        <FontAwesome
+          style={styles.buttonIcon}
+          name="bars"
+          color="white"
+          size={ICONSIZE}
+        />
+      </TouchableOpacity>
+    </View>
   )
 })

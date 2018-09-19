@@ -15,5 +15,25 @@ declare module 'react-native-markdown-view' {
   export const MarkdownView: React.ComponentType<MarkdownViewProps>
 }
 
+declare module 'react-native-parallax-header'
 
-declare module "react-native-parallax-header"
+declare module 'react-native-expo-image-cache' {
+  import * as RN from 'react-native'
+  import * as React from 'react'
+  export const Image: React.ComponentType<
+    RN.ViewProps & { uri?: string; preview?: string }
+  >
+}
+
+declare module 'react-native-root-toast' {
+  interface ToastProps {
+    shadowColor?: string
+    textColor?: string
+    position?: number
+    backgroundColor?: string
+  }
+
+  export default class Toast {
+    static show(message: string, props?: ToastProps): void
+  }
+}
