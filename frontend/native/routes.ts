@@ -85,7 +85,6 @@ export class Routes {
     ...this.createRootNavigator(TimetableScreen, 'TimetableScreen'),
     ...this.createRootNavigator(CalendarScreen, 'CalendarScreen'),
     ...this.createRootNavigator(VotesScreen, 'VotesScreen'),
-    ...this.createRootNavigator(SettingsScreen, 'SettingsScreen'),
     ...this.createRootNavigator(
       createWebScreen({
         url:
@@ -96,6 +95,7 @@ export class Routes {
       'WalkingTour',
     ),
     ...this.createRootNavigator(FeedbackScreen, 'FeedbackScreen'),
+    ...this.createRootNavigator(SettingsScreen, 'SettingsScreen'),
     ...(__DEV__ ? this.createRootNavigator(DevPanel, 'DevPanel') : {}),
   }
 
