@@ -29,7 +29,7 @@
     "android": {
       "package": "com.peoplesmomentum.app.beta",
       "versionCode": 8,
-      "googleServicesFile": "./google-services.json",
+      "googleServicesFile": "./google-services-beta.json",
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyC89f_jlusXaC_HGA3u3Qeiqr84GQPQLyI"
