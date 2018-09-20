@@ -107,7 +107,7 @@ export function Home({
         )}
         <CardGroupHeader>News</CardGroupHeader>
         {news.map(newsItem => (
-          <NewsPanel news={newsItem} onPress={onNewsPress} />
+          <NewsPanel key={newsItem.id} news={newsItem} onPress={onNewsPress} />
         ))}
       </CardContainer>
     </ImageHeaderScreen>

@@ -31,7 +31,8 @@ export class ConferenceNotification {
 
   @Field() message!: string
 
-  @Field() detail!: string
+  @Field({ nullable: true })
+  detail!: string
 
   @Field() urgent!: boolean
 
