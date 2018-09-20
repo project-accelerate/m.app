@@ -5,43 +5,21 @@ import { AuthToken } from 'common/AuthToken'
 import { someAdminUser, someOrdinaryUser } from 'common/test/testUtils'
 
 describe('sentNotifications', () => {
-  describe('when authenticated as admin', () => {
-    it(
-      'returns all sent notifications',
-      withDb(async () => {
-        const notification = await givenThatAConferenceNotificationHasBeenSent()
-        const { sentNotifications } = await querySentNotifications(
-          someAdminUser,
-        )
+  it(
+    'returns all sent notifications',
+    withDb(async () => {
+      const notification = await givenThatAConferenceNotificationHasBeenSent()
+      const { sentNotifications } = await querySentNotifications()
 
-        expect(sentNotifications).toMatchObject({
-          edges: [
-            {
-              node: { id: notification.id },
-            },
-          ],
-        })
-      }),
-    )
-  })
-  describe('when authenticated as ordinary user', () => {
-    it(
-      'throws error',
-      withDb(async () => {
-        await givenThatAConferenceNotificationHasBeenSent()
-        await expect(querySentNotifications(someOrdinaryUser)).rejects.toThrow()
-      }),
-    )
-  })
-  describe('when not authenticated', () => {
-    it(
-      'throws error',
-      withDb(async () => {
-        await givenThatAConferenceNotificationHasBeenSent()
-        await expect(querySentNotifications()).rejects.toThrow()
-      }),
-    )
-  })
+      expect(sentNotifications).toMatchObject({
+        edges: [
+          {
+            node: { id: notification.id },
+          },
+        ],
+      })
+    }),
+  )
 })
 
 async function querySentNotifications(user?: AuthToken) {
