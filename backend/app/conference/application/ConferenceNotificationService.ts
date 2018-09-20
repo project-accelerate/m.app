@@ -45,7 +45,6 @@ export class ConferenceNotificationService {
   }
 
   private async recordNotification(request: ConferenceNotificationSendRequest) {
-    console.log('insert', request)
     return this.conferenceNotificationRepository.insert({
       ...request,
       timeSent: this.dateProvider.now(),
