@@ -1,0 +1,6 @@
+fragment NewsPanel on ConferenceNotification {
+  id
+  timeSent
+  title
+  message
+}

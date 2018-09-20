@@ -20,6 +20,8 @@ import {
   SessionFeedbackScreen,
   FeedbackScreen,
 } from './app/twt/Feedback/FeedbackScreen'
+import { NewsScreen } from './app/twt/News/NewsScreen'
+import { NewsDetailScreen } from './app/twt/News/NewsDetailScreen'
 
 export interface RouteComponent extends React.ComponentClass<any> {
   navigationOptions:
@@ -78,10 +80,12 @@ export class Routes {
     SpeakerDetailScreen,
     TWTFeedbackScreen,
     SessionFeedbackScreen,
+    NewsDetailScreen,
   }
 
   topLevelRoutes = {
     ...this.createRootNavigator(HomeScreen, this.home),
+    ...this.createRootNavigator(NewsScreen, 'NewsScreen'),
     ...this.createRootNavigator(TimetableScreen, 'TimetableScreen'),
     ...this.createRootNavigator(CalendarScreen, 'CalendarScreen'),
     ...this.createRootNavigator(VotesScreen, 'VotesScreen'),

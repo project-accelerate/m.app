@@ -24,6 +24,7 @@ interface EditNotificationFormProps {
 interface EditNotificationFormValue {
   title: string
   message: string
+  detail: string
   urgent: boolean
   link?: string
   associatedEventId?: string
@@ -45,6 +46,7 @@ export class EditNotificationForm extends React.Component<
       title: '',
       message: '',
       urgent: false,
+      detail: '',
       scope: ConferenceNotificationScope.EVERYONE,
       ...this.props.initial,
     }
@@ -102,7 +104,15 @@ export class EditNotificationForm extends React.Component<
             inputProps={{ maxLength: 140 }}
             name="message"
             label="Body"
-            helperText="Short message with more information"
+            helperText="Short message with more information displayed in notification"
+          />
+          <FormText
+            fullWidth
+            multiline
+            rows={7}
+            name="detail"
+            label="Body"
+            helperText="Optional. Full article to display when user presses the notification"
           />
           <FormCheckbox
             name="urgent"

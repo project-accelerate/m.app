@@ -11,6 +11,7 @@ import { createStateConnector } from '../../../state'
 import { createWizard, WizardStageProps } from '../../common/Wizard/Wizard'
 import { compact } from 'lodash'
 import { Platform } from 'react-native'
+import { prefetchHomeData } from '../Home/prefetchHomeData'
 
 interface RegistrationWizardData {
   isConferenceDelegate: boolean
@@ -49,7 +50,10 @@ export function RegistrationContainer(props: React.Props<{}>) {
                 optedIntoNotifications: true,
               }}
               darkBg
-              onCompleted={actions.registration.register}
+              onCompleted={async params => {
+                await actions.registration.register(params)
+                await prefetchHomeData({})
+              }}
             />
           </RegistrationBg>
         )

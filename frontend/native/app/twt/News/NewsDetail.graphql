@@ -1,0 +1,7 @@
+fragment NewsDetail on ConferenceNotification {
+  id
+  timeSent
+  title
+  message
+  detail
+}

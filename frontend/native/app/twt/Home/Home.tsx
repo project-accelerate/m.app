@@ -22,21 +22,19 @@ import {
   CardGroupHeader,
   CardContent,
 } from '../../common/Widgets/Card'
-import { times } from 'lodash'
 import {
   HEADER_HEIGHT,
   HEADER_CONTENT_HEIGHT,
 } from '../../common/Screen/HeaderBar'
 import { getStatusBarHeight } from '../../common/platform'
-import { createStateConnector } from '../../../state'
 import { calendar } from '../Calendar/calendarState'
-import { Touchable } from '../../common/Widgets/Widgets'
-import { format, isSameDay } from 'date-fns'
+import { isSameDay } from 'date-fns'
 import Logo from '../../../assets/Mlogo'
-import { Br, Markdown, Typography } from '../../common/Typography/Typography'
-import { MarkdownView } from 'react-native-markdown-view'
+import { Typography } from '../../common/Typography/Typography'
 import { moderateScale } from 'react-native-size-matters'
 import { timeOf, weekdayOf } from '../../common/date-formats'
+import { NewsPanel } from '../News/NewsPanel'
+import { NewsPanelFragment } from '../../../queries'
 
 const style = StyleSheet.create({
   parallaxContainer: {
@@ -56,11 +54,19 @@ const style = StyleSheet.create({
 
 export interface HomeProps {
   time: Date
+  news: NewsPanelFragment[]
   events: calendar.SavedEventDetails[]
   onEventPress: (event: calendar.SavedEventDetails) => void
+  onNewsPress: (news: string) => void
 }
 
-export function Home({ time, events, onEventPress }: HomeProps) {
+export function Home({
+  news,
+  time,
+  events,
+  onEventPress,
+  onNewsPress,
+}: HomeProps) {
   return (
     <ImageHeaderScreen
       noBackButton
@@ -100,17 +106,10 @@ export function Home({ time, events, onEventPress }: HomeProps) {
           </View>
         )}
         <CardGroupHeader>News</CardGroupHeader>
-        <Card>
-          <CardHeader>TWT Programme is Live!</CardHeader>
-          <CardContent>
-            <Markdown value={firstItem} />
-          </CardContent>
-        </Card>
+        {news.map(newsItem => (
+          <NewsPanel news={newsItem} onPress={onNewsPress} />
+        ))}
       </CardContainer>
     </ImageHeaderScreen>
   )
 }
-
-const firstItem = `The programme for TWT is out now. If you’re interested in a session or workshop, you can save it to your calendar. We’ll remind you about it half an hour before it starts.
-
-This year’s festival will double in size, platform voices from all over the world, and have a more innovative programme than ever before. TWT 2018 will create an open space for collective political education that will strengthen our entire movement.`

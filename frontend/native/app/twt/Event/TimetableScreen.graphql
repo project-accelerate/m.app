@@ -2,6 +2,7 @@
 
 query TimetableScreen($userId: String!) {
   user(id: $userId) {
+    id
     events: conferenceEvents {
       edges {
         node {
