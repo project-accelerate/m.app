@@ -36,11 +36,16 @@ export class ConferenceNotificationService {
     const devices = await this.getDevicesForTarget(target)
     log.debug('[ConferenceNotificationService] Matched devices', devices)
 
-    const { id } = await this.recordNotification(request)
-    await this.sendNotificationsToDevices(request, devices, id)
+    try {
+      const { id } = await this.recordNotification(request)
+      await this.sendNotificationsToDevices(request, devices, id)
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   private async recordNotification(request: ConferenceNotificationSendRequest) {
+    console.log('insert', request)
     return this.conferenceNotificationRepository.insert({
       ...request,
       timeSent: this.dateProvider.now(),

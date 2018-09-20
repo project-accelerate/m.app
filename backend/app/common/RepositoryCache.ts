@@ -27,7 +27,7 @@ export class RepositoryCache {
 
   private cache = new Map<string, any>()
 
-  resolve<T>(
+  async resolve<T>(
     method: string,
     params: {},
     resolveFn: () => Promise<T>,
@@ -50,7 +50,19 @@ export class RepositoryCache {
       return hit.value
     }
 
-    const value = resolveFn()
+    const value = await resolveFn()
+    if (
+      typeof value === 'undefined' ||
+      (typeof value === 'object' && Array.isArray(value) && value.length === 0)
+    ) {
+      return value
+    }
+
+    log.debug('[RepositoryCache] save', {
+      key,
+      value,
+    })
+
     const expiry = ttl + Date.now()
     this.cache.set(key, { value, expiry })
 
