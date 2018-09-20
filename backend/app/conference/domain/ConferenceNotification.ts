@@ -7,7 +7,7 @@ export class ConferenceNotificationSendRequest {
 
   @Field() message!: string
 
-  @Field() detail?: string
+  @Field() detail!: string
 
   @Field() urgent!: boolean
 
@@ -31,7 +31,7 @@ export class ConferenceNotification {
 
   @Field() message!: string
 
-  @Field() detail?: string
+  @Field() detail!: string
 
   @Field() urgent!: boolean
 

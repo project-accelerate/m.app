@@ -20,6 +20,7 @@ export function someConferenceNotificationSendRequest(
     title: someString(),
     link: someString(),
     urgent: someBool(),
+    detail: '',
     ...props,
   }
 }
@@ -34,6 +35,7 @@ export function someConferenceNotificationProps(
     associatedEventId: someUuid(),
     title: someString(),
     link: someString(),
+    detail: '',
     urgent: someBool(),
     ...props,
   }
