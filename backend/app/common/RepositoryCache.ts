@@ -6,6 +6,8 @@ interface CachedRecord {
   value: any
 }
 
+const PURGE_INTERVAL_MINUTES = Number(process.env.CACHE_PURGE_INTERVAL || 120)
+
 export interface CacheConfig {
   ttl: number
   purgeIntervalMinutes?: number
@@ -16,8 +18,7 @@ export class RepositoryCache {
     if (!this.config) {
       return
     }
-    const { purgeIntervalMinutes = 120 } = this.config
-    const purgeIntervalMs = purgeIntervalMinutes * 60_000
+    const purgeIntervalMs = PURGE_INTERVAL_MINUTES * 60_000
 
     setInterval(() => {
       this.cache.clear()
