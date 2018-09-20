@@ -120,7 +120,7 @@ export class Routes {
     return key
   }
 
-  private findKeyFor(screen: React.ComponentType<any>) {
+  findKeyFor(screen: React.ComponentType<any>) {
     const candidates: any = this.nonTopLevelRoutes
     const key = Object.keys(this.nonTopLevelRoutes).find(
       key => candidates[key] === screen,

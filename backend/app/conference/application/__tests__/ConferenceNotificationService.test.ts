@@ -34,11 +34,15 @@ describe(ConferenceNotificationService, () => {
       message: 'hello',
       scope: ConferenceNotificationScope.EVERYONE,
       urgent: false,
+      detail: '',
     }
 
     fixture.givenNotificationTarget(target)
     fixture.givenSomeDevicesForTarget(target, [device])
     fixture.givenNotificationMetadata(metadata)
+    fixture.conferenceNotificationRepository.givenIdReturnedFromInsert(
+      'notification',
+    )
 
     await fixture.service.handleSendNotificationsRequest(request)
 
@@ -47,7 +51,7 @@ describe(ConferenceNotificationService, () => {
         deviceId: device.id,
         payload: {
           to: device.deviceToken!,
-          data: metadata,
+          data: { id: 'notification', ...metadata },
           title: 'hi',
           body: 'hello',
           priority: 'normal',
