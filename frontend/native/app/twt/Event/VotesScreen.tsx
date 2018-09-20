@@ -64,12 +64,10 @@ export class VotesScreen extends React.Component<NavigationScreenProps> {
                           We don’t have any information about votes yet
                         </CardHeader>
                         <CardContent>
-                          <Paragraphs>
-                            <Typography>
-                              We’ll add information about vote times here when
-                              it becomes available.
-                            </Typography>
-                          </Paragraphs>
+                          <Typography>
+                            We’ll add information about vote times here when it
+                            becomes available.
+                          </Typography>
                         </CardContent>
                       </Card>
                     </CardContainer>
