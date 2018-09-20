@@ -1,4 +1,5 @@
 import stringify from 'json-stable-stringify'
+import log from 'winston'
 
 interface CachedRecord {
   expiry: number
@@ -25,7 +26,7 @@ export class RepositoryCache {
 
   private cache = new Map<string, any>()
 
-  async resolve<T>(
+  resolve<T>(
     method: string,
     params: {},
     resolveFn: () => Promise<T>,
@@ -38,11 +39,17 @@ export class RepositoryCache {
 
     const key = method + '|' + stringify(params)
     const hit = this.cache.get(key)
-    if (hit && hit.expiry < Date.now()) {
+    log.debug('[RepositoryCache]', {
+      key,
+      hit,
+      useCached: hit ? hit.expiry < Date.now() : false,
+    })
+
+    if (hit && hit.expiry > Date.now()) {
       return hit.value
     }
 
-    const value = await resolveFn()
+    const value = resolveFn()
     const expiry = ttl + Date.now()
     this.cache.set(key, { value, expiry })
 

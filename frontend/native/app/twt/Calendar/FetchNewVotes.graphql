@@ -2,6 +2,7 @@
 
 query FetchNewVotes($userId: String!) {
   user(id: $userId) {
+    id
     votes: conferenceVotes {
       edges {
         node {

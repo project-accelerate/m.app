@@ -31,12 +31,18 @@ export class ConferenceNotificationResolver {
     @Arg('user', { nullable: true })
     user?: string,
   ) {
-    return new SentNotificationsConnection(
-      await this.conferenceNotificationRepository.find({
-        scope: user
-          ? oneOf(...(await this.notificationTargeter.getScopesForUser(user)))
-          : undefined,
-      }),
-    )
+    if (user) {
+      return new SentNotificationsConnection(
+        await this.conferenceNotificationRepository.find({
+          scope: oneOf(
+            ...(await this.notificationTargeter.getScopesForUser(user)),
+          ),
+        }),
+      )
+    } else {
+      return new SentNotificationsConnection(
+        await this.conferenceNotificationRepository.findAll(),
+      )
+    }
   }
 }

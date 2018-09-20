@@ -185,6 +185,54 @@ export interface VotesScreenQuery {
   }
 }
 
+export interface HomeScreenQueryVariables {
+  user?: string | null
+}
+
+export interface HomeScreenQuery {
+  news: {
+    edges: Array<{
+      node: {
+        id: string
+        timeSent: string
+        title: string
+        message: string
+      }
+    }>
+  }
+}
+
+export interface NewsDetailScreenQueryVariables {
+  id: string
+}
+
+export interface NewsDetailScreenQuery {
+  newsItem: {
+    id: string
+    timeSent: string
+    title: string
+    message: string
+    detail: string
+  }
+}
+
+export interface NewsScreenQueryVariables {
+  user?: string | null
+}
+
+export interface NewsScreenQuery {
+  news: {
+    edges: Array<{
+      node: {
+        id: string
+        timeSent: string
+        title: string
+        message: string
+      }
+    }>
+  }
+}
+
 export interface RegisterDeviceMutationVariables {
   request: RegisterConferenceAttendanceRequest
 }
@@ -319,6 +367,21 @@ export interface EventListItemFragment {
   photo: {
     sourceUrl: string
   } | null
+}
+
+export interface NewsDetailFragment {
+  id: string
+  timeSent: string
+  title: string
+  message: string
+  detail: string
+}
+
+export interface NewsPanelFragment {
+  id: string
+  timeSent: string
+  title: string
+  message: string
 }
 
 export interface SpeakerDetailFragment {

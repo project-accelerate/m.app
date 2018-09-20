@@ -6,7 +6,7 @@ import {
   View,
   SectionListData,
 } from 'react-native'
-import { groupBy, sortBy } from 'lodash'
+import { groupBy, sortBy, orderBy } from 'lodash'
 import { LoadingOverlay, Grid, Columns, Rows } from '../Widgets/Widgets'
 import { theme } from '../../../theme'
 import { Typography } from '../Typography/Typography'
@@ -35,6 +35,7 @@ const ConnectionListStyle = StyleSheet.create({
 interface ConnectionListProps<T> {
   data?: Connection<T>
   sortKey?: keyof T
+  order?: 'asc' | 'desc'
   emptyMessage?: JSX.Element
   sectionBy?: (x: T) => string
   filter?: (x: T) => any
@@ -91,7 +92,11 @@ export class ConnectionList<T> extends React.Component<ConnectionListProps<T>> {
       return edges
     }
 
-    return sortBy(edges, item => item.node[sortKey])
+    return orderBy(
+      edges,
+      [item => item.node[sortKey]],
+      [this.props.order || 'asc'],
+    )
   }
 
   render() {
