@@ -7,7 +7,7 @@ import { ConferenceNotification } from '../domain/ConferenceNotification'
 const config: CrudRepositoryConfig<ConferenceNotification> = {
   tableName: 'ConferenceNotification',
   cache: {
-    ttl: 10_000,
+    ttl: 5_000,
   },
 }
 

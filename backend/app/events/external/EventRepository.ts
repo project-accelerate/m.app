@@ -16,7 +16,7 @@ const config: CrudRepositoryConfig<Event> = {
     location: PointField,
   },
   cache: {
-    ttl: 120_000,
+    ttl: 5_000,
   },
 }
 
