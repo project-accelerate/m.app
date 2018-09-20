@@ -51,7 +51,12 @@ describe(ConferenceNotificationService, () => {
         deviceId: device.id,
         payload: {
           to: device.deviceToken!,
-          data: { id: 'notification', ...metadata },
+          data: {
+            id: 'notification',
+            title: 'hi',
+            body: 'hello',
+            ...metadata,
+          },
           title: 'hi',
           body: 'hello',
           priority: 'normal',
