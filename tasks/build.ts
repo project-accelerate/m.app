@@ -18,8 +18,14 @@ export function buildFrontendNativeBinaries(releaseChannel = 'beta') {
     cwd: 'frontend/native',
   })
 
-  exp('build:android', { 'release-channel': releaseChannel })
-  exp('build:ios', { 'release-channel': releaseChannel })
+  exp('build:android', {
+    'release-channel': releaseChannel,
+    config: getAppJson(releaseChannel),
+  })
+  exp('build:ios', {
+    'release-channel': releaseChannel,
+    config: getAppJson(releaseChannel),
+  })
 }
 
 export function publishFrontendNative(releaseChannel = 'beta') {
@@ -32,10 +38,22 @@ export function publishFrontendNative(releaseChannel = 'beta') {
     exp('login', {
       username: process.env.EXPO_USER,
       password: process.env.EXPO_PASSWORD,
+      config: getAppJson(releaseChannel),
     })
   }
 
-  exp('publish', { 'release-channel': releaseChannel })
+  exp('publish', {
+    'release-channel': releaseChannel,
+    config: getAppJson(releaseChannel),
+  })
+}
+
+function getAppJson(channel: string) {
+  if (channel === 'beta') {
+    return 'app.beta.json'
+  }
+
+  return 'app.json'
 }
 
 function validateChannel(channel: string) {

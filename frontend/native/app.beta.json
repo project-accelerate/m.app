@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Momentum",
+    "name": "Momentum Staging",
     "description": "Platform Socialism",
     "slug": "momentum-app",
     "primaryColor": "#ec0000",
@@ -20,25 +20,20 @@
     },
     "entryPoint": "./main.js",
     "assetBundlePatterns": ["app/**", "assets/**"],
+    "icon": "./icons/icon-beta.png",
     "ios": {
       "supportsTablet": true,
       "buildNumber": "8",
-      "bundleIdentifier": "com.peoplesmomentum.app",
-      "icon": "./icons/icon.ios.png"
+      "bundleIdentifier": "com.peoplesmomentum.app.beta"
     },
     "android": {
-      "package": "com.peoplesmomentum.app",
+      "package": "com.peoplesmomentum.app.beta",
       "versionCode": 8,
       "googleServicesFile": "./google-services.json",
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyC89f_jlusXaC_HGA3u3Qeiqr84GQPQLyI"
         }
-      },
-      "icon": "./icons/icon.android-fallback.png",
-      "adaptiveIcon": {
-        "foregroundImage": "./icons/icon.android.png",
-        "backgroundImage": "./icons/icon.android.bg.png"
       }
     },
     "packagerOpts": {
