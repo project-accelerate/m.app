@@ -1,5 +1,8 @@
 import { Notifications } from 'expo'
-import { NotificationHandler } from '../../common/Notification/NotificationHandler'
+import {
+  NotificationHandler,
+  InAppNotificationProps,
+} from '../../common/Notification/NotificationHandler'
 import { calendar } from './calendarState'
 import { theme } from '../../../theme'
 import { format } from 'date-fns'
@@ -35,6 +38,17 @@ export class EventReminderNotificationHandler extends NotificationHandler<
 > {
   static acceptNotification(notification: Notifications.Notification) {
     return notification.data.type === 'event-reminder'
+  }
+
+  getInAppNotificationProps(): InAppNotificationProps {
+    const event = this.data
+    return {
+      title: 'Happening Soon',
+      message: `${event.name} will be starting at ${
+        event.venueName
+      } at ${format(event.startTime, 'h:mm')}`,
+      okLabel: 'View Event',
+    }
   }
 
   routeName = Routes.get().getRoutename('EventDetailScreen')

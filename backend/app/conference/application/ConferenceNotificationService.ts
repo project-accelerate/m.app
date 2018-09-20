@@ -86,6 +86,7 @@ export class ConferenceNotificationService {
     if (!device.deviceToken) {
       return []
     }
+
     return [
       {
         deviceId: device.id,
@@ -96,6 +97,8 @@ export class ConferenceNotificationService {
           priority: request.urgent ? 'high' : 'normal',
           data: {
             id,
+            title: request.title,
+            body: request.message,
             ...this.notificationTargeter.getNotificationMetadata(request),
           },
           sound: request.urgent ? 'default' : null,
