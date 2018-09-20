@@ -1,11 +1,19 @@
 import { Notifications } from 'expo'
 import { NavigationScreenProp, NavigationState } from 'react-navigation'
 
+export interface InAppNotificationProps {
+  title: string
+  message: string
+  okLabel: string
+}
+
 export abstract class NotificationHandler<T> {
   constructor(
     protected notification: Notifications.Notification,
     protected navigator?: NavigationScreenProp<NavigationState>,
   ) {}
+
+  abstract getInAppNotificationProps(): InAppNotificationProps
 
   get data(): T {
     return this.notification.data
