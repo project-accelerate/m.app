@@ -37,3 +37,5 @@ declare module 'react-native-root-toast' {
     static show(message: string, props?: ToastProps): void
   }
 }
+
+declare module 'sentry-expo'

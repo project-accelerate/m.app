@@ -1,6 +1,7 @@
 import React from 'react'
 import { ErrorView, RetryErrorEvent } from './ErrorView'
 import { Updates } from 'expo'
+import Sentry from 'sentry-expo'
 
 interface ErrorGuardProps {}
 
@@ -17,7 +18,12 @@ export class ErrorGuard extends React.Component<
     attempt: 0,
   }
 
+  componentDidMount() {
+    this.componentDidCatch(new Error('error'))
+  }
+
   componentDidCatch(error: Error) {
+    Sentry.captureException(error)
     this.setState({ error })
   }
 
