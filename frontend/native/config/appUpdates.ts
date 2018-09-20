@@ -16,9 +16,11 @@ export async function setupAppUpdates() {
 }
 
 async function updateApp() {
-  const update = await Updates.fetchUpdateAsync()
-
-  if (update.isNew) {
-    Updates.reloadFromCache()
+  const { isAvailable } = await Updates.checkForUpdateAsync()
+  if (!isAvailable) {
+    return
   }
+
+  await Updates.fetchUpdateAsync()
+  Updates.reloadFromCache()
 }
