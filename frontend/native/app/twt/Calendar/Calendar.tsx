@@ -1,6 +1,13 @@
 import React from 'react'
 import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
-import { differenceInHours, min, max, addHours, format } from 'date-fns'
+import {
+  differenceInHours,
+  min,
+  max,
+  addHours,
+  format,
+  differenceInMinutes,
+} from 'date-fns'
 import { times } from 'lodash'
 import { Typography } from '../../common/Typography/Typography'
 import { theme } from '../../../theme'
@@ -116,11 +123,14 @@ export class CalendarView extends React.Component<
   }
 
   verticalOffset(item: CalendarEventProps) {
-    return differenceInHours(item.start, this.props.startTime) * PIXELS_PER_HOUR
+    return (
+      differenceInMinutes(item.start, this.props.startTime) *
+      (PIXELS_PER_HOUR / 60)
+    )
   }
 
   height(item: CalendarEventProps) {
-    return differenceInHours(item.end, item.start) * PIXELS_PER_HOUR
+    return differenceInMinutes(item.end, item.start) * (PIXELS_PER_HOUR / 60)
   }
 
   itemBounds(item: CalendarEventProps) {
