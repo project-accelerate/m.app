@@ -8,6 +8,10 @@ import {
   RelationRepository,
   RelationRepositoryProps,
 } from './RelationRepository'
+import {
+  CacheConfig,
+  RepositoryCache,
+} from 'backend/app/common/RepositoryCache'
 
 export interface CrudRepository<T = {}, Props = {}> {
   /** Database object exposed for custom queries */
@@ -96,6 +100,7 @@ export type CrudRepositoryType<T = {}> = new (
 export interface CrudRepositoryConfig<T> {
   tableName: string
   fieldConverters?: { [P in keyof Partial<T>]: FieldConverter<T[P]> }
+  cache?: CacheConfig
 }
 
 export interface CrudRepositoryConstructor<T, Props> {
@@ -139,6 +144,8 @@ export function CrudRepository<T extends { id: string }, Props = WithoutId<T>>(
     db = Container.get(DatabaseConnection)
 
     tableName = tableName
+
+    cache = new RepositoryCache(opts.cache)
 
     customQueryFields = flatMap(
       fieldConverters,
@@ -199,21 +206,25 @@ export function CrudRepository<T extends { id: string }, Props = WithoutId<T>>(
       return new RelationRepository(CrudRepositoryBase, repo, opts)
     }
 
-    async find(clauses: SelectClauses<T>): Promise<T[]> {
-      return await this.db.knex
-        .select('*', ...this.customQueryFields)
-        .from(opts.tableName)
-        .where(this.encodeClauses(clauses))
-        .then(xs => this.decodeAll(xs))
+    find(clauses: SelectClauses<T>): Promise<T[]> {
+      return this.cache.resolve('find', clauses, async () => {
+        return await this.db.knex
+          .select('*', ...this.customQueryFields)
+          .from(opts.tableName)
+          .where(this.encodeClauses(clauses))
+          .then(xs => this.decodeAll(xs))
+      })
     }
 
-    async findOne(clauses: SelectClauses<T>): Promise<T | undefined> {
-      return await this.db.knex
-        .select('*', ...this.customQueryFields)
-        .first()
-        .from(opts.tableName)
-        .where(this.encodeClauses(clauses))
-        .then(x => this.decode(x))
+    findOne(clauses: SelectClauses<T>): Promise<T | undefined> {
+      return this.cache.resolve('findOne', clauses, async () => {
+        return await this.db.knex
+          .select('*', ...this.customQueryFields)
+          .first()
+          .from(opts.tableName)
+          .where(this.encodeClauses(clauses))
+          .then(x => this.decode(x))
+      })
     }
 
     async findOneRequired(clauses: SelectClauses<T>) {
@@ -226,7 +237,7 @@ export function CrudRepository<T extends { id: string }, Props = WithoutId<T>>(
     }
 
     async findAll() {
-      return this.find({})
+      return this.cache.resolve('findAll', {}, () => this.find({}))
     }
 
     async insert(data: any): Promise<any> {

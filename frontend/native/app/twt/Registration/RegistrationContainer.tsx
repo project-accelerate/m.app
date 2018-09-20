@@ -10,6 +10,8 @@ import {
 import { registration } from './registrationState'
 import { createStateConnector } from '../../../state'
 import { createWizard, WizardStageProps } from '../../common/Wizard/Wizard'
+import { compact } from 'lodash'
+import { Platform } from 'react-native'
 
 interface RegistrationWizardData {
   isConferenceDelegate: boolean
@@ -24,11 +26,11 @@ const Connect = createStateConnector(() => ({
 }))
 
 const RegistrationWizard = createWizard<RegistrationWizardData>({
-  stages: [
-    AcceptNotificationsPanel,
+  stages: compact([
+    Platform.OS === 'ios' && AcceptNotificationsPanel,
     RegistrationIsDelegateQuestion,
     RegistrationAskEmailPanel,
-  ],
+  ]),
 })
 
 export function RegistrationContainer(props: React.Props<{}>) {
@@ -45,7 +47,7 @@ export function RegistrationContainer(props: React.Props<{}>) {
               initialState={{
                 email: '',
                 isConferenceDelegate: false,
-                optedIntoNotifications: false,
+                optedIntoNotifications: true,
               }}
               darkBg
               onCompleted={actions.registration.register}

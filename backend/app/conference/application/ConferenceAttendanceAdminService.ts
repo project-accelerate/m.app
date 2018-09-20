@@ -16,7 +16,10 @@ export class ConferenceAttendanceAdminService {
   async registerConferenceAttendances(
     request: RegisterConferenceAttendanceRequest,
   ): Promise<RegisterConferenceAttendanceResponse> {
-    const user = await this.userAdminService.addUser(request.user)
+    const user = await this.userAdminService.addUser({
+      ...request.user,
+      consentToContact: Boolean(request.user.email),
+    })
 
     const device = await this.deviceAdminService.registerDeviceToOwner({
       device: request.device,

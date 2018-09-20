@@ -1,6 +1,6 @@
 query UserSettings($id: String!) {
   user(id: $id) {
     id
-    email
+    consentToContact
   }
 }

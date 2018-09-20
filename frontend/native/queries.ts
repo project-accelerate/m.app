@@ -220,7 +220,7 @@ export interface UserSettingsQueryVariables {
 export interface UserSettingsQuery {
   user: {
     id: string
-    email: string | null
+    consentToContact: boolean
   }
 }
 

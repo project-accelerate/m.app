@@ -8,6 +8,7 @@ export function someUserProps(props: Partial<UserProps> = {}): UserProps {
     optedIntoNotifications: someBool(),
     email: someString(),
     isDelegate: true,
+    consentToContact: true,
     ...props,
   }
 }

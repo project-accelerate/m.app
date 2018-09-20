@@ -15,6 +15,12 @@ import { DevPanel } from './devtool/DevPanel'
 import { SubmitMeetupScreen } from './app/twt/SubmitMeetup/SubmitMeetupScreen'
 import { VotesScreen } from './app/twt/Event/VotesScreen'
 import { SettingsScreen } from './app/twt/Settings/SettingsScreen'
+import { createWebScreen } from './app/common/WebScreen/createWebScreen'
+import {
+  TWTFeedbackScreen,
+  SessionFeedbackScreen,
+  FeedbackScreen,
+} from './app/twt/Feedback/FeedbackScreen'
 
 export interface RouteComponent extends React.ComponentClass<any> {
   navigationOptions:
@@ -71,6 +77,8 @@ export class Routes {
   nonTopLevelRoutes = {
     EventDetailScreen,
     SpeakerDetailScreen,
+    TWTFeedbackScreen,
+    SessionFeedbackScreen,
   }
 
   topLevelRoutes = {
@@ -78,6 +86,16 @@ export class Routes {
     ...this.createRootNavigator(TimetableScreen, 'TimetableScreen'),
     ...this.createRootNavigator(CalendarScreen, 'CalendarScreen'),
     ...this.createRootNavigator(VotesScreen, 'VotesScreen'),
+    ...this.createRootNavigator(
+      createWebScreen({
+        url:
+          'https://soundcloud.com/user-189667110/sets/a-radical-history-tour-of-liverpool',
+        title: 'A Radical History Tour of Liverpool',
+        drawerLabel: 'Liverpool History Tour',
+      }),
+      'WalkingTour',
+    ),
+    ...this.createRootNavigator(FeedbackScreen, 'FeedbackScreen'),
     ...this.createRootNavigator(SubmitMeetupScreen, 'SubmitMeetupScreen'),
     ...this.createRootNavigator(SettingsScreen, 'SettingsScreen'),
     ...(__DEV__ ? this.createRootNavigator(DevPanel, 'DevPanel') : {}),

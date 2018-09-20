@@ -20,6 +20,7 @@ describe(ConferenceAttendanceAdminService, () => {
       user: {
         isDelegate: true,
         optedIntoNotifications: true,
+        email: 'me@example.com',
       },
     })
 
@@ -34,6 +35,8 @@ describe(ConferenceAttendanceAdminService, () => {
     fixture.userAdminService.verifyUserCreated({
       optedIntoNotifications: true,
       isDelegate: true,
+      consentToContact: true,
+      email: 'me@example.com',
     })
   })
 })

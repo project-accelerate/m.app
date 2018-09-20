@@ -64,6 +64,7 @@ export namespace calendar {
     new Date('2018-09-23'),
     new Date('2018-09-24'),
     new Date('2018-09-25'),
+    new Date('2018-09-26'),
   ]
 
   export const firstDay = days[0]
@@ -217,7 +218,7 @@ export namespace calendar {
         log('Adding new saved event', details)
       }
 
-      const notificationTime = subHours(event.startTime, alertMinutesBefore)
+      const notificationTime = subMinutes(event.startTime, alertMinutesBefore)
 
       const notificationToken = await Notifications.scheduleLocalNotificationAsync(
         createEventReminderNotification(details),
