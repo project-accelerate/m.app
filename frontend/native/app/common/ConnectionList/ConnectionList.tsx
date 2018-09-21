@@ -6,7 +6,7 @@ import {
   View,
   SectionListData,
 } from 'react-native'
-import { groupBy, sortBy, orderBy } from 'lodash'
+import { groupBy, sortBy, orderBy, identity } from 'lodash'
 import { LoadingOverlay, Grid, Columns, Rows } from '../Widgets/Widgets'
 import { theme } from '../../../theme'
 import { Typography } from '../Typography/Typography'
@@ -77,7 +77,11 @@ export class ConnectionList<T> extends React.Component<ConnectionListProps<T>> {
 
     const sectionMap = groupBy(edges, edge => sectionBy(edge.node))
 
-    const orderedSectionKeys = sortBy(Object.keys(sectionMap))
+    const orderedSectionKeys = orderBy(
+      Object.keys(sectionMap),
+      [identity],
+      [this.props.order || 'asc'],
+    )
 
     return orderedSectionKeys.map(key => ({
       key,
@@ -95,7 +99,7 @@ export class ConnectionList<T> extends React.Component<ConnectionListProps<T>> {
     return orderBy(
       edges,
       [item => item.node[sortKey]],
-      [this.props.order || 'asc'],
+      [this.props.order || this.props.order || 'asc'],
     )
   }
 

@@ -68,6 +68,7 @@ export interface FetchNewVotesQueryVariables {
 
 export interface FetchNewVotesQuery {
   user: {
+    id: string
     votes: {
       edges: Array<{
         node: {
@@ -135,6 +136,7 @@ export interface TimetableScreenQueryVariables {
 
 export interface TimetableScreenQuery {
   user: {
+    id: string
     events: {
       edges: Array<{
         node: {
@@ -163,6 +165,7 @@ export interface VotesScreenQueryVariables {
 
 export interface VotesScreenQuery {
   user: {
+    id: string
     votes: {
       edges: Array<{
         node: {
@@ -196,7 +199,7 @@ export interface HomeScreenQuery {
         id: string
         timeSent: string
         title: string
-        message: string
+        detail: string | null
       }
     }>
   }
@@ -212,7 +215,7 @@ export interface NewsDetailScreenQuery {
     timeSent: string
     title: string
     message: string
-    detail: string
+    detail: string | null
   }
 }
 
@@ -227,7 +230,7 @@ export interface NewsScreenQuery {
         id: string
         timeSent: string
         title: string
-        message: string
+        detail: string | null
       }
     }>
   }
@@ -374,14 +377,14 @@ export interface NewsDetailFragment {
   timeSent: string
   title: string
   message: string
-  detail: string
+  detail: string | null
 }
 
 export interface NewsPanelFragment {
   id: string
   timeSent: string
   title: string
-  message: string
+  detail: string | null
 }
 
 export interface SpeakerDetailFragment {
