@@ -31,32 +31,36 @@ export interface EventListItemPressedEvent {
   event: EventListItemFragment
 }
 
-export function EventListItem({ event, onPress }: EventListItemProps) {
-  return (
-    <Touchable onPress={() => onPress({ event })}>
-      <View style={EventListItemStyle.container}>
-        <ProfileImage
-          style={EventListItemStyle.image}
-          image={event.photo || require('../../../assets/default.jpg')}
-        />
+export class EventListItem extends React.PureComponent<EventListItemProps> {
+  render() {
+    const { event, onPress } = this.props
 
-        <View style={EventListItemStyle.text}>
-          <Typography accent variant="body" style={EventListItemStyle.text}>
-            {timeOf(event.startTime)} - {timeOf(event.endTime)}
-          </Typography>
+    return (
+      <Touchable onPress={() => onPress({ event })}>
+        <View style={EventListItemStyle.container}>
+          <ProfileImage
+            style={EventListItemStyle.image}
+            image={event.photo || require('../../../assets/default.jpg')}
+          />
 
-          <Typography variant="cardTitle" style={EventListItemStyle.text}>
-            {event.name}
-          </Typography>
+          <View style={EventListItemStyle.text}>
+            <Typography accent variant="body" style={EventListItemStyle.text}>
+              {timeOf(event.startTime)} - {timeOf(event.endTime)}
+            </Typography>
 
-          <Typography
-            variant="cardTitleVariant"
-            style={EventListItemStyle.text}
-          >
-            {event.venue.name}
-          </Typography>
+            <Typography variant="cardTitle" style={EventListItemStyle.text}>
+              {event.name}
+            </Typography>
+
+            <Typography
+              variant="cardTitleVariant"
+              style={EventListItemStyle.text}
+            >
+              {event.venue.name}
+            </Typography>
+          </View>
         </View>
-      </View>
-    </Touchable>
-  )
+      </Touchable>
+    )
+  }
 }
