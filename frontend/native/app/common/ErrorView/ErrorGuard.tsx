@@ -18,10 +18,6 @@ export class ErrorGuard extends React.Component<
     attempt: 0,
   }
 
-  componentDidMount() {
-    this.componentDidCatch(new Error('error'))
-  }
-
   componentDidCatch(error: Error) {
     Sentry.captureException(error)
     this.setState({ error })
