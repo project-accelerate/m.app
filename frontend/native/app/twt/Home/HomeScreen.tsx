@@ -1,11 +1,12 @@
 import * as React from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import HomeScreenQueryDocument from './HomeScreen.graphql'
 import {
   NavigationScreenOptions,
   NavigationInjectedProps,
 } from 'react-navigation'
 import { theme } from '../../../theme'
+import twt from '../../../assets/default.jpg'
 import {
   Card,
   CardHeader,
@@ -14,6 +15,7 @@ import {
   CardGroupHeader,
   CardContent,
 } from '../../common/Widgets/Card'
+import Logo from '../../../assets/Mlogo'
 import {
   HEADER_HEIGHT,
   HEADER_CONTENT_HEIGHT,
@@ -28,6 +30,8 @@ import { createFetchData } from '../../common/FetchData/FetchData'
 import { HomeScreenQuery, HomeScreenQueryVariables } from '../../../queries'
 import { Home } from './Home'
 import { NewsDetailScreen } from '../News/NewsDetailScreen'
+import { ImageHeaderScreen } from '../../common/Screen/ImageHeaderScreen'
+import { moderateScale } from 'react-native-size-matters'
 
 const style = StyleSheet.create({
   logo: {
@@ -74,25 +78,41 @@ export class HomeScreen extends React.Component<NavigationInjectedProps> {
 
   render() {
     return (
-      <TimeProvider granularity="minutes">
-        {time => (
-          <Connect now={time}>
-            {({ events, user }) => (
-              <FetchData variables={{ user }}>
-                {({ data }) => (
-                  <Home
-                    events={events}
-                    news={data.news.edges.map(e => e.node)}
-                    time={time}
-                    onEventPress={this.handleEventPress}
-                    onNewsPress={this.handleNewsPress}
-                  />
-                )}
-              </FetchData>
-            )}
-          </Connect>
-        )}
-      </TimeProvider>
+      <ImageHeaderScreen
+        noBackButton
+        parralax
+        containerStyle={style.parallaxContainer}
+        image={twt}
+        title={
+          <View style={style.logo}>
+            <Logo
+              fill={theme.pallete.white}
+              width={moderateScale(120)}
+              height={moderateScale(50)}
+            />
+          </View>
+        }
+      >
+        <TimeProvider granularity="minutes">
+          {time => (
+            <Connect now={time}>
+              {({ events, user }) => (
+                <FetchData variables={{ user }}>
+                  {({ data }) => (
+                    <Home
+                      events={events}
+                      news={data.news.edges.map(e => e.node)}
+                      time={time}
+                      onEventPress={this.handleEventPress}
+                      onNewsPress={this.handleNewsPress}
+                    />
+                  )}
+                </FetchData>
+              )}
+            </Connect>
+          )}
+        </TimeProvider>
+      </ImageHeaderScreen>
     )
   }
 }

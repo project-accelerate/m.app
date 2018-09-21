@@ -11,7 +11,6 @@ import {
   NavigationScreenOptions,
   NavigationInjectedProps,
 } from 'react-navigation'
-import twt from '../../../assets/default.jpg'
 import { theme } from '../../../theme'
 import { ImageHeaderScreen } from '../../common/Screen/ImageHeaderScreen'
 import {
@@ -68,48 +67,32 @@ export function Home({
   onNewsPress,
 }: HomeProps) {
   return (
-    <ImageHeaderScreen
-      noBackButton
-      parralax
-      containerStyle={style.parallaxContainer}
-      image={twt}
-      title={
-        <View style={style.logo}>
-          <Logo
-            fill={theme.pallete.white}
-            width={moderateScale(120)}
-            height={moderateScale(50)}
-          />
+    <CardContainer>
+      {events.length > 0 && (
+        <View>
+          <CardGroupHeader>Upcoming</CardGroupHeader>
+          {events.map(e => (
+            <TouchableOpacity key={e.id} onPress={() => onEventPress(e)}>
+              <Card>
+                <CardSubheader>
+                  {isSameDay(time, e.startTime)
+                    ? 'Today'
+                    : weekdayOf(e.startTime)}{' '}
+                  {timeOf(e.startTime)}
+                </CardSubheader>
+                <CardHeader>{e.name}</CardHeader>
+                <CardContent>
+                  <Typography variant="body">{e.venueName}</Typography>
+                </CardContent>
+              </Card>
+            </TouchableOpacity>
+          ))}
         </View>
-      }
-    >
-      <CardContainer>
-        {events.length > 0 && (
-          <View>
-            <CardGroupHeader>Upcoming</CardGroupHeader>
-            {events.map(e => (
-              <TouchableOpacity key={e.id} onPress={() => onEventPress(e)}>
-                <Card>
-                  <CardSubheader>
-                    {isSameDay(time, e.startTime)
-                      ? 'Today'
-                      : weekdayOf(e.startTime)}{' '}
-                    {timeOf(e.startTime)}
-                  </CardSubheader>
-                  <CardHeader>{e.name}</CardHeader>
-                  <CardContent>
-                    <Typography variant="body">{e.venueName}</Typography>
-                  </CardContent>
-                </Card>
-              </TouchableOpacity>
-            ))}
-          </View>
-        )}
-        <CardGroupHeader>News</CardGroupHeader>
-        {news.map(newsItem => (
-          <NewsPanel key={newsItem.id} news={newsItem} onPress={onNewsPress} />
-        ))}
-      </CardContainer>
-    </ImageHeaderScreen>
+      )}
+      <CardGroupHeader>News</CardGroupHeader>
+      {news.map(newsItem => (
+        <NewsPanel key={newsItem.id} news={newsItem} onPress={onNewsPress} />
+      ))}
+    </CardContainer>
   )
 }
