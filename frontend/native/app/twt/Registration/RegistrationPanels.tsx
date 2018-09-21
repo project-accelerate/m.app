@@ -92,8 +92,8 @@ export function AcceptNotificationsPanel(props: RegistrationStageProps) {
       </RegistrationActions>
 
       <RegistrationHelpText>
-        We’ll use this to keep you notified about important conference news and
-        events.
+        If you are a delegate, please accept to receive crucial information
+        you'll need about conference!
       </RegistrationHelpText>
     </RegistrationPanel>
   )
