@@ -1,0 +1,11 @@
+#import "./NewsPanel.graphql"
+
+query NewsScreen($user: String) {
+  news: sentNotifications(user: $user) {
+    edges {
+      node {
+        ...NewsPanel
+      }
+    }
+  }
+}

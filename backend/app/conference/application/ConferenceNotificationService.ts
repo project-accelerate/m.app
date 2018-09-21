@@ -36,13 +36,15 @@ export class ConferenceNotificationService {
     const devices = await this.getDevicesForTarget(target)
     log.debug('[ConferenceNotificationService] Matched devices', devices)
 
-    await this.sendNotificationsToDevices(request, devices)
-    await this.recordNotificationSent(request)
+    try {
+      const { id } = await this.recordNotification(request)
+      await this.sendNotificationsToDevices(request, devices, id)
+    } catch (err) {
+      console.error(err)
+    }
   }
 
-  private async recordNotificationSent(
-    request: ConferenceNotificationSendRequest,
-  ) {
+  private async recordNotification(request: ConferenceNotificationSendRequest) {
     return this.conferenceNotificationRepository.insert({
       ...request,
       timeSent: this.dateProvider.now(),
@@ -52,9 +54,12 @@ export class ConferenceNotificationService {
   private async sendNotificationsToDevices(
     request: ConferenceNotificationSendRequest,
     devices: Device[],
+    id: string,
   ) {
     await this.pushNotificationService.sendNotifications(
-      devices.flatMap(device => this.createPushNotifications(device, request)),
+      devices.flatMap(device =>
+        this.createPushNotifications(device, request, id),
+      ),
     )
   }
 
@@ -75,10 +80,12 @@ export class ConferenceNotificationService {
   private createPushNotifications(
     device: Device,
     request: ConferenceNotificationSendRequest,
+    id: string,
   ): PushNotificationRequest[] {
     if (!device.deviceToken) {
       return []
     }
+
     return [
       {
         deviceId: device.id,
@@ -87,7 +94,12 @@ export class ConferenceNotificationService {
           to: device.deviceToken,
           body: request.message,
           priority: request.urgent ? 'high' : 'normal',
-          data: this.notificationTargeter.getNotificationMetadata(request),
+          data: {
+            id,
+            title: request.title,
+            body: request.message,
+            ...this.notificationTargeter.getNotificationMetadata(request),
+          },
           sound: request.urgent ? 'default' : null,
         },
       },

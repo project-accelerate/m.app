@@ -1,0 +1,58 @@
+{
+  "expo": {
+    "name": "Momentum Staging",
+    "description": "Platform Socialism",
+    "slug": "momentum-app",
+    "primaryColor": "#ec0000",
+    "privacy": "unlisted",
+    "sdkVersion": "28.0.0",
+    "ignoreNodeModulesValidation": true,
+    "platforms": ["ios", "android"],
+    "version": "2.0.0",
+    "orientation": "portrait",
+    "splash": {
+      "image": "./assets/splashlogo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#e60000"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 30
+    },
+    "entryPoint": "./main.js",
+    "assetBundlePatterns": ["app/**", "assets/**"],
+    "icon": "./icons/icon-beta.png",
+    "ios": {
+      "supportsTablet": true,
+      "buildNumber": "1",
+      "bundleIdentifier": "com.peoplesmomentum.app.beta"
+    },
+    "android": {
+      "package": "com.peoplesmomentum.app.beta",
+      "versionCode": 1,
+      "googleServicesFile": "./google-services-beta.json",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyC89f_jlusXaC_HGA3u3Qeiqr84GQPQLyI"
+        }
+      }
+    },
+    "packagerOpts": {
+      "sourceExts": ["ts", "tsx"],
+      "projectRoots": "",
+      "transformer": "node_modules/react-native-typescript-transformer/index.js"
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "chris-devereux",
+            "project": "m-app-staging",
+            "authToken":
+              "b21f11aa3d154225b46f55f4e1307938695959b1d760447dab5915c93f4f85a8"
+          }
+        }
+      ]
+    }
+  }
+}

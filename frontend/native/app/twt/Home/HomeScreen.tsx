@@ -1,14 +1,12 @@
 import * as React from 'react'
-import { StyleSheet, Image, View, TouchableOpacity } from 'react-native'
-import * as faker from 'faker'
+import { StyleSheet, View, Platform } from 'react-native'
+import HomeScreenQueryDocument from './HomeScreen.graphql'
 import {
   NavigationScreenOptions,
   NavigationInjectedProps,
 } from 'react-navigation'
-import twt from './TWTa_hdr.jpg'
 import { theme } from '../../../theme'
-import Logo from '../../../assets/Mlogo'
-import { ImageHeaderScreen } from '../../common/Screen/ImageHeaderScreen'
+import twt from '../../../assets/default.jpg'
 import {
   Card,
   CardHeader,
@@ -17,28 +15,26 @@ import {
   CardGroupHeader,
   CardContent,
 } from '../../common/Widgets/Card'
-import { times } from 'lodash'
+import Logo from '../../../assets/Mlogo'
 import {
   HEADER_HEIGHT,
   HEADER_CONTENT_HEIGHT,
 } from '../../common/Screen/HeaderBar'
-import { getStatusBarHeight } from '../../common/platform'
-import {
-  createStateConnector,
-  createParametricStateConnector,
-} from '../../../state'
+import { createParametricStateConnector } from '../../../state'
 import { calendar } from '../Calendar/calendarState'
-import { Touchable } from '../../common/Widgets/Widgets'
-import { format, isSameDay } from 'date-fns'
 import { TimeProvider } from '../../common/Time/TimeProvider'
 import { Routes } from '../../../routes'
-import { Home } from './Home'
 import { EventDetailScreen } from '../Event/EventDetailScreen'
+import { registration } from '../Registration/registrationState'
+import { createFetchData } from '../../common/FetchData/FetchData'
+import { HomeScreenQuery, HomeScreenQueryVariables } from '../../../queries'
+import { Home } from './Home'
+import { NewsDetailScreen } from '../News/NewsDetailScreen'
+import { ImageHeaderScreen } from '../../common/Screen/ImageHeaderScreen'
+import { moderateScale } from 'react-native-size-matters'
+import { getStatusBarHeight } from '../../common/platform'
 
 const style = StyleSheet.create({
-  logo: {
-    marginVertical: theme.spacing.level(5),
-  },
   parallaxContainer: {
     backgroundColor: theme.pallete.box,
   },
@@ -48,6 +44,10 @@ const style = StyleSheet.create({
     backgroundColor: theme.pallete.black,
     alignItems: 'center',
   },
+  logo: {
+    // Required for platform layout issue. No idea either...
+    paddingTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
+  },
   carousel: {
     flex: 1,
     position: 'relative',
@@ -56,7 +56,12 @@ const style = StyleSheet.create({
 
 const Connect = createParametricStateConnector<{ now: Date }>()(() => ({
   events: calendar.selectors.upcomingEvents,
+  user: registration.selectors.userId,
 }))
+
+const FetchData = createFetchData<HomeScreenQuery, HomeScreenQueryVariables>({
+  query: HomeScreenQueryDocument,
+})
 
 export class HomeScreen extends React.Component<NavigationInjectedProps> {
   static navigationOptions: NavigationScreenOptions = {}
@@ -69,21 +74,47 @@ export class HomeScreen extends React.Component<NavigationInjectedProps> {
     })
   }
 
+  handleNewsPress = (id: string) => {
+    Routes.get().push(this.props.navigation, NewsDetailScreen, { id })
+  }
+
   render() {
     return (
-      <TimeProvider granularity="minutes">
-        {time => (
-          <Connect now={time}>
-            {({ events }) => (
-              <Home
-                events={events}
-                time={time}
-                onEventPress={this.handleEventPress}
-              />
-            )}
-          </Connect>
-        )}
-      </TimeProvider>
+      <ImageHeaderScreen
+        noBackButton
+        parralax
+        containerStyle={style.parallaxContainer}
+        image={twt}
+        title={
+          <View style={style.logo}>
+            <Logo
+              fill={theme.pallete.white}
+              width={moderateScale(120)}
+              height={moderateScale(50)}
+            />
+          </View>
+        }
+      >
+        <TimeProvider granularity="minutes">
+          {time => (
+            <Connect now={time}>
+              {({ events, user }) => (
+                <FetchData variables={{ user }}>
+                  {({ data }) => (
+                    <Home
+                      events={events}
+                      news={data.news.edges.map(e => e.node)}
+                      time={time}
+                      onEventPress={this.handleEventPress}
+                      onNewsPress={this.handleNewsPress}
+                    />
+                  )}
+                </FetchData>
+              )}
+            </Connect>
+          )}
+        </TimeProvider>
+      </ImageHeaderScreen>
     )
   }
 }

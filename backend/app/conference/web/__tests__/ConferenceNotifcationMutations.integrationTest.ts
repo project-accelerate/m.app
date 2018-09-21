@@ -27,7 +27,9 @@ describe('sendConferenceNotification mutation', () => {
         const notificationRepository = await Container.get<
           ConferenceNotificationRepository
         >(ConferenceNotificationRepository)
-        const record = await waitUntil(() => notificationRepository.findOne({}))
+        const record = await waitUntil(
+          async () => await notificationRepository.findOne({}),
+        )
 
         expect(record).toMatchObject({
           message: 'foo',

@@ -1,9 +1,12 @@
 import stringify from 'json-stable-stringify'
+import log from 'winston'
 
 interface CachedRecord {
   expiry: number
   value: any
 }
+
+const PURGE_INTERVAL_MINUTES = Number(process.env.CACHE_PURGE_INTERVAL || 120)
 
 export interface CacheConfig {
   ttl: number
@@ -15,8 +18,7 @@ export class RepositoryCache {
     if (!this.config) {
       return
     }
-    const { purgeIntervalMinutes = 120 } = this.config
-    const purgeIntervalMs = purgeIntervalMinutes * 60_000
+    const purgeIntervalMs = PURGE_INTERVAL_MINUTES * 60_000
 
     setInterval(() => {
       this.cache.clear()
@@ -38,11 +40,29 @@ export class RepositoryCache {
 
     const key = method + '|' + stringify(params)
     const hit = this.cache.get(key)
-    if (hit && hit.expiry < Date.now()) {
+    log.debug('[RepositoryCache]', {
+      key,
+      hit,
+      useCached: hit ? hit.expiry < Date.now() : false,
+    })
+
+    if (hit && hit.expiry > Date.now()) {
       return hit.value
     }
 
     const value = await resolveFn()
+    if (
+      typeof value === 'undefined' ||
+      (typeof value === 'object' && Array.isArray(value) && value.length === 0)
+    ) {
+      return value
+    }
+
+    log.debug('[RepositoryCache] save', {
+      key,
+      value,
+    })
+
     const expiry = ttl + Date.now()
     this.cache.set(key, { value, expiry })
 

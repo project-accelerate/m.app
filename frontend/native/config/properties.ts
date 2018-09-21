@@ -7,6 +7,7 @@ const substitutions = {
 
 export const BACKEND_URL = configProperty('backendUrl')
 export const PROFILE = configProfile()
+export const SENTRY_URL = configProperty('sentryUrl')
 
 console.log(`Running with ${configProfile()} profile`)
 

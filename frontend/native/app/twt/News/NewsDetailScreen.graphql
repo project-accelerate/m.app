@@ -1,0 +1,7 @@
+#import "./NewsDetail.graphql"
+
+query NewsDetailScreen($id: String!) {
+  newsItem: notification(id: $id) {
+    ...NewsDetail
+  }
+}

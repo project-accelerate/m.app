@@ -35,6 +35,7 @@
           "apiKey": "AIzaSyC89f_jlusXaC_HGA3u3Qeiqr84GQPQLyI"
         }
       },
+      "icon": "./icons/icon.android-fallback.png",
       "adaptiveIcon": {
         "foregroundImage": "./icons/icon.android.png",
         "backgroundImage": "./icons/icon.android.bg.png"
@@ -44,6 +45,19 @@
       "sourceExts": ["ts", "tsx"],
       "projectRoots": "",
       "transformer": "node_modules/react-native-typescript-transformer/index.js"
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "chris-devereux",
+            "project": "m-app",
+            "authToken":
+              "b21f11aa3d154225b46f55f4e1307938695959b1d760447dab5915c93f4f85a8"
+          }
+        }
+      ]
     }
   }
 }

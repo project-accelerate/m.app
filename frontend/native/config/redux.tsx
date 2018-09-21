@@ -1,5 +1,6 @@
 import React from 'react'
-import { AsyncStorage, AppState } from 'react-native'
+import { AsyncStorage } from 'react-native'
+import { AppState } from '../state'
 import {
   createStore,
   combineReducers,
@@ -9,6 +10,9 @@ import {
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import { AppReducers, CLIENT_STATE_VERSION } from '../state'
+import { Notifications } from 'expo'
+import { createEventReminderNotification } from '../app/twt/Calendar/EventReminderNotification'
+import { subMinutes } from 'date-fns'
 
 const VERSION_KEY = 'state-version'
 const PERSISTED_STATE_KEY = 'persisted-state'
@@ -25,27 +29,55 @@ export class ReduxProvider extends React.Component {
       return
     }
 
-    if (version !== CLIENT_STATE_VERSION) {
-      console.log(
-        `[STORE] Persisted user state is an incompatible version. Starting in clean state.`,
-      )
-      return
-    }
-
     try {
-      ReduxProvider.initialState = JSON.parse(
-        await AsyncStorage.getItem(PERSISTED_STATE_KEY),
+      ReduxProvider.initialState = await this.migrate(
+        version,
+        JSON.parse(await AsyncStorage.getItem(PERSISTED_STATE_KEY)),
       )
-      console.log(
-        `[STORE] Restored persistent user state:\n${JSON.stringify(
-          ReduxProvider.initialState,
-          null,
-          2,
-        )}`,
-      )
+
+      if (ReduxProvider.initialState) {
+        console.log(
+          `[STORE] Initialize with user state:\n${JSON.stringify(
+            ReduxProvider.initialState,
+            null,
+            2,
+          )}`,
+        )
+      }
     } catch (error) {
       console.error(error)
     }
+  }
+
+  private static async migrate(version: string, state: AppState) {
+    if (version === '2') {
+      console.log(`[STORE] Migrating saved notifications to v2`)
+
+      await Notifications.cancelAllScheduledNotificationsAsync()
+      for (const event of Object.values(state.calendarEvents || {})) {
+        if (!event) continue
+
+        const notification = createEventReminderNotification(event.details)
+        event.notificationToken = await Notifications.scheduleLocalNotificationAsync(
+          notification,
+          {
+            time: subMinutes(event.details.startTime, 30),
+          },
+        )
+      }
+
+      return state
+    }
+
+    if (!version || version === '1') {
+      console.log(
+        `[STORE] Persisted user state is an incompatible version. Starting in clean state.`,
+      )
+
+      return undefined
+    }
+
+    return state
   }
 
   private persistenceMiddleware: Middleware<

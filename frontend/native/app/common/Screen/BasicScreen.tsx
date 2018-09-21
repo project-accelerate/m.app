@@ -13,6 +13,7 @@ const BasicScreenStyles = StyleSheet.create({
     width: '100%',
     height: '100%',
     position: 'relative',
+    backgroundColor: 'white',
   },
   content: {
     flexGrow: 1,

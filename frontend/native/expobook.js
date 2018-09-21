@@ -39,6 +39,10 @@ const storyFiles = [
     name: 'twt > Settings',
     source: require('./app/twt/Settings/Settings.stories'),
   },
+  {
+    name: 'twt > News',
+    source: require('./app/twt/News/News.stories'),
+  },
 ]
 
 const expobook = createExpo()

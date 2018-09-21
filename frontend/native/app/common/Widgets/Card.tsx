@@ -1,7 +1,15 @@
 import * as React from 'react'
-import { StyleSheet, View, ViewProps, StyleProp, ViewStyle } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  ViewProps,
+  StyleProp,
+  ViewStyle,
+  TouchableOpacity,
+} from 'react-native'
 import { theme } from '../../../theme'
 import { Typography, TypographyProps } from '../Typography/Typography'
+import { TouchableProps } from 'react-native-svg'
 
 const styles = StyleSheet.create({
   container: {
@@ -42,8 +50,17 @@ export function CardContainer({ style, children }: CardElementProps) {
   return <View style={[styles.container, style]}>{children}</View>
 }
 
-export function Card({ style, children }: ViewProps & React.Props<{}>) {
-  return <View style={[style, styles.card]}>{children}</View>
+export function Card({
+  onPress,
+  style,
+  children,
+}: TouchableProps & ViewProps & React.Props<{}>) {
+  const view = <View style={[style, styles.card]}>{children}</View>
+  return onPress ? (
+    <TouchableOpacity onPress={onPress}>{view}</TouchableOpacity>
+  ) : (
+    view
+  )
 }
 
 export function CardGroupHeader({ style, ...props }: TypographyProps) {
@@ -75,5 +92,9 @@ export function CardSubheader({ style, ...props }: TypographyProps) {
 }
 
 export function CardContent({ style, ...props }: TypographyProps) {
-  return <View style={[style, styles.content]}>{props.children}</View>
+  return (
+    <Typography variant="body" style={[style, styles.content]}>
+      {props.children}
+    </Typography>
+  )
 }
