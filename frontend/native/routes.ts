@@ -98,7 +98,7 @@ export class Routes {
       }),
       'WalkingTour',
     ),
-    ...this.createRootNavigator(FeedbackScreen, 'FeedbackScreen'),
+    // ...this.createRootNavigator(FeedbackScreen, 'FeedbackScreen'),
     ...this.createRootNavigator(SettingsScreen, 'SettingsScreen'),
     ...(__DEV__ ? this.createRootNavigator(DevPanel, 'DevPanel') : {}),
   }
