@@ -37,3 +37,5 @@ declare module 'react-native-root-toast' {
     static show(message: string, props?: ToastProps): void
   }
 }
+
+declare module 'react-native-google-places-autocomplete'

@@ -6,24 +6,31 @@ import {
 
 import { Background } from '../../common/Layouts/Layouts'
 import { BasicScreen } from '../../common/Screen/BasicScreen'
-import { createWizard } from '../../common/Wizard/Wizard'
+import { createWizard, WizardStageProps } from '../../common/Wizard/Wizard'
 
 import {
   SubmitMeetupInstructionsPanel,
   SubmitMeetupPersonalDetailsPanel,
   SubmitMeetupMeetupDetailsPanel,
+  SubmitMeetupLocationPanel,
   SubmitMeetupThanksPanel,
+  SubmitMeetupPersonalDetailsValues,
+  SubmitMeetupMeetupDetailsPanelValues,
 } from './SubmitMeetupPanels'
 
-interface SubmitMeetupWizardData {
-  email: string
-}
+type SubmitMeetupWizardData = SubmitMeetupPersonalDetailsValues &
+  SubmitMeetupMeetupDetailsPanelValues
 
+export type SubmitMeetupStageProps = WizardStageProps<SubmitMeetupWizardData>
+
+// @ts-ignore TS2345
+// TODO: SubmitMeetupMeetupDetailsPanel has a incompatiable type
 const SubmitMeetupWizard = createWizard<SubmitMeetupWizardData>({
   stages: [
     SubmitMeetupInstructionsPanel,
-    SubmitMeetupPersonalDetailsPanel,
+    SubmitMeetupLocationPanel,
     SubmitMeetupMeetupDetailsPanel,
+    SubmitMeetupPersonalDetailsPanel,
     SubmitMeetupThanksPanel,
   ],
 })

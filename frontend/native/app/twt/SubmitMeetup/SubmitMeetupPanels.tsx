@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, StyleSheet, View, Image, Text } from 'react-native'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import * as Yup from 'yup'
 
@@ -15,6 +15,10 @@ import { Typography, Paragraphs } from '../../common/Typography/Typography'
 import { extendSchema } from 'graphql'
 import { calendar } from '../Calendar/calendarState'
 import { timeOf, longDateOf, weekdayOf } from '../../common/date-formats'
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
+import { moderateScale } from 'react-native-size-matters'
+import { WizardStageProps } from '../../common/Wizard/Wizard'
+import { SubmitMeetupStageProps } from './SubmitMeetupScreen'
 
 const styles = StyleSheet.create({
   actions: {
@@ -46,7 +50,7 @@ const styles = StyleSheet.create({
   },
 })
 
-export function SubmitMeetupInstructionsPanel(props: any) {
+export function SubmitMeetupInstructionsPanel(props: SubmitMeetupStageProps) {
   return (
     <SubmitMeetupPanel>
       <SubmitMeetupHeading>Host Meetup</SubmitMeetupHeading>
@@ -66,20 +70,22 @@ export function SubmitMeetupInstructionsPanel(props: any) {
       </SubmitMeetupPanelIntroduction>
 
       <SubmitMeetupActions>
-        <Button onPress={() => props.onSubmit()}>Let's Go</Button>
+        <Button onPress={() => props.onSubmit({})}>Let's Go</Button>
       </SubmitMeetupActions>
     </SubmitMeetupPanel>
   )
 }
 
-interface SubmitMeetupPersonalDetailsValues {
+export interface SubmitMeetupPersonalDetailsValues {
   firstName: string
   lastName: string
   email: string
   telephoneNumber: string
 }
 
-export function SubmitMeetupPersonalDetailsPanel(props: any) {
+export function SubmitMeetupPersonalDetailsPanel(
+  props: SubmitMeetupStageProps,
+) {
   return (
     <Formik
       onSubmit={(values: SubmitMeetupPersonalDetailsValues) => {
@@ -198,7 +204,7 @@ export function SubmitMeetupPersonalDetailsPanel(props: any) {
   )
 }
 
-interface SubmitMeetupMeetupDetailsPanelValues {
+export interface SubmitMeetupMeetupDetailsPanelValues {
   eventName: string
   eventHost: string
   eventDescription: string
@@ -207,15 +213,13 @@ interface SubmitMeetupMeetupDetailsPanelValues {
   eventLocation: string
 }
 
-interface SubmitMeetupMeetupDetailsPanelProps {}
-
 interface SubmitMeetupMeetupDetailsPanelState {
   eventStartDateTimePickerOpen: boolean
   eventEndDateTimePickerOpen: boolean
 }
 
 export class SubmitMeetupMeetupDetailsPanel extends React.Component<
-  SubmitMeetupMeetupDetailsPanelProps,
+  SubmitMeetupStageProps,
   SubmitMeetupMeetupDetailsPanelState
 > {
   startDateTime: Date = setHours(calendar.firstDay, 9)
@@ -405,11 +409,6 @@ export class SubmitMeetupMeetupDetailsPanel extends React.Component<
                 errors.eventEndDateTime}
             </SubmitMeetupFormError>
 
-            <Spacing level={2} />
-
-            <Typography>Location</Typography>
-            <FormField name="eventLocation" type="text" />
-
             <SubmitMeetupActions>
               <Button onPress={handleSubmit} disabled={!isValid}>
                 Next
@@ -422,7 +421,131 @@ export class SubmitMeetupMeetupDetailsPanel extends React.Component<
   }
 }
 
-export function SubmitMeetupThanksPanel(props: any) {
+export function SubmitMeetupLocationPanel(props: SubmitMeetupStageProps) {
+  // TODO: Fetch these from the backend.
+  const blackE = {
+    description: 'Black-E',
+    geometry: { location: { lat: 53.399462, lng: -2.976592 } },
+  }
+
+  const hinterlandsTheatre = {
+    description: 'Hinterlands Theatre',
+    geometry: { location: { lat: 53.392627, lng: -2.977826 } },
+  }
+
+  const constellations = {
+    description: 'Constellations',
+    geometry: { location: { lat: 53.392627, lng: -2.977826 } },
+  }
+
+  const balticCinema = {
+    description: 'Baltic Cinema',
+    geometry: { location: { lat: 53.395116, lng: -2.978801 } },
+  }
+
+  const balticCreativeShed = {
+    description: 'Baltic Creative Shed',
+    geometry: { location: { lat: 53.395377, lng: -2.980157 } },
+  }
+
+  const twtVenues = [
+    blackE,
+    hinterlandsTheatre,
+    constellations,
+    balticCinema,
+    balticCreativeShed,
+  ]
+
+  // TODO: Give details of the meetup in this screen for reassurance purposes.
+  return (
+    <SubmitMeetupPanel>
+      <SubmitMeetupHeading>Where Is Your Meetup?</SubmitMeetupHeading>
+
+      <SubmitMeetupPanelIntroduction>
+        <Typography>Please say where you intend to meetup</Typography>
+
+        <Typography>Meetups should happen in a public place.</Typography>
+        <Typography>
+          You can chose to meetup at one of the The World Transformed venues or
+          somewhere near the Labour Party conference.
+        </Typography>
+      </SubmitMeetupPanelIntroduction>
+
+      <Spacing level={4} />
+
+      <GooglePlacesAutocomplete
+        placeholder="Search"
+        minLength={2}
+        autoFocus={false}
+        returnKeyType={'search'}
+        listViewDisplayed="auto"
+        fetchDetails={true}
+        renderDescription={(row: any) => row.description}
+        onPress={(data: any, details: any = null) => {
+          console.log(data, details)
+        }}
+        getDefaultValue={() => ''}
+        query={{
+          language: 'en',
+          location: '53.41058,-2.97794',
+          radius: '20000',
+          region: 'uk',
+          components: 'country:uk',
+          type: 'establishment',
+          strictbounds: true,
+        }}
+        styles={{
+          textInputContainer: {
+            width: '100%',
+            height: 60,
+            backgroundColor: theme.pallete.borderLight,
+            borderTopColor: theme.pallete.borderLight,
+            borderBottomColor: theme.pallete.borderLight,
+          },
+          textInput: {
+            height: 40,
+            fontSize: moderateScale(15),
+            lineHeight: moderateScale(25),
+            fontFamily: 'open-sans-light',
+          },
+          description: {
+            color: theme.pallete.black,
+            fontSize: moderateScale(15),
+            lineHeight: moderateScale(25),
+            height: 30,
+            fontFamily: 'open-sans-light',
+          },
+          predefinedPlacesDescription: {
+            color: theme.pallete.black,
+            fontSize: moderateScale(15),
+            lineHeight: moderateScale(21),
+            fontFamily: 'open-sans-light',
+          },
+        }}
+        nearbyPlacesAPI="GooglePlacesSearch"
+        GooglePlacesSearchQuery={{
+          rankby: 'distance',
+          location: '53.41058,-2.97794',
+          radius: '10000',
+          region: 'uk',
+        }}
+        filterReverseGeocodingByTypes={[
+          'locality',
+          'administrative_area_level_3',
+        ]}
+        debounce={200}
+        predefinedPlaces={twtVenues}
+        predefinedPlacesAlwaysVisible={true}
+      />
+
+      <SubmitMeetupActions>
+        <Button onPress={() => props.onSubmit({})}>Let's Meet Here</Button>
+      </SubmitMeetupActions>
+    </SubmitMeetupPanel>
+  )
+}
+
+export function SubmitMeetupThanksPanel(props: SubmitMeetupStageProps) {
   return (
     <SubmitMeetupPanel>
       <SubmitMeetupHeading>Thanks!</SubmitMeetupHeading>
@@ -442,7 +565,7 @@ export function SubmitMeetupThanksPanel(props: any) {
       </SubmitMeetupPanelIntroduction>
 
       <SubmitMeetupActions>
-        <Button onPress={() => props.onSubmit()}>Great!</Button>
+        <Button onPress={() => props.onSubmit({})}>Great!</Button>
       </SubmitMeetupActions>
     </SubmitMeetupPanel>
   )
