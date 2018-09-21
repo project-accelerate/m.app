@@ -58,6 +58,7 @@ const LoadingOverlayStyle = StyleSheet.create({
     flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: theme.spacing.level(4),
   },
   message: {
     margin: theme.spacing.level(2),
