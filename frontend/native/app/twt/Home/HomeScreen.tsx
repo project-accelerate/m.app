@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Platform } from 'react-native'
 import HomeScreenQueryDocument from './HomeScreen.graphql'
 import {
   NavigationScreenOptions,
@@ -32,11 +32,9 @@ import { Home } from './Home'
 import { NewsDetailScreen } from '../News/NewsDetailScreen'
 import { ImageHeaderScreen } from '../../common/Screen/ImageHeaderScreen'
 import { moderateScale } from 'react-native-size-matters'
+import { getStatusBarHeight } from '../../common/platform'
 
 const style = StyleSheet.create({
-  logo: {
-    marginVertical: theme.spacing.level(5),
-  },
   parallaxContainer: {
     backgroundColor: theme.pallete.box,
   },
@@ -45,6 +43,10 @@ const style = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: theme.pallete.black,
     alignItems: 'center',
+  },
+  logo: {
+    // Required for platform layout issue. No idea either...
+    paddingTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
   },
   carousel: {
     flex: 1,
