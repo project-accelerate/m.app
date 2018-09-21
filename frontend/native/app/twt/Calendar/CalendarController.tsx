@@ -41,7 +41,7 @@ export class SavedEventCalendar extends React.Component<
 
   render() {
     return (
-      <View>
+      <View style={{ flex: 1 }}>
         <Toolbar>
           {this.props.dayOptions.map(day => (
             <ToolbarRadio
@@ -65,6 +65,7 @@ export class SavedEventCalendar extends React.Component<
         <Spacing level={2} />
 
         <CalendarView
+          style={{ flex: 1 }}
           key={this.props.activeDay.toString()}
           startTime={this.startTime}
           endTime={this.endTime}

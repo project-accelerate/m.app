@@ -15,7 +15,7 @@ import { EventListItemFragment } from '../../../queries'
 import { EventListItem, EventListItemPressedEvent } from './EventListItem'
 import { longDateOf, timeOf } from '../../common/date-formats'
 import { calendar } from '../Calendar/calendarState'
-import { View } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { ToolbarRadio, Toolbar } from '../../common/Widgets/Widgets'
 
 export interface EventListProps {
@@ -27,6 +27,15 @@ export interface EventListState {
   currentDate: Date
 }
 
+const styles = StyleSheet.create({
+  list: {
+    flex: 1,
+  },
+  container: {
+    height: '100%',
+  },
+})
+
 export class EventList extends React.Component<EventListProps, EventListState> {
   state: EventListState = {
     currentDate:
@@ -37,7 +46,7 @@ export class EventList extends React.Component<EventListProps, EventListState> {
     const { data, onEventPress } = this.props
 
     return (
-      <View>
+      <View style={styles.container}>
         <Toolbar>
           {calendar.days.map(currentDate => (
             <ToolbarRadio
@@ -51,6 +60,7 @@ export class EventList extends React.Component<EventListProps, EventListState> {
         </Toolbar>
         <ConnectionList
           key={this.state.currentDate.toISOString()}
+          style={styles.list}
           data={data}
           filter={x => isSameDay(x.startTime, this.state.currentDate)}
           renderItem={event => (

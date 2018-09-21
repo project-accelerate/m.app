@@ -5,6 +5,8 @@ import {
   StyleSheet,
   View,
   SectionListData,
+  StyleProp,
+  ViewStyle,
 } from 'react-native'
 import { groupBy, sortBy, orderBy, identity } from 'lodash'
 import { LoadingOverlay, Grid, Columns, Rows } from '../Widgets/Widgets'
@@ -43,6 +45,7 @@ interface ConnectionListProps<T> {
   filter?: (x: T) => any
   renderItem: (value: T) => JSX.Element
   renderSection: (value: string) => React.ReactNode
+  style?: StyleProp<ViewStyle>
 }
 
 export interface Connection<T> {
@@ -118,7 +121,7 @@ export class ConnectionList<T> extends React.Component<ConnectionListProps<T>> {
 
     return (
       <SectionList
-        style={{ height: '100%' }}
+        style={this.props.style}
         sections={this.dataSections}
         renderItem={this.renderItem}
         keyExtractor={item => item.node.id}
