@@ -1,2 +1,2 @@
-web: yarn start backend web.production
+web: cd backend && node web.production
 release: yarn release
