@@ -18,6 +18,7 @@ export const stories = {
       <Button icon="twitter">Tweet</Button>
       <Button>Tweet</Button>
       <Button variant="inline">Tweet</Button>
+      <Button disabled>Disabled</Button>
     </Rows>
   ),
 }

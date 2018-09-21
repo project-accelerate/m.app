@@ -93,53 +93,56 @@ export function Button({
   icon,
   darkBg,
   pending,
+  onPress,
   ...props
 }: ButtonProps) {
   const inline = variant === 'inline'
+  const El = disabled ? View : TouchableOpacity
 
   return (
-    <TouchableOpacity
-      style={[
-        buttonStyle.button,
-        buttonStyle[variant],
-        disabled && buttonStyle.disabled,
-        style,
-      ]}
-      {...props}
-    >
-      <View style={buttonStyle.content}>
-        {!pending && icon ? (
-          <FontAwesome
-            name={icon}
-            style={buttonStyle.icon}
-            size={moderateScale(24)}
-            color={
-              inline && !darkBg ? theme.pallete.accent : theme.pallete.white
-            }
-          />
-        ) : (
-          undefined
-        )}
-        {!pending && (
-          <Typography
-            variant="action"
-            darkBg={!inline || darkBg}
-            accent={inline}
-            center
-          >
-            {children}
-          </Typography>
-        )}
-        {pending && (
-          <ActivityIndicator
-            size="small"
-            color={
-              (inline && !darkBg && theme.pallete.accent) || theme.pallete.white
-            }
-          />
-        )}
+    <El style={style} onPress={disabled ? undefined : onPress} {...props}>
+      <View
+        style={[
+          buttonStyle.button,
+          buttonStyle[variant],
+          disabled && buttonStyle.disabled,
+        ]}
+      >
+        <View style={buttonStyle.content}>
+          {!pending && icon ? (
+            <FontAwesome
+              name={icon}
+              style={buttonStyle.icon}
+              size={moderateScale(24)}
+              color={
+                inline && !darkBg ? theme.pallete.accent : theme.pallete.white
+              }
+            />
+          ) : (
+            undefined
+          )}
+          {!pending && (
+            <Typography
+              variant="action"
+              darkBg={!inline || darkBg}
+              accent={inline}
+              center
+            >
+              {children}
+            </Typography>
+          )}
+          {pending && (
+            <ActivityIndicator
+              size="small"
+              color={
+                (inline && !darkBg && theme.pallete.accent) ||
+                theme.pallete.white
+              }
+            />
+          )}
+        </View>
       </View>
-    </TouchableOpacity>
+    </El>
   )
 }
 
