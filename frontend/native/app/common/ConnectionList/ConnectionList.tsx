@@ -14,7 +14,9 @@ import { Card, CardHeader, CardContent } from '../Widgets/Card'
 import { Background } from '../Layouts/Layouts'
 
 const ConnectionListStyle = StyleSheet.create({
-  sectionSeparator: {},
+  sectionSeparator: {
+    marginTop: theme.spacing.level(2),
+  },
   itemSeparator: {
     width: '100%',
     backgroundColor: theme.pallete.transparent,
@@ -116,6 +118,7 @@ export class ConnectionList<T> extends React.Component<ConnectionListProps<T>> {
 
     return (
       <SectionList
+        style={{ height: '100%' }}
         sections={this.dataSections}
         renderItem={this.renderItem}
         keyExtractor={item => item.node.id}
