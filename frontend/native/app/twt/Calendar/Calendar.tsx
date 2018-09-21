@@ -1,5 +1,12 @@
 import React from 'react'
-import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  StyleProp,
+  ViewStyle,
+} from 'react-native'
 import {
   differenceInHours,
   min,
@@ -14,6 +21,7 @@ import { theme } from '../../../theme'
 import { layoutCalendar, LayoutItem } from './layoutCalendar'
 
 export interface CalendarViewProps {
+  style?: StyleProp<ViewStyle>
   startTime: Date
   endTime: Date
   events: CalendarEventProps[]
@@ -100,6 +108,7 @@ export class CalendarView extends React.Component<
           style={[
             styles.hourMark,
             { top: i * PIXELS_PER_HOUR * 0.5 - PIXELS_PER_HOUR },
+            this.props.style,
           ]}
         >
           {i % 2 == 0 && (

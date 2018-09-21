@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Dimensions } from 'react-native'
 import { ErrorGuard } from '../ErrorView/ErrorGuard'
-import { HeaderBar } from './HeaderBar'
+import { HeaderBar, HEADER_HEIGHT } from './HeaderBar'
 import { NotificationListener } from '../Notification/NotificationListener'
 
 interface BasicScreenProps extends React.Props<{}> {
@@ -16,8 +16,9 @@ const BasicScreenStyles = StyleSheet.create({
     backgroundColor: 'white',
   },
   content: {
-    flexGrow: 1,
     position: 'relative',
+    width: '100%',
+    flex: 1,
   },
 })
 
@@ -27,7 +28,7 @@ export function BasicScreen({ children, noBackButton }: BasicScreenProps) {
       <View style={BasicScreenStyles.screen}>
         <NotificationListener />
         <HeaderBar noBackButton={noBackButton} />
-        {children}
+        <View style={BasicScreenStyles.content}>{children}</View>
       </View>
     </ErrorGuard>
   )
