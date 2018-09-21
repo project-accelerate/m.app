@@ -12,7 +12,7 @@ export const stories = {
           id: faker.random.uuid(),
           timeSent: faker.date.future().toISOString(),
           title: faker.lorem.sentence(3),
-          message: faker.lorem.sentences(3),
+          detail: faker.lorem.paragraphs(10),
         },
       ]}
       time={new Date()}

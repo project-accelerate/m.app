@@ -34,6 +34,7 @@ import { moderateScale } from 'react-native-size-matters'
 import { timeOf, weekdayOf } from '../../common/date-formats'
 import { NewsPanel } from '../News/NewsPanel'
 import { NewsPanelFragment } from '../../../queries'
+import { orderBy, sortBy, take } from 'lodash'
 
 const style = StyleSheet.create({
   parallaxContainer: {
@@ -71,7 +72,7 @@ export function Home({
       {events.length > 0 && (
         <View>
           <CardGroupHeader>Upcoming</CardGroupHeader>
-          {events.map(e => (
+          {sortBy(events, 'startTime').map(e => (
             <TouchableOpacity key={e.id} onPress={() => onEventPress(e)}>
               <Card>
                 <CardSubheader>
@@ -90,9 +91,13 @@ export function Home({
         </View>
       )}
       <CardGroupHeader>News</CardGroupHeader>
-      {news.map(newsItem => (
+      {take(sorted(news, 'timeSent'), 7).map(newsItem => (
         <NewsPanel key={newsItem.id} news={newsItem} onPress={onNewsPress} />
       ))}
     </CardContainer>
   )
+}
+
+function sorted<T>(xs: T[], key: keyof T): T[] {
+  return orderBy(xs, [key], ['desc'])
 }
