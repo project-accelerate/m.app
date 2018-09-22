@@ -8,6 +8,11 @@ import { EventAttendanceRepository } from 'backend/app/conference/external/Event
 import { DeviceRepository } from 'backend/app/device/external/DeviceRepository'
 import { oneOf } from 'backend/app/common/CrudRepository'
 import { format } from 'date-fns'
+import {
+  PushNotificationRequest,
+  PushNotificationPayload,
+} from 'backend/app/device/domain/PushNotificationRequest'
+import { Without } from 'backend/app/common/WithoutId'
 
 @Service()
 export class EventAdminService {
@@ -86,6 +91,18 @@ export class EventAdminService {
     return true
   }
 
+  async cancelEvent(id: string) {
+    const event = await this.eventRepository.findOneRequired({ id })
+    await this.eventRepository.update(id, {
+      cancelled: true,
+    })
+
+    this.sendNotificationToEventAttendees(id, {
+      title: 'Event Cancelled',
+      body: `${event.name} has been cancelled`,
+    })
+  }
+
   private async updateImportedEvent(
     { id, ...existingProps }: Event,
     { speakers, photoUpload, ...updatedProps }: CreateEventRequest,
@@ -107,8 +124,31 @@ export class EventAdminService {
     return { id, ...update }
   }
 
+  private async sendNotificationToEventAttendees(
+    eventId: string,
+    req: Without<PushNotificationPayload, 'to'>,
+  ) {
+    const attendees = await this.eventAttendanceRepository.find({
+      event: eventId,
+    })
+
+    const devices = await this.deviceRepository.find({
+      owner: oneOf(...attendees.map(a => a.id)),
+    })
+
+    this.pushNotificationService.sendNotifications(
+      devices.filter(d => d.deviceToken).map(d => ({
+        deviceId: d.id,
+        payload: {
+          to: d.deviceToken!,
+          ...req,
+        },
+      })),
+    )
+  }
+
   private async notifyAtendeesOfChange(
-    id: string,
+    eventId: string,
     newEvent: ChangeRelevance,
     existingEvent: ChangeRelevance,
   ) {
@@ -119,31 +159,17 @@ export class EventAdminService {
       return
     }
 
-    const attendees = await this.eventAttendanceRepository.find({
-      event: id,
-    })
-
-    const devices = await this.deviceRepository.find({
-      owner: oneOf(...attendees.map(a => a.id)),
-    })
-
     const venue = await this.venueRepository.findOneRequired({
       id: newEvent.venue,
     })
 
-    this.pushNotificationService.sendNotifications(
-      devices.filter(d => d.deviceToken).map(d => ({
-        deviceId: d.id,
-        payload: {
-          to: d.deviceToken!,
-          title: 'Event Updated',
-          message: `${newEvent.name} will now be at ${venue.name} at ${format(
-            newEvent.startTime,
-            '',
-          )}`,
-        },
-      })),
-    )
+    this.sendNotificationToEventAttendees(eventId, {
+      title: 'Event Updated',
+      body: `${newEvent.name} will now be at ${venue.name} at ${format(
+        newEvent.startTime,
+        '',
+      )}`,
+    })
   }
 }
 

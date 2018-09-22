@@ -50,21 +50,23 @@ export class CreateEventRequest {
   description: 'Request properties to edit an event',
 })
 export class EditEventRequest {
-  @Field() id!:string
+  @Field() id!: string
   @Field({
     nullable: true,
-  }) name?: string 
+  })
+  name?: string
 
-  @Field(() => [GraphQLString],{
+  @Field(() => [GraphQLString], {
     nullable: true,
   })
   speakers?: string[]
 
   @Field({
     nullable: true,
-  }) venue?: string 
+  })
+  venue?: string
 
-  @Field(() => GraphQLISODateTime , {
+  @Field(() => GraphQLISODateTime, {
     nullable: true,
   })
   startTime?: Date
@@ -76,13 +78,15 @@ export class EditEventRequest {
 
   @Field({
     nullable: true,
-  }) introduction?: string
+  })
+  introduction?: string
 
   @Field({
     nullable: true,
-  }) detail?: string
+  })
+  detail?: string
 
-  @Field(() => EventFamily,{
+  @Field(() => EventFamily, {
     nullable: true,
   })
   family?: EventFamily
@@ -90,7 +94,7 @@ export class EditEventRequest {
   @Field(() => GraphQLUpload, {
     nullable: true,
   })
-  photoUpload?: FileUpload 
+  photoUpload?: FileUpload
 }
 
 @ObjectType()
@@ -113,6 +117,8 @@ export class Event {
   @Field() introduction!: string
 
   @Field() detail!: string
+
+  @Field() cancelled?: boolean
 
   photo?: string
 
