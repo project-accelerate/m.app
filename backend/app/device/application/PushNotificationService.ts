@@ -7,7 +7,10 @@ import { oneOf } from 'backend/app/common/CrudRepository'
 import { DateProvider } from 'backend/app/common/DateProvider'
 import { ExpoPushClient } from '../external/ExpoPushClient'
 import { PendingNotificationRepository } from '../external/PendingNotificationRepository'
-import { PushNotificationRequest } from '../domain/PushNotificationRequest'
+import {
+  PushNotificationRequest,
+  PushNotificationPayload,
+} from '../domain/PushNotificationRequest'
 import { DeviceAdminService } from './DeviceAdminService'
 import { PendingNotification } from '../domain/PendingNotification'
 
@@ -22,7 +25,14 @@ export class PushNotificationService {
 
   async sendNotifications(requests: PushNotificationRequest[]) {
     const messages = requests.map(req => req.payload)
-    const tickets = await this.expoClient.sendNotifications(messages)
+    const tickets = await this.expoClient.sendNotifications(
+      messages.map(
+        (m): PushNotificationPayload => ({
+          ...m,
+          priority: 'high',
+        }),
+      ),
+    )
 
     await this.pendingNotificationRepository.bulkInsert(
       tickets.map((receipt, i) => ({
