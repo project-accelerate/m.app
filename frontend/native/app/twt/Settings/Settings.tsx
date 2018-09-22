@@ -9,6 +9,7 @@ import {
   Link,
 } from '../../common/Typography/Typography'
 import { theme } from '../../../theme'
+import { Constants } from 'expo'
 
 const styles = StyleSheet.create({
   header: {
@@ -30,6 +31,7 @@ export class Settings extends React.Component<SettingsProps> {
   render() {
     return (
       <Rows>
+        <Description>Version {Constants.manifest.version}</Description>
         <Header>Privacy</Header>
         <PrivacyPanel {...this.props} />
       </Rows>
