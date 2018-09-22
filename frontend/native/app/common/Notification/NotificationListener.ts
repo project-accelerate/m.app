@@ -38,7 +38,7 @@ export const NotificationListener = (withNavigation(
       this.logger('Matched notitication handler', handler.constructor)
       handler.handleNotification()
 
-      if (notification.origin === 'selected') {
+      if (notification.origin === 'received') {
         if (Platform.OS === 'ios') {
           const details = handler.getInAppNotificationProps()
 
@@ -48,13 +48,15 @@ export const NotificationListener = (withNavigation(
               text: details.okLabel,
               style: 'default',
               onPress: () => {
-                this.handleNotificationSelected(handler)
+                setTimeout(() => {
+                  this.handleNotificationSelected(handler)
+                })
               },
             },
           ])
-        } else {
-          this.handleNotificationSelected(handler)
         }
+      } else {
+        this.handleNotificationSelected(handler)
       }
     }
 

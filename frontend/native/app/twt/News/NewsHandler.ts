@@ -5,6 +5,7 @@ import {
 import { Routes } from '../../../routes'
 import { EventDetailScreen } from '../Event/EventDetailScreen'
 import { Notifications } from 'expo'
+import { NewsDetailScreen } from './NewsDetailScreen'
 
 interface ConferenceNotification {
   id: string
@@ -27,7 +28,7 @@ export class NewsHandler extends NotificationHandler<ConferenceNotification> {
 
   getInitialRoute() {
     return {
-      routeName: Routes.get().findKeyFor(EventDetailScreen),
+      routeName: Routes.get().findKeyFor(NewsDetailScreen),
       routeParams: {
         id: this.data.id,
       },
