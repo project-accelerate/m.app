@@ -3,13 +3,21 @@ import { EventRepository } from '../external/EventRepository'
 import { CreateEventRequest, Event, EditEventRequest } from '../domain/Event'
 import { PhotoStorageService } from './PhotoStorageService'
 import { VenueRepository } from '../external/VenueRepository'
+import { PushNotificationService } from 'backend/app/device/application/PushNotificationService'
+import { EventAttendanceRepository } from 'backend/app/conference/external/EventAttedanceRepository'
+import { DeviceRepository } from 'backend/app/device/external/DeviceRepository'
+import { oneOf } from 'backend/app/common/CrudRepository'
+import { format } from 'date-fns'
 
 @Service()
 export class EventAdminService {
   constructor(
     private eventRepository: EventRepository,
+    private eventAttendanceRepository: EventAttendanceRepository,
     private venueRepository: VenueRepository,
     private photoStorageService: PhotoStorageService,
+    private pushNotificationService: PushNotificationService,
+    private deviceRepository: DeviceRepository,
   ) {}
 
   async submitEvent(request: CreateEventRequest) {
@@ -44,7 +52,7 @@ export class EventAdminService {
     return event
   }
 
-  async editEvent ({
+  async editEvent({
     id,
     speakers,
     photoUpload,
@@ -52,26 +60,91 @@ export class EventAdminService {
     ...props
   }: EditEventRequest) {
     const [photoId, venue] = await Promise.all([
-      photoUpload ? PhotoStorageService.saveUploadedPhoto(
-        this.photoStorageService,
-        photoUpload,
-      ):Promise.resolve(undefined),
-      venueId ? this.venueRepository.findOneRequired({ id: venueId }):Promise.resolve(undefined),
+      photoUpload
+        ? PhotoStorageService.saveUploadedPhoto(
+            this.photoStorageService,
+            photoUpload,
+          )
+        : Promise.resolve(undefined),
+      venueId
+        ? this.venueRepository.findOneRequired({ id: venueId })
+        : Promise.resolve(undefined),
     ])
-     
-    await this.eventRepository.update(id,{
-      ...(photoId ? {photo: photoId} : {}),
-      ...(venueId ? {venue: venueId} : {}),
-      ...(venueId ? {venue: venueId} : {}),
-      ...(venue ? {location: venue.location} :{}),
+
+    await this.eventRepository.update(id, {
+      ...(photoId ? { photo: photoId } : {}),
+      ...(venueId ? { venue: venueId } : {}),
+      ...(venueId ? { venue: venueId } : {}),
+      ...(venue ? { location: venue.location } : {}),
       ...props,
     })
-  
-    if (speakers)
-    {
-      await this.eventRepository.speakers.add(id,<string[]>speakers)
+
+    if (speakers) {
+      await this.eventRepository.speakers.add(id, <string[]>speakers)
     }
 
     return true
   }
+
+  private async updateImportedEvent(
+    { id, ...existingProps }: Event,
+    { speakers, photoUpload, ...updatedProps }: CreateEventRequest,
+  ): Promise<Event> {
+    const venue = await this.venueRepository.findOneRequired({
+      id: updatedProps.venue,
+    })
+    const update = {
+      ...existingProps,
+      ...updatedProps,
+      location: venue.location,
+    }
+
+    this.eventRepository.update(id, update)
+    await this.eventRepository.speakers.replace(id, speakers)
+
+    this.notifyAtendeesOfChange(id, update, existingProps)
+
+    return { id, ...update }
+  }
+
+  private async notifyAtendeesOfChange(
+    id: string,
+    newEvent: ChangeRelevance,
+    existingEvent: ChangeRelevance,
+  ) {
+    if (
+      newEvent.startTime === existingEvent.startTime &&
+      newEvent.venue === existingEvent.venue
+    ) {
+      return
+    }
+
+    const attendees = await this.eventAttendanceRepository.find({
+      event: id,
+    })
+
+    const devices = await this.deviceRepository.find({
+      owner: oneOf(...attendees.map(a => a.id)),
+    })
+
+    const venue = await this.venueRepository.findOneRequired({
+      id: newEvent.venue,
+    })
+
+    this.pushNotificationService.sendNotifications(
+      devices.filter(d => d.deviceToken).map(d => ({
+        deviceId: d.id,
+        payload: {
+          to: d.deviceToken!,
+          title: 'Event Updated',
+          message: `${newEvent.name} will now be at ${venue.name} at ${format(
+            newEvent.startTime,
+            '',
+          )}`,
+        },
+      })),
+    )
+  }
 }
+
+type ChangeRelevance = Pick<Event, 'startTime' | 'venue' | 'name'>

@@ -13,6 +13,7 @@ import { PushNotificationRequest } from 'backend/app/device/domain/PushNotificat
 import { ConferenceNotificationTargeter } from 'backend/app/conference/application/ConferenceNotificationTargeter'
 import { NotificationTarget } from 'backend/app/conference/domain/NotificationTarget'
 
+// This is now really a NewsAdminService and should be appropriately renamed
 @Service()
 export class ConferenceNotificationService {
   constructor(
