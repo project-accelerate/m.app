@@ -7,7 +7,7 @@ import { BACKEND_URL } from './properties'
 import { AsyncStorage } from 'react-native'
 import { ApolloLink } from 'apollo-link'
 
-const SCHEMA_VERSION = 1
+const SCHEMA_VERSION = 2
 
 const cache = new InMemoryCache()
 persistCache({
