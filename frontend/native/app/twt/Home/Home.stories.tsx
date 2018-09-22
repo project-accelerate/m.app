@@ -13,6 +13,7 @@ export const stories = {
           timeSent: faker.date.future().toISOString(),
           title: faker.lorem.sentence(3),
           detail: faker.lorem.paragraphs(10),
+          message: faker.lorem.paragraphs(1),
         },
       ]}
       time={new Date()}

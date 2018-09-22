@@ -3,4 +3,5 @@ fragment NewsPanel on ConferenceNotification {
   timeSent
   title
   detail
+  message
 }
