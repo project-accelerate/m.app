@@ -99,7 +99,6 @@ export class Routes {
     ...this.createRootNavigator(NewsScreen, 'NewsScreen'),
     ...this.createRootNavigator(TimetableScreen, 'TimetableScreen'),
     ...this.createRootNavigator(CalendarScreen, 'CalendarScreen'),
-    ...this.createRootNavigator(VotesScreen, 'VotesScreen'),
     ...this.createRootNavigator(
       createWebScreen({
         url: 'https://peoplesmomentum.com/conference-2018-yellow-pages',
