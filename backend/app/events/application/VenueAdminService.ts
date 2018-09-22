@@ -13,6 +13,15 @@ export class VenueAdminService {
   ) {}
 
   async addVenue({ photoUpload, address, ...props }: CreateVenueRequest) {
+    if (props.importRef) {
+      const existing = await this.venueRepository.findOne({
+        importRef: props.importRef,
+      })
+      if (existing) {
+        return existing
+      }
+    }
+
     const [photoId, location] = await Promise.all([
       PhotoStorageService.saveUploadedPhoto(
         this.photoStorageService,
