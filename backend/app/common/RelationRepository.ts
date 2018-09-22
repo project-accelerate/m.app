@@ -59,6 +59,24 @@ export class RelationRepository<T = {}> {
       .into(this.junctionTable)
   }
 
+  async replace(source: string, dests: string[]) {
+    return this.db.knex.transaction(async db => {
+      await db
+        .delete()
+        .where({ [this.sourceIdCol]: source })
+        .from(this.junctionTable)
+
+      await db
+        .insert(
+          dests.map(dest => ({
+            [this.sourceIdCol]: source,
+            [this.destIDCol]: dest,
+          })),
+        )
+        .into(this.junctionTable)
+    })
+  }
+
   async remove(source: string, dest: string) {
     return this.db.knex
       .delete()
