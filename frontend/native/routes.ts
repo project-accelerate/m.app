@@ -23,6 +23,8 @@ import {
 import { NewsScreen } from './app/twt/News/NewsScreen'
 import { NewsDetailScreen } from './app/twt/News/NewsDetailScreen'
 
+const isDayOfConference = new Date() > new Date('2018-09-23')
+
 export interface RouteComponent extends React.ComponentClass<any> {
   navigationOptions:
     | NavigationScreenOptions
@@ -85,16 +87,43 @@ export class Routes {
 
   topLevelRoutes = {
     ...this.createRootNavigator(HomeScreen, this.home),
+    ...(isDayOfConference
+      ? this.createRootNavigator(
+          createWebScreen({
+            url:
+              'https://peoplesmomentum.com/wp-content/uploads/Conference/daily-briefing.html',
+            title: 'Daily Briefing',
+            drawerLabel: 'Daily Briefing',
+            pendingMessage: 'The daily briefing isn’t ready yet',
+            delegateOnly: true,
+          }),
+          'DailyBriefing',
+        )
+      : {}),
     ...this.createRootNavigator(NewsScreen, 'NewsScreen'),
     ...this.createRootNavigator(TimetableScreen, 'TimetableScreen'),
     ...this.createRootNavigator(CalendarScreen, 'CalendarScreen'),
     ...this.createRootNavigator(VotesScreen, 'VotesScreen'),
+    ...(isDayOfConference
+      ? this.createRootNavigator(
+          createWebScreen({
+            pdf: true,
+            url:
+              'https://peoplesmomentum.com/wp-content/uploads/Conference/yellow-pages.pdf',
+            title: 'Yellow Pages',
+            drawerLabel: 'Yellow Pages',
+            pendingMessage: 'The Yellow Pages isn’t out yet',
+            delegateOnly: true,
+          }),
+          'YellowPages',
+        )
+      : {}),
     ...this.createRootNavigator(
       createWebScreen({
         url:
           'https://soundcloud.com/user-189667110/sets/a-radical-history-tour-of-liverpool',
         title: 'A Radical History Tour of Liverpool',
-        drawerLabel: 'Liverpool History Tour',
+        drawerLabel: 'Radical History Tour',
       }),
       'WalkingTour',
     ),
