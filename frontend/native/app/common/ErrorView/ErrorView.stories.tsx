@@ -14,7 +14,7 @@ export const stories = {
   ),
   'Server Error': () => (
     <ErrorView
-      error={{ graphQLErrors: [Error()] }}
+      error={{ graphQLErrors: [Error() as any] }}
       onRetry={action}
       isRetrying={false}
     />
