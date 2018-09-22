@@ -2,6 +2,7 @@ import { never } from 'common/util'
 
 export enum ConferenceNotificationScope {
   EVERYONE = 'EVERYONE',
+  DELEGATES = 'DELEGATES',
 }
 
 export const allConferenceNotificationScopes = Object.keys(
@@ -15,6 +16,9 @@ export function getConferenceNotificationScopeLabel(
 ) {
   if (scope === ConferenceNotificationScope.EVERYONE) {
     return 'Everyone'
+  }
+  if (scope === ConferenceNotificationScope.DELEGATES) {
+    return 'Just Delegates'
   }
 
   return never(scope)

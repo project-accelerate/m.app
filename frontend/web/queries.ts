@@ -34,6 +34,7 @@ export interface EditEventRequest {
 };
 
 export enum ConferenceNotificationScope {
+  DELEGATES = "DELEGATES",
   EVERYONE = "EVERYONE",
 }
 
