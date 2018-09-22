@@ -21,11 +21,13 @@ import {
   someCreateEventRequest,
   someVenue,
   somePerson,
+  someEvent,
 } from '../../test/eventTestUtils'
 import { VenueRepository } from '../../external/VenueRepository'
 import { MockPhotoStorageFixture } from '../../test/MockPhotoStorageFixture'
 import { someImageUpload } from '../../../test/testUtils'
 import { Person } from '../../domain/Person'
+import { omit } from 'lodash'
 
 describe('EventAdminService', () => {
   it('saves all data when new event is created', async () => {
@@ -62,6 +64,38 @@ describe('EventAdminService', () => {
     fixture.speakersRelation.verifyAdded(event.id, speaker.id)
 
     fixture.photoStorage.verifyPhotoSaved(await eventRequest.photoUpload)
+  })
+
+  it('updates an event when resubmitting an event with an import ref', async () => {
+    const fixture = new Fixture()
+
+    const newVenue = someVenue()
+    const newSpeaker = somePerson({ id: 'new-person' })
+    const updateRequest = someCreateEventRequest({
+      venue: newVenue.id,
+      photoUpload: someImageUpload(),
+      speakers: [newSpeaker.id],
+      importRef: 'import',
+    })
+    const existingEvent = someEvent({ importRef: 'import', id: 'my-event' })
+
+    fixture.venueRepository.givenObjectReturnedFromFindById(newVenue)
+    fixture.eventRepository.givenObjectReturnedFromFind(
+      { importRef: 'import' },
+      existingEvent,
+    )
+    fixture.photoStorage.givenThatThePhotoIsSavedWithId('photo-id')
+
+    const event = await fixture.eventAdmin.submitEvent(updateRequest)
+
+    expect(event.id).toEqual('my-event')
+
+    fixture.eventRepository.verifyUpdated('my-event', {
+      ...omit(existingEvent, 'id'),
+      venue: newVenue.id,
+    })
+
+    fixture.speakersRelation.verifyReplaced(event.id, [newSpeaker.id])
   })
 })
 

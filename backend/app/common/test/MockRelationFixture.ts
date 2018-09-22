@@ -1,4 +1,11 @@
-import { mock, instance, when, verify, objectContaining } from 'ts-mockito'
+import {
+  mock,
+  instance,
+  when,
+  verify,
+  objectContaining,
+  deepEqual,
+} from 'ts-mockito'
 import { RelationRepository } from '../RelationRepository'
 
 export class MockRelationFixture<T> {
@@ -13,5 +20,9 @@ export class MockRelationFixture<T> {
 
   verifyAdded(from: string, to: string) {
     verify(this.mock.add(from, objectContaining([to]) as any)).called()
+  }
+
+  verifyReplaced(from: string, to: string[]) {
+    verify(this.mock.replace(from, deepEqual(to))).called()
   }
 }
