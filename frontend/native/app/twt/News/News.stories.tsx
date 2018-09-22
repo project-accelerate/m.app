@@ -25,6 +25,7 @@ export const stories = {
           timeSent: faker.date.future().toISOString(),
           title: faker.lorem.sentence(3),
           detail: faker.lorem.sentences(3),
+          message: faker.lorem.sentences(3),
         }}
       />
       <NewsPanel
@@ -34,6 +35,7 @@ export const stories = {
           timeSent: faker.date.future().toISOString(),
           title: faker.lorem.sentence(3),
           detail: faker.lorem.sentences(3),
+          message: faker.lorem.sentences(3),
         }}
       />
       <NewsPanel
@@ -43,6 +45,7 @@ export const stories = {
           timeSent: faker.date.future().toISOString(),
           title: faker.lorem.sentence(3),
           detail: faker.lorem.sentences(3),
+          message: faker.lorem.sentences(3),
         }}
       />
     </Rows>

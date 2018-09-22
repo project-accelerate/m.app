@@ -24,7 +24,10 @@ export function NewsDetail(props: { item: NewsDetailFragment }) {
         {props.item.title}
       </Typography>
 
-      <Markdown value={props.item.detail || ''} style={styles.body} />
+      <Markdown
+        value={props.item.detail || props.item.message}
+        style={styles.body}
+      />
     </ScrollView>
   )
 }

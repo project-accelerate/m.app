@@ -11,7 +11,9 @@ export function NewsPanel(props: NewsPanelProps) {
   return (
     <Card onPress={() => props.onPress(props.news.id)}>
       <CardHeader>{props.news.title}</CardHeader>
-      <CardContent>{truncate(props.news.detail)}</CardContent>
+      <CardContent>
+        {truncate(props.news.detail || props.news.message)}
+      </CardContent>
     </Card>
   )
 }
