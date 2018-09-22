@@ -24,6 +24,14 @@ export class ConferenceNotificationTargeter {
       return {}
     }
 
+    if (notification.scope === ConferenceNotificationScope.DELEGATES) {
+      return {
+        user: {
+          isDelegate: true,
+        },
+      }
+    }
+
     return never(notification.scope)
   }
 
