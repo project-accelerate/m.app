@@ -28,6 +28,9 @@ import { MockPhotoStorageFixture } from '../../test/MockPhotoStorageFixture'
 import { someImageUpload } from '../../../test/testUtils'
 import { Person } from '../../domain/Person'
 import { omit } from 'lodash'
+import { PushNotificationService } from 'backend/app/device/application/PushNotificationService'
+import { DeviceRepository } from 'backend/app/device/external/DeviceRepository'
+import { EventAttendanceRepository } from 'backend/app/conference/external/EventAttedanceRepository'
 
 describe('EventAdminService', () => {
   it('saves all data when new event is created', async () => {
@@ -111,7 +114,10 @@ class Fixture {
 
   eventAdmin = new EventAdminService(
     this.eventRepository.instance,
+    instance(mock(EventAttendanceRepository)),
     this.venueRepository.instance,
     this.photoStorage.instance,
+    instance(mock(PushNotificationService)),
+    instance(mock(DeviceRepository)),
   )
 }
