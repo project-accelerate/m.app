@@ -57,6 +57,5 @@ const App = () => (
 )
 
 render(<App />, document.getElementById('root'))
-configureServiceWorker()
 
 export default App
