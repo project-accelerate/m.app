@@ -13,7 +13,7 @@ interface ConferenceNotification {
 }
 
 export class NewsHandler extends NotificationHandler<ConferenceNotification> {
-  static acceptsNotification(notification: Notifications.Notification) {
+  static acceptNotification(notification: Notifications.Notification) {
     return notification.data.type === 'conference-notification'
   }
 
