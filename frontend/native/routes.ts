@@ -22,8 +22,7 @@ import {
 } from './app/twt/Feedback/FeedbackScreen'
 import { NewsScreen } from './app/twt/News/NewsScreen'
 import { NewsDetailScreen } from './app/twt/News/NewsDetailScreen'
-
-const isDayOfConference = new Date() > new Date('2018-09-23')
+import { startOfDay } from 'date-fns'
 
 export interface RouteComponent extends React.ComponentClass<any> {
   navigationOptions:
@@ -87,34 +86,30 @@ export class Routes {
 
   topLevelRoutes = {
     ...this.createRootNavigator(HomeScreen, this.home),
-    ...(isDayOfConference
-      ? this.createRootNavigator(
-          createWebScreen({
-            url: 'https://peoplesmomentum.com/conference-2018-daily-briefing',
-            title: 'Daily Briefing',
-            drawerLabel: 'Daily Briefing',
-            pendingMessage: 'The daily briefing isn’t ready yet',
-            delegateOnly: true,
-          }),
-          'DailyBriefing',
-        )
-      : {}),
+    ...this.createRootNavigator(
+      createWebScreen({
+        url: 'https://peoplesmomentum.com/conference-2018-daily-briefing',
+        title: 'Daily Briefing',
+        drawerLabel: 'Daily Briefing',
+        pendingMessage: 'The daily briefing isn’t ready yet',
+        delegateOnly: true,
+      }),
+      'DailyBriefing',
+    ),
     ...this.createRootNavigator(NewsScreen, 'NewsScreen'),
     ...this.createRootNavigator(TimetableScreen, 'TimetableScreen'),
     ...this.createRootNavigator(CalendarScreen, 'CalendarScreen'),
     ...this.createRootNavigator(VotesScreen, 'VotesScreen'),
-    ...(isDayOfConference
-      ? this.createRootNavigator(
-          createWebScreen({
-            url: 'https://peoplesmomentum.com/conference-2018-yellow-pages',
-            title: 'Yellow Pages',
-            drawerLabel: 'Yellow Pages',
-            pendingMessage: 'The Yellow Pages isn’t out yet',
-            delegateOnly: true,
-          }),
-          'YellowPages',
-        )
-      : {}),
+    ...this.createRootNavigator(
+      createWebScreen({
+        url: 'https://peoplesmomentum.com/conference-2018-yellow-pages',
+        title: 'Yellow Pages',
+        drawerLabel: 'Yellow Pages',
+        pendingMessage: 'The Yellow Pages isn’t out yet',
+        delegateOnly: true,
+      }),
+      'YellowPages',
+    ),
     ...this.createRootNavigator(
       createWebScreen({
         url:
