@@ -8,7 +8,12 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import { theme } from '../../../theme'
-import { Typography, TypographyProps } from '../Typography/Typography'
+import {
+  Typography,
+  TypographyProps,
+  Paragraphs,
+  Markdown,
+} from '../Typography/Typography'
 import { TouchableProps } from 'react-native-svg'
 
 const styles = StyleSheet.create({
@@ -96,5 +101,11 @@ export function CardContent({ style, ...props }: TypographyProps) {
     <Typography variant="body" style={[style, styles.content]}>
       {props.children}
     </Typography>
+  )
+}
+
+export function CardMarkdownContent({ style, ...props }: TypographyProps) {
+  return (
+    <Markdown style={[style, styles.content]} value={props.children as any} />
   )
 }
