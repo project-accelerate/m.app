@@ -1,5 +1,6 @@
-import { ObjectType, Field, Arg, InputType } from 'type-graphql'
+import { ObjectType, Field, Arg, InputType, Authorized } from 'type-graphql'
 import { NotificationType } from './NotificationType'
+import { Role } from 'common/domain/Role'
 
 @InputType()
 export class CreateUserRequest {
@@ -24,7 +25,6 @@ export class User implements UserProps {
 
   @Field() consentToContact!: boolean
 
-  @Field({ nullable: true })
   email?: string
 
   optedIntoNotifications!: boolean
