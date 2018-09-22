@@ -20,6 +20,7 @@ import {
   CardContainer,
   CardGroupHeader,
   CardContent,
+  CardMarkdownContent,
 } from '../../common/Widgets/Card'
 import {
   HEADER_HEIGHT,
@@ -88,6 +89,20 @@ export function Home({
               </Card>
             </TouchableOpacity>
           ))}
+        </View>
+      )}
+      {news.length < 3 && (
+        <View>
+          <Card>
+            <CardMarkdownContent
+              children={[
+                'Welcome to Momentum’s Conference app! This contains the full programme for TWT and selected fringe events.',
+                'If you’re interested in a session or workshop, you can save it to your calendar and we’ll remind you about it half an hour before it starts.',
+                'We’ll be using this to communicate with you over TWT and the conference',
+                'We’ll also be pushing out new features over the weekend, so stay tuned for more!',
+              ].join('\n\n')}
+            />
+          </Card>
         </View>
       )}
       <CardGroupHeader>News</CardGroupHeader>
