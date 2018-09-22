@@ -90,8 +90,7 @@ export class Routes {
     ...(isDayOfConference
       ? this.createRootNavigator(
           createWebScreen({
-            url:
-              'https://peoplesmomentum.com/wp-content/uploads/Conference/daily-briefing.html',
+            url: 'https://peoplesmomentum.com/conference-2018-daily-briefing',
             title: 'Daily Briefing',
             drawerLabel: 'Daily Briefing',
             pendingMessage: 'The daily briefing isn’t ready yet',
@@ -107,9 +106,7 @@ export class Routes {
     ...(isDayOfConference
       ? this.createRootNavigator(
           createWebScreen({
-            pdf: true,
-            url:
-              'https://peoplesmomentum.com/wp-content/uploads/Conference/yellow-pages.pdf',
+            url: 'https://peoplesmomentum.com/conference-2018-yellow-pages',
             title: 'Yellow Pages',
             drawerLabel: 'Yellow Pages',
             pendingMessage: 'The Yellow Pages isn’t out yet',
