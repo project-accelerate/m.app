@@ -4,7 +4,11 @@ query HomeScreen($user: String) {
   news: sentNotifications(user: $user) {
     edges {
       node {
-        ...NewsPanel
+        id
+        timeSent
+        title
+        message
+        detail
       }
     }
   }
