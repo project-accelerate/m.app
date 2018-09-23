@@ -1,6 +1,7 @@
 import { never } from 'common/util'
 
 export enum ConferenceNotificationScope {
+  TWT_ONLY = 'TWT_ONLY',
   EVERYONE = 'EVERYONE',
   DELEGATES = 'DELEGATES',
 }
@@ -19,6 +20,9 @@ export function getConferenceNotificationScopeLabel(
   }
   if (scope === ConferenceNotificationScope.DELEGATES) {
     return 'Just Delegates'
+  }
+  if (scope === ConferenceNotificationScope.TWT_ONLY) {
+    return 'Non-delegates'
   }
 
   return never(scope)
