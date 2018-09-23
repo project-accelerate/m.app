@@ -24,6 +24,14 @@ export class ConferenceNotificationTargeter {
       return {}
     }
 
+    if (notification.scope === ConferenceNotificationScope.TWT_ONLY) {
+      return {
+        user: {
+          isDelegate: false,
+        },
+      }
+    }
+
     if (notification.scope === ConferenceNotificationScope.DELEGATES) {
       return {
         user: {

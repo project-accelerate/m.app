@@ -47,7 +47,7 @@ export class EditNotificationForm extends React.Component<
       message: '',
       urgent: false,
       detail: '',
-      scope: ConferenceNotificationScope.EVERYONE,
+      scope: ConferenceNotificationScope.TWT_ONLY,
       ...this.props.initial,
     }
   }
