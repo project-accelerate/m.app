@@ -6,6 +6,7 @@ import {
   RegistrationAskEmailPanel,
   RegistrationBg,
 } from './RegistrationPanels'
+
 import { registration } from './registrationState'
 import { createStateConnector } from '../../../state'
 import { createWizard, WizardStageProps } from '../../common/Wizard/Wizard'

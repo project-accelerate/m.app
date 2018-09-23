@@ -38,4 +38,5 @@ declare module 'react-native-root-toast' {
   }
 }
 
+declare module 'react-native-google-places-autocomplete'
 declare module 'sentry-expo'

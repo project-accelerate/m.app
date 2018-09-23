@@ -3,7 +3,7 @@ import { createTransition } from '../Layouts/Transitioner'
 import { RetryableAction } from '../RetryableAction/RetryableAction'
 
 interface WizardConfig<T> {
-  stages: Array<(props: WizardStageProps<T>) => JSX.Element>
+  stages: Array<(props: WizardStageProps<T>) => JSX.Element | React.Component>
 }
 
 export interface WizardStageProps<T> {

@@ -12,6 +12,7 @@ import { SpeakerDetailScreen } from './app/twt/Speaker/SpeakerDetailScreen'
 import { CalendarScreen } from './app/twt/Calendar/CalendarScreen'
 import { theme } from './theme'
 import { DevPanel } from './devtool/DevPanel'
+import { SubmitMeetupScreen } from './app/twt/SubmitMeetup/SubmitMeetupScreen'
 import { VotesScreen } from './app/twt/Event/VotesScreen'
 import { SettingsScreen } from './app/twt/Settings/SettingsScreen'
 import { createWebScreen } from './app/common/WebScreen/createWebScreen'
@@ -119,6 +120,7 @@ export class Routes {
       'WalkingTour',
     ),
     // ...this.createRootNavigator(FeedbackScreen, 'FeedbackScreen'),
+    ...this.createRootNavigator(SubmitMeetupScreen, 'SubmitMeetupScreen'),
     ...this.createRootNavigator(SettingsScreen, 'SettingsScreen'),
     ...(__DEV__ ? this.createRootNavigator(DevPanel, 'DevPanel') : {}),
   }

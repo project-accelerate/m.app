@@ -28,7 +28,7 @@
     "heroku-postbuild": "ts-node --project tasks/tsconfig.json -T tasks buildAll",
     "pretty": "prettier --write",
     "precommit": "lint-staged",
-    "cleanexpo": "cd frontend/native && rm -rf node_modules .expo && yarn",
+    "cleanexpo": "cd ./frontend/native && rm -rf node_modules .expo && yarn",
     "migration:make": "ts-node --project tasks/tsconfig.json -T tasks makeMigration",
     "graphql:schema": "ts-node --project tasks/tsconfig.json -T tasks graphqlSchema"
   },
