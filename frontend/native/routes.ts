@@ -89,9 +89,9 @@ export class Routes {
     ...this.createRootNavigator(
       createWebScreen({
         url: 'https://peoplesmomentum.com/conference-2018-daily-briefing',
-        title: 'Daily Briefing',
-        drawerLabel: 'Daily Briefing',
-        pendingMessage: 'The daily briefing isn’t ready yet',
+        title: 'Conference Briefing',
+        drawerLabel: 'Conference Briefing',
+        pendingMessage: 'The daily conference briefing isn’t ready yet',
         delegateOnly: true,
       }),
       'DailyBriefing',
