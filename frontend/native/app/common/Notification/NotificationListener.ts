@@ -19,7 +19,10 @@ export const NotificationListener = (withNavigation(
 
     componentDidMount() {
       this.subscription = Notifications.addListener(this.handleNotification)
-      activeInstance = this
+    }
+
+    componentWillUnmount() {
+      this.subscription.remove()
     }
 
     handleNotification = (notification: Notifications.Notification) => {
@@ -73,21 +76,3 @@ export const NotificationListener = (withNavigation(
     }
   },
 ) as any) as React.ComponentClass<{}>
-
-// [HACK]: Workaround for expo android back button bug
-// expo seems to unsubscribe from back button presses when the app is backgrounded
-// due to memory preassure. So we resubscribe on becoming active again.
-// This doesn't strictly belong in this module....
-let activeInstance: React.Component<NavigationInjectedProps> | undefined
-if (Platform.OS === 'android') {
-  AppState.addEventListener('change', state => {
-    if (state === 'active') {
-      BackHandler.addEventListener('hardwareBackPress', () => {
-        if (activeInstance) {
-          activeInstance.props.navigation.goBack()
-          return true
-        }
-      })
-    }
-  })
-}
