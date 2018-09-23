@@ -64,7 +64,7 @@ export const NotificationListener = (withNavigation(
       const route = handler.getInitialRoute()
       if (route) {
         this.logger('Navigating to route', route)
-        this.props.navigation.navigate(route.routeName, route.routeParams)
+        this.props.navigation.push(route.routeName, route.routeParams)
       }
     }
 
