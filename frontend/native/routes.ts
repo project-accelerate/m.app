@@ -118,8 +118,15 @@ export class Routes {
       }),
       'WalkingTour',
     ),
-    // ...this.createRootNavigator(FeedbackScreen, 'FeedbackScreen'),
-    ...this.createRootNavigator(NewsDetailScreen, 'NewsDetailScreen'),
+    ...this.createRootNavigator(
+      createWebScreen({
+        url: 'https://goo.gl/forms/Qg280HoLw60ahMkB2',
+        title: 'Session Feedback',
+        drawerLabel: 'Session Feedback',
+      }),
+      'FeedbackScreen',
+    ),
+    // ...this.createRootNavigator(NewsDetailScreen, 'NewsDetailScreen'),
     // ...this.createRootNavigator(EventDetailScreen, 'EventDetailScreen'),
     ...this.createRootNavigator(SettingsScreen, 'SettingsScreen'),
     ...(__DEV__ ? this.createRootNavigator(DevPanel, 'DevPanel') : {}),
