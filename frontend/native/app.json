@@ -8,7 +8,7 @@
     "sdkVersion": "28.0.0",
     "ignoreNodeModulesValidation": true,
     "platforms": ["ios", "android"],
-    "version": "2.0.3",
+    "version": "2.0.6",
     "orientation": "portrait",
     "splash": {
       "image": "./assets/splashlogo.png",
