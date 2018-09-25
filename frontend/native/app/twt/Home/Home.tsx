@@ -30,7 +30,7 @@ import { getStatusBarHeight } from '../../common/platform'
 import { calendar } from '../Calendar/calendarState'
 import { isSameDay } from 'date-fns'
 import Logo from '../../../assets/Mlogo'
-import { Typography } from '../../common/Typography/Typography'
+import { Typography, Link } from '../../common/Typography/Typography'
 import { moderateScale } from 'react-native-size-matters'
 import { timeOf, weekdayOf } from '../../common/date-formats'
 import { NewsPanel } from '../News/NewsPanel'
@@ -91,20 +91,13 @@ export function Home({
           ))}
         </View>
       )}
-      {news.length < 3 && (
-        <View>
-          <Card>
-            <CardMarkdownContent
-              children={[
-                'Welcome to Momentum’s Conference app! This contains the full programme for TWT and selected fringe events.',
-                'If you’re interested in a session or workshop, you can save it to your calendar and we’ll remind you about it half an hour before it starts.',
-                'We’ll be using this to communicate with you over TWT and the conference',
-                'We’ll also be pushing out new features over the weekend, so stay tuned for more!',
-              ].join('\n\n')}
-            />
-          </Card>
-        </View>
-      )}
+      <CardContent>
+        Not a member?{' '}
+        <Link variant="caption" accent href="https://join.peoplesmomentum.com">
+          {' '}
+          Join Momentum Today
+        </Link>
+      </CardContent>
       <CardGroupHeader>News</CardGroupHeader>
       {take(sorted(news, 'timeSent'), 7).map(newsItem => (
         <NewsPanel key={newsItem.id} news={newsItem} onPress={onNewsPress} />
