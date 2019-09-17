@@ -1,5 +1,5 @@
 import { NativeModules } from 'react-native'
-import { Constants } from 'expo'
+import Constants from 'expo-constants'
 
 const substitutions = {
   $PACKAGER_HOSTNAME: getPackagerHostname(),

@@ -11,7 +11,7 @@ import {
   NavigationScreenOptions,
   NavigationInjectedProps,
 } from 'react-navigation'
-import { theme } from '../../../theme'
+import * as theme from '../../../theme'
 import { ImageHeaderScreen } from '../../common/Screen/ImageHeaderScreen'
 import {
   Card,
@@ -27,7 +27,7 @@ import {
   HEADER_CONTENT_HEIGHT,
 } from '../../common/Screen/HeaderBar'
 import { getStatusBarHeight } from '../../common/platform'
-import { calendar } from '../Calendar/calendarState'
+import * as calendar from '../Calendar/calendarState'
 import { isSameDay } from 'date-fns'
 import Logo from '../../../assets/Mlogo'
 import { Typography } from '../../common/Typography/Typography'

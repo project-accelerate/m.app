@@ -8,7 +8,7 @@ import { BasicScreen } from '../Screen/BasicScreen'
 import { LoadingOverlay } from '../Widgets/Widgets'
 import { Card, CardHeader, CardContent, CardContainer } from '../Widgets/Card'
 import { Typography } from '../Typography/Typography'
-import { theme } from '../../../theme'
+import * as theme from '../../../theme'
 
 interface WebScreenConfig {
   url: string

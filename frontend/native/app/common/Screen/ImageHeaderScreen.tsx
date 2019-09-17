@@ -12,7 +12,7 @@ import {
 import { ErrorGuard } from '../ErrorView/ErrorGuard'
 import { NotificationListener } from '../Notification/NotificationListener'
 import { HeaderBar, HEADER_HEIGHT } from './HeaderBar'
-import { theme } from '../../../theme'
+import * as theme from '../../../theme'
 import { ParallaxScrollView } from '../Widgets/ParallaxScrollView'
 import { BasicScreen } from './BasicScreen'
 import { CachedImage } from '../Widgets/CachedImage'

@@ -15,14 +15,14 @@ import {
   StyleSheet,
 } from 'react-native'
 import formInput, { makeInputGreatAgainProps } from 'react-native-formik'
-import { theme } from '../../../theme'
+import * as theme from '../../../theme'
 import {
   withNavigation,
   NavigationInjectedProps,
   NavigationRoute,
 } from 'react-navigation'
 import { Typography } from '../Typography/Typography'
-import { Constants } from 'expo'
+import Constants from 'expo-constants'
 import { CachedImage } from './CachedImage'
 import { moderateScale } from 'react-native-size-matters'
 import Toast from 'react-native-root-toast'

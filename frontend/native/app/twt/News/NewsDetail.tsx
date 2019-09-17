@@ -3,7 +3,7 @@ import { NewsDetailFragment } from '../../../queries'
 import { Typography, Markdown } from '../../common/Typography/Typography'
 import { Rows } from '../../common/Widgets/Widgets'
 import { StyleSheet, ScrollView } from 'react-native'
-import { theme } from '../../../theme'
+import * as theme from '../../../theme'
 
 const styles = StyleSheet.create({
   title: {

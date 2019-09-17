@@ -10,7 +10,7 @@ import {
 } from 'react-native'
 import { groupBy, sortBy, orderBy, identity } from 'lodash'
 import { LoadingOverlay, Grid, Columns, Rows } from '../Widgets/Widgets'
-import { theme } from '../../../theme'
+import * as theme from '../../../theme'
 import { Typography } from '../Typography/Typography'
 import { Card, CardHeader, CardContent } from '../Widgets/Card'
 import { Background } from '../Layouts/Layouts'

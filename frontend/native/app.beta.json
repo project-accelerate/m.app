@@ -5,7 +5,7 @@
     "slug": "momentum-app",
     "primaryColor": "#ec0000",
     "privacy": "unlisted",
-    "sdkVersion": "28.0.0",
+    "sdkVersion": "34.0.0",
     "ignoreNodeModulesValidation": true,
     "platforms": ["ios", "android"],
     "version": "2.0.6",
@@ -18,7 +18,7 @@
     "updates": {
       "fallbackToCacheTimeout": 30
     },
-    "entryPoint": "./main.js",
+    "entryPoint": "./main.ts",
     "assetBundlePatterns": ["app/**", "assets/**"],
     "icon": "./icons/icon-beta.png",
     "ios": {
@@ -37,7 +37,7 @@
       }
     },
     "packagerOpts": {
-      "sourceExts": ["ts", "tsx"],
+      "sourceExts": ["ts", "tsx", "js", "jsx"],
       "projectRoots": "",
       "transformer": "node_modules/react-native-typescript-transformer/index.js"
     },

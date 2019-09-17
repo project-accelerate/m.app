@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, StyleSheet, Dimensions } from 'react-native'
 import { EventListItemFragment } from '../../../queries'
-import { theme } from '../../../theme'
+import * as theme from '../../../theme'
 import { Typography } from '../../common/Typography/Typography'
 import { format } from 'date-fns'
 import { ProfileImage, Touchable } from '../../common/Widgets/Widgets'

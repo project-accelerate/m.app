@@ -15,7 +15,7 @@ import { ErrorGuard } from './app/common/ErrorView/ErrorGuard'
 import { VoteFetcher } from './app/twt/Event/VoteFetcher'
 import { loadFonts } from './config/loadFonts'
 import { StatusBar } from 'react-native'
-import { theme } from './theme'
+import * as theme from './theme'
 
 interface ApplicationState {
   loading?: boolean

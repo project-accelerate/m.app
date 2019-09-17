@@ -40,6 +40,7 @@
   "dependencies": {
     "@types/dotenv": "^4.0.3",
     "dotenv": "^6.0.0",
+    "react-native-formik": "^1.7.7",
     "ts-node": "^6.1.1",
     "typescript": "^3.0.1",
     "yaml": "^1.0.0-rc.8"

@@ -9,10 +9,10 @@ import {
 } from '../../common/Widgets/Widgets'
 import { Typography, Markdown, Br } from '../../common/Typography/Typography'
 import { EventDetailFragment } from '../../../queries'
-import { theme } from '../../../theme'
+import * as theme from '../../../theme'
 import { timeOf, longDateOf, weekdayOf } from '../../common/date-formats'
 import { Button } from '../../common/Butttons/Buttons'
-import { MapView } from '../../common/MapView/MapView'
+import MapView from 'react-native-maps'
 
 interface EventDetailPageProps {
   event: EventDetailFragment

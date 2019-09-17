@@ -5,7 +5,7 @@
     "slug": "momentum-app-localdev",
     "primaryColor": "#ec0000",
     "privacy": "unlisted",
-    "sdkVersion": "28.0.0",
+    "sdkVersion": "34.0.0",
     "ignoreNodeModulesValidation": true,
     "platforms": ["ios", "android"],
     "version": "1.0.2",
@@ -28,7 +28,7 @@
       "package": "com.peoplesmomentum.app"
     },
     "packagerOpts": {
-      "sourceExts": ["ts", "tsx"],
+      "sourceExts": ["ts", "tsx", "js", "jsx"],
       "projectRoots": "",
       "transformer": "node_modules/react-native-typescript-transformer/index.js"
     },

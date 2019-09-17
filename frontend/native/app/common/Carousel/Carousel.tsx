@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 import jez from './jez.jpg'
 import ash from './ash.jpg'
-import { theme } from '../../../theme'
+import * as theme from '../../../theme'
 import { Typography, Paragraphs } from '../Typography/Typography'
 
 interface CarouselItem {

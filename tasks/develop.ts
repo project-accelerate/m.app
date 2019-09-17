@@ -35,7 +35,7 @@ export function preview() {
 }
 
 export function developFrontendNative(channel?: 'local') {
-  const expo = createShellCmd(join('node_modules', '.bin', 'exp'), {
+  const expo = createShellCmd(join('node_modules', '.bin', 'expo'), {
     cwd: 'frontend/native',
   })
 
@@ -70,7 +70,7 @@ export function storybookExpo(target: string) {
 }
 
 export function emulator(platform: string) {
-  const expo = createShellCmd(join('node_modules', '.bin', 'exp'), {
+  const expo = createShellCmd(join('node_modules', '.bin', 'expo'), {
     cwd: 'frontend/native',
   })
 

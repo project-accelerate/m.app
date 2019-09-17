@@ -3,7 +3,7 @@ import { StyleSheet, ScrollView, TouchableOpacity, View } from 'react-native'
 import { ProfileImage, Banner, Grid } from '../../common/Widgets/Widgets'
 import { Typography } from '../../common/Typography/Typography'
 import { SpeakerDetailFragment, EventListItemFragment } from '../../../queries'
-import { theme } from '../../../theme'
+import * as theme from '../../../theme'
 import {
   EventListItem,
   EventListItemPressedEvent,

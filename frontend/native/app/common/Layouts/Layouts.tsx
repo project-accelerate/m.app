@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 
 import bg from './bg.jpg'
-import { theme } from '../../../theme'
+import * as theme from '../../../theme'
 
 const LayoutStyles = StyleSheet.create({
   bg: {

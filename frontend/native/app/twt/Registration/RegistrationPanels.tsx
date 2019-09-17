@@ -8,7 +8,7 @@ import {
   Link,
   Paragraphs,
 } from '../../common/Typography/Typography'
-import { theme } from '../../../theme'
+import * as theme from '../../../theme'
 import { FormField, Spacing, Rows } from '../../common/Widgets/Widgets'
 import { RegistrationStageProps } from './RegistrationContainer'
 

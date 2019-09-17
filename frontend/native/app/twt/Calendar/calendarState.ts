@@ -9,7 +9,7 @@ import {
   isBefore,
 } from 'date-fns'
 import { Notifications } from 'expo'
-import { theme } from '../../../theme'
+import * as theme from '../../../theme'
 import {
   CalendarEventFragment,
   AttendEventMutationVariables,
@@ -30,7 +30,7 @@ import CancelEventAttendance from './CancelEventAttendance.graphql'
 import { isEqual } from 'lodash'
 import { createLogger } from '../../common/logger'
 import { createEventReminderNotification } from './EventReminderNotification'
-import { registration } from '../Registration/registrationState'
+import * as registration from '../Registration/registrationState'
 
 /**
  * IMPORTANT!
@@ -54,312 +54,307 @@ import { registration } from '../Registration/registrationState'
  * need fixing.
  */
 
-export namespace calendar {
-  export const startHourOfDay = 4
-  const alertMinutesBefore = 30
+export const startHourOfDay = 4
+const alertMinutesBefore = 30
 
-  // HACK: Hardcoodeed yeah
-  export const days = [
-    new Date('2018-09-22'),
-    new Date('2018-09-23'),
-    new Date('2018-09-24'),
-    new Date('2018-09-25'),
-    new Date('2018-09-26'),
-  ]
+// HACK: Hardcoodeed yeah
+export const days = [
+  new Date('2010-09-21'),
+  new Date('2010-09-22'),
+  new Date('2010-09-23'),
+  new Date('2010-09-24'),
+]
 
-  interface State {
-    [eventId: string]: SavedEvent | undefined
-  }
+type LocalNotificationId = string | number
 
-  interface SavedEvent {
-    notificationToken: Notifications.LocalNotificationId
-    details: SavedEventDetails
-  }
+interface State {
+  [eventId: string]: SavedEvent | undefined
+}
 
-  export interface SavedEventDetails {
-    id: string
-    name: string
-    venueName: string
-    startTime: string
-    endTime: string
-    imageUrl?: string
-  }
+interface SavedEvent {
+  notificationToken: LocalNotificationId
+  details: SavedEventDetails
+}
 
-  type Action =
-    | {
-        type: 'Calendar.addEvent'
-        event: SavedEventDetails
-        notificationToken: Notifications.LocalNotificationId
-      }
-    | { type: 'Calendar.removeEvent'; id: string }
+export interface SavedEventDetails {
+  id: string
+  name: string
+  venueName: string
+  startTime: string
+  endTime: string
+  imageUrl?: string
+}
 
-  export const selectors = {
-    allEvents: (state: AppState) => state.calendarEvents || {},
+type Action =
+  | {
+      type: 'Calendar.addEvent'
+      event: SavedEventDetails
+      notificationToken: LocalNotificationId
+    }
+  | { type: 'Calendar.removeEvent'; id: string }
 
-    upcomingEvents: (state: AppState, props: { now: Date }) => {
-      const events = compact(Object.values(selectors.allEvents(state))).filter(
-        e => isBefore(props.now, e.details.endTime),
-      )
+export const selectors = {
+  allEvents: (state: AppState) => state.calendarEvents || {},
 
-      return take(
-        sortBy(events, (e: SavedEvent) => e.details.startTime),
-        3,
-      ).map(e => e.details)
-    },
+  upcomingEvents: (state: AppState, props: { now: Date }) => {
+    const events = compact(Object.values(selectors.allEvents(state))).filter(
+      e => isBefore(props.now, e.details.endTime),
+    )
 
-    eventsInDay: (state: AppState, props: { day: Date }) => {
-      const eventList = compact(Object.values(selectors.allEvents(state)))
-        .filter(x => isSameCalendarDay(x.details.startTime, props.day))
-        .map(x => x.details)
+    return take(sortBy(events, (e: SavedEvent) => e.details.startTime), 3).map(
+      e => e.details,
+    )
+  },
 
-      return sortBy(eventList, x => x.startTime)
-    },
+  eventsInDay: (state: AppState, props: { day: Date }) => {
+    const eventList = compact(Object.values(selectors.allEvents(state)))
+      .filter(x => isSameCalendarDay(x.details.startTime, props.day))
+      .map(x => x.details)
 
-    isSaved: (state: AppState, props: { eventId: string }) => {
-      const allEvents = selectors.allEvents(state)
-      return Boolean(allEvents[props.eventId])
-    },
+    return sortBy(eventList, x => x.startTime)
+  },
 
-    savedEvent: (state: AppState, props: { eventId: string }) => {
-      const allEvents = selectors.allEvents(state)
-      const event = allEvents[props.eventId]
+  isSaved: (state: AppState, props: { eventId: string }) => {
+    const allEvents = selectors.allEvents(state)
+    return Boolean(allEvents[props.eventId])
+  },
 
-      if (!event) {
-        throw Error(`Saved event not found: ${props.eventId}`)
-      }
+  savedEvent: (state: AppState, props: { eventId: string }) => {
+    const allEvents = selectors.allEvents(state)
+    const event = allEvents[props.eventId]
 
-      return event
-    },
+    if (!event) {
+      throw Error(`Saved event not found: ${props.eventId}`)
+    }
 
-    anyEvent: (state: AppState) => {
-      const allEvents = selectors.allEvents(state)
-      const [id] = Object.keys(allEvents)
+    return event
+  },
 
-      return allEvents[id] && allEvents[id]!.details
-    },
-  }
+  anyEvent: (state: AppState) => {
+    const allEvents = selectors.allEvents(state)
+    const [id] = Object.keys(allEvents)
 
-  interface SaveEventProps {
-    event: CalendarEventFragment
-    alertMinutesBefore: number
-    userId: string
-    recordAttendance?: boolean
-  }
+    return allEvents[id] && allEvents[id]!.details
+  },
+}
 
-  interface RemoveSavedEventProps {
-    eventId: string
-    userId: string
-  }
+interface SaveEventProps {
+  event: CalendarEventFragment
+  alertMinutesBefore: number
+  userId: string
+  recordAttendance?: boolean
+}
 
-  export const actions = {
-    fetchVotes: () => async (
-      dispatch: AppDispatch<Action>,
-      getState: () => AppState,
-    ) => {
-      log('Fetch votes')
+interface RemoveSavedEventProps {
+  eventId: string
+  userId: string
+}
 
-      const userId = registration.selectors.userId(getState())
-      const {
-        user: { votes },
-      } = await fetchNewVotes({
-        userId,
-      })
+export const actions = {
+  fetchVotes: () => async (
+    dispatch: AppDispatch<Action>,
+    getState: () => AppState,
+  ) => {
+    log('Fetch votes')
 
-      votes.edges.forEach(({ node: vote }) => {
-        dispatch(
-          actions.saveEvent({
-            alertMinutesBefore,
-            event: vote,
-            recordAttendance: false,
-            userId,
-          }),
-        )
-      })
-    },
-
-    saveEvent: ({
-      event,
+    const userId = registration.selectors.userId(getState())
+    const {
+      user: { votes },
+    } = await fetchNewVotes({
       userId,
-      alertMinutesBefore,
-      recordAttendance = true,
-    }: SaveEventProps) => async (
-      dispatch: Dispatch<Action>,
-      getState: () => AppState,
-    ) => {
-      const details = {
-        id: event.id,
-        name: event.name,
-        venueName: event.venue.name,
-        startTime: event.startTime,
-        endTime: event.endTime,
-        imageUrl: (event.photo && event.photo.sourceUrl) || undefined,
-      }
-
-      const selectProps = { eventId: details.id }
-
-      let prevSavedEvent =
-        (selectors.isSaved(getState(), selectProps) &&
-          selectors.savedEvent(getState(), selectProps)) ||
-        undefined
-
-      if (prevSavedEvent && isEqual(details, prevSavedEvent.details)) {
-        return
-      }
-
-      if (prevSavedEvent) {
-        log('Updating scheduled event', details)
-        await Notifications.cancelScheduledNotificationAsync(
-          prevSavedEvent.notificationToken,
-        )
-      } else {
-        log('Adding new saved event', details)
-      }
-
-      const notificationTime = subMinutes(event.startTime, alertMinutesBefore)
-
-      const notificationToken = await Notifications.scheduleLocalNotificationAsync(
-        createEventReminderNotification(details),
-        {
-          time: notificationTime,
-        },
-      )
-
-      dispatch({
-        type: 'Calendar.addEvent',
-        event: details,
-        notificationToken,
-      })
-
-      if (recordAttendance) {
-        await submitEventAdded({
-          event: event.id,
-          user: userId,
-        })
-      }
-    },
-
-    removeSavedEvent: (props: RemoveSavedEventProps) => async (
-      dispatch: Dispatch<Action>,
-      getState: GetStateFn,
-    ) => {
-      log('Request remove notification')
-
-      const event = selectors.savedEvent(getState(), props)
-
-      await Notifications.cancelScheduledNotificationAsync(
-        event.notificationToken,
-      )
-
-      dispatch({
-        type: 'Calendar.removeEvent',
-        id: props.eventId,
-      })
-
-      await submitEventRemoved({
-        user: props.userId,
-        event: props.eventId,
-      })
-    },
-
-    toggleEventSaved: (props: SaveEventProps) => (
-      dispatch: AppDispatch,
-      getState: GetStateFn,
-    ) => {
-      const {
-        userId,
-        event: { id: eventId },
-      } = props
-
-      if (selectors.isSaved(getState(), { eventId })) {
-        dispatch(actions.removeSavedEvent({ eventId, userId }))
-      } else {
-        dispatch(actions.saveEvent(props))
-      }
-    },
-
-    showTestEventNotification: () => async (_: never, getState: GetStateFn) => {
-      const event = selectors.anyEvent(getState())
-      if (!event) {
-        log('None currently scheduled')
-        return
-      }
-
-      await Notifications.scheduleLocalNotificationAsync(
-        createEventReminderNotification(event),
-        { time: addSeconds(new Date(), 10) },
-      )
-    },
-  }
-
-  export const reducers = {
-    calendarEvents: (
-      prev: State = {},
-      action: ReducerAction<Action>,
-    ): State => {
-      if (action.type === 'Calendar.addEvent') {
-        return {
-          ...prev,
-          [action.event.id]: {
-            details: action.event,
-            notificationToken: action.notificationToken,
-          },
-        }
-      }
-
-      if (action.type === 'Calendar.removeEvent') {
-        return omit(prev, action.id)
-      }
-
-      return prev
-    },
-  }
-
-  const log = createLogger('Calendar')
-
-  async function fetchNewVotes(variables: FetchNewVotesQueryVariables) {
-    const result = await graphQlClient.query<FetchNewVotesQuery>({
-      fetchPolicy: 'network-only',
-      query: FetchNewVotes,
-      variables,
     })
 
-    return result.data
-  }
+    votes.edges.forEach(({ node: vote }) => {
+      dispatch(
+        actions.saveEvent({
+          alertMinutesBefore,
+          event: vote,
+          recordAttendance: false,
+          userId,
+        }),
+      )
+    })
+  },
 
-  async function submitEventAdded(variables: AttendEventMutationVariables) {
-    try {
-      await graphQlClient.mutate({
-        mutation: AttendEvent,
-        variables,
+  saveEvent: ({
+    event,
+    userId,
+    alertMinutesBefore,
+    recordAttendance = true,
+  }: SaveEventProps) => async (
+    dispatch: Dispatch<Action>,
+    getState: () => AppState,
+  ) => {
+    const details = {
+      id: event.id,
+      name: event.name,
+      venueName: event.venue.name,
+      startTime: event.startTime,
+      endTime: event.endTime,
+      imageUrl: (event.photo && event.photo.sourceUrl) || undefined,
+    }
+
+    const selectProps = { eventId: details.id }
+
+    let prevSavedEvent =
+      (selectors.isSaved(getState(), selectProps) &&
+        selectors.savedEvent(getState(), selectProps)) ||
+      undefined
+
+    if (prevSavedEvent && isEqual(details, prevSavedEvent.details)) {
+      return
+    }
+
+    if (prevSavedEvent) {
+      log('Updating scheduled event', details)
+      await Notifications.cancelScheduledNotificationAsync(
+        prevSavedEvent.notificationToken,
+      )
+    } else {
+      log('Adding new saved event', details)
+    }
+
+    const notificationTime = subMinutes(event.startTime, alertMinutesBefore)
+
+    const notificationToken = await Notifications.scheduleLocalNotificationAsync(
+      createEventReminderNotification(details),
+      {
+        time: notificationTime,
+      },
+    )
+
+    dispatch({
+      type: 'Calendar.addEvent',
+      event: details,
+      notificationToken,
+    })
+
+    if (recordAttendance) {
+      await submitEventAdded({
+        event: event.id,
+        user: userId,
       })
-    } catch (error) {
-      console.error(error)
     }
-  }
+  },
 
-  async function submitEventRemoved(
-    variables: CancelEventAttendanceMutationVariables,
-  ) {
-    try {
-      await graphQlClient.mutate({
-        mutation: CancelEventAttendance,
-        variables,
-      })
-    } catch (error) {
-      console.error(error)
+  removeSavedEvent: (props: RemoveSavedEventProps) => async (
+    dispatch: Dispatch<Action>,
+    getState: GetStateFn,
+  ) => {
+    log('Request remove notification')
+
+    const event = selectors.savedEvent(getState(), props)
+
+    await Notifications.cancelScheduledNotificationAsync(
+      event.notificationToken,
+    )
+
+    dispatch({
+      type: 'Calendar.removeEvent',
+      id: props.eventId,
+    })
+
+    await submitEventRemoved({
+      user: props.userId,
+      event: props.eventId,
+    })
+  },
+
+  toggleEventSaved: (props: SaveEventProps) => (
+    dispatch: AppDispatch,
+    getState: GetStateFn,
+  ) => {
+    const {
+      userId,
+      event: { id: eventId },
+    } = props
+
+    if (selectors.isSaved(getState(), { eventId })) {
+      dispatch(actions.removeSavedEvent({ eventId, userId }))
+    } else {
+      dispatch(actions.saveEvent(props))
     }
-  }
+  },
 
-  function isSameCalendarDay(lhs: Date | string, rhs: Date | string) {
-    if (getHours(lhs) < startHourOfDay && getHours(rhs) >= startHourOfDay) {
-      return getDate(rhs) === getDate(lhs) - 1
+  showTestEventNotification: () => async (_: never, getState: GetStateFn) => {
+    const event = selectors.anyEvent(getState())
+    if (!event) {
+      log('None currently scheduled')
+      return
     }
 
-    return getDate(lhs) === getDate(rhs)
+    await Notifications.scheduleLocalNotificationAsync(
+      createEventReminderNotification(event),
+      { time: addSeconds(new Date(), 10) },
+    )
+  },
+}
+
+export const reducers = {
+  calendarEvents: (prev: State = {}, action: ReducerAction<Action>): State => {
+    if (action.type === 'Calendar.addEvent') {
+      return {
+        ...prev,
+        [action.event.id]: {
+          details: action.event,
+          notificationToken: action.notificationToken,
+        },
+      }
+    }
+
+    if (action.type === 'Calendar.removeEvent') {
+      return omit(prev, action.id)
+    }
+
+    return prev
+  },
+}
+
+const log = createLogger('Calendar')
+
+async function fetchNewVotes(variables: FetchNewVotesQueryVariables) {
+  const result = await graphQlClient.query<FetchNewVotesQuery>({
+    fetchPolicy: 'network-only',
+    query: FetchNewVotes,
+    variables,
+  })
+
+  return result.data
+}
+
+async function submitEventAdded(variables: AttendEventMutationVariables) {
+  try {
+    await graphQlClient.mutate({
+      mutation: AttendEvent,
+      variables,
+    })
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+async function submitEventRemoved(
+  variables: CancelEventAttendanceMutationVariables,
+) {
+  try {
+    await graphQlClient.mutate({
+      mutation: CancelEventAttendance,
+      variables,
+    })
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+function isSameCalendarDay(lhs: Date | string, rhs: Date | string) {
+  if (getHours(lhs) < startHourOfDay && getHours(rhs) >= startHourOfDay) {
+    return getDate(rhs) === getDate(lhs) - 1
   }
 
-  export function canSave(event: { startTime: string }, currentTime: Date) {
-    const alertTime = subMinutes(event.startTime, alertMinutesBefore + 1)
-    return alertTime > currentTime
-  }
+  return getDate(lhs) === getDate(rhs)
+}
+
+export function canSave(event: { startTime: string }, currentTime: Date) {
+  const alertTime = subMinutes(event.startTime, alertMinutesBefore + 1)
+  return alertTime > currentTime
 }

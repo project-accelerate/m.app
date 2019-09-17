@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 import { MarkdownView } from 'react-native-markdown-view'
 import { moderateScale } from 'react-native-size-matters'
-import { theme } from '../../../theme'
+import * as theme from '../../../theme'
 import { Linking } from 'expo'
 
 const TypographyVariants = StyleSheet.create({

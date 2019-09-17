@@ -2,7 +2,7 @@ import React from 'react'
 import { NavigationScreenProps } from 'react-navigation'
 import { createStateConnector } from '../../../state'
 import { createFetchData } from '../../common/FetchData/FetchData'
-import { registration } from '../Registration/registrationState'
+import * as registration from '../Registration/registrationState'
 import NewsScreenQueryDocument from './NewsScreen.graphql'
 import { BasicScreen } from '../../common/Screen/BasicScreen'
 import {

@@ -6,7 +6,7 @@ import {
   RegistrationAskEmailPanel,
   RegistrationBg,
 } from './RegistrationPanels'
-import { registration } from './registrationState'
+import * as registration from './registrationState'
 import { createStateConnector } from '../../../state'
 import { createWizard, WizardStageProps } from '../../common/Wizard/Wizard'
 import { compact } from 'lodash'

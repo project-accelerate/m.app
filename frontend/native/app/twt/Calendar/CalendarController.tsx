@@ -7,7 +7,7 @@ import {
   Spacing,
 } from '../../common/Widgets/Widgets'
 import { CalendarView, CalendarEvent } from './Calendar'
-import { calendar } from './calendarState'
+import * as calendar from './calendarState'
 import { isSameDay, format, addHours, startOfDay, addDays, min } from 'date-fns'
 import { Typography } from '../../common/Typography/Typography'
 

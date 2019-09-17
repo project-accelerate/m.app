@@ -8,8 +8,8 @@ import {
   Paragraphs,
   Link,
 } from '../../common/Typography/Typography'
-import { theme } from '../../../theme'
-import { Constants } from 'expo'
+import * as theme from '../../../theme'
+import Constants from 'expo-constants'
 
 const styles = StyleSheet.create({
   header: {

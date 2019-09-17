@@ -17,7 +17,7 @@ import {
 } from 'date-fns'
 import { times } from 'lodash'
 import { Typography } from '../../common/Typography/Typography'
-import { theme } from '../../../theme'
+import * as theme from '../../../theme'
 import { layoutCalendar, LayoutItem } from './layoutCalendar'
 
 export interface CalendarViewProps {

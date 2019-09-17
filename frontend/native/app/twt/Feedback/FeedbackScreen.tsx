@@ -10,7 +10,7 @@ import { Button } from '../../common/Butttons/Buttons'
 import { Typography } from '../../common/Typography/Typography'
 import { Routes } from '../../../routes'
 import { createWebScreen } from '../../common/WebScreen/createWebScreen'
-import { theme } from '../../../theme'
+import * as theme from '../../../theme'
 
 export const SessionFeedbackScreen = createWebScreen({
   title: 'Session Feedback',

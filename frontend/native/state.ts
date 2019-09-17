@@ -6,8 +6,8 @@ import {
 } from 'reselect'
 import { bindActionCreators, AnyAction, Dispatch, Action } from 'redux'
 import { mapValues } from 'lodash'
-import { registration } from './app/twt/Registration/registrationState'
-import { calendar } from './app/twt/Calendar/calendarState'
+import * as registration from './app/twt/Registration/registrationState'
+import * as calendar from './app/twt/Calendar/calendarState'
 import { ThunkDispatch } from 'redux-thunk'
 
 /** Bump this number to invalidate the persisted state */

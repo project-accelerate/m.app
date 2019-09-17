@@ -3,8 +3,8 @@ import {
   NotificationHandler,
   InAppNotificationProps,
 } from '../../common/Notification/NotificationHandler'
-import { calendar } from './calendarState'
-import { theme } from '../../../theme'
+import * as calendar from './calendarState'
+import * as theme from '../../../theme'
 import { format } from 'date-fns'
 import { Routes } from '../../../routes'
 import { EventDetailScreenParams } from '../Event/EventDetailScreen'

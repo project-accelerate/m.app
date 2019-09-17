@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
   GestureResponderEvent,
 } from 'react-native'
-import { theme } from '../../../theme'
+import * as theme from '../../../theme'
 import { Typography } from '../Typography/Typography'
 import { FontAwesome } from '@expo/vector-icons'
 import { ScaledSheet, moderateScale } from 'react-native-size-matters'

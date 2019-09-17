@@ -14,7 +14,7 @@ export function buildFrontendWeb() {
 
 export function buildFrontendNativeBinaries(releaseChannel = 'beta') {
   validateChannel(releaseChannel)
-  const exp = createShellCmd(join('node_modules', '.bin', 'exp'), {
+  const exp = createShellCmd(join('node_modules', '.bin', 'expo'), {
     cwd: 'frontend/native',
   })
 

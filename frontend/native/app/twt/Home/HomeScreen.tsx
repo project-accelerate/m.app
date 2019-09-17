@@ -5,7 +5,7 @@ import {
   NavigationScreenOptions,
   NavigationInjectedProps,
 } from 'react-navigation'
-import { theme } from '../../../theme'
+import * as theme from '../../../theme'
 import twt from '../../../assets/default.jpg'
 import {
   Card,
@@ -21,11 +21,11 @@ import {
   HEADER_CONTENT_HEIGHT,
 } from '../../common/Screen/HeaderBar'
 import { createParametricStateConnector } from '../../../state'
-import { calendar } from '../Calendar/calendarState'
+import * as calendar from '../Calendar/calendarState'
 import { TimeProvider } from '../../common/Time/TimeProvider'
 import { Routes } from '../../../routes'
 import { EventDetailScreen } from '../Event/EventDetailScreen'
-import { registration } from '../Registration/registrationState'
+import * as registration from '../Registration/registrationState'
 import { createFetchData } from '../../common/FetchData/FetchData'
 import { HomeScreenQuery, HomeScreenQueryVariables } from '../../../queries'
 import { Home } from './Home'

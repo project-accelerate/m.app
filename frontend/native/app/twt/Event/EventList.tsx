@@ -14,7 +14,7 @@ import {
 import { EventListItemFragment } from '../../../queries'
 import { EventListItem, EventListItemPressedEvent } from './EventListItem'
 import { longDateOf, timeOf } from '../../common/date-formats'
-import { calendar } from '../Calendar/calendarState'
+import * as calendar from '../Calendar/calendarState'
 import { View, StyleSheet } from 'react-native'
 import { ToolbarRadio, Toolbar } from '../../common/Widgets/Widgets'
 

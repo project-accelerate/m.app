@@ -8,7 +8,7 @@ import {
 import { HomeScreen } from '../../twt/Home/HomeScreen'
 import { getStatusBarHeight } from '../platform'
 import { Routes } from '../../../routes'
-import { theme } from '../../../theme'
+import * as theme from '../../../theme'
 import {
   TouchableOpacity,
   View,

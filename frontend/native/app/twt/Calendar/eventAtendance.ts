@@ -6,7 +6,7 @@
 //   CancelEventAttendanceMutationVariables,
 //   CalendarEventFragment,
 // } from '../../../queries'
-// import { theme } from '../../../theme'
+// import * as theme from '../../../theme'
 
 // import AttendEvent from './AttendEvent.graphql'
 // import {

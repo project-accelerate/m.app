@@ -7,7 +7,7 @@ import {
   ViewStyle,
   TouchableOpacity,
 } from 'react-native'
-import { theme } from '../../../theme'
+import * as theme from '../../../theme'
 import {
   Typography,
   TypographyProps,

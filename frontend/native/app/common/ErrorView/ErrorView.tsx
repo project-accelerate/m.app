@@ -5,7 +5,7 @@ import { Typography } from '../Typography/Typography'
 import { Button } from '../Butttons/Buttons'
 import { NetworkStatusListener } from './NetworkStatusListener'
 import { OfflineErrorView } from './OfflineErrorView'
-import { theme } from '../../../theme'
+import * as theme from '../../../theme'
 import { LoadingOverlay } from '../Widgets/Widgets'
 
 export interface ErrorViewProps {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Settings } from './Settings'
+import * as settings from './Settings'
 
 export const stories = {
   OptedIn: () => <Settings consentToContact onOptOut={() => {}} />,
