@@ -40,11 +40,11 @@ export class RepositoryCache {
 
     const key = method + '|' + stringify(params)
     const hit = this.cache.get(key)
-    log.debug('[RepositoryCache]', {
-      key,
-      hit,
-      useCached: hit ? hit.expiry < Date.now() : false,
-    })
+    // log.debug('[RepositoryCache]', {
+    //   key,
+    //   hit,
+    //   useCached: hit ? hit.expiry < Date.now() : false,
+    // })
 
     if (hit && hit.expiry > Date.now()) {
       return hit.value

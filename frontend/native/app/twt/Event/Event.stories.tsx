@@ -78,7 +78,7 @@ function eventItemNode(props: Partial<EventListItemFragment> = {}) {
     node: {
       id: faker.random.uuid(),
       name: 'Novara Live: Utopia Now!',
-      family: EventFamily.TWT_2018,
+      family: EventFamily.TWT,
       venue: {
         id: '123',
         name: 'Newspeak house',

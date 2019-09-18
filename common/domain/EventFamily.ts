@@ -1,23 +1,18 @@
 import { never } from '../util'
 
 export enum EventFamily {
-  TWT_2018 = 'TWT_2018',
-  LABOUR_2018_VOTE = 'LABOUR_2018_VOTE',
-  LABOUR_2018 = 'LABOUR_2018',
+  TWT = 'TWT',
+  VOTE = 'VOTE'
 }
 
 export const allEventFamilies = Object.keys(EventFamily) as EventFamily[]
 
 export function getEventFamilyName(family: EventFamily): string {
-  if (family === EventFamily.TWT_2018) {
+  if (family === EventFamily.TWT) {
     return 'TWT'
   }
 
-  if (family === EventFamily.LABOUR_2018) {
-    return 'Labour Conference Event'
-  }
-
-  if (family === EventFamily.LABOUR_2018_VOTE) {
+  if (family === EventFamily.VOTE) {
     return 'Vote'
   }
 

@@ -60,7 +60,7 @@ export class EditEventForm extends React.Component<EditEventFormProps> {
       startTime: '',
       endTime: '',
       speakers: [],
-      family: EventFamily.TWT_2018,
+      family: EventFamily.TWT,
       introduction: '',
       detail: '',
       photo: '',

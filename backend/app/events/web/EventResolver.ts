@@ -17,6 +17,7 @@ import { EventFeedService } from '../application/EventFeedService'
 import { Photo } from '../domain/Photo'
 import { PhotoStorageService } from '../application/PhotoStorageService'
 import { createSimpleConnection } from '../../common/Connection'
+import { TwtEventService } from '../application/TwtEventService'
 
 const AllEventsConnection = createSimpleConnection({
   type: Event,
@@ -42,26 +43,36 @@ export class EventResolver {
     private eventRepository: EventRepository,
     private venueRepository: VenueRepository,
     private photoStorageService: PhotoStorageService,
+    private twt: TwtEventService,
   ) {}
 
   @Query(() => AllEventsConnection)
   async allEvents() {
-    return new AllEventsConnection(await this.eventRepository.findAll())
+    return new AllEventsConnection([
+      ...(await this.twt.allEvents()),
+      ...(await this.eventRepository.findAll()),
+    ])
   }
 
   @Query(() => Event, {
     nullable: true,
     description: 'Get an event by id',
   })
-  event(@Arg('id') id: string) {
-    return this.eventRepository.findOne({ id })
+  async event(@Arg('id') id: string) {
+    return (
+      (await this.twt.getEvent(id)) ||
+      (await this.eventRepository.findOne({ id }))
+    )
   }
 
   @Query(() => [Event], {
     description: 'Get events a person speaks at',
   })
   async eventsForSpeaker(@Arg('person') person: string) {
-    return await this.eventRepository.findEventsbySpeaker(person)
+    return [
+      ...(await this.eventRepository.findEventsbySpeaker(person)),
+      ...(await this.twt.getEventsForSpeaker(person)),
+    ]
   }
 
   @Query(() => [Event], {
@@ -76,16 +87,20 @@ export class EventResolver {
 
   @FieldResolver(() => EventSpeakersConnection)
   async speakers(@Root() event: Event) {
-    return new EventSpeakersConnection(
-      await this.eventRepository.speakers.findFrom(event.id),
-    )
+    return new EventSpeakersConnection([
+      ...(await this.eventRepository.speakers.findFrom(event.id)) || [],
+      ...(await this.twt.getEventSpeakers(event.id)) || [],
+    ])
   }
 
   @FieldResolver(() => Venue, {
     description: 'Return the event venue',
   })
-  venue(@Root() event: Event) {
-    return this.venueRepository.findOne({ id: event.venue })
+  async venue(@Root() event: Event) {
+    return (
+      (await this.twt.getVenue(event.venue)) ||
+      (await this.venueRepository.findOne({ id: event.venue }))
+    )
   }
 
   @FieldResolver(() => Photo, { nullable: true })

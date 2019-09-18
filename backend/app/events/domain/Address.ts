@@ -9,20 +9,20 @@ export class Address {
     return Object.assign(new Address(), props)
   }
 
-  @Field() streetAddress!: string
+  @Field({ nullable: true }) streetAddress?: string
 
-  @Field() city!: string
+  @Field({ nullable: true }) city?: string
 
-  @Field() postcode!: string
+  @Field({ nullable: true }) postcode?: string
 
-  location!: Point
+  location?: Point
 }
 
 @InputType()
 export class AddressInput implements Without<Address, 'location'> {
-  @Field() streetAddress!: string
+  @Field({ nullable: true }) streetAddress?: string
 
-  @Field() city!: string
+  @Field({ nullable: true }) city?: string
 
-  @Field() postcode!: string
+  @Field({ nullable: true }) postcode?: string
 }

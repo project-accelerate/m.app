@@ -70,7 +70,7 @@ function someEvent(): EventFeedCardFragment {
   return {
     id: faker.random.uuid(),
     name: faker.lorem.words(4),
-    family: EventFamily.TWT_2018,
+    family: EventFamily.TWT,
     venue: {
       id: faker.random.uuid(),
       name: faker.lorem.words(2),

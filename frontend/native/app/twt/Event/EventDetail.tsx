@@ -49,7 +49,7 @@ const style = StyleSheet.create({
     color: theme.pallete.black,
   },
   speakerName: {
-    color: theme.pallete.white,
+    color: theme.pallete.black,
   },
   heading: {
     color: theme.pallete.accent,
@@ -120,19 +120,17 @@ export function EventDetail({
           </Typography>
 
           <View style={{ flexWrap: 'wrap', flexDirection: 'row' }}>
-            {event.speakers.edges.map(speaker => (
-              <TouchableOpacity
-                key={speaker.node.id}
-                onPress={() => onSpeakerPress({ speaker: speaker.node })}
-              >
-                <ProfileImage size="halfSquare" image={speaker.node.photo}>
-                  <Banner>
-                    <Typography style={style.speakerName} variant="body">
-                      {speaker.node.name}
-                    </Typography>
-                  </Banner>
-                </ProfileImage>
-              </TouchableOpacity>
+            {event.speakers.edges.map(speaker => console.log(speaker) || (
+              <View key={speaker.node.id}>
+                <View>
+                  <Typography style={[style.speakerName, style.heading]} variant="cardTitleVariant">
+                    {speaker.node.name}
+                  </Typography>
+                  <Typography>
+                    {speaker.node.bio}
+                  </Typography>
+                </View>
+              </View>
             ))}
           </View>
         </View>

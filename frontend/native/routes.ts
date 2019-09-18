@@ -109,23 +109,14 @@ export class Routes {
       }),
       'YellowPages',
     ),
-    ...this.createRootNavigator(
-      createWebScreen({
-        url:
-          'https://soundcloud.com/user-189667110/sets/a-radical-history-tour-of-liverpool',
-        title: 'A Radical History Tour of Liverpool',
-        drawerLabel: 'Radical History Tour',
-      }),
-      'WalkingTour',
-    ),
-    ...this.createRootNavigator(
-      createWebScreen({
-        url: 'https://goo.gl/forms/Qg280HoLw60ahMkB2',
-        title: 'Session Feedback',
-        drawerLabel: 'Session Feedback',
-      }),
-      'FeedbackScreen',
-    ),
+    // ...this.createRootNavigator(
+    //   createWebScreen({
+    //     url: 'https://goo.gl/forms/Qg280HoLw60ahMkB2',
+    //     title: 'Session Feedback',
+    //     drawerLabel: 'Session Feedback',
+    //   }),
+    //   'FeedbackScreen',
+    // ),
     // ...this.createRootNavigator(NewsDetailScreen, 'NewsDetailScreen'),
     // ...this.createRootNavigator(EventDetailScreen, 'EventDetailScreen'),
     ...this.createRootNavigator(SettingsScreen, 'SettingsScreen'),

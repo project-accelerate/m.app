@@ -1,7 +1,7 @@
 import { ReducerAction, AppState } from '../../../state'
 import { Dispatch } from 'redux'
 import { Notifications } from 'expo'
-import Permissions from 'expo-permissions'
+import * as Permissions from 'expo-permissions'
 import {
   RegisterDeviceMutationVariables,
   RegisterDeviceMutation,

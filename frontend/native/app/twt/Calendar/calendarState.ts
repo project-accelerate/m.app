@@ -59,10 +59,10 @@ const alertMinutesBefore = 30
 
 // HACK: Hardcoodeed yeah
 export const days = [
-  new Date('2010-09-21'),
-  new Date('2010-09-22'),
-  new Date('2010-09-23'),
-  new Date('2010-09-24'),
+  new Date('2019-09-21'),
+  new Date('2019-09-22'),
+  new Date('2019-09-23'),
+  new Date('2019-09-24'),
 ]
 
 type LocalNotificationId = string | number

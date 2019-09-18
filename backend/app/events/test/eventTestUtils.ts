@@ -213,7 +213,7 @@ export function somePerson(props: Partial<Person> = {}) {
 }
 
 export function someEventFamily() {
-  return EventFamily.LABOUR_2018
+  return EventFamily.TWT
 }
 
 export function someDistance() {

@@ -55,7 +55,7 @@ function createEvent(): EventListItemFragment {
   return {
     id: faker.random.uuid(),
     name: faker.lorem.words(2),
-    family: EventFamily.TWT_2018,
+    family: EventFamily.TWT,
     venue: {
       id: faker.random.uuid(),
       name: faker.address.streetAddress(),

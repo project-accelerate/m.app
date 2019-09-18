@@ -9,6 +9,10 @@ class PhotoResolver {
 
   @FieldResolver(() => GraphQLString)
   sourceUrl(@Root() photo: Photo) {
+    if (photo.id.startsWith('http')) {
+      return photo.id
+    }
+
     return this.photoStorageService.getPhotoUrl(photo.id)
   }
 }

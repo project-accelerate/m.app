@@ -10,7 +10,7 @@ describe('User.conferenceEvents', () => {
     withDb(async () => {
       const userId = (await givenThatAUserExists()).id
       const event = await givenThatAnEventExists({
-        family: EventFamily.TWT_2018,
+        family: EventFamily.TWT,
       })
 
       const { user } = await userConferenceEvents(userId)
@@ -44,13 +44,10 @@ describe('User.conferenceEvents', () => {
     'returns votes (and only votes) for the user when votes requested',
     withDb(async () => {
       const vote = await givenThatAnEventExists({
-        family: EventFamily.LABOUR_2018_VOTE,
+        family: EventFamily.VOTE,
       })
       await givenThatAnEventExists({
-        family: EventFamily.LABOUR_2018,
-      })
-      await givenThatAnEventExists({
-        family: EventFamily.TWT_2018,
+        family: EventFamily.TWT,
       })
 
       const userId = (await givenThatAUserExists({ isDelegate: true })).id

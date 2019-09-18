@@ -26,10 +26,10 @@ export class Venue {
   @Field() description!: string
 
   photo?: string
-  streetAddress!: string
-  city!: string
-  postcode!: string
-  location!: Point
+  streetAddress?: string
+  city?: string
+  postcode?: string
+  location?: Point
 
   importRef?: string
 }

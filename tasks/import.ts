@@ -53,7 +53,7 @@ export async function pullDataFromTwt(...opts: string[]) {
       endTime,
       name: event.title,
       venue: await acquireVenue(event.venue, event.room),
-      family: EventFamily.TWT_2018,
+      family: EventFamily.TWT,
       photoUpload:
         event.image && event.image !== 'default'
           ? {

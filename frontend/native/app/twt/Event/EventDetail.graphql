@@ -1,14 +1,12 @@
+#import "../Speaker/SpeakerDetail.graphql"
+
 fragment EventDetail on Event {
   id
   name
   speakers {
     edges {
       node {
-        id
-        name
-        photo {
-          sourceUrl
-        }
+        ...SpeakerDetail
       }
     }
   }

@@ -22,7 +22,7 @@ storiesOf('Event Admin', module)
         detail: faker.lorem.paragraphs(5),
         startTime: faker.date.future().toJSON(),
         endTime: faker.date.future().toJSON(),
-        family: EventFamily.TWT_2018,
+        family: EventFamily.TWT,
         speakers: {
           edges: [
             {
@@ -54,7 +54,7 @@ storiesOf('Event Admin', module)
         id: faker.random.uuid(),
         name: `${faker.commerce.productName()}`,
         introduction: faker.lorem.paragraph(),
-        family: EventFamily.TWT_2018,
+        family: EventFamily.TWT,
         detail: faker.lorem.paragraphs(5),
         startTime: faker.date.future().toJSON(),
         endTime: faker.date.future().toJSON(),
@@ -93,7 +93,7 @@ storiesOf('Event Admin', module)
         speakers: ['1', '2'],
         introduction: faker.lorem.paragraph(3),
         detail: faker.lorem.paragraphs(3),
-        family: EventFamily.TWT_2018,
+        family: EventFamily.TWT,
         startTime: faker.date.future().toString(),
         endTime: faker.date.future().toString(),
         photo: somePhoto,

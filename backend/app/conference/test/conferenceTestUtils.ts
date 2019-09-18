@@ -10,11 +10,7 @@ import { givenThatAnEventExists } from 'backend/app/events/test/eventTestUtils'
 type EventAttendanceProps = WithoutId<EventAttendance>
 
 export function someConferenceId() {
-  return EventFamily.TWT_2018
-}
-
-export function someOtherConferenceId() {
-  return EventFamily.LABOUR_2018
+  return EventFamily.TWT
 }
 
 export function someEventAttendanceProps(
