@@ -91,19 +91,6 @@ export function Home({
           ))}
         </View>
       )}
-      {news.length < 3 && (
-        <View>
-          <Card>
-            <CardMarkdownContent
-              children={[
-                'Welcome to Momentum’s Conference app! This contains the full programme for TWT.',
-                'If you’re interested in a session or workshop, you can save it to your calendar and we’ll remind you about it half an hour before it starts.',
-                'We’ll be using this to communicate with you over TWT and the conference',
-              ].join('\n\n')}
-            />
-          </Card>
-        </View>
-      )}
       <CardGroupHeader>News</CardGroupHeader>
       {take(sorted(news, 'timeSent'), 7).map(newsItem => (
         <NewsPanel key={newsItem.id} news={newsItem} onPress={onNewsPress} />

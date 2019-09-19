@@ -120,13 +120,16 @@ export function EventDetail({
           </Typography>
 
           <View style={{ flexWrap: 'wrap', flexDirection: 'row' }}>
-            {event.speakers.edges.map(speaker => console.log(speaker) || (
+            {event.speakers.edges.map(speaker => (
               <View key={speaker.node.id}>
                 <View>
-                  <Typography style={[style.speakerName, style.heading]} variant="cardTitleVariant">
+                  <Typography
+                    style={[style.speakerName, style.heading]}
+                    variant="cardTitleVariant"
+                  >
                     {speaker.node.name}
                   </Typography>
-                  <Typography>
+                  <Typography variant="body" style={style.block}>
                     {speaker.node.bio}
                   </Typography>
                 </View>

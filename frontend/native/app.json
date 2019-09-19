@@ -8,7 +8,7 @@
     "sdkVersion": "34.0.0",
     "ignoreNodeModulesValidation": true,
     "platforms": ["ios", "android"],
-    "version": "3.0.0",
+    "version": "3.0.3",
     "orientation": "portrait",
     "splash": {
       "image": "./assets/splashlogo.png",
@@ -22,13 +22,13 @@
     "assetBundlePatterns": ["app/**", "assets/**"],
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "10",
+      "buildNumber": "13",
       "bundleIdentifier": "com.peoplesmomentum.app",
       "icon": "./icons/icon.ios.png"
     },
     "android": {
       "package": "com.peoplesmomentum.app",
-      "versionCode": 10,
+      "versionCode": 13,
       "googleServicesFile": "./google-services.json",
       "config": {
         "googleMaps": {

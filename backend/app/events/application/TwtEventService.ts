@@ -80,7 +80,8 @@ export class TwtEventService {
 
     const [h, m] = decodeMilitaryTime(twtEvent.startTime)
 
-    const startTime = addHours(addMinutes(twtEvent.date, m), h)
+    // HACK: because I'm too tired to handle timezones properly
+    const startTime = addHours(addMinutes(twtEvent.date, m), h - 1)
     const endTime = addMinutes(startTime, twtEvent.durationInMinutes)
 
     return {

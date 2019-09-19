@@ -16,6 +16,7 @@ import { VoteFetcher } from './app/twt/Event/VoteFetcher'
 import { loadFonts } from './config/loadFonts'
 import { StatusBar } from 'react-native'
 import * as theme from './theme'
+import { Asset } from 'expo-asset'
 
 interface ApplicationState {
   loading?: boolean
@@ -57,7 +58,12 @@ export default class App extends React.Component<AppProps> {
   }
 
   async componentDidMount() {
-    await Promise.all([setupAppUpdates(), loadFonts(), ReduxProvider.setup()])
+    await Promise.all([
+      setupAppUpdates(),
+      loadFonts(),
+      ReduxProvider.setup(),
+      Asset.loadAsync([require('./assets/default.jpg')]),
+    ])
     this.setState({ loading: false })
   }
 

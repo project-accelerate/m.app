@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0,0,0,0.16)',
     shadowOffset: { width: 2, height: 5 },
     marginBottom: theme.spacing.level(2),
+    flexShrink: 0,
   },
   header: {
     marginTop: theme.spacing.level(2),
@@ -43,6 +44,7 @@ const styles = StyleSheet.create({
   },
   content: {
     marginTop: theme.spacing.level(1),
+    flexShrink: 0,
   },
 })
 

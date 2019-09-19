@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import {
   RegistrationIsDelegateQuestion,
@@ -10,8 +10,10 @@ import * as registration from './registrationState'
 import { createStateConnector } from '../../../state'
 import { createWizard, WizardStageProps } from '../../common/Wizard/Wizard'
 import { compact } from 'lodash'
-import { Platform } from 'react-native'
+import { Platform, AsyncStorage } from 'react-native'
 import { prefetchHomeData } from '../Home/prefetchHomeData'
+import { checkUserExists } from '../../../config/auth'
+import { ReactNode } from 'react'
 
 interface RegistrationWizardData {
   isConferenceDelegate: boolean
@@ -33,31 +35,62 @@ const RegistrationWizard = createWizard<RegistrationWizardData>({
   ]),
 })
 
+const RegistrationGuard = (props: {
+  data?: registration.State,
+  children: ReactNode,
+  onCompleted: (params: RegistrationWizardData) => Promise<void>
+}) => {
+  const [userValidatedExists, setUserValidatedExists] = useState<boolean | undefined>(undefined)
+  useEffect(() => {
+    if (props.data) {
+      checkUserExists(props.data.userId).then(exists => {
+        if (exists) {
+          setUserValidatedExists(true)
+        } else {
+          AsyncStorage.clear()
+          setUserValidatedExists(false)
+        }
+      })
+    } else {
+      setUserValidatedExists(false)
+    }
+  }, [setUserValidatedExists, props.data])
+
+  if (typeof userValidatedExists === 'undefined') {
+    return null
+  }
+  
+  if (!userValidatedExists || !props.data) {
+    return (
+      <RegistrationBg>
+        <RegistrationWizard
+          initialState={{
+            email: '',
+            isConferenceDelegate: false,
+            optedIntoNotifications: true,
+          }}
+          darkBg
+          onCompleted={async params => {
+            await props.onCompleted(params)
+            await prefetchHomeData({})
+          }}
+        />
+      </RegistrationBg>
+    )
+  }
+
+  return <>{props.children}</>
+}
+
 export function RegistrationContainer(props: React.Props<{}>) {
   return (
     <Connect>
-      {({ registration, actions }) => {
-        if (registration) {
-          return props.children || null
-        }
-
-        return (
-          <RegistrationBg>
-            <RegistrationWizard
-              initialState={{
-                email: '',
-                isConferenceDelegate: false,
-                optedIntoNotifications: true,
-              }}
-              darkBg
-              onCompleted={async params => {
-                await actions.registration.register(params)
-                await prefetchHomeData({})
-              }}
-            />
-          </RegistrationBg>
+      {({ registration, actions }) => (
+          <RegistrationGuard data={registration || undefined} onCompleted={actions.registration.register}>
+            {props.children || null}
+          </RegistrationGuard>
         )
-      }}
+      }
     </Connect>
   )
 }
