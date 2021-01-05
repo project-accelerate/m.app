@@ -14,7 +14,7 @@
     "apollo-upload-client": "^8.1.0",
     "auth0-js": "^9.6.1",
     "autoprefixer": "7.1.6",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "babel-jest": "^23.4.2",
     "babel-loader": "^7.1.2",
     "babel-preset-react-app": "^3.1.1",
