@@ -12,7 +12,7 @@
     "@types/sharp": "^0.17.10",
     "@types/throng": "^4.0.2",
     "amqplib": "^0.5.2",
-    "aws-sdk": "^2.259.1",
+    "aws-sdk": "^2.814.0",
     "axios": "^0.18.0",
     "common": "*",
     "core-js": "^2.5.6",
