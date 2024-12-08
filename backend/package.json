@@ -24,7 +24,7 @@
     "glob": "^7.1.2",
     "graphql": "^0.13.2",
     "graphql-yoga": "^1.13.1",
-    "jsonwebtoken": "^8.2.1",
+    "jsonwebtoken": "^9.0.0",
     "jwks-rsa": "^1.2.1",
     "knex": "^0.14.6",
     "knex-cleaner": "^1.1.4",
